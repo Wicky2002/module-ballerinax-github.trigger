@@ -1,12 +1,12 @@
 [package]
-distribution = "2201.12.0"
+distribution = "2201.13.0"
 org = "ballerinax"
 name = "github.trigger"
 version = "@toml.version@"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = [] # TODO: Add keywords
-# icon = "icon.png" # TODO: Add icon
+keywords = ["Communication/Team Chat", "Cost/Freemium", "Trigger"]
+icon = "docs/icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-github.trigger"
 
 [build-options]
