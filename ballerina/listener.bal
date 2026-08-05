@@ -1,6 +1,6 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
 //
-// WSO2 Inc. licenses this file to you under the Apache License,
+// WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License.
 // You may obtain a copy of the License at
@@ -17,13 +17,12 @@
 import ballerina/cloud;
 import ballerina/http;
 
-@display {label: "GitHub", iconPath: "docs/icon.png"}
+@display {label: ""}
 public class Listener {
     private http:Listener httpListener;
     private DispatcherService dispatcherService;
 
-    public function init(ListenerConfig listenerConfig = {webhookSecret: DEFAULT_SECRET},
-            @cloud:Expose int|http:Listener listenOn = 8090) returns error? {
+    public function init(ListenerConfig listenerConfig = {webhookSecret: DEFAULT_SECRET}, @cloud:Expose int|http:Listener listenOn = 8090) returns error? {
         if listenOn is http:Listener {
             self.httpListener = listenOn;
         } else {
@@ -32,13 +31,13 @@ public class Listener {
         self.dispatcherService = new DispatcherService(listenerConfig.webhookSecret);
     }
 
-    public isolated function attach(GenericServiceType serviceRef, () attachPoint) returns @tainted error? {
-        string serviceTypeStr = check self.getServiceTypeStr(serviceRef);
+    public isolated function attach(GenericServiceType serviceRef, () attachPoint) returns error? {
+        string serviceTypeStr = self.getServiceTypeStr(serviceRef);
         check self.dispatcherService.addServiceRef(serviceTypeStr, serviceRef);
     }
 
     public isolated function detach(GenericServiceType serviceRef) returns error? {
-        string serviceTypeStr = check self.getServiceTypeStr(serviceRef);
+        string serviceTypeStr = self.getServiceTypeStr(serviceRef);
         check self.dispatcherService.removeServiceRef(serviceTypeStr);
     }
 
@@ -47,7 +46,7 @@ public class Listener {
         return self.httpListener.'start();
     }
 
-    public isolated function gracefulStop() returns @tainted error? {
+    public isolated function gracefulStop() returns error? {
         return self.httpListener.gracefulStop();
     }
 
@@ -55,7 +54,7 @@ public class Listener {
         return self.httpListener.immediateStop();
     }
 
-    private isolated function getServiceTypeStr(GenericServiceType serviceRef) returns string|error {
+    private isolated function getServiceTypeStr(GenericServiceType serviceRef) returns string {
         if serviceRef is DeleteService {
             return "DeleteService";
         } else if serviceRef is MetaService {
@@ -207,16 +206,7 @@ public class Listener {
         } else if serviceRef is PullRequestReviewThreadService {
             return "PullRequestReviewThreadService";
         } else {
-            return error("Unrecognized service type");
+            panic error("Unrecognized service type attached to the listener");
         }
     }
 }
-
-const string DEFAULT_SECRET = "";
-
-// Listener related configurations should be included here
-@display {label: "Listener Config"}
-public type ListenerConfig record {
-    @display {label: "Webhook Secret", "description": "Secret specified when adding the github webhook"}
-    string webhookSecret = DEFAULT_SECRET;
-};

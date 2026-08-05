@@ -33,7 +33,12 @@ The Ballerina trigger source (`listener.bal`, `dispatcher_service.bal`, `service
 directory.
 
 ```bash
-# TODO: Add asyncapi-tools generator command used to generate the trigger
+bal asyncapi http -i docs/spec/asyncapi.yml -o ballerina/
 ```
+
+This overwrites `listener.bal`, `dispatcher_service.bal`, `service_types.bal`, and the data-types
+file in `ballerina/` with fresh output. Diff the result before committing - anything currently
+correct only because of a hand patch to these files (rather than to the spec or the generator
+itself) will be silently reverted by this command.
 Note: The license year is hardcoded to 2021 (matching the source files' copyright year), change
 if necessary.

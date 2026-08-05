@@ -1,6 +1,6 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
 //
-// WSO2 Inc. licenses this file to you under the Apache License,
+// WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License.
 // You may obtain a copy of the License at
@@ -15,506 +15,494 @@
 // under the License.
 
 public type DeleteService service object {
-    remote function onDelete(DeleteEvent payload) returns error?;
+    remote function onDelete(DeletePayload payload) returns error?;
 };
 
 public type MetaService service object {
-    remote function onMeta(MetaEvent payload) returns error?;
+    remote function onMetaDeleted(MetaPayload payload) returns error?;
 };
 
 public type WorkflowDispatchService service object {
-    remote function onWorkflowDispatch(WorkflowDispatchEvent payload) returns error?;
+    remote function onWorkflowDispatch(WorkflowDispatchPayload payload) returns error?;
 };
 
 public type SecurityAndAnalysisService service object {
-    remote function onSecurityAndAnalysis(SecurityAndAnalysisEvent payload) returns error?;
+    remote function onSecurityAndAnalysis(SecurityAndAnalysisPayload payload) returns error?;
 };
 
 public type DeployKeyService service object {
-    remote function onCreated(DeployKeyEvent payload) returns error?;
-    remote function onDeleted(DeployKeyEvent payload) returns error?;
+    remote function onDeployKeyCreated(DeployKeyPayload payload) returns error?;
+    remote function onDeployKeyDeleted(DeployKeyPayload payload) returns error?;
 };
 
 public type ProjectColumnService service object {
-    remote function onMoved(ProjectColumnEvent payload) returns error?;
-    remote function onEdited(ProjectColumnEvent payload) returns error?;
-    remote function onDeleted(ProjectColumnEvent payload) returns error?;
-    remote function onCreated(ProjectColumnEvent payload) returns error?;
+    remote function onProjectColumnMoved(ProjectColumnPayload payload) returns error?;
+    remote function onProjectColumnEdited(ProjectColumnPayload payload) returns error?;
+    remote function onProjectColumnDeleted(ProjectColumnPayload payload) returns error?;
+    remote function onProjectColumnCreated(ProjectColumnPayload payload) returns error?;
 };
 
 public type MarketplacePurchaseService service object {
-    remote function onPurchased(MarketplacePurchaseEvent payload) returns error?;
-    remote function onCancelled(MarketplacePurchaseEvent payload) returns error?;
-    remote function onPendingChangeCancelled(MarketplacePurchaseEvent payload) returns error?;
-    remote function onPendingChange(MarketplacePurchaseEvent payload) returns error?;
-    remote function onChanged(MarketplacePurchaseEvent payload) returns error?;
+    remote function onMarketplacePurchasePurchased(MarketplacePurchasePayload payload) returns error?;
+    remote function onMarketplacePurchaseCancelled(MarketplacePurchasePayload payload) returns error?;
+    remote function onMarketplacePurchasePendingChangeCancelled(MarketplacePurchasePayload payload) returns error?;
+    remote function onMarketplacePurchasePendingChange(MarketplacePurchasePayload payload) returns error?;
+    remote function onMarketplacePurchaseChanged(MarketplacePurchasePayload payload) returns error?;
 };
 
 public type BranchProtectionConfigurationService service object {
-    remote function onEnabled(BranchProtectionConfigurationEvent payload) returns error?;
-    remote function onDisabled(BranchProtectionConfigurationEvent payload) returns error?;
+    remote function onBranchProtectionConfigurationEnabled(BranchProtectionConfigurationPayload payload) returns error?;
+    remote function onBranchProtectionConfigurationDisabled(BranchProtectionConfigurationPayload payload) returns error?;
 };
 
 public type PullRequestService service object {
-    remote function onEnqueued(PullRequestEvent payload) returns error?;
-    remote function onReviewRequestRemoved(PullRequestEvent payload) returns error?;
-    remote function onOpened(PullRequestEvent payload) returns error?;
-    remote function onReadyForReview(PullRequestEvent payload) returns error?;
-    remote function onLabeled(PullRequestEvent payload) returns error?;
-    remote function onUnassigned(PullRequestEvent payload) returns error?;
-    remote function onEdited(PullRequestEvent payload) returns error?;
-    remote function onSynchronize(PullRequestEvent payload) returns error?;
-    remote function onReviewRequested(PullRequestEvent payload) returns error?;
-    remote function onReopened(PullRequestEvent payload) returns error?;
-    remote function onAutoMergeDisabled(PullRequestEvent payload) returns error?;
-    remote function onLocked(PullRequestEvent payload) returns error?;
-    remote function onAutoMergeEnabled(PullRequestEvent payload) returns error?;
-    remote function onMilestoned(PullRequestEvent payload) returns error?;
-    remote function onDequeued(PullRequestEvent payload) returns error?;
-    remote function onUnlabeled(PullRequestEvent payload) returns error?;
-    remote function onClosed(PullRequestEvent payload) returns error?;
-    remote function onUnlocked(PullRequestEvent payload) returns error?;
-    remote function onAssigned(PullRequestEvent payload) returns error?;
-    remote function onConvertedToDraft(PullRequestEvent payload) returns error?;
-    remote function onDemilestoned(PullRequestEvent payload) returns error?;
+    remote function onPullRequestEnqueued(PullRequestPayload payload) returns error?;
+    remote function onPullRequestReviewRequestRemoved(PullRequestPayload payload) returns error?;
+    remote function onPullRequestOpened(PullRequestPayload payload) returns error?;
+    remote function onPullRequestReadyForReview(PullRequestPayload payload) returns error?;
+    remote function onPullRequestLabeled(PullRequestPayload payload) returns error?;
+    remote function onPullRequestUnassigned(PullRequestPayload payload) returns error?;
+    remote function onPullRequestEdited(PullRequestPayload payload) returns error?;
+    remote function onPullRequestSynchronize(PullRequestPayload payload) returns error?;
+    remote function onPullRequestReviewRequested(PullRequestPayload payload) returns error?;
+    remote function onPullRequestReopened(PullRequestPayload payload) returns error?;
+    remote function onPullRequestAutoMergeDisabled(PullRequestPayload payload) returns error?;
+    remote function onPullRequestLocked(PullRequestPayload payload) returns error?;
+    remote function onPullRequestAutoMergeEnabled(PullRequestPayload payload) returns error?;
+    remote function onPullRequestMilestoned(PullRequestPayload payload) returns error?;
+    remote function onPullRequestDequeued(PullRequestPayload payload) returns error?;
+    remote function onPullRequestUnlabeled(PullRequestPayload payload) returns error?;
+    remote function onPullRequestClosed(PullRequestPayload payload) returns error?;
+    remote function onPullRequestUnlocked(PullRequestPayload payload) returns error?;
+    remote function onPullRequestAssigned(PullRequestPayload payload) returns error?;
+    remote function onPullRequestConvertedToDraft(PullRequestPayload payload) returns error?;
+    remote function onPullRequestDemilestoned(PullRequestPayload payload) returns error?;
 };
 
 public type LabelService service object {
-    remote function onEdited(LabelEvent payload) returns error?;
-    remote function onCreated(LabelEvent payload) returns error?;
-    remote function onDeleted(LabelEvent payload) returns error?;
+    remote function onLabelEdited(LabelPayload payload) returns error?;
+    remote function onLabelCreated(LabelPayload payload) returns error?;
+    remote function onLabelDeleted(LabelPayload payload) returns error?;
 };
 
 public type DeploymentService service object {
-    remote function onDeployment(DeploymentEvent payload) returns error?;
+    remote function onDeploymentCreated(DeploymentPayload payload) returns error?;
 };
 
 public type TeamAddService service object {
-    remote function onTeamAdd(TeamAddEvent payload) returns error?;
+    remote function onTeamAdd(TeamAddPayload payload) returns error?;
 };
 
 public type CodeScanningAlertService service object {
-    remote function onAppearedInBranch(CodeScanningAlertEvent payload) returns error?;
-    remote function onClosedByUser(CodeScanningAlertEvent payload) returns error?;
-    remote function onCreated(CodeScanningAlertEvent payload) returns error?;
-    remote function onFixed(CodeScanningAlertEvent payload) returns error?;
-    remote function onReopened(CodeScanningAlertEvent payload) returns error?;
-    remote function onReopenedByUser(CodeScanningAlertEvent payload) returns error?;
-    remote function onUpdatedAssignment(CodeScanningAlertEvent payload) returns error?;
+    remote function onCodeScanningAlertAppearedInBranch(CodeScanningAlertPayload payload) returns error?;
+    remote function onCodeScanningAlertClosedByUser(CodeScanningAlertPayload payload) returns error?;
+    remote function onCodeScanningAlertCreated(CodeScanningAlertPayload payload) returns error?;
+    remote function onCodeScanningAlertFixed(CodeScanningAlertPayload payload) returns error?;
+    remote function onCodeScanningAlertReopened(CodeScanningAlertPayload payload) returns error?;
+    remote function onCodeScanningAlertReopenedByUser(CodeScanningAlertPayload payload) returns error?;
+    remote function onCodeScanningAlertUpdatedAssignment(CodeScanningAlertPayload payload) returns error?;
 };
 
 public type MembershipService service object {
-    remote function onAdded(MembershipEvent payload) returns error?;
-    remote function onRemoved(MembershipEvent payload) returns error?;
+    remote function onMembershipAdded(MembershipPayload payload) returns error?;
+    remote function onMembershipRemoved(MembershipPayload payload) returns error?;
 };
 
 public type SecretScanningAlertService service object {
-    remote function onAssigned(SecretScanningAlertEvent payload) returns error?;
-    remote function onReopened(SecretScanningAlertEvent payload) returns error?;
-    remote function onUnassigned(SecretScanningAlertEvent payload) returns error?;
-    remote function onCreated(SecretScanningAlertEvent payload) returns error?;
-    remote function onPubliclyLeaked(SecretScanningAlertEvent payload) returns error?;
-    remote function onValidated(SecretScanningAlertEvent payload) returns error?;
-    remote function onResolved(SecretScanningAlertEvent payload) returns error?;
+    remote function onSecretScanningAlertAssigned(SecretScanningAlertPayload payload) returns error?;
+    remote function onSecretScanningAlertReopened(SecretScanningAlertPayload payload) returns error?;
+    remote function onSecretScanningAlertUnassigned(SecretScanningAlertPayload payload) returns error?;
+    remote function onSecretScanningAlertCreated(SecretScanningAlertPayload payload) returns error?;
+    remote function onSecretScanningAlertPubliclyLeaked(SecretScanningAlertPayload payload) returns error?;
+    remote function onSecretScanningAlertValidated(SecretScanningAlertPayload payload) returns error?;
+    remote function onSecretScanningAlertResolved(SecretScanningAlertPayload payload) returns error?;
 };
 
 public type PushService service object {
-    remote function onPush(PushEvent payload) returns error?;
+    remote function onPush(PushPayload payload) returns error?;
 };
 
 public type MemberService service object {
-    remote function onEdited(MemberEvent payload) returns error?;
-    remote function onAdded(MemberEvent payload) returns error?;
-    remote function onRemoved(MemberEvent payload) returns error?;
+    remote function onMemberEdited(MemberPayload payload) returns error?;
+    remote function onMemberAdded(MemberPayload payload) returns error?;
+    remote function onMemberRemoved(MemberPayload payload) returns error?;
 };
 
 public type RepositoryDispatchService service object {
-    remote function onRepositoryDispatch(RepositoryDispatchEvent payload) returns error?;
+    remote function onRepositoryDispatch(RepositoryDispatchPayload payload) returns error?;
 };
 
 public type StatusService service object {
-    remote function onStatus(StatusEvent payload) returns error?;
+    remote function onStatus(StatusPayload payload) returns error?;
 };
 
 public type RepositoryImportService service object {
-    remote function onRepositoryImport(RepositoryImportEvent payload) returns error?;
+    remote function onRepositoryImport(RepositoryImportPayload payload) returns error?;
 };
 
 public type PersonalAccessTokenRequestService service object {
-    remote function onCreated(PersonalAccessTokenRequestEvent payload) returns error?;
-    remote function onApproved(PersonalAccessTokenRequestEvent payload) returns error?;
-    remote function onDenied(PersonalAccessTokenRequestEvent payload) returns error?;
-    remote function onCancelled(PersonalAccessTokenRequestEvent payload) returns error?;
+    remote function onPersonalAccessTokenRequestCreated(PersonalAccessTokenRequestPayload payload) returns error?;
+    remote function onPersonalAccessTokenRequestApproved(PersonalAccessTokenRequestPayload payload) returns error?;
+    remote function onPersonalAccessTokenRequestDenied(PersonalAccessTokenRequestPayload payload) returns error?;
+    remote function onPersonalAccessTokenRequestCancelled(PersonalAccessTokenRequestPayload payload) returns error?;
 };
 
 public type SubIssuesService service object {
-    remote function onChildIssueAdded(SubIssuesEvent payload) returns error?;
-    remote function onParentIssueAdded(SubIssuesEvent payload) returns error?;
-    remote function onChildIssueRemoved(SubIssuesEvent payload) returns error?;
-    remote function onParentIssueRemoved(SubIssuesEvent payload) returns error?;
+    remote function onSubIssuesSubIssueAdded(SubIssuesPayload payload) returns error?;
+    remote function onSubIssuesParentIssueAdded(SubIssuesPayload payload) returns error?;
+    remote function onSubIssuesSubIssueRemoved(SubIssuesPayload payload) returns error?;
+    remote function onSubIssuesParentIssueRemoved(SubIssuesPayload payload) returns error?;
 };
 
 public type RepositoryRulesetService service object {
-    remote function onCreated(RepositoryRulesetEvent payload) returns error?;
-    remote function onEdited(RepositoryRulesetEvent payload) returns error?;
-    remote function onDeleted(RepositoryRulesetEvent payload) returns error?;
+    remote function onRepositoryRulesetCreated(RepositoryRulesetPayload payload) returns error?;
+    remote function onRepositoryRulesetEdited(RepositoryRulesetPayload payload) returns error?;
+    remote function onRepositoryRulesetDeleted(RepositoryRulesetPayload payload) returns error?;
 };
 
 public type MilestoneService service object {
-    remote function onCreated(MilestoneEvent payload) returns error?;
-    remote function onEdited(MilestoneEvent payload) returns error?;
-    remote function onOpened(MilestoneEvent payload) returns error?;
-    remote function onDeleted(MilestoneEvent payload) returns error?;
-    remote function onClosed(MilestoneEvent payload) returns error?;
+    remote function onMilestoneCreated(MilestonePayload payload) returns error?;
+    remote function onMilestoneEdited(MilestonePayload payload) returns error?;
+    remote function onMilestoneOpened(MilestonePayload payload) returns error?;
+    remote function onMilestoneDeleted(MilestonePayload payload) returns error?;
+    remote function onMilestoneClosed(MilestonePayload payload) returns error?;
 };
 
 public type PublicService service object {
-    remote function onPublic(PublicEvent payload) returns error?;
+    remote function onPublic(PublicPayload payload) returns error?;
 };
 
 public type WorkflowRunService service object {
-    remote function onInProgress(WorkflowRunEvent payload) returns error?;
-    remote function onCompleted(WorkflowRunEvent payload) returns error?;
-    remote function onRequested(WorkflowRunEvent payload) returns error?;
+    remote function onWorkflowRunInProgress(WorkflowRunPayload payload) returns error?;
+    remote function onWorkflowRunCompleted(WorkflowRunPayload payload) returns error?;
+    remote function onWorkflowRunRequested(WorkflowRunPayload payload) returns error?;
 };
 
 public type ProjectsV2statusUpdateService service object {
-    remote function onEdited('ProjectsV2StatusUpdateEvent payload) returns error?;
-    remote function onDeleted('ProjectsV2StatusUpdateEvent payload) returns error?;
-    remote function onCreated('ProjectsV2StatusUpdateEvent payload) returns error?;
+    remote function onProjectsV2StatusUpdateEdited('ProjectsV2StatusUpdatePayload payload) returns error?;
+    remote function onProjectsV2StatusUpdateDeleted('ProjectsV2StatusUpdatePayload payload) returns error?;
+    remote function onProjectsV2StatusUpdateCreated('ProjectsV2StatusUpdatePayload payload) returns error?;
 };
 
 public type ProjectsV2itemService service object {
-    remote function onEdited('ProjectsV2ItemEvent payload) returns error?;
-    remote function onCreated('ProjectsV2ItemEvent payload) returns error?;
-    remote function onArchived('ProjectsV2ItemEvent payload) returns error?;
-    remote function onDeleted('ProjectsV2ItemEvent payload) returns error?;
-    remote function onRestored('ProjectsV2ItemEvent payload) returns error?;
-    remote function onReordered('ProjectsV2ItemEvent payload) returns error?;
-    remote function onConverted('ProjectsV2ItemEvent payload) returns error?;
+    remote function onProjectsV2ItemEdited('ProjectsV2ItemPayload payload) returns error?;
+    remote function onProjectsV2ItemCreated('ProjectsV2ItemPayload payload) returns error?;
+    remote function onProjectsV2ItemArchived('ProjectsV2ItemPayload payload) returns error?;
+    remote function onProjectsV2ItemDeleted('ProjectsV2ItemPayload payload) returns error?;
+    remote function onProjectsV2ItemRestored('ProjectsV2ItemPayload payload) returns error?;
+    remote function onProjectsV2ItemReordered('ProjectsV2ItemPayload payload) returns error?;
+    remote function onProjectsV2ItemConverted('ProjectsV2ItemPayload payload) returns error?;
 };
 
 public type SponsorshipService service object {
-    remote function onCancelled(SponsorshipEvent payload) returns error?;
-    remote function onEdited(SponsorshipEvent payload) returns error?;
-    remote function onTierChanged(SponsorshipEvent payload) returns error?;
-    remote function onPendingCancellation(SponsorshipEvent payload) returns error?;
-    remote function onCreated(SponsorshipEvent payload) returns error?;
-    remote function onPendingTierChange(SponsorshipEvent payload) returns error?;
+    remote function onSponsorshipCancelled(SponsorshipPayload payload) returns error?;
+    remote function onSponsorshipEdited(SponsorshipPayload payload) returns error?;
+    remote function onSponsorshipTierChanged(SponsorshipPayload payload) returns error?;
+    remote function onSponsorshipPendingCancellation(SponsorshipPayload payload) returns error?;
+    remote function onSponsorshipCreated(SponsorshipPayload payload) returns error?;
+    remote function onSponsorshipPendingTierChange(SponsorshipPayload payload) returns error?;
 };
 
 public type MergeGroupService service object {
-    remote function onDestroyed(MergeGroupEvent payload) returns error?;
-    remote function onChecksRequested(MergeGroupEvent payload) returns error?;
+    remote function onMergeGroupDestroyed(MergeGroupPayload payload) returns error?;
+    remote function onMergeGroupChecksRequested(MergeGroupPayload payload) returns error?;
 };
 
 public type ProjectService service object {
-    remote function onDeleted(ProjectEvent payload) returns error?;
-    remote function onCreated(ProjectEvent payload) returns error?;
-    remote function onClosed(ProjectEvent payload) returns error?;
-    remote function onReopened(ProjectEvent payload) returns error?;
-    remote function onEdited(ProjectEvent payload) returns error?;
+    remote function onProjectDeleted(ProjectPayload payload) returns error?;
+    remote function onProjectCreated(ProjectPayload payload) returns error?;
+    remote function onProjectClosed(ProjectPayload payload) returns error?;
+    remote function onProjectReopened(ProjectPayload payload) returns error?;
+    remote function onProjectEdited(ProjectPayload payload) returns error?;
 };
 
 public type OrgBlockService service object {
-    remote function onBlocked(OrgBlockEvent payload) returns error?;
-    remote function onUnblocked(OrgBlockEvent payload) returns error?;
+    remote function onOrgBlockBlocked(OrgBlockPayload payload) returns error?;
+    remote function onOrgBlockUnblocked(OrgBlockPayload payload) returns error?;
 };
 
 public type SecretScanningAlertLocationService service object {
-    remote function onSecretScanningAlertLocation(SecretScanningAlertLocationEvent payload) returns error?;
+    remote function onSecretScanningAlertLocation(SecretScanningAlertLocationPayload payload) returns error?;
 };
 
 public type InstallationTargetService service object {
-    remote function onInstallationTarget(InstallationTargetEvent payload) returns error?;
+    remote function onInstallationTargetRenamed(InstallationTargetPayload payload) returns error?;
 };
 
 public type CheckSuiteService service object {
-    remote function onCompleted(CheckSuiteEvent payload) returns error?;
-    remote function onRequested(CheckSuiteEvent payload) returns error?;
-    remote function onRerequested(CheckSuiteEvent payload) returns error?;
+    remote function onCheckSuiteCompleted(CheckSuitePayload payload) returns error?;
+    remote function onCheckSuiteRequested(CheckSuitePayload payload) returns error?;
+    remote function onCheckSuiteRerequested(CheckSuitePayload payload) returns error?;
 };
 
 public type PingService service object {
-    remote function onPing(PingEvent payload) returns error?;
+    remote function onPing(PingPayload payload) returns error?;
 };
 
 public type IssueCommentService service object {
-    remote function onEdited(IssueCommentEvent payload) returns error?;
-    remote function onPinned(IssueCommentEvent payload) returns error?;
-    remote function onDeleted(IssueCommentEvent payload) returns error?;
-    remote function onCreated(IssueCommentEvent payload) returns error?;
-    remote function onUnpinned(IssueCommentEvent payload) returns error?;
+    remote function onIssueCommentEdited(IssueCommentPayload payload) returns error?;
+    remote function onIssueCommentPinned(IssueCommentPayload payload) returns error?;
+    remote function onIssueCommentDeleted(IssueCommentPayload payload) returns error?;
+    remote function onIssueCommentCreated(IssueCommentPayload payload) returns error?;
+    remote function onIssueCommentUnpinned(IssueCommentPayload payload) returns error?;
 };
 
 public type SecurityAdvisoryService service object {
-    remote function onWithdrawn(SecurityAdvisoryEvent payload) returns error?;
-    remote function onPublished(SecurityAdvisoryEvent payload) returns error?;
-    remote function onUpdated(SecurityAdvisoryEvent payload) returns error?;
+    remote function onSecurityAdvisoryWithdrawn(SecurityAdvisoryPayload payload) returns error?;
+    remote function onSecurityAdvisoryPublished(SecurityAdvisoryPayload payload) returns error?;
+    remote function onSecurityAdvisoryUpdated(SecurityAdvisoryPayload payload) returns error?;
 };
 
 public type PackageService service object {
-    remote function onPublished(PackageEvent payload) returns error?;
-    remote function onUpdated(PackageEvent payload) returns error?;
+    remote function onPackagePublished(PackagePayload payload) returns error?;
+    remote function onPackageUpdated(PackagePayload payload) returns error?;
 };
 
 public type DiscussionService service object {
-    remote function onUnanswered(DiscussionEvent payload) returns error?;
-    remote function onCreated(DiscussionEvent payload) returns error?;
-    remote function onTransferred(DiscussionEvent payload) returns error?;
-    remote function onCategoryChanged(DiscussionEvent payload) returns error?;
-    remote function onDeleted(DiscussionEvent payload) returns error?;
-    remote function onUnlocked(DiscussionEvent payload) returns error?;
-    remote function onPinned(DiscussionEvent payload) returns error?;
-    remote function onEdited(DiscussionEvent payload) returns error?;
-    remote function onReopened(DiscussionEvent payload) returns error?;
-    remote function onAnswered(DiscussionEvent payload) returns error?;
-    remote function onClosed(DiscussionEvent payload) returns error?;
-    remote function onUnlabeled(DiscussionEvent payload) returns error?;
-    remote function onLabeled(DiscussionEvent payload) returns error?;
-    remote function onUnpinned(DiscussionEvent payload) returns error?;
-    remote function onLocked(DiscussionEvent payload) returns error?;
+    remote function onDiscussionUnanswered(DiscussionPayload payload) returns error?;
+    remote function onDiscussionCreated(DiscussionPayload payload) returns error?;
+    remote function onDiscussionTransferred(DiscussionPayload payload) returns error?;
+    remote function onDiscussionCategoryChanged(DiscussionPayload payload) returns error?;
+    remote function onDiscussionDeleted(DiscussionPayload payload) returns error?;
+    remote function onDiscussionUnlocked(DiscussionPayload payload) returns error?;
+    remote function onDiscussionPinned(DiscussionPayload payload) returns error?;
+    remote function onDiscussionEdited(DiscussionPayload payload) returns error?;
+    remote function onDiscussionReopened(DiscussionPayload payload) returns error?;
+    remote function onDiscussionAnswered(DiscussionPayload payload) returns error?;
+    remote function onDiscussionClosed(DiscussionPayload payload) returns error?;
+    remote function onDiscussionUnlabeled(DiscussionPayload payload) returns error?;
+    remote function onDiscussionLabeled(DiscussionPayload payload) returns error?;
+    remote function onDiscussionUnpinned(DiscussionPayload payload) returns error?;
+    remote function onDiscussionLocked(DiscussionPayload payload) returns error?;
 };
 
 public type ForkService service object {
-    remote function onFork(ForkEvent payload) returns error?;
+    remote function onFork(ForkPayload payload) returns error?;
 };
 
 public type PullRequestReviewService service object {
-    remote function onSubmitted(PullRequestReviewEvent payload) returns error?;
-    remote function onEdited(PullRequestReviewEvent payload) returns error?;
-    remote function onDismissed(PullRequestReviewEvent payload) returns error?;
+    remote function onPullRequestReviewSubmitted(PullRequestReviewPayload payload) returns error?;
+    remote function onPullRequestReviewEdited(PullRequestReviewPayload payload) returns error?;
+    remote function onPullRequestReviewDismissed(PullRequestReviewPayload payload) returns error?;
 };
 
 public type OrganizationService service object {
-    remote function onAdded(OrganizationEvent payload) returns error?;
-    remote function onRemoved(OrganizationEvent payload) returns error?;
-    remote function onDeleted(OrganizationEvent payload) returns error?;
-    remote function onRenamed(OrganizationEvent payload) returns error?;
-    remote function onMemberInvited(OrganizationEvent payload) returns error?;
+    remote function onOrganizationMemberAdded(OrganizationPayload payload) returns error?;
+    remote function onOrganizationMemberRemoved(OrganizationPayload payload) returns error?;
+    remote function onOrganizationDeleted(OrganizationPayload payload) returns error?;
+    remote function onOrganizationRenamed(OrganizationPayload payload) returns error?;
+    remote function onOrganizationMemberInvited(OrganizationPayload payload) returns error?;
 };
 
 public type IssuesService service object {
-    remote function onReopened(IssuesEvent payload) returns error?;
-    remote function onTransferred(IssuesEvent payload) returns error?;
-    remote function onUnpinned(IssuesEvent payload) returns error?;
-    remote function onAssigned(IssuesEvent payload) returns error?;
-    remote function onMilestoned(IssuesEvent payload) returns error?;
-    remote function onLabeled(IssuesEvent payload) returns error?;
-    remote function onOpened(IssuesEvent payload) returns error?;
-    remote function onPinned(IssuesEvent payload) returns error?;
-    remote function onTyped(IssuesEvent payload) returns error?;
-    remote function onEdited(IssuesEvent payload) returns error?;
-    remote function onUntyped(IssuesEvent payload) returns error?;
-    remote function onDemilestoned(IssuesEvent payload) returns error?;
-    remote function onLocked(IssuesEvent payload) returns error?;
-    remote function onUnassigned(IssuesEvent payload) returns error?;
-    remote function onUnlocked(IssuesEvent payload) returns error?;
-    remote function onUnlabeled(IssuesEvent payload) returns error?;
-    remote function onClosed(IssuesEvent payload) returns error?;
-    remote function onDeleted(IssuesEvent payload) returns error?;
+    remote function onIssuesReopened(IssuesPayload payload) returns error?;
+    remote function onIssuesTransferred(IssuesPayload payload) returns error?;
+    remote function onIssuesUnpinned(IssuesPayload payload) returns error?;
+    remote function onIssuesAssigned(IssuesPayload payload) returns error?;
+    remote function onIssuesMilestoned(IssuesPayload payload) returns error?;
+    remote function onIssuesLabeled(IssuesPayload payload) returns error?;
+    remote function onIssuesOpened(IssuesPayload payload) returns error?;
+    remote function onIssuesPinned(IssuesPayload payload) returns error?;
+    remote function onIssuesTyped(IssuesPayload payload) returns error?;
+    remote function onIssuesEdited(IssuesPayload payload) returns error?;
+    remote function onIssuesUntyped(IssuesPayload payload) returns error?;
+    remote function onIssuesDemilestoned(IssuesPayload payload) returns error?;
+    remote function onIssuesLocked(IssuesPayload payload) returns error?;
+    remote function onIssuesUnassigned(IssuesPayload payload) returns error?;
+    remote function onIssuesUnlocked(IssuesPayload payload) returns error?;
+    remote function onIssuesUnlabeled(IssuesPayload payload) returns error?;
+    remote function onIssuesClosed(IssuesPayload payload) returns error?;
+    remote function onIssuesDeleted(IssuesPayload payload) returns error?;
 };
 
 public type RegistryPackageService service object {
-    remote function onUpdated(RegistryPackageEvent payload) returns error?;
-    remote function onPublished(RegistryPackageEvent payload) returns error?;
+    remote function onRegistryPackageUpdated(RegistryPackagePayload payload) returns error?;
+    remote function onRegistryPackagePublished(RegistryPackagePayload payload) returns error?;
 };
 
 public type ProjectsV2Service service object {
-    remote function onCreated('ProjectsV2Event payload) returns error?;
-    remote function onEdited('ProjectsV2Event payload) returns error?;
-    remote function onClosed('ProjectsV2Event payload) returns error?;
-    remote function onReopened('ProjectsV2Event payload) returns error?;
-    remote function onDeleted('ProjectsV2Event payload) returns error?;
+    remote function onProjectsV2Created('ProjectsV2Payload payload) returns error?;
+    remote function onProjectsV2Edited('ProjectsV2Payload payload) returns error?;
+    remote function onProjectsV2Closed('ProjectsV2Payload payload) returns error?;
+    remote function onProjectsV2Reopened('ProjectsV2Payload payload) returns error?;
+    remote function onProjectsV2Deleted('ProjectsV2Payload payload) returns error?;
 };
 
 public type RepositoryVulnerabilityAlertService service object {
-    remote function onResolve(RepositoryVulnerabilityAlertEvent payload) returns error?;
-    remote function onReopen(RepositoryVulnerabilityAlertEvent payload) returns error?;
-    remote function onDismiss(RepositoryVulnerabilityAlertEvent payload) returns error?;
-    remote function onCreate(RepositoryVulnerabilityAlertEvent payload) returns error?;
+    remote function onRepositoryVulnerabilityAlertResolve(RepositoryVulnerabilityAlertPayload payload) returns error?;
+    remote function onRepositoryVulnerabilityAlertReopen(RepositoryVulnerabilityAlertPayload payload) returns error?;
+    remote function onRepositoryVulnerabilityAlertDismiss(RepositoryVulnerabilityAlertPayload payload) returns error?;
+    remote function onRepositoryVulnerabilityAlertCreate(RepositoryVulnerabilityAlertPayload payload) returns error?;
 };
 
 public type StarService service object {
-    remote function onCreated(StarEvent payload) returns error?;
-    remote function onDeleted(StarEvent payload) returns error?;
+    remote function onStarCreated(StarPayload payload) returns error?;
+    remote function onStarDeleted(StarPayload payload) returns error?;
 };
 
 public type CreateService service object {
-    remote function onCreate(CreateEvent payload) returns error?;
+    remote function onCreate(CreatePayload payload) returns error?;
 };
 
 public type DeploymentReviewService service object {
-    remote function onRequested(DeploymentReviewEvent payload) returns error?;
-    remote function onRejected(DeploymentReviewEvent payload) returns error?;
-    remote function onApproved(DeploymentReviewEvent payload) returns error?;
+    remote function onDeploymentReviewRequested(DeploymentReviewPayload payload) returns error?;
+    remote function onDeploymentReviewRejected(DeploymentReviewPayload payload) returns error?;
+    remote function onDeploymentReviewApproved(DeploymentReviewPayload payload) returns error?;
 };
 
 public type GollumService service object {
-    remote function onGollum(GollumEvent payload) returns error?;
+    remote function onGollum(GollumPayload payload) returns error?;
 };
 
 public type GithubAppAuthorizationService service object {
-    remote function onGithubAppAuthorization(GithubAppAuthorizationEvent payload) returns error?;
+    remote function onGithubAppAuthorizationRevoked(GithubAppAuthorizationPayload payload) returns error?;
 };
 
 public type WatchService service object {
-    remote function onWatch(WatchEvent payload) returns error?;
+    remote function onWatchStarted(WatchPayload payload) returns error?;
 };
 
 public type TeamService service object {
-    remote function onCreated(TeamEvent payload) returns error?;
-    remote function onDeleted(TeamEvent payload) returns error?;
-    remote function onEdited(TeamEvent payload) returns error?;
-    remote function onAddedToRepository(TeamEvent payload) returns error?;
-    remote function onRemovedFromRepository(TeamEvent payload) returns error?;
+    remote function onTeamCreated(TeamPayload payload) returns error?;
+    remote function onTeamDeleted(TeamPayload payload) returns error?;
+    remote function onTeamEdited(TeamPayload payload) returns error?;
+    remote function onTeamAddedToRepository(TeamPayload payload) returns error?;
+    remote function onTeamRemovedFromRepository(TeamPayload payload) returns error?;
 };
 
 public type WorkflowJobService service object {
-    remote function onQueued(WorkflowJobEvent payload) returns error?;
-    remote function onWaiting(WorkflowJobEvent payload) returns error?;
-    remote function onCompleted(WorkflowJobEvent payload) returns error?;
-    remote function onInProgress(WorkflowJobEvent payload) returns error?;
+    remote function onWorkflowJobQueued(WorkflowJobPayload payload) returns error?;
+    remote function onWorkflowJobWaiting(WorkflowJobPayload payload) returns error?;
+    remote function onWorkflowJobCompleted(WorkflowJobPayload payload) returns error?;
+    remote function onWorkflowJobInProgress(WorkflowJobPayload payload) returns error?;
 };
 
 public type ReleaseService service object {
-    remote function onCreated(ReleaseEvent payload) returns error?;
-    remote function onPublished(ReleaseEvent payload) returns error?;
-    remote function onReleased(ReleaseEvent payload) returns error?;
-    remote function onPrereleased(ReleaseEvent payload) returns error?;
-    remote function onUnpublished(ReleaseEvent payload) returns error?;
-    remote function onDeleted(ReleaseEvent payload) returns error?;
-    remote function onEdited(ReleaseEvent payload) returns error?;
+    remote function onReleaseCreated(ReleasePayload payload) returns error?;
+    remote function onReleasePublished(ReleasePayload payload) returns error?;
+    remote function onReleaseReleased(ReleasePayload payload) returns error?;
+    remote function onReleasePrereleased(ReleasePayload payload) returns error?;
+    remote function onReleaseUnpublished(ReleasePayload payload) returns error?;
+    remote function onReleaseDeleted(ReleasePayload payload) returns error?;
+    remote function onReleaseEdited(ReleasePayload payload) returns error?;
 };
 
 public type InstallationService service object {
-    remote function onNewPermissionsAccepted(InstallationEvent payload) returns error?;
-    remote function onSuspend(InstallationEvent payload) returns error?;
-    remote function onCreated(InstallationEvent payload) returns error?;
-    remote function onDeleted(InstallationEvent payload) returns error?;
-    remote function onUnsuspend(InstallationEvent payload) returns error?;
+    remote function onInstallationNewPermissionsAccepted(InstallationPayload payload) returns error?;
+    remote function onInstallationSuspend(InstallationPayload payload) returns error?;
+    remote function onInstallationCreated(InstallationPayload payload) returns error?;
+    remote function onInstallationDeleted(InstallationPayload payload) returns error?;
+    remote function onInstallationUnsuspend(InstallationPayload payload) returns error?;
 };
 
 public type CommitCommentService service object {
-    remote function onCommitComment(CommitCommentEvent payload) returns error?;
+    remote function onCommitCommentCreated(CommitCommentPayload payload) returns error?;
 };
 
 public type DiscussionCommentService service object {
-    remote function onDeleted(DiscussionCommentEvent payload) returns error?;
-    remote function onCreated(DiscussionCommentEvent payload) returns error?;
-    remote function onEdited(DiscussionCommentEvent payload) returns error?;
+    remote function onDiscussionCommentDeleted(DiscussionCommentPayload payload) returns error?;
+    remote function onDiscussionCommentCreated(DiscussionCommentPayload payload) returns error?;
+    remote function onDiscussionCommentEdited(DiscussionCommentPayload payload) returns error?;
 };
 
 public type BranchProtectionRuleService service object {
-    remote function onDeleted(BranchProtectionRuleEvent payload) returns error?;
-    remote function onEdited(BranchProtectionRuleEvent payload) returns error?;
-    remote function onCreated(BranchProtectionRuleEvent payload) returns error?;
+    remote function onBranchProtectionRuleDeleted(BranchProtectionRulePayload payload) returns error?;
+    remote function onBranchProtectionRuleEdited(BranchProtectionRulePayload payload) returns error?;
+    remote function onBranchProtectionRuleCreated(BranchProtectionRulePayload payload) returns error?;
 };
 
 public type IssueDependenciesService service object {
-    remote function onIssueDependencyAdded(IssueDependenciesEvent payload) returns error?;
-    remote function onIssueDependencyRemoved(IssueDependenciesEvent payload) returns error?;
+    remote function onIssueDependenciesBlockingRemoved(IssueDependenciesPayload payload) returns error?;
+    remote function onIssueDependenciesBlockedByRemoved(IssueDependenciesPayload payload) returns error?;
+    remote function onIssueDependenciesBlockingAdded(IssueDependenciesPayload payload) returns error?;
+    remote function onIssueDependenciesBlockedByAdded(IssueDependenciesPayload payload) returns error?;
 };
 
 public type RepositoryService service object {
-    remote function onPrivatized(RepositoryEvent payload) returns error?;
-    remote function onCreated(RepositoryEvent payload) returns error?;
-    remote function onRenamed(RepositoryEvent payload) returns error?;
-    remote function onTransferred(RepositoryEvent payload) returns error?;
-    remote function onEdited(RepositoryEvent payload) returns error?;
-    remote function onDeleted(RepositoryEvent payload) returns error?;
-    remote function onArchived(RepositoryEvent payload) returns error?;
-    remote function onPublicized(RepositoryEvent payload) returns error?;
-    remote function onUnarchived(RepositoryEvent payload) returns error?;
+    remote function onRepositoryPrivatized(RepositoryPayload payload) returns error?;
+    remote function onRepositoryCreated(RepositoryPayload payload) returns error?;
+    remote function onRepositoryRenamed(RepositoryPayload payload) returns error?;
+    remote function onRepositoryTransferred(RepositoryPayload payload) returns error?;
+    remote function onRepositoryEdited(RepositoryPayload payload) returns error?;
+    remote function onRepositoryDeleted(RepositoryPayload payload) returns error?;
+    remote function onRepositoryArchived(RepositoryPayload payload) returns error?;
+    remote function onRepositoryPublicized(RepositoryPayload payload) returns error?;
+    remote function onRepositoryUnarchived(RepositoryPayload payload) returns error?;
 };
 
 public type PullRequestReviewCommentService service object {
-    remote function onCreated(PullRequestReviewCommentEvent payload) returns error?;
-    remote function onDeleted(PullRequestReviewCommentEvent payload) returns error?;
-    remote function onEdited(PullRequestReviewCommentEvent payload) returns error?;
+    remote function onPullRequestReviewCommentCreated(PullRequestReviewCommentPayload payload) returns error?;
+    remote function onPullRequestReviewCommentDeleted(PullRequestReviewCommentPayload payload) returns error?;
+    remote function onPullRequestReviewCommentEdited(PullRequestReviewCommentPayload payload) returns error?;
 };
 
 public type DeploymentProtectionRuleService service object {
-    remote function onDeploymentProtectionRule(DeploymentProtectionRuleEvent payload) returns error?;
+    remote function onDeploymentProtectionRule(DeploymentProtectionRulePayload payload) returns error?;
 };
 
 public type CustomPropertyValuesService service object {
-    remote function onCustomPropertyValues(CustomPropertyValuesEvent payload) returns error?;
+    remote function onCustomPropertyValuesUpdated(CustomPropertyValuesPayload payload) returns error?;
 };
 
 public type InstallationRepositoriesService service object {
-    remote function onRemoved(InstallationRepositoriesEvent payload) returns error?;
-    remote function onAdded(InstallationRepositoriesEvent payload) returns error?;
+    remote function onInstallationRepositoriesRemoved(InstallationRepositoriesPayload payload) returns error?;
+    remote function onInstallationRepositoriesAdded(InstallationRepositoriesPayload payload) returns error?;
 };
 
 public type SecretScanningScanService service object {
-    remote function onSecretScanningScan(SecretScanningScanEvent payload) returns error?;
+    remote function onSecretScanningScan(SecretScanningScanPayload payload) returns error?;
 };
 
 public type ProjectCardService service object {
-    remote function onProjectCardEdited(ProjectCardEvent payload) returns error?;
-    remote function onProjectCardDeleted(ProjectCardEvent payload) returns error?;
-    remote function onProjectCardMoved(ProjectCardEvent payload) returns error?;
-    remote function onProjectCardConverted(ProjectCardEvent payload) returns error?;
-    remote function onProjectCardCreated(ProjectCardEvent payload) returns error?;
+    remote function onProjectCardEdited(ProjectCardPayload payload) returns error?;
+    remote function onProjectCardDeleted(ProjectCardPayload payload) returns error?;
+    remote function onProjectCardMoved(ProjectCardPayload payload) returns error?;
+    remote function onProjectCardConverted(ProjectCardPayload payload) returns error?;
+    remote function onProjectCardCreated(ProjectCardPayload payload) returns error?;
 };
 
 public type CheckRunService service object {
-    remote function onCreated(CheckRunEvent payload) returns error?;
-    remote function onCompleted(CheckRunEvent payload) returns error?;
-    remote function onRequestedAction(CheckRunEvent payload) returns error?;
-    remote function onRerequested(CheckRunEvent payload) returns error?;
+    remote function onCheckRunCreated(CheckRunPayload payload) returns error?;
+    remote function onCheckRunCompleted(CheckRunPayload payload) returns error?;
+    remote function onCheckRunRequestedAction(CheckRunPayload payload) returns error?;
+    remote function onCheckRunRerequested(CheckRunPayload payload) returns error?;
 };
 
 public type PageBuildService service object {
-    remote function onPageBuild(PageBuildEvent payload) returns error?;
+    remote function onPageBuild(PageBuildPayload payload) returns error?;
 };
 
 public type CustomPropertyService service object {
-    remote function onUpdated(CustomPropertyEvent payload) returns error?;
-    remote function onDeleted(CustomPropertyEvent payload) returns error?;
-    remote function onPromoteToEnterprise(CustomPropertyEvent payload) returns error?;
-    remote function onCreated(CustomPropertyEvent payload) returns error?;
+    remote function onCustomPropertyUpdated(CustomPropertyPayload payload) returns error?;
+    remote function onCustomPropertyDeleted(CustomPropertyPayload payload) returns error?;
+    remote function onCustomPropertyPromoteToEnterprise(CustomPropertyPayload payload) returns error?;
+    remote function onCustomPropertyCreated(CustomPropertyPayload payload) returns error?;
 };
 
 public type DependabotAlertService service object {
-    remote function onAutoDismissed(DependabotAlertEvent payload) returns error?;
-    remote function onAutoReopened(DependabotAlertEvent payload) returns error?;
-    remote function onCreated(DependabotAlertEvent payload) returns error?;
-    remote function onDismissed(DependabotAlertEvent payload) returns error?;
-    remote function onReopened(DependabotAlertEvent payload) returns error?;
-    remote function onReintroduced(DependabotAlertEvent payload) returns error?;
-    remote function onAssigneesChanged(DependabotAlertEvent payload) returns error?;
-    remote function onFixed(DependabotAlertEvent payload) returns error?;
+    remote function onDependabotAlertAutoDismissed(DependabotAlertPayload payload) returns error?;
+    remote function onDependabotAlertAutoReopened(DependabotAlertPayload payload) returns error?;
+    remote function onDependabotAlertCreated(DependabotAlertPayload payload) returns error?;
+    remote function onDependabotAlertDismissed(DependabotAlertPayload payload) returns error?;
+    remote function onDependabotAlertReopened(DependabotAlertPayload payload) returns error?;
+    remote function onDependabotAlertReintroduced(DependabotAlertPayload payload) returns error?;
+    remote function onDependabotAlertAssigneesChanged(DependabotAlertPayload payload) returns error?;
+    remote function onDependabotAlertFixed(DependabotAlertPayload payload) returns error?;
 };
 
 public type DeploymentStatusService service object {
-    remote function onDeploymentStatus(DeploymentStatusEvent payload) returns error?;
+    remote function onDeploymentStatusCreated(DeploymentStatusPayload payload) returns error?;
 };
 
 public type RepositoryAdvisoryService service object {
-    remote function onReported(RepositoryAdvisoryEvent payload) returns error?;
-    remote function onPublished(RepositoryAdvisoryEvent payload) returns error?;
+    remote function onRepositoryAdvisoryReported(RepositoryAdvisoryPayload payload) returns error?;
+    remote function onRepositoryAdvisoryPublished(RepositoryAdvisoryPayload payload) returns error?;
 };
 
 public type PullRequestReviewThreadService service object {
-    remote function onUnresolved(PullRequestReviewThreadEvent payload) returns error?;
-    remote function onResolved(PullRequestReviewThreadEvent payload) returns error?;
+    remote function onPullRequestReviewThreadUnresolved(PullRequestReviewThreadPayload payload) returns error?;
+    remote function onPullRequestReviewThreadResolved(PullRequestReviewThreadPayload payload) returns error?;
 };
 
-public type GenericServiceType DeleteService|MetaService|WorkflowDispatchService|SecurityAndAnalysisService
-    |DeployKeyService|ProjectColumnService|MarketplacePurchaseService|BranchProtectionConfigurationService
-    |PullRequestService|LabelService|DeploymentService|TeamAddService|CodeScanningAlertService|MembershipService
-    |SecretScanningAlertService|PushService|MemberService|RepositoryDispatchService|StatusService
-    |RepositoryImportService|PersonalAccessTokenRequestService|SubIssuesService|RepositoryRulesetService
-    |MilestoneService|PublicService|WorkflowRunService|ProjectsV2statusUpdateService|ProjectsV2itemService
-    |SponsorshipService|MergeGroupService|ProjectService|OrgBlockService|SecretScanningAlertLocationService
-    |InstallationTargetService|CheckSuiteService|PingService|IssueCommentService|SecurityAdvisoryService
-    |PackageService|DiscussionService|ForkService|PullRequestReviewService|OrganizationService|IssuesService
-    |RegistryPackageService|ProjectsV2Service|RepositoryVulnerabilityAlertService|StarService|CreateService
-    |DeploymentReviewService|GollumService|GithubAppAuthorizationService|WatchService|TeamService
-    |WorkflowJobService|ReleaseService|InstallationService|CommitCommentService|DiscussionCommentService
-    |BranchProtectionRuleService|IssueDependenciesService|RepositoryService|PullRequestReviewCommentService
-    |DeploymentProtectionRuleService|CustomPropertyValuesService|InstallationRepositoriesService
-    |SecretScanningScanService|ProjectCardService|CheckRunService|PageBuildService|CustomPropertyService
-    |DependabotAlertService|DeploymentStatusService|RepositoryAdvisoryService|PullRequestReviewThreadService;
+public type GenericServiceType DeleteService|MetaService|WorkflowDispatchService|SecurityAndAnalysisService|DeployKeyService|ProjectColumnService|MarketplacePurchaseService|BranchProtectionConfigurationService|PullRequestService|LabelService|DeploymentService|TeamAddService|CodeScanningAlertService|MembershipService|SecretScanningAlertService|PushService|MemberService|RepositoryDispatchService|StatusService|RepositoryImportService|PersonalAccessTokenRequestService|SubIssuesService|RepositoryRulesetService|MilestoneService|PublicService|WorkflowRunService|ProjectsV2statusUpdateService|ProjectsV2itemService|SponsorshipService|MergeGroupService|ProjectService|OrgBlockService|SecretScanningAlertLocationService|InstallationTargetService|CheckSuiteService|PingService|IssueCommentService|SecurityAdvisoryService|PackageService|DiscussionService|ForkService|PullRequestReviewService|OrganizationService|IssuesService|RegistryPackageService|ProjectsV2Service|RepositoryVulnerabilityAlertService|StarService|CreateService|DeploymentReviewService|GollumService|GithubAppAuthorizationService|WatchService|TeamService|WorkflowJobService|ReleaseService|InstallationService|CommitCommentService|DiscussionCommentService|BranchProtectionRuleService|IssueDependenciesService|RepositoryService|PullRequestReviewCommentService|DeploymentProtectionRuleService|CustomPropertyValuesService|InstallationRepositoriesService|SecretScanningScanService|ProjectCardService|CheckRunService|PageBuildService|CustomPropertyService|DependabotAlertService|DeploymentStatusService|RepositoryAdvisoryService|PullRequestReviewThreadService;
+

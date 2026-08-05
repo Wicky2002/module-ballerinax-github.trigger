@@ -1,0 +1,303 @@
+# Remote function rename table
+
+Old (pre-regeneration) -> new remote function name, per service type. See
+`../migration-notes.md` for context. Only services with at least one changed function are listed.
+
+- `BranchProtectionConfigurationService`:
+  - `onEnabled` -> `onBranchProtectionConfigurationEnabled`
+  - `onDisabled` -> `onBranchProtectionConfigurationDisabled`
+- `BranchProtectionRuleService`:
+  - `onDeleted` -> `onBranchProtectionRuleDeleted`
+  - `onEdited` -> `onBranchProtectionRuleEdited`
+  - `onCreated` -> `onBranchProtectionRuleCreated`
+- `CheckRunService`:
+  - `onCreated` -> `onCheckRunCreated`
+  - `onCompleted` -> `onCheckRunCompleted`
+  - `onRequestedAction` -> `onCheckRunRequestedAction`
+  - `onRerequested` -> `onCheckRunRerequested`
+- `CheckSuiteService`:
+  - `onCompleted` -> `onCheckSuiteCompleted`
+  - `onRequested` -> `onCheckSuiteRequested`
+  - `onRerequested` -> `onCheckSuiteRerequested`
+- `CodeScanningAlertService`:
+  - `onAppearedInBranch` -> `onCodeScanningAlertAppearedInBranch`
+  - `onClosedByUser` -> `onCodeScanningAlertClosedByUser`
+  - `onCreated` -> `onCodeScanningAlertCreated`
+  - `onFixed` -> `onCodeScanningAlertFixed`
+  - `onReopened` -> `onCodeScanningAlertReopened`
+  - `onReopenedByUser` -> `onCodeScanningAlertReopenedByUser`
+  - `onUpdatedAssignment` -> `onCodeScanningAlertUpdatedAssignment`
+- `CommitCommentService`:
+  - `onCommitComment` -> `onCommitCommentCreated`
+- `CustomPropertyService`:
+  - `onUpdated` -> `onCustomPropertyUpdated`
+  - `onDeleted` -> `onCustomPropertyDeleted`
+  - `onPromoteToEnterprise` -> `onCustomPropertyPromoteToEnterprise`
+  - `onCreated` -> `onCustomPropertyCreated`
+- `CustomPropertyValuesService`:
+  - `onCustomPropertyValues` -> `onCustomPropertyValuesUpdated`
+- `DependabotAlertService`:
+  - `onAutoDismissed` -> `onDependabotAlertAutoDismissed`
+  - `onAutoReopened` -> `onDependabotAlertAutoReopened`
+  - `onCreated` -> `onDependabotAlertCreated`
+  - `onDismissed` -> `onDependabotAlertDismissed`
+  - `onReopened` -> `onDependabotAlertReopened`
+  - `onReintroduced` -> `onDependabotAlertReintroduced`
+  - `onAssigneesChanged` -> `onDependabotAlertAssigneesChanged`
+  - `onFixed` -> `onDependabotAlertFixed`
+- `DeployKeyService`:
+  - `onCreated` -> `onDeployKeyCreated`
+  - `onDeleted` -> `onDeployKeyDeleted`
+- `DeploymentReviewService`:
+  - `onRequested` -> `onDeploymentReviewRequested`
+  - `onRejected` -> `onDeploymentReviewRejected`
+  - `onApproved` -> `onDeploymentReviewApproved`
+- `DeploymentService`:
+  - `onDeployment` -> `onDeploymentCreated`
+- `DeploymentStatusService`:
+  - `onDeploymentStatus` -> `onDeploymentStatusCreated`
+- `DiscussionCommentService`:
+  - `onDeleted` -> `onDiscussionCommentDeleted`
+  - `onCreated` -> `onDiscussionCommentCreated`
+  - `onEdited` -> `onDiscussionCommentEdited`
+- `DiscussionService`:
+  - `onUnanswered` -> `onDiscussionUnanswered`
+  - `onCreated` -> `onDiscussionCreated`
+  - `onTransferred` -> `onDiscussionTransferred`
+  - `onCategoryChanged` -> `onDiscussionCategoryChanged`
+  - `onDeleted` -> `onDiscussionDeleted`
+  - `onUnlocked` -> `onDiscussionUnlocked`
+  - `onPinned` -> `onDiscussionPinned`
+  - `onEdited` -> `onDiscussionEdited`
+  - `onReopened` -> `onDiscussionReopened`
+  - `onAnswered` -> `onDiscussionAnswered`
+  - `onClosed` -> `onDiscussionClosed`
+  - `onUnlabeled` -> `onDiscussionUnlabeled`
+  - `onLabeled` -> `onDiscussionLabeled`
+  - `onUnpinned` -> `onDiscussionUnpinned`
+  - `onLocked` -> `onDiscussionLocked`
+- `GithubAppAuthorizationService`:
+  - `onGithubAppAuthorization` -> `onGithubAppAuthorizationRevoked`
+- `InstallationRepositoriesService`:
+  - `onRemoved` -> `onInstallationRepositoriesRemoved`
+  - `onAdded` -> `onInstallationRepositoriesAdded`
+- `InstallationService`:
+  - `onNewPermissionsAccepted` -> `onInstallationNewPermissionsAccepted`
+  - `onSuspend` -> `onInstallationSuspend`
+  - `onCreated` -> `onInstallationCreated`
+  - `onDeleted` -> `onInstallationDeleted`
+  - `onUnsuspend` -> `onInstallationUnsuspend`
+- `InstallationTargetService`:
+  - `onInstallationTarget` -> `onInstallationTargetRenamed`
+- `IssueCommentService`:
+  - `onEdited` -> `onIssueCommentEdited`
+  - `onPinned` -> `onIssueCommentPinned`
+  - `onDeleted` -> `onIssueCommentDeleted`
+  - `onCreated` -> `onIssueCommentCreated`
+  - `onUnpinned` -> `onIssueCommentUnpinned`
+- `IssueDependenciesService` (function count changed: 2 -> 4):
+  - old: [onIssueDependencyAdded, onIssueDependencyRemoved]
+  - new: [onIssueDependenciesBlockingRemoved, onIssueDependenciesBlockedByRemoved, onIssueDependenciesBlockingAdded, onIssueDependenciesBlockedByAdded]
+- `IssuesService`:
+  - `onReopened` -> `onIssuesReopened`
+  - `onTransferred` -> `onIssuesTransferred`
+  - `onUnpinned` -> `onIssuesUnpinned`
+  - `onAssigned` -> `onIssuesAssigned`
+  - `onMilestoned` -> `onIssuesMilestoned`
+  - `onLabeled` -> `onIssuesLabeled`
+  - `onOpened` -> `onIssuesOpened`
+  - `onPinned` -> `onIssuesPinned`
+  - `onTyped` -> `onIssuesTyped`
+  - `onEdited` -> `onIssuesEdited`
+  - `onUntyped` -> `onIssuesUntyped`
+  - `onDemilestoned` -> `onIssuesDemilestoned`
+  - `onLocked` -> `onIssuesLocked`
+  - `onUnassigned` -> `onIssuesUnassigned`
+  - `onUnlocked` -> `onIssuesUnlocked`
+  - `onUnlabeled` -> `onIssuesUnlabeled`
+  - `onClosed` -> `onIssuesClosed`
+  - `onDeleted` -> `onIssuesDeleted`
+- `LabelService`:
+  - `onEdited` -> `onLabelEdited`
+  - `onCreated` -> `onLabelCreated`
+  - `onDeleted` -> `onLabelDeleted`
+- `MarketplacePurchaseService`:
+  - `onPurchased` -> `onMarketplacePurchasePurchased`
+  - `onCancelled` -> `onMarketplacePurchaseCancelled`
+  - `onPendingChangeCancelled` -> `onMarketplacePurchasePendingChangeCancelled`
+  - `onPendingChange` -> `onMarketplacePurchasePendingChange`
+  - `onChanged` -> `onMarketplacePurchaseChanged`
+- `MemberService`:
+  - `onEdited` -> `onMemberEdited`
+  - `onAdded` -> `onMemberAdded`
+  - `onRemoved` -> `onMemberRemoved`
+- `MembershipService`:
+  - `onAdded` -> `onMembershipAdded`
+  - `onRemoved` -> `onMembershipRemoved`
+- `MergeGroupService`:
+  - `onDestroyed` -> `onMergeGroupDestroyed`
+  - `onChecksRequested` -> `onMergeGroupChecksRequested`
+- `MetaService`:
+  - `onMeta` -> `onMetaDeleted`
+- `MilestoneService`:
+  - `onCreated` -> `onMilestoneCreated`
+  - `onEdited` -> `onMilestoneEdited`
+  - `onOpened` -> `onMilestoneOpened`
+  - `onDeleted` -> `onMilestoneDeleted`
+  - `onClosed` -> `onMilestoneClosed`
+- `OrgBlockService`:
+  - `onBlocked` -> `onOrgBlockBlocked`
+  - `onUnblocked` -> `onOrgBlockUnblocked`
+- `OrganizationService`:
+  - `onAdded` -> `onOrganizationMemberAdded`
+  - `onRemoved` -> `onOrganizationMemberRemoved`
+  - `onDeleted` -> `onOrganizationDeleted`
+  - `onRenamed` -> `onOrganizationRenamed`
+  - `onMemberInvited` -> `onOrganizationMemberInvited`
+- `PackageService`:
+  - `onPublished` -> `onPackagePublished`
+  - `onUpdated` -> `onPackageUpdated`
+- `PersonalAccessTokenRequestService`:
+  - `onCreated` -> `onPersonalAccessTokenRequestCreated`
+  - `onApproved` -> `onPersonalAccessTokenRequestApproved`
+  - `onDenied` -> `onPersonalAccessTokenRequestDenied`
+  - `onCancelled` -> `onPersonalAccessTokenRequestCancelled`
+- `ProjectColumnService`:
+  - `onMoved` -> `onProjectColumnMoved`
+  - `onEdited` -> `onProjectColumnEdited`
+  - `onDeleted` -> `onProjectColumnDeleted`
+  - `onCreated` -> `onProjectColumnCreated`
+- `ProjectService`:
+  - `onDeleted` -> `onProjectDeleted`
+  - `onCreated` -> `onProjectCreated`
+  - `onClosed` -> `onProjectClosed`
+  - `onReopened` -> `onProjectReopened`
+  - `onEdited` -> `onProjectEdited`
+- `ProjectsV2Service`:
+  - `onCreated` -> `onProjectsV2Created`
+  - `onEdited` -> `onProjectsV2Edited`
+  - `onClosed` -> `onProjectsV2Closed`
+  - `onReopened` -> `onProjectsV2Reopened`
+  - `onDeleted` -> `onProjectsV2Deleted`
+- `ProjectsV2itemService`:
+  - `onEdited` -> `onProjectsV2ItemEdited`
+  - `onCreated` -> `onProjectsV2ItemCreated`
+  - `onArchived` -> `onProjectsV2ItemArchived`
+  - `onDeleted` -> `onProjectsV2ItemDeleted`
+  - `onRestored` -> `onProjectsV2ItemRestored`
+  - `onReordered` -> `onProjectsV2ItemReordered`
+  - `onConverted` -> `onProjectsV2ItemConverted`
+- `ProjectsV2statusUpdateService`:
+  - `onEdited` -> `onProjectsV2StatusUpdateEdited`
+  - `onDeleted` -> `onProjectsV2StatusUpdateDeleted`
+  - `onCreated` -> `onProjectsV2StatusUpdateCreated`
+- `PullRequestReviewCommentService`:
+  - `onCreated` -> `onPullRequestReviewCommentCreated`
+  - `onDeleted` -> `onPullRequestReviewCommentDeleted`
+  - `onEdited` -> `onPullRequestReviewCommentEdited`
+- `PullRequestReviewService`:
+  - `onSubmitted` -> `onPullRequestReviewSubmitted`
+  - `onEdited` -> `onPullRequestReviewEdited`
+  - `onDismissed` -> `onPullRequestReviewDismissed`
+- `PullRequestReviewThreadService`:
+  - `onUnresolved` -> `onPullRequestReviewThreadUnresolved`
+  - `onResolved` -> `onPullRequestReviewThreadResolved`
+- `PullRequestService`:
+  - `onEnqueued` -> `onPullRequestEnqueued`
+  - `onReviewRequestRemoved` -> `onPullRequestReviewRequestRemoved`
+  - `onOpened` -> `onPullRequestOpened`
+  - `onReadyForReview` -> `onPullRequestReadyForReview`
+  - `onLabeled` -> `onPullRequestLabeled`
+  - `onUnassigned` -> `onPullRequestUnassigned`
+  - `onEdited` -> `onPullRequestEdited`
+  - `onSynchronize` -> `onPullRequestSynchronize`
+  - `onReviewRequested` -> `onPullRequestReviewRequested`
+  - `onReopened` -> `onPullRequestReopened`
+  - `onAutoMergeDisabled` -> `onPullRequestAutoMergeDisabled`
+  - `onLocked` -> `onPullRequestLocked`
+  - `onAutoMergeEnabled` -> `onPullRequestAutoMergeEnabled`
+  - `onMilestoned` -> `onPullRequestMilestoned`
+  - `onDequeued` -> `onPullRequestDequeued`
+  - `onUnlabeled` -> `onPullRequestUnlabeled`
+  - `onClosed` -> `onPullRequestClosed`
+  - `onUnlocked` -> `onPullRequestUnlocked`
+  - `onAssigned` -> `onPullRequestAssigned`
+  - `onConvertedToDraft` -> `onPullRequestConvertedToDraft`
+  - `onDemilestoned` -> `onPullRequestDemilestoned`
+- `RegistryPackageService`:
+  - `onUpdated` -> `onRegistryPackageUpdated`
+  - `onPublished` -> `onRegistryPackagePublished`
+- `ReleaseService`:
+  - `onCreated` -> `onReleaseCreated`
+  - `onPublished` -> `onReleasePublished`
+  - `onReleased` -> `onReleaseReleased`
+  - `onPrereleased` -> `onReleasePrereleased`
+  - `onUnpublished` -> `onReleaseUnpublished`
+  - `onDeleted` -> `onReleaseDeleted`
+  - `onEdited` -> `onReleaseEdited`
+- `RepositoryAdvisoryService`:
+  - `onReported` -> `onRepositoryAdvisoryReported`
+  - `onPublished` -> `onRepositoryAdvisoryPublished`
+- `RepositoryRulesetService`:
+  - `onCreated` -> `onRepositoryRulesetCreated`
+  - `onEdited` -> `onRepositoryRulesetEdited`
+  - `onDeleted` -> `onRepositoryRulesetDeleted`
+- `RepositoryService`:
+  - `onPrivatized` -> `onRepositoryPrivatized`
+  - `onCreated` -> `onRepositoryCreated`
+  - `onRenamed` -> `onRepositoryRenamed`
+  - `onTransferred` -> `onRepositoryTransferred`
+  - `onEdited` -> `onRepositoryEdited`
+  - `onDeleted` -> `onRepositoryDeleted`
+  - `onArchived` -> `onRepositoryArchived`
+  - `onPublicized` -> `onRepositoryPublicized`
+  - `onUnarchived` -> `onRepositoryUnarchived`
+- `RepositoryVulnerabilityAlertService`:
+  - `onResolve` -> `onRepositoryVulnerabilityAlertResolve`
+  - `onReopen` -> `onRepositoryVulnerabilityAlertReopen`
+  - `onDismiss` -> `onRepositoryVulnerabilityAlertDismiss`
+  - `onCreate` -> `onRepositoryVulnerabilityAlertCreate`
+- `SecretScanningAlertService`:
+  - `onAssigned` -> `onSecretScanningAlertAssigned`
+  - `onReopened` -> `onSecretScanningAlertReopened`
+  - `onUnassigned` -> `onSecretScanningAlertUnassigned`
+  - `onCreated` -> `onSecretScanningAlertCreated`
+  - `onPubliclyLeaked` -> `onSecretScanningAlertPubliclyLeaked`
+  - `onValidated` -> `onSecretScanningAlertValidated`
+  - `onResolved` -> `onSecretScanningAlertResolved`
+- `SecurityAdvisoryService`:
+  - `onWithdrawn` -> `onSecurityAdvisoryWithdrawn`
+  - `onPublished` -> `onSecurityAdvisoryPublished`
+  - `onUpdated` -> `onSecurityAdvisoryUpdated`
+- `SponsorshipService`:
+  - `onCancelled` -> `onSponsorshipCancelled`
+  - `onEdited` -> `onSponsorshipEdited`
+  - `onTierChanged` -> `onSponsorshipTierChanged`
+  - `onPendingCancellation` -> `onSponsorshipPendingCancellation`
+  - `onCreated` -> `onSponsorshipCreated`
+  - `onPendingTierChange` -> `onSponsorshipPendingTierChange`
+- `StarService`:
+  - `onCreated` -> `onStarCreated`
+  - `onDeleted` -> `onStarDeleted`
+- `SubIssuesService`:
+  - `onChildIssueAdded` -> `onSubIssuesSubIssueAdded`
+  - `onParentIssueAdded` -> `onSubIssuesParentIssueAdded`
+  - `onChildIssueRemoved` -> `onSubIssuesSubIssueRemoved`
+  - `onParentIssueRemoved` -> `onSubIssuesParentIssueRemoved`
+- `TeamService`:
+  - `onCreated` -> `onTeamCreated`
+  - `onDeleted` -> `onTeamDeleted`
+  - `onEdited` -> `onTeamEdited`
+  - `onAddedToRepository` -> `onTeamAddedToRepository`
+  - `onRemovedFromRepository` -> `onTeamRemovedFromRepository`
+- `WatchService`:
+  - `onWatch` -> `onWatchStarted`
+- `WorkflowJobService`:
+  - `onQueued` -> `onWorkflowJobQueued`
+  - `onWaiting` -> `onWorkflowJobWaiting`
+  - `onCompleted` -> `onWorkflowJobCompleted`
+  - `onInProgress` -> `onWorkflowJobInProgress`
+- `WorkflowRunService`:
+  - `onInProgress` -> `onWorkflowRunInProgress`
+  - `onCompleted` -> `onWorkflowRunCompleted`
+  - `onRequested` -> `onWorkflowRunRequested`
