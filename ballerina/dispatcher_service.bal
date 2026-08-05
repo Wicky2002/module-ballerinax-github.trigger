@@ -16,6 +16,7 @@
 
 import ballerina/crypto;
 import ballerina/http;
+import ballerina/log;
 import ballerinax/asyncapi.native.handler;
 
 service class DispatcherService {
@@ -51,6 +52,12 @@ service class DispatcherService {
             return;
         }
         json payload = check request.getJsonPayload();
+        if !request.hasHeader("X-GitHub-Event") {
+            http:Response badRequestRes = new;
+            badRequestRes.statusCode = http:STATUS_BAD_REQUEST;
+            check caller->respond(badRequestRes);
+            return;
+        }
         string eventType = check request.getHeader("X-GitHub-Event");
         string eventIdentifier = eventType;
         json|error actionField = payload.action;
@@ -58,10 +65,17 @@ service class DispatcherService {
             eventIdentifier = eventType + "_" + actionField.toString();
         }
         GenericDataType genericDataType = check payload.cloneWithType(GenericDataType);
-        check self.matchRemoteFunc(genericDataType, eventIdentifier, eventType);
+
+        // Acknowledge delivery before invoking the user's callback - a slow or failing
+        // callback should not delay/prevent the ack and cause GitHub to redeliver the event.
         http:Response ackRes = new;
         ackRes.statusCode = http:STATUS_OK;
         check caller->respond(ackRes);
+
+        error? dispatchResult = self.matchRemoteFunc(genericDataType, eventIdentifier, eventType);
+        if dispatchResult is error {
+            log:printError("Error while dispatching webhook event", dispatchResult, eventType = eventType);
+        }
     }
 
     private function verifyWebhookSignature(http:Request request, string webhookSecret) returns error? {
@@ -495,14 +509,14 @@ service class DispatcherService {
 
     private function matchRemoteFuncForSubIssues(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
-            "sub_issues_child_issue_added" => {
-                check self.executeRemoteFunc(genericDataType, "sub_issues_child_issue_added", "SubIssuesService", "onChildIssueAdded");
+            "sub_issues_sub_issue_added" => {
+                check self.executeRemoteFunc(genericDataType, "sub_issues_sub_issue_added", "SubIssuesService", "onChildIssueAdded");
             }
             "sub_issues_parent_issue_added" => {
                 check self.executeRemoteFunc(genericDataType, "sub_issues_parent_issue_added", "SubIssuesService", "onParentIssueAdded");
             }
-            "sub_issues_child_issue_removed" => {
-                check self.executeRemoteFunc(genericDataType, "sub_issues_child_issue_removed", "SubIssuesService", "onChildIssueRemoved");
+            "sub_issues_sub_issue_removed" => {
+                check self.executeRemoteFunc(genericDataType, "sub_issues_sub_issue_removed", "SubIssuesService", "onChildIssueRemoved");
             }
             "sub_issues_parent_issue_removed" => {
                 check self.executeRemoteFunc(genericDataType, "sub_issues_parent_issue_removed", "SubIssuesService", "onParentIssueRemoved");

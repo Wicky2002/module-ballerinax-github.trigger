@@ -445,7 +445,7 @@ public type RepositoryEvent record {
 public type StarEvent record {
     string action;
     # The time the star was created (ISO 8601). Null for the deleted action.
-    string starred_at;
+    string? starred_at;
     User sender?;
     Repository repository?;
     Organization organization?;
@@ -1389,7 +1389,7 @@ public type PullRequestEvent record {
     # The pull request number
     int number;
     PullRequest pull_request;
-    User assignee;
+    User? assignee;
     # For edited events, the changes to the pull request
     record {} changes?;
     User requested_reviewer?;
@@ -1603,7 +1603,7 @@ public type GenericDataType ForkEvent|WorkflowRunEvent|GollumEvent|ReleaseEvent
 |WorkflowJobEvent|OrgBlockEvent|DependabotAlertEvent|CustomPropertyValuesEvent|SecretScanningAlertEvent
 |PullRequestReviewThreadEvent|IssueComment|RegistryPackageEvent|CheckSuiteEvent|DiscussionCommentEvent
 |Organization|RepositoryImportEvent|RepositoryEvent|StarEvent|WatchEvent|PackageEvent|WorkflowDispatchEvent
-|SponsorshipEvent|SubIssuesEvent|ProjectColumnEvent|Team|MarketplacePurchaseEvent|PushEvent|Installation
+|SponsorshipEvent|SubIssuesEvent|ProjectColumnEvent|Team|MarketplacePurchaseEvent|PushEvent
 |BranchProtectionRuleEvent|PullRequestReviewCommentEvent|PullRequestRef|'ProjectsV2ItemEvent|PingEvent
 |CreateEvent|Repository|PullRequestReviewComment|TeamEvent|Enterprise|ProjectEvent|InstallationTargetEvent
 |DeploymentStatus|InstallationRepositoriesEvent|Issue|Label|Deployment|BranchProtectionConfigurationEvent
@@ -1614,4 +1614,4 @@ public type GenericDataType ForkEvent|WorkflowRunEvent|GollumEvent|ReleaseEvent
 |PullRequestReview|DeleteEvent|MetaEvent|DeploymentEvent|DeploymentProtectionRuleEvent|LabelEvent
 |GithubAppAuthorizationEvent|PageBuildEvent|ProjectCardEvent|PullRequestEvent|TeamAddEvent|WorkflowJob
 |Release|CustomPropertyEvent|PublicEvent|MemberEvent|MilestoneEvent|SecurityAdvisoryEvent|CheckRunEvent
-|CommitCommentEvent|Commit|CheckRun|MembershipEvent;
+|CommitCommentEvent|Commit|CheckRun|MembershipEvent|Installation;

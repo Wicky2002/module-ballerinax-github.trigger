@@ -7931,7 +7931,7 @@ components:
               format: date-time
             pull_request_reviews_enforcement_level:
               type: string
-              enum: [off, non_admins, everyone]
+              enum: ["off", non_admins, everyone]
             required_approving_review_count:
               type: integer
             dismiss_stale_reviews_on_push:
@@ -7950,32 +7950,32 @@ components:
                 type: string
             required_status_checks_enforcement_level:
               type: string
-              enum: [off, non_admins, everyone]
+              enum: ["off", non_admins, everyone]
             strict_required_status_checks_policy:
               type: boolean
             signature_requirement_enforcement_level:
               type: string
-              enum: [off, non_admins, everyone]
+              enum: ["off", non_admins, everyone]
             linear_history_requirement_enforcement_level:
               type: string
-              enum: [off, non_admins, everyone]
+              enum: ["off", non_admins, everyone]
             admin_enforced:
               type: boolean
             allow_force_pushes_enforcement_level:
               type: string
-              enum: [off, non_admins, everyone]
+              enum: ["off", non_admins, everyone]
             allow_deletions_enforcement_level:
               type: string
-              enum: [off, non_admins, everyone]
+              enum: ["off", non_admins, everyone]
             merge_queue_enforcement_level:
               type: string
-              enum: [off, non_admins, everyone]
+              enum: ["off", non_admins, everyone]
             required_deployments_enforcement_level:
               type: string
-              enum: [off, non_admins, everyone]
+              enum: ["off", non_admins, everyone]
             required_conversation_resolution_level:
               type: string
-              enum: [off, non_admins, everyone]
+              enum: ["off", non_admins, everyone]
             authorized_actors_only:
               type: boolean
             authorized_actor_names:
@@ -8077,7 +8077,7 @@ components:
                 security_severity_level:
                   type: string
                   nullable: true
-                  enum: [critical, high, medium, low, null]
+                  enum: [critical, high, medium, low, "null"]
                 description:
                   type: string
                 name:

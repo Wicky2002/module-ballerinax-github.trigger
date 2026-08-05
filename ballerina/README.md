@@ -37,22 +37,20 @@ Initialize the trigger by providing the listener config and a port number/`http:
 
 ```ballerina
 configurable github:ListenerConfig userInput = {
-    secret: "xxxxxx"
+    webhookSecret: "xxxxxx"
 };
 listener github:Listener webhookListener = new (userInput, 8090);
 ```
 
-Listener config is not mandatory if you haven't set up a secret on the webhook page - you can
-omit it and initialize as follows.
+`webhookSecret` should always be set to the same secret configured on the webhook's GitHub page -
+this is what the trigger uses to verify incoming payloads actually came from GitHub. Omitting it
+disables that verification, so it isn't shown here as a normal setup option.
+
+If you don't provide a port it will use the default port, which is 8090 - `webhookSecret` should
+still always be set.
 
 ```ballerina
-listener github:Listener webhookListener = new (listenOn = 8090);
-```
-
-If you don't provide a port it will use the default port, which is 8090.
-
-```ballerina
-listener github:Listener webhookListener = new ();
+listener github:Listener webhookListener = new (userInput);
 ```
 
 ### Step 3: Use the correct service type to implement the service
@@ -95,9 +93,16 @@ service github:IssuesService on webhookListener {
 
 ### Step 4: Provide remote functions corresponding to the events you're interested in
 
+Remote functions must be implemented inside a service, on the matching service type for the
+channel you're listening to - for example, `github:PushService` for push events.
+
 ```ballerina
-remote function onPush(github:PushEvent payload) returns error? {
-    log:printInfo("Received push event", eventPayload = payload);
+import ballerina/log;
+
+service github:PushService on webhookListener {
+    remote function onPush(github:PushEvent payload) returns error? {
+        log:printInfo("Received push event", eventPayload = payload);
+    }
 }
 ```
 

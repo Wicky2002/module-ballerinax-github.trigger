@@ -12,10 +12,18 @@ spec describes the webhook events GitHub delivers, not a REST API this package c
 These changes are done in order to improve the overall usability, and as workarounds for some
 known language limitations.
 
-[//]: # (TODO: Add sanitation details)
-1. 
-2. 
-3. 
+1. Marked the `assignee` field on `PullRequestEvent` and the `starred_at` field on `StarEvent` as
+   explicitly nilable (`?` on the type) in the generated Ballerina records, matching the
+   `nullable: true` declared on both in the spec - the generator otherwise produced non-nilable
+   required fields, which fails to deserialize a real payload where either value is `null`.
+2. Reordered the `GenericDataType` union so `Installation` (a record with only optional fields)
+   sits last, after every concrete event type. Ballerina resolves union-typed JSON conversion by
+   trying members in declaration order; with `Installation` earlier in the list, a payload that
+   should bind to a more specific event type could incorrectly match `Installation` first, since
+   its all-optional shape accepts almost any object.
+3. Quoted the `off` and `null` enum values in `asyncapi.yml` (`pull_request_reviews_enforcement_level`
+   and `security_severity_level`) - unquoted, YAML 1.1 parses bare `off`/`null` as the boolean
+   `false`/the null literal rather than the intended string values.
 
 ## Ballerina trigger generation
 
@@ -27,4 +35,5 @@ directory.
 ```bash
 # TODO: Add asyncapi-tools generator command used to generate the trigger
 ```
-Note: The license year is hardcoded to 2024, change if necessary.
+Note: The license year is hardcoded to 2021 (matching the source files' copyright year), change
+if necessary.
