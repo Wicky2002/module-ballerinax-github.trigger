@@ -53,7 +53,14 @@ service class DispatcherService {
         }
         log:printInfo("DISPATCHER_ENTERED");
         json payload = check request.getJsonPayload();
-        string eventType = check request.getHeader("X-GitHub-Event");
+        string|error eventTypeResult = request.getHeader("X-GitHub-Event");
+        if eventTypeResult is error {
+            http:Response badRequest = new;
+            badRequest.statusCode = http:STATUS_BAD_REQUEST;
+            check caller->respond(badRequest);
+            return;
+        }
+        string eventType = eventTypeResult;
         json|error actionField = payload.action;
         string eventIdentifier = eventType;
         if actionField is json && actionField != () {
