@@ -424,7 +424,7 @@ public type RepositoryPayload record {
 public type StarPayload record {
     string action;
     # The time the star was created (ISO 8601). Null for the deleted action.
-    string starred_at;
+    string? starred_at;
     User sender?;
     Repository repository?;
     Organization organization?;
@@ -1318,7 +1318,7 @@ public type PullRequestPayload record {
     # The pull request number
     int number;
     PullRequest pull_request;
-    User assignee;
+    User assignee?;
     # For edited events, the changes to the pull request
     record {} changes?;
     User requested_reviewer?;

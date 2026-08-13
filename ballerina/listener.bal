@@ -32,12 +32,12 @@ public class Listener {
     }
 
     public isolated function attach(GenericServiceType serviceRef, () attachPoint) returns error? {
-        string serviceTypeStr = self.getServiceTypeStr(serviceRef);
+        string serviceTypeStr = check self.getServiceTypeStr(serviceRef);
         check self.dispatcherService.addServiceRef(serviceTypeStr, serviceRef);
     }
 
     public isolated function detach(GenericServiceType serviceRef) returns error? {
-        string serviceTypeStr = self.getServiceTypeStr(serviceRef);
+        string serviceTypeStr = check self.getServiceTypeStr(serviceRef);
         check self.dispatcherService.removeServiceRef(serviceTypeStr);
     }
 
@@ -54,7 +54,7 @@ public class Listener {
         return self.httpListener.immediateStop();
     }
 
-    private isolated function getServiceTypeStr(GenericServiceType serviceRef) returns string {
+    private isolated function getServiceTypeStr(GenericServiceType serviceRef) returns string|error {
         if serviceRef is DeleteService {
             return "DeleteService";
         } else if serviceRef is MetaService {
@@ -206,7 +206,7 @@ public class Listener {
         } else if serviceRef is PullRequestReviewThreadService {
             return "PullRequestReviewThreadService";
         } else {
-            panic error("Unrecognized service type attached to the listener");
+            return error("Unrecognized service type attached to the listener");
         }
     }
 }
