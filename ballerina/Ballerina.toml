@@ -6,7 +6,7 @@ version = "0.1.0"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
 keywords = ["Area/Developer Tools", "Vendor/GitHub", "Cost/Freemium", "Type/Trigger"]
-icon = "docs/icon.png"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-github.trigger"
 
 [build-options]
