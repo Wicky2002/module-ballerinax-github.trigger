@@ -10,10 +10,71 @@ API on your behalf.
 
 ## Setup guide
 
-Before using this trigger in your Ballerina application, complete the following:
+Before using this trigger in your Ballerina application, you need a GitHub account with access to
+the repository/organization you want to receive events from, and a Ballerina service that GitHub
+can reach over the internet to deliver webhook payloads to. The two sections below cover both a
+quick local test setup and a production deployment.
 
-* Create a GitHub account and have access to the repository/organization you want to receive
-  events from.
+### Try it out locally
+
+Use this flow to test your webhook handling logic on your own machine before deploying anywhere,
+using [ngrok](https://ngrok.com/) to expose your local listener to the internet.
+
+1. Write your service (see [Quickstart](#quickstart) below) and run it locally with `bal run`. Note
+   the port it's listening on (`8090` by default).
+
+2. Expose that port with ngrok:
+
+   ```bash
+   ngrok http 8090
+   ```
+
+   Copy the `Forwarding` URL ngrok prints out - this is your temporary public webhook URL.
+
+   <img src="https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-github.trigger/main/docs/setup/resources/ngrok-forwarding.png" alt="ngrok forwarding a public URL to localhost:8090" width="600">
+
+3. On the GitHub repository (or organization) you want events from, go to **Settings > Webhooks**
+   and click **Add webhook**.
+
+   <img src="https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-github.trigger/main/docs/setup/resources/webhook-settings-page.png" alt="GitHub repository Webhooks settings page" width="600">
+
+4. Fill in the webhook form:
+   - **Payload URL**: the ngrok forwarding URL from step 2.
+   - **Content type**: `application/json`.
+   - **Secret**: any string - this must exactly match the `webhookSecret` configured in your
+     service (see [Quickstart](#quickstart)), since it's used to verify that incoming payloads
+     really came from GitHub.
+
+   <img src="https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-github.trigger/main/docs/setup/resources/webhook-form-filled.png" alt="GitHub webhook form filled in with Payload URL, content type, and secret" width="600">
+
+5. Under **Which events would you like to trigger this webhook?**, select **Let me select
+   individual events** and check the events your service handles.
+
+   <img src="https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-github.trigger/main/docs/setup/resources/webhook-event-selection.png" alt="GitHub webhook individual event selection checkboxes" width="600">
+
+6. Click **Add webhook**. This registers the webhook, but (unlike creating one for the first time
+   in most other flows) does not itself redeliver a test ping - use **Recent Deliveries >
+   Redeliver** on the webhook's page to trigger one, or just push a real commit. A successful
+   delivery shows a green checkmark back on the Webhooks settings page.
+
+   <img src="https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-github.trigger/main/docs/setup/resources/webhook-confirmed.png" alt="GitHub webhook showing a successful delivery" width="600">
+
+### Production / business integration
+
+For production use, deploy your Ballerina service somewhere with a stable, internet-reachable
+HTTPS URL. Ballerina doesn't require any specific hosting platform - containers, a VM, a managed
+PaaS, or anything else that gives you a stable HTTPS endpoint all work equally well.
+
+Rather than hardcoding `webhookSecret` as shown in the Quickstart, inject it via `Config.toml` (or
+your platform's equivalent configuration/secret mechanism), since it's a `configurable` value:
+
+```toml
+[<your_org>.<your_module_name>.userInput]
+webhookSecret = "<your production secret>"
+```
+
+Then follow the same webhook registration steps as above, using your production URL as the Payload
+URL and this real secret instead of a placeholder.
 
 ### Compatibility
 
@@ -56,36 +117,22 @@ listener github:Listener webhookListener = new (userInput);
 ### Step 3: Use the correct service type to implement the service
 
 Use the correct service type for the corresponding channel when implementing the service. For
-example, if you need to listen to Issue events, use the `IssuesService` service type as follows.
+example, if you need to listen to Label events, use the `LabelService` service type as follows.
+Every remote function declared on a service type must be implemented - Ballerina requires a
+complete implementation, not just the ones you care about.
 
 ```ballerina
-service github:IssuesService on webhookListener {
+service github:LabelService on webhookListener {
 
-    remote function onAssigned(github:IssuesEvent payload) returns error? {
+    remote function onLabelCreated(github:LabelPayload payload) returns error? {
         return;
     }
 
-    remote function onClosed(github:IssuesEvent payload) returns error? {
+    remote function onLabelEdited(github:LabelPayload payload) returns error? {
         return;
     }
 
-    remote function onLabeled(github:IssuesEvent payload) returns error? {
-        return;
-    }
-
-    remote function onOpened(github:IssuesEvent payload) returns error? {
-        return;
-    }
-
-    remote function onReopened(github:IssuesEvent payload) returns error? {
-        return;
-    }
-
-    remote function onUnassigned(github:IssuesEvent payload) returns error? {
-        return;
-    }
-
-    remote function onUnlabeled(github:IssuesEvent payload) returns error? {
+    remote function onLabelDeleted(github:LabelPayload payload) returns error? {
         return;
     }
 }
@@ -100,7 +147,7 @@ channel you're listening to - for example, `github:PushService` for push events.
 import ballerina/log;
 
 service github:PushService on webhookListener {
-    remote function onPush(github:PushEvent payload) returns error? {
+    remote function onPush(github:PushPayload payload) returns error? {
         log:printInfo("Received push event", eventPayload = payload);
     }
 }
@@ -110,17 +157,10 @@ service github:PushService on webhookListener {
 
 Use the `bal run` command to compile and run the Ballerina program.
 
-### Step 6: Configure the GitHub webhook with the URL of the service
+### Step 6: Register a webhook so GitHub can reach your service
 
-- Create a webhook in GitHub following the
-  [GitHub documentation](https://docs.github.com/en/developers/webhooks-and-events/webhooks/creating-webhooks).
-- Provide the public URL of the started service as the Payload URL (add a trailing `/` to the URL
-  if it's not already present).
-- Provide `application/json` for the content type.
-- Select the list of events you need to subscribe to and click **Add webhook**.
-
-This adds a subscription to the GitHub event API, and the Ballerina service functions will be
-triggered once a subscribed event fires.
+See [Setup guide](#setup-guide) above for the full walkthrough (with screenshots) of exposing your
+service and registering the webhook, for both local testing and production use.
 
 ## Examples
 
@@ -136,6 +176,7 @@ To report bugs, request new features, start new discussions, etc., go to the
 ## Useful links
 
 - For more information go to the [`github.trigger` package](https://central.ballerina.io/ballerinax/github.trigger/latest).
+- If you're upgrading from an older version, see the [migration notes](../docs/migration-notes.md) for renamed functions and other breaking changes.
 - For example demonstrations of the usage, go to [Ballerina By Examples](https://ballerina.io/learn/by-example/).
 - Chat live with us via our [Discord server](https://discord.gg/ballerinalang).
 - Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag.
