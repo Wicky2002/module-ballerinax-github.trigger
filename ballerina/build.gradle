@@ -95,6 +95,7 @@ clean {
     delete 'build'
 }
 
+build.dependsOn "updateTomlFiles"
 build.dependsOn "generatePomFileForMavenPublication"
 publishToMavenLocal.dependsOn build
 publish.dependsOn build
