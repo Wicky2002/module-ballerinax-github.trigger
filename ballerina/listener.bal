@@ -17,7 +17,7 @@
 import ballerina/cloud;
 import ballerina/http;
 
-@display {label: ""}
+@display {label: "GitHub Webhooks API", iconPath: "icon.png"}
 public class Listener {
     private http:Listener httpListener;
     private DispatcherService dispatcherService;

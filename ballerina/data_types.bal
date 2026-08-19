@@ -19,7 +19,7 @@ import ballerina/http;
 const string DEFAULT_SECRET = "";
 
 public type ListenerConfig record {
-    # Webhook Secret
+    @display {label: "Webhook Secret"}
     string webhookSecret = DEFAULT_SECRET;
 };
 
