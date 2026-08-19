@@ -1,7 +1,7 @@
 # CI status notifier
 
 Listens for GitHub Actions workflow run events and logs the outcome - a different domain from the
-other two examples (repository/code events), showing this connector also covers CI status.
+other two examples (repository/code events), showing this trigger also covers CI status.
 
 ## Run
 

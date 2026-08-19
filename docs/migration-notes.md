@@ -18,8 +18,10 @@ the spec's `x-ballerina-event-type` values have said since an AsyncAPI 3.0 migra
 the old short names were only still shipping because the generated code was never refreshed against
 that change.
 
-**Full old -> new mapping, per service type** (239 renamed functions across the 75 service types
-that had any change):
+**Full old -> new mapping, per service type** (239 renamed functions across 57 service types -
+56 with straightforward renames, plus `IssueDependenciesService` below, whose 2 old functions were
+replaced by 4 new ones rather than renamed 1:1. The connector has 75 service types in total; most
+had no naming change at all):
 
 - `BranchProtectionConfigurationService`:
   - `onEnabled` -> `onBranchProtectionConfigurationEnabled`
@@ -318,6 +320,7 @@ that had any change):
 - `WorkflowRunService`:
   - `onInProgress` -> `onWorkflowRunInProgress`
   - `onCompleted` -> `onWorkflowRunCompleted`
+  - `onRequested` -> `onWorkflowRunRequested`
 
 ## New: `IssueDependenciesService` now has 4 functions, not 2
 

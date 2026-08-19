@@ -176,7 +176,7 @@ To report bugs, request new features, start new discussions, etc., go to the
 ## Useful links
 
 - For more information go to the [`github.trigger` package](https://central.ballerina.io/ballerinax/github.trigger/latest).
-- If you're upgrading from an older version, see the [migration notes](../docs/migration-notes.md) for renamed functions and other breaking changes.
+- If you're upgrading from an older version, see the [migration notes](https://github.com/ballerina-platform/module-ballerinax-github.trigger/blob/main/docs/migration-notes.md) for renamed functions and other breaking changes.
 - For example demonstrations of the usage, go to [Ballerina By Examples](https://ballerina.io/learn/by-example/).
 - Chat live with us via our [Discord server](https://discord.gg/ballerinalang).
 - Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag.

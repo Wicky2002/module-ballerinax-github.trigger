@@ -12,15 +12,15 @@ spec describes the webhook events GitHub delivers, not a REST API this package c
 These changes are done in order to improve the overall usability, and as workarounds for some
 known language limitations.
 
-1. Marked the `assignee` field on `PullRequestEvent` and the `starred_at` field on `StarEvent` as
-   explicitly nilable (`?` on the type) in the generated Ballerina records, matching the
+1. Marked the `assignee` field on `PullRequestPayload` and the `starred_at` field on `StarPayload`
+   as explicitly nilable (`?` on the type) in the generated Ballerina records, matching the
    `nullable: true` declared on both in the spec - the generator otherwise produced non-nilable
    required fields, which fails to deserialize a real payload where either value is `null`.
-2. Reordered the `GenericDataType` union so `Installation` (a record with only optional fields)
-   sits last, after every concrete event type. Ballerina resolves union-typed JSON conversion by
-   trying members in declaration order; with `Installation` earlier in the list, a payload that
-   should bind to a more specific event type could incorrectly match `Installation` first, since
-   its all-optional shape accepts almost any object.
+2. Reordered the `GenericDataType` union so that schemas with no required fields (e.g.
+   `Installation`) are grouped after every concrete event type, instead of wherever they happened
+   to fall in declaration order. Ballerina resolves union-typed JSON conversion by trying members
+   in declaration order; a schema with every field optional can structurally match almost any
+   payload, so leaving one ahead of a more specific event type risks it being matched first.
 3. Quoted the `off` and `null` enum values in `asyncapi.yml` (`pull_request_reviews_enforcement_level`
    and `security_severity_level`) - unquoted, YAML 1.1 parses bare `off`/`null` as the boolean
    `false`/the null literal rather than the intended string values.
@@ -40,5 +40,5 @@ This overwrites `listener.bal`, `dispatcher_service.bal`, `service_types.bal`, a
 file in `ballerina/` with fresh output. Diff the result before committing - anything currently
 correct only because of a hand patch to these files (rather than to the spec or the generator
 itself) will be silently reverted by this command.
-Note: The license year is hardcoded to 2021 (matching the source files' copyright year), change
+Note: The license year is hardcoded to 2026 (matching the source files' copyright year), change
 if necessary.
