@@ -82,6 +82,11 @@ URL and this real secret instead of a placeholder.
 |---------------------|--------------------------------|
 | Ballerina Language  | Ballerina Swan Lake 2201.13.0 |
 
+> **Why 2201.13.0, not the usual 2201.12.x?** This connector's generator tool needs a `bal` CLI fix
+> that isn't in any 2201.12.x release - see the root
+> [README](https://github.com/ballerina-platform/module-ballerinax-github.trigger#setting-up-the-prerequisites)
+> for the full writeup.
+
 ## Quickstart
 
 To use the GitHub Trigger in your Ballerina application, update the `.bal` file as follows:

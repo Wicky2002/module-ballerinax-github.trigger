@@ -88,6 +88,10 @@ URL and this real secret instead of a placeholder.
 |---------------------|--------------------------------|
 | Ballerina Language  | Ballerina Swan Lake 2201.13.0 |
 
+> **Why 2201.13.0, not the usual 2201.12.x?** See the note under [Setting up the
+> prerequisites](#setting-up-the-prerequisites) - this connector's generator tool needs a `bal`
+> CLI fix that isn't in any 2201.12.x release.
+
 ## Quickstart
 
 To use the GitHub Trigger in your Ballerina application, update the `.bal` file as follows:
@@ -185,7 +189,19 @@ covering common webhook event handling use cases.
 
    > **Note:** After installation, remember to set the `JAVA_HOME` environment variable to the directory where JDK was installed.
 
-2. Download and install [Ballerina Swan Lake](https://ballerina.io/).
+2. Download and install [Ballerina Swan Lake](https://ballerina.io/), **2201.13.0 or later**.
+
+   > **Note:** This is a hard requirement, not a recommendation - the `asyncapi` tool used to
+   > (re)generate this connector registers `http`/`ws` as native picocli subcommands, and routing
+   > support for that pattern in externally-pulled tools was only added to Ballerina's own CLI
+   > launcher in [ballerina-lang#44104](https://github.com/ballerina-platform/ballerina-lang/pull/44104),
+   > merged after 2201.12.0 shipped and never backported to any 2201.12.x patch (checked up to
+   > 2201.12.12). On 2201.12.x, invoking the tool's subcommands fails outright because the launcher
+   > can't route to them - confirmed by an A/B test where the identical tool build worked on
+   > 2201.13.4 and failed on 2201.12.0 with no rebuild in between. Rebuilding the tool *under*
+   > 2201.12.0 was tested too and made no difference, since the failure is in the launcher
+   > dispatching to the tool, not in how the tool was built. See `asyncapi-tools`' own README for
+   > the full writeup.
 
 3. Download and install [Docker](https://www.docker.com/get-started).
 
