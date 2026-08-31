@@ -1,4 +1,4 @@
-// Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+// Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com).
 //
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -20,1242 +20,1775 @@ import ballerina/io;
 import ballerina/lang.runtime;
 import ballerina/test;
 
-const string TRIGGER_TEST_SECRET = "trigger-test-secret";
-const int TRIGGER_TEST_PORT = 9091;
-const string TRIGGER_PAYLOAD_DIR = "tests/resources/trigger_payloads";
+const TRIGGER_TEST_SECRET = "trigger-test-secret";
+const TRIGGER_TEST_PORT = 9091;
+const TRIGGER_PAYLOAD_DIR = "tests/resources/trigger_payloads";
 
-map<boolean> triggerFired = {};
+isolated map<boolean> triggerFired = {};
 
 listener Listener triggerTestListener = check new ({webhookSecret: TRIGGER_TEST_SECRET}, TRIGGER_TEST_PORT);
 
+final http:Client triggerClient = check new (string `http://localhost:${TRIGGER_TEST_PORT}`);
+
 service CheckSuiteService on triggerTestListener {
-    remote function onCheckSuiteCompleted(CheckSuitePayload payload) returns error? {
-        triggerFired["CheckSuiteService.onCheckSuiteCompleted"] = true;
+    isolated remote function onCheckSuiteCompleted(CheckSuitePayload payload) returns error? {
+        lock {
+            triggerFired["CheckSuiteService.onCheckSuiteCompleted"] = true;
+        }
     }
 
-    remote function onCheckSuiteRequested(CheckSuitePayload payload) returns error? {
-        triggerFired["CheckSuiteService.onCheckSuiteRequested"] = true;
+    isolated remote function onCheckSuiteRequested(CheckSuitePayload payload) returns error? {
+        lock {
+            triggerFired["CheckSuiteService.onCheckSuiteRequested"] = true;
+        }
     }
 
-    remote function onCheckSuiteRerequested(CheckSuitePayload payload) returns error? {
-        triggerFired["CheckSuiteService.onCheckSuiteRerequested"] = true;
+    isolated remote function onCheckSuiteRerequested(CheckSuitePayload payload) returns error? {
+        lock {
+            triggerFired["CheckSuiteService.onCheckSuiteRerequested"] = true;
+        }
     }
 }
 
 service SecretScanningAlertService on triggerTestListener {
-    remote function onSecretScanningAlertAssigned(SecretScanningAlertPayload payload) returns error? {
-        triggerFired["SecretScanningAlertService.onSecretScanningAlertAssigned"] = true;
+    isolated remote function onSecretScanningAlertAssigned(SecretScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["SecretScanningAlertService.onSecretScanningAlertAssigned"] = true;
+        }
     }
 
-    remote function onSecretScanningAlertReopened(SecretScanningAlertPayload payload) returns error? {
-        triggerFired["SecretScanningAlertService.onSecretScanningAlertReopened"] = true;
+    isolated remote function onSecretScanningAlertReopened(SecretScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["SecretScanningAlertService.onSecretScanningAlertReopened"] = true;
+        }
     }
 
-    remote function onSecretScanningAlertUnassigned(SecretScanningAlertPayload payload) returns error? {
-        triggerFired["SecretScanningAlertService.onSecretScanningAlertUnassigned"] = true;
+    isolated remote function onSecretScanningAlertUnassigned(SecretScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["SecretScanningAlertService.onSecretScanningAlertUnassigned"] = true;
+        }
     }
 
-    remote function onSecretScanningAlertCreated(SecretScanningAlertPayload payload) returns error? {
-        triggerFired["SecretScanningAlertService.onSecretScanningAlertCreated"] = true;
+    isolated remote function onSecretScanningAlertCreated(SecretScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["SecretScanningAlertService.onSecretScanningAlertCreated"] = true;
+        }
     }
 
-    remote function onSecretScanningAlertPubliclyLeaked(SecretScanningAlertPayload payload) returns error? {
-        triggerFired["SecretScanningAlertService.onSecretScanningAlertPubliclyLeaked"] = true;
+    isolated remote function onSecretScanningAlertPubliclyLeaked(SecretScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["SecretScanningAlertService.onSecretScanningAlertPubliclyLeaked"] = true;
+        }
     }
 
-    remote function onSecretScanningAlertValidated(SecretScanningAlertPayload payload) returns error? {
-        triggerFired["SecretScanningAlertService.onSecretScanningAlertValidated"] = true;
+    isolated remote function onSecretScanningAlertValidated(SecretScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["SecretScanningAlertService.onSecretScanningAlertValidated"] = true;
+        }
     }
 
-    remote function onSecretScanningAlertResolved(SecretScanningAlertPayload payload) returns error? {
-        triggerFired["SecretScanningAlertService.onSecretScanningAlertResolved"] = true;
+    isolated remote function onSecretScanningAlertResolved(SecretScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["SecretScanningAlertService.onSecretScanningAlertResolved"] = true;
+        }
     }
 }
 
 service PushService on triggerTestListener {
-    remote function onPush(PushPayload payload) returns error? {
-        triggerFired["PushService.onPush"] = true;
+    isolated remote function onPush(PushPayload payload) returns error? {
+        lock {
+            triggerFired["PushService.onPush"] = true;
+        }
     }
 }
 
 service CodeScanningAlertService on triggerTestListener {
-    remote function onCodeScanningAlertAppearedInBranch(CodeScanningAlertPayload payload) returns error? {
-        triggerFired["CodeScanningAlertService.onCodeScanningAlertAppearedInBranch"] = true;
+    isolated remote function onCodeScanningAlertAppearedInBranch(CodeScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["CodeScanningAlertService.onCodeScanningAlertAppearedInBranch"] = true;
+        }
     }
 
-    remote function onCodeScanningAlertClosedByUser(CodeScanningAlertPayload payload) returns error? {
-        triggerFired["CodeScanningAlertService.onCodeScanningAlertClosedByUser"] = true;
+    isolated remote function onCodeScanningAlertClosedByUser(CodeScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["CodeScanningAlertService.onCodeScanningAlertClosedByUser"] = true;
+        }
     }
 
-    remote function onCodeScanningAlertCreated(CodeScanningAlertPayload payload) returns error? {
-        triggerFired["CodeScanningAlertService.onCodeScanningAlertCreated"] = true;
+    isolated remote function onCodeScanningAlertCreated(CodeScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["CodeScanningAlertService.onCodeScanningAlertCreated"] = true;
+        }
     }
 
-    remote function onCodeScanningAlertFixed(CodeScanningAlertPayload payload) returns error? {
-        triggerFired["CodeScanningAlertService.onCodeScanningAlertFixed"] = true;
+    isolated remote function onCodeScanningAlertFixed(CodeScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["CodeScanningAlertService.onCodeScanningAlertFixed"] = true;
+        }
     }
 
-    remote function onCodeScanningAlertReopened(CodeScanningAlertPayload payload) returns error? {
-        triggerFired["CodeScanningAlertService.onCodeScanningAlertReopened"] = true;
+    isolated remote function onCodeScanningAlertReopened(CodeScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["CodeScanningAlertService.onCodeScanningAlertReopened"] = true;
+        }
     }
 
-    remote function onCodeScanningAlertReopenedByUser(CodeScanningAlertPayload payload) returns error? {
-        triggerFired["CodeScanningAlertService.onCodeScanningAlertReopenedByUser"] = true;
+    isolated remote function onCodeScanningAlertReopenedByUser(CodeScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["CodeScanningAlertService.onCodeScanningAlertReopenedByUser"] = true;
+        }
     }
 
-    remote function onCodeScanningAlertUpdatedAssignment(CodeScanningAlertPayload payload) returns error? {
-        triggerFired["CodeScanningAlertService.onCodeScanningAlertUpdatedAssignment"] = true;
+    isolated remote function onCodeScanningAlertUpdatedAssignment(CodeScanningAlertPayload payload) returns error? {
+        lock {
+            triggerFired["CodeScanningAlertService.onCodeScanningAlertUpdatedAssignment"] = true;
+        }
     }
 }
 
 service PersonalAccessTokenRequestService on triggerTestListener {
-    remote function onPersonalAccessTokenRequestCreated(PersonalAccessTokenRequestPayload payload) returns error? {
-        triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCreated"] = true;
+    isolated remote function onPersonalAccessTokenRequestCreated(PersonalAccessTokenRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCreated"] = true;
+        }
     }
 
-    remote function onPersonalAccessTokenRequestApproved(PersonalAccessTokenRequestPayload payload) returns error? {
-        triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestApproved"] = true;
+    isolated remote function onPersonalAccessTokenRequestApproved(PersonalAccessTokenRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestApproved"] = true;
+        }
     }
 
-    remote function onPersonalAccessTokenRequestDenied(PersonalAccessTokenRequestPayload payload) returns error? {
-        triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestDenied"] = true;
+    isolated remote function onPersonalAccessTokenRequestDenied(PersonalAccessTokenRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestDenied"] = true;
+        }
     }
 
-    remote function onPersonalAccessTokenRequestCancelled(PersonalAccessTokenRequestPayload payload) returns error? {
-        triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCancelled"] = true;
+    isolated remote function onPersonalAccessTokenRequestCancelled(PersonalAccessTokenRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCancelled"] = true;
+        }
     }
 }
 
 service InstallationTargetService on triggerTestListener {
-    remote function onInstallationTargetRenamed(InstallationTargetPayload payload) returns error? {
-        triggerFired["InstallationTargetService.onInstallationTargetRenamed"] = true;
+    isolated remote function onInstallationTargetRenamed(InstallationTargetPayload payload) returns error? {
+        lock {
+            triggerFired["InstallationTargetService.onInstallationTargetRenamed"] = true;
+        }
     }
 }
 
 service ProjectService on triggerTestListener {
-    remote function onProjectDeleted(ProjectPayload payload) returns error? {
-        triggerFired["ProjectService.onProjectDeleted"] = true;
+    isolated remote function onProjectDeleted(ProjectPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectService.onProjectDeleted"] = true;
+        }
     }
 
-    remote function onProjectCreated(ProjectPayload payload) returns error? {
-        triggerFired["ProjectService.onProjectCreated"] = true;
+    isolated remote function onProjectCreated(ProjectPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectService.onProjectCreated"] = true;
+        }
     }
 
-    remote function onProjectClosed(ProjectPayload payload) returns error? {
-        triggerFired["ProjectService.onProjectClosed"] = true;
+    isolated remote function onProjectClosed(ProjectPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectService.onProjectClosed"] = true;
+        }
     }
 
-    remote function onProjectReopened(ProjectPayload payload) returns error? {
-        triggerFired["ProjectService.onProjectReopened"] = true;
+    isolated remote function onProjectReopened(ProjectPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectService.onProjectReopened"] = true;
+        }
     }
 
-    remote function onProjectEdited(ProjectPayload payload) returns error? {
-        triggerFired["ProjectService.onProjectEdited"] = true;
+    isolated remote function onProjectEdited(ProjectPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectService.onProjectEdited"] = true;
+        }
     }
 }
 
 service ReleaseService on triggerTestListener {
-    remote function onReleaseCreated(ReleasePayload payload) returns error? {
-        triggerFired["ReleaseService.onReleaseCreated"] = true;
+    isolated remote function onReleaseCreated(ReleasePayload payload) returns error? {
+        lock {
+            triggerFired["ReleaseService.onReleaseCreated"] = true;
+        }
     }
 
-    remote function onReleasePublished(ReleasePayload payload) returns error? {
-        triggerFired["ReleaseService.onReleasePublished"] = true;
+    isolated remote function onReleasePublished(ReleasePayload payload) returns error? {
+        lock {
+            triggerFired["ReleaseService.onReleasePublished"] = true;
+        }
     }
 
-    remote function onReleaseReleased(ReleasePayload payload) returns error? {
-        triggerFired["ReleaseService.onReleaseReleased"] = true;
+    isolated remote function onReleaseReleased(ReleasePayload payload) returns error? {
+        lock {
+            triggerFired["ReleaseService.onReleaseReleased"] = true;
+        }
     }
 
-    remote function onReleasePrereleased(ReleasePayload payload) returns error? {
-        triggerFired["ReleaseService.onReleasePrereleased"] = true;
+    isolated remote function onReleasePrereleased(ReleasePayload payload) returns error? {
+        lock {
+            triggerFired["ReleaseService.onReleasePrereleased"] = true;
+        }
     }
 
-    remote function onReleaseUnpublished(ReleasePayload payload) returns error? {
-        triggerFired["ReleaseService.onReleaseUnpublished"] = true;
+    isolated remote function onReleaseUnpublished(ReleasePayload payload) returns error? {
+        lock {
+            triggerFired["ReleaseService.onReleaseUnpublished"] = true;
+        }
     }
 
-    remote function onReleaseDeleted(ReleasePayload payload) returns error? {
-        triggerFired["ReleaseService.onReleaseDeleted"] = true;
+    isolated remote function onReleaseDeleted(ReleasePayload payload) returns error? {
+        lock {
+            triggerFired["ReleaseService.onReleaseDeleted"] = true;
+        }
     }
 
-    remote function onReleaseEdited(ReleasePayload payload) returns error? {
-        triggerFired["ReleaseService.onReleaseEdited"] = true;
+    isolated remote function onReleaseEdited(ReleasePayload payload) returns error? {
+        lock {
+            triggerFired["ReleaseService.onReleaseEdited"] = true;
+        }
     }
 }
 
 service IssueCommentService on triggerTestListener {
-    remote function onIssueCommentEdited(IssueCommentPayload payload) returns error? {
-        triggerFired["IssueCommentService.onIssueCommentEdited"] = true;
+    isolated remote function onIssueCommentEdited(IssueCommentPayload payload) returns error? {
+        lock {
+            triggerFired["IssueCommentService.onIssueCommentEdited"] = true;
+        }
     }
 
-    remote function onIssueCommentPinned(IssueCommentPayload payload) returns error? {
-        triggerFired["IssueCommentService.onIssueCommentPinned"] = true;
+    isolated remote function onIssueCommentPinned(IssueCommentPayload payload) returns error? {
+        lock {
+            triggerFired["IssueCommentService.onIssueCommentPinned"] = true;
+        }
     }
 
-    remote function onIssueCommentDeleted(IssueCommentPayload payload) returns error? {
-        triggerFired["IssueCommentService.onIssueCommentDeleted"] = true;
+    isolated remote function onIssueCommentDeleted(IssueCommentPayload payload) returns error? {
+        lock {
+            triggerFired["IssueCommentService.onIssueCommentDeleted"] = true;
+        }
     }
 
-    remote function onIssueCommentCreated(IssueCommentPayload payload) returns error? {
-        triggerFired["IssueCommentService.onIssueCommentCreated"] = true;
+    isolated remote function onIssueCommentCreated(IssueCommentPayload payload) returns error? {
+        lock {
+            triggerFired["IssueCommentService.onIssueCommentCreated"] = true;
+        }
     }
 
-    remote function onIssueCommentUnpinned(IssueCommentPayload payload) returns error? {
-        triggerFired["IssueCommentService.onIssueCommentUnpinned"] = true;
+    isolated remote function onIssueCommentUnpinned(IssueCommentPayload payload) returns error? {
+        lock {
+            triggerFired["IssueCommentService.onIssueCommentUnpinned"] = true;
+        }
     }
 }
 
 service InstallationService on triggerTestListener {
-    remote function onInstallationNewPermissionsAccepted(InstallationPayload payload) returns error? {
-        triggerFired["InstallationService.onInstallationNewPermissionsAccepted"] = true;
+    isolated remote function onInstallationNewPermissionsAccepted(InstallationPayload payload) returns error? {
+        lock {
+            triggerFired["InstallationService.onInstallationNewPermissionsAccepted"] = true;
+        }
     }
 
-    remote function onInstallationSuspend(InstallationPayload payload) returns error? {
-        triggerFired["InstallationService.onInstallationSuspend"] = true;
+    isolated remote function onInstallationSuspend(InstallationPayload payload) returns error? {
+        lock {
+            triggerFired["InstallationService.onInstallationSuspend"] = true;
+        }
     }
 
-    remote function onInstallationCreated(InstallationPayload payload) returns error? {
-        triggerFired["InstallationService.onInstallationCreated"] = true;
+    isolated remote function onInstallationCreated(InstallationPayload payload) returns error? {
+        lock {
+            triggerFired["InstallationService.onInstallationCreated"] = true;
+        }
     }
 
-    remote function onInstallationDeleted(InstallationPayload payload) returns error? {
-        triggerFired["InstallationService.onInstallationDeleted"] = true;
+    isolated remote function onInstallationDeleted(InstallationPayload payload) returns error? {
+        lock {
+            triggerFired["InstallationService.onInstallationDeleted"] = true;
+        }
     }
 
-    remote function onInstallationUnsuspend(InstallationPayload payload) returns error? {
-        triggerFired["InstallationService.onInstallationUnsuspend"] = true;
+    isolated remote function onInstallationUnsuspend(InstallationPayload payload) returns error? {
+        lock {
+            triggerFired["InstallationService.onInstallationUnsuspend"] = true;
+        }
     }
 }
 
 service PullRequestReviewCommentService on triggerTestListener {
-    remote function onPullRequestReviewCommentCreated(PullRequestReviewCommentPayload payload) returns error? {
-        triggerFired["PullRequestReviewCommentService.onPullRequestReviewCommentCreated"] = true;
+    isolated remote function onPullRequestReviewCommentCreated(PullRequestReviewCommentPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestReviewCommentService.onPullRequestReviewCommentCreated"] = true;
+        }
     }
 
-    remote function onPullRequestReviewCommentDeleted(PullRequestReviewCommentPayload payload) returns error? {
-        triggerFired["PullRequestReviewCommentService.onPullRequestReviewCommentDeleted"] = true;
+    isolated remote function onPullRequestReviewCommentDeleted(PullRequestReviewCommentPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestReviewCommentService.onPullRequestReviewCommentDeleted"] = true;
+        }
     }
 
-    remote function onPullRequestReviewCommentEdited(PullRequestReviewCommentPayload payload) returns error? {
-        triggerFired["PullRequestReviewCommentService.onPullRequestReviewCommentEdited"] = true;
+    isolated remote function onPullRequestReviewCommentEdited(PullRequestReviewCommentPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestReviewCommentService.onPullRequestReviewCommentEdited"] = true;
+        }
     }
 }
 
 service MetaService on triggerTestListener {
-    remote function onMetaDeleted(MetaPayload payload) returns error? {
-        triggerFired["MetaService.onMetaDeleted"] = true;
+    isolated remote function onMetaDeleted(MetaPayload payload) returns error? {
+        lock {
+            triggerFired["MetaService.onMetaDeleted"] = true;
+        }
     }
 }
 
 service PublicService on triggerTestListener {
-    remote function onPublic(PublicPayload payload) returns error? {
-        triggerFired["PublicService.onPublic"] = true;
+    isolated remote function onPublic(PublicPayload payload) returns error? {
+        lock {
+            triggerFired["PublicService.onPublic"] = true;
+        }
     }
 }
 
 service DeploymentStatusService on triggerTestListener {
-    remote function onDeploymentStatusCreated(DeploymentStatusPayload payload) returns error? {
-        triggerFired["DeploymentStatusService.onDeploymentStatusCreated"] = true;
+    isolated remote function onDeploymentStatusCreated(DeploymentStatusPayload payload) returns error? {
+        lock {
+            triggerFired["DeploymentStatusService.onDeploymentStatusCreated"] = true;
+        }
     }
 }
 
 service CustomPropertyService on triggerTestListener {
-    remote function onCustomPropertyUpdated(CustomPropertyPayload payload) returns error? {
-        triggerFired["CustomPropertyService.onCustomPropertyUpdated"] = true;
+    isolated remote function onCustomPropertyUpdated(CustomPropertyPayload payload) returns error? {
+        lock {
+            triggerFired["CustomPropertyService.onCustomPropertyUpdated"] = true;
+        }
     }
 
-    remote function onCustomPropertyDeleted(CustomPropertyPayload payload) returns error? {
-        triggerFired["CustomPropertyService.onCustomPropertyDeleted"] = true;
+    isolated remote function onCustomPropertyDeleted(CustomPropertyPayload payload) returns error? {
+        lock {
+            triggerFired["CustomPropertyService.onCustomPropertyDeleted"] = true;
+        }
     }
 
-    remote function onCustomPropertyPromoteToEnterprise(CustomPropertyPayload payload) returns error? {
-        triggerFired["CustomPropertyService.onCustomPropertyPromoteToEnterprise"] = true;
+    isolated remote function onCustomPropertyPromoteToEnterprise(CustomPropertyPayload payload) returns error? {
+        lock {
+            triggerFired["CustomPropertyService.onCustomPropertyPromoteToEnterprise"] = true;
+        }
     }
 
-    remote function onCustomPropertyCreated(CustomPropertyPayload payload) returns error? {
-        triggerFired["CustomPropertyService.onCustomPropertyCreated"] = true;
+    isolated remote function onCustomPropertyCreated(CustomPropertyPayload payload) returns error? {
+        lock {
+            triggerFired["CustomPropertyService.onCustomPropertyCreated"] = true;
+        }
     }
 }
 
 service SecurityAdvisoryService on triggerTestListener {
-    remote function onSecurityAdvisoryWithdrawn(SecurityAdvisoryPayload payload) returns error? {
-        triggerFired["SecurityAdvisoryService.onSecurityAdvisoryWithdrawn"] = true;
+    isolated remote function onSecurityAdvisoryWithdrawn(SecurityAdvisoryPayload payload) returns error? {
+        lock {
+            triggerFired["SecurityAdvisoryService.onSecurityAdvisoryWithdrawn"] = true;
+        }
     }
 
-    remote function onSecurityAdvisoryPublished(SecurityAdvisoryPayload payload) returns error? {
-        triggerFired["SecurityAdvisoryService.onSecurityAdvisoryPublished"] = true;
+    isolated remote function onSecurityAdvisoryPublished(SecurityAdvisoryPayload payload) returns error? {
+        lock {
+            triggerFired["SecurityAdvisoryService.onSecurityAdvisoryPublished"] = true;
+        }
     }
 
-    remote function onSecurityAdvisoryUpdated(SecurityAdvisoryPayload payload) returns error? {
-        triggerFired["SecurityAdvisoryService.onSecurityAdvisoryUpdated"] = true;
+    isolated remote function onSecurityAdvisoryUpdated(SecurityAdvisoryPayload payload) returns error? {
+        lock {
+            triggerFired["SecurityAdvisoryService.onSecurityAdvisoryUpdated"] = true;
+        }
     }
 }
 
 service DiscussionService on triggerTestListener {
-    remote function onDiscussionUnanswered(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionUnanswered"] = true;
+    isolated remote function onDiscussionUnanswered(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionUnanswered"] = true;
+        }
     }
 
-    remote function onDiscussionCreated(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionCreated"] = true;
+    isolated remote function onDiscussionCreated(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionCreated"] = true;
+        }
     }
 
-    remote function onDiscussionTransferred(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionTransferred"] = true;
+    isolated remote function onDiscussionTransferred(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionTransferred"] = true;
+        }
     }
 
-    remote function onDiscussionCategoryChanged(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionCategoryChanged"] = true;
+    isolated remote function onDiscussionCategoryChanged(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionCategoryChanged"] = true;
+        }
     }
 
-    remote function onDiscussionDeleted(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionDeleted"] = true;
+    isolated remote function onDiscussionDeleted(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionDeleted"] = true;
+        }
     }
 
-    remote function onDiscussionUnlocked(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionUnlocked"] = true;
+    isolated remote function onDiscussionUnlocked(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionUnlocked"] = true;
+        }
     }
 
-    remote function onDiscussionPinned(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionPinned"] = true;
+    isolated remote function onDiscussionPinned(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionPinned"] = true;
+        }
     }
 
-    remote function onDiscussionEdited(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionEdited"] = true;
+    isolated remote function onDiscussionEdited(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionEdited"] = true;
+        }
     }
 
-    remote function onDiscussionReopened(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionReopened"] = true;
+    isolated remote function onDiscussionReopened(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionReopened"] = true;
+        }
     }
 
-    remote function onDiscussionAnswered(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionAnswered"] = true;
+    isolated remote function onDiscussionAnswered(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionAnswered"] = true;
+        }
     }
 
-    remote function onDiscussionClosed(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionClosed"] = true;
+    isolated remote function onDiscussionClosed(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionClosed"] = true;
+        }
     }
 
-    remote function onDiscussionUnlabeled(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionUnlabeled"] = true;
+    isolated remote function onDiscussionUnlabeled(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionUnlabeled"] = true;
+        }
     }
 
-    remote function onDiscussionLabeled(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionLabeled"] = true;
+    isolated remote function onDiscussionLabeled(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionLabeled"] = true;
+        }
     }
 
-    remote function onDiscussionUnpinned(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionUnpinned"] = true;
+    isolated remote function onDiscussionUnpinned(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionUnpinned"] = true;
+        }
     }
 
-    remote function onDiscussionLocked(DiscussionPayload payload) returns error? {
-        triggerFired["DiscussionService.onDiscussionLocked"] = true;
+    isolated remote function onDiscussionLocked(DiscussionPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionService.onDiscussionLocked"] = true;
+        }
     }
 }
 
 service MergeGroupService on triggerTestListener {
-    remote function onMergeGroupDestroyed(MergeGroupPayload payload) returns error? {
-        triggerFired["MergeGroupService.onMergeGroupDestroyed"] = true;
+    isolated remote function onMergeGroupDestroyed(MergeGroupPayload payload) returns error? {
+        lock {
+            triggerFired["MergeGroupService.onMergeGroupDestroyed"] = true;
+        }
     }
 
-    remote function onMergeGroupChecksRequested(MergeGroupPayload payload) returns error? {
-        triggerFired["MergeGroupService.onMergeGroupChecksRequested"] = true;
+    isolated remote function onMergeGroupChecksRequested(MergeGroupPayload payload) returns error? {
+        lock {
+            triggerFired["MergeGroupService.onMergeGroupChecksRequested"] = true;
+        }
     }
 }
 
 service MarketplacePurchaseService on triggerTestListener {
-    remote function onMarketplacePurchasePurchased(MarketplacePurchasePayload payload) returns error? {
-        triggerFired["MarketplacePurchaseService.onMarketplacePurchasePurchased"] = true;
+    isolated remote function onMarketplacePurchasePurchased(MarketplacePurchasePayload payload) returns error? {
+        lock {
+            triggerFired["MarketplacePurchaseService.onMarketplacePurchasePurchased"] = true;
+        }
     }
 
-    remote function onMarketplacePurchaseCancelled(MarketplacePurchasePayload payload) returns error? {
-        triggerFired["MarketplacePurchaseService.onMarketplacePurchaseCancelled"] = true;
+    isolated remote function onMarketplacePurchaseCancelled(MarketplacePurchasePayload payload) returns error? {
+        lock {
+            triggerFired["MarketplacePurchaseService.onMarketplacePurchaseCancelled"] = true;
+        }
     }
 
-    remote function onMarketplacePurchasePendingChangeCancelled(MarketplacePurchasePayload payload) returns error? {
-        triggerFired["MarketplacePurchaseService.onMarketplacePurchasePendingChangeCancelled"] = true;
+    isolated remote function onMarketplacePurchasePendingChangeCancelled(MarketplacePurchasePayload payload) returns error? {
+        lock {
+            triggerFired["MarketplacePurchaseService.onMarketplacePurchasePendingChangeCancelled"] = true;
+        }
     }
 
-    remote function onMarketplacePurchasePendingChange(MarketplacePurchasePayload payload) returns error? {
-        triggerFired["MarketplacePurchaseService.onMarketplacePurchasePendingChange"] = true;
+    isolated remote function onMarketplacePurchasePendingChange(MarketplacePurchasePayload payload) returns error? {
+        lock {
+            triggerFired["MarketplacePurchaseService.onMarketplacePurchasePendingChange"] = true;
+        }
     }
 
-    remote function onMarketplacePurchaseChanged(MarketplacePurchasePayload payload) returns error? {
-        triggerFired["MarketplacePurchaseService.onMarketplacePurchaseChanged"] = true;
+    isolated remote function onMarketplacePurchaseChanged(MarketplacePurchasePayload payload) returns error? {
+        lock {
+            triggerFired["MarketplacePurchaseService.onMarketplacePurchaseChanged"] = true;
+        }
     }
 }
 
 service ProjectColumnService on triggerTestListener {
-    remote function onProjectColumnMoved(ProjectColumnPayload payload) returns error? {
-        triggerFired["ProjectColumnService.onProjectColumnMoved"] = true;
+    isolated remote function onProjectColumnMoved(ProjectColumnPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectColumnService.onProjectColumnMoved"] = true;
+        }
     }
 
-    remote function onProjectColumnEdited(ProjectColumnPayload payload) returns error? {
-        triggerFired["ProjectColumnService.onProjectColumnEdited"] = true;
+    isolated remote function onProjectColumnEdited(ProjectColumnPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectColumnService.onProjectColumnEdited"] = true;
+        }
     }
 
-    remote function onProjectColumnDeleted(ProjectColumnPayload payload) returns error? {
-        triggerFired["ProjectColumnService.onProjectColumnDeleted"] = true;
+    isolated remote function onProjectColumnDeleted(ProjectColumnPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectColumnService.onProjectColumnDeleted"] = true;
+        }
     }
 
-    remote function onProjectColumnCreated(ProjectColumnPayload payload) returns error? {
-        triggerFired["ProjectColumnService.onProjectColumnCreated"] = true;
+    isolated remote function onProjectColumnCreated(ProjectColumnPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectColumnService.onProjectColumnCreated"] = true;
+        }
     }
 }
 
 service MembershipService on triggerTestListener {
-    remote function onMembershipAdded(MembershipPayload payload) returns error? {
-        triggerFired["MembershipService.onMembershipAdded"] = true;
+    isolated remote function onMembershipAdded(MembershipPayload payload) returns error? {
+        lock {
+            triggerFired["MembershipService.onMembershipAdded"] = true;
+        }
     }
 
-    remote function onMembershipRemoved(MembershipPayload payload) returns error? {
-        triggerFired["MembershipService.onMembershipRemoved"] = true;
+    isolated remote function onMembershipRemoved(MembershipPayload payload) returns error? {
+        lock {
+            triggerFired["MembershipService.onMembershipRemoved"] = true;
+        }
     }
 }
 
 service WatchService on triggerTestListener {
-    remote function onWatchStarted(WatchPayload payload) returns error? {
-        triggerFired["WatchService.onWatchStarted"] = true;
+    isolated remote function onWatchStarted(WatchPayload payload) returns error? {
+        lock {
+            triggerFired["WatchService.onWatchStarted"] = true;
+        }
     }
 }
 
 service LabelService on triggerTestListener {
-    remote function onLabelEdited(LabelPayload payload) returns error? {
-        triggerFired["LabelService.onLabelEdited"] = true;
+    isolated remote function onLabelEdited(LabelPayload payload) returns error? {
+        lock {
+            triggerFired["LabelService.onLabelEdited"] = true;
+        }
     }
 
-    remote function onLabelCreated(LabelPayload payload) returns error? {
-        triggerFired["LabelService.onLabelCreated"] = true;
+    isolated remote function onLabelCreated(LabelPayload payload) returns error? {
+        lock {
+            triggerFired["LabelService.onLabelCreated"] = true;
+        }
     }
 
-    remote function onLabelDeleted(LabelPayload payload) returns error? {
-        triggerFired["LabelService.onLabelDeleted"] = true;
+    isolated remote function onLabelDeleted(LabelPayload payload) returns error? {
+        lock {
+            triggerFired["LabelService.onLabelDeleted"] = true;
+        }
     }
 }
 
 service DeleteService on triggerTestListener {
-    remote function onDelete(DeletePayload payload) returns error? {
-        triggerFired["DeleteService.onDelete"] = true;
+    isolated remote function onDelete(DeletePayload payload) returns error? {
+        lock {
+            triggerFired["DeleteService.onDelete"] = true;
+        }
     }
 }
 
 service GithubAppAuthorizationService on triggerTestListener {
-    remote function onGithubAppAuthorizationRevoked(GithubAppAuthorizationPayload payload) returns error? {
-        triggerFired["GithubAppAuthorizationService.onGithubAppAuthorizationRevoked"] = true;
+    isolated remote function onGithubAppAuthorizationRevoked(GithubAppAuthorizationPayload payload) returns error? {
+        lock {
+            triggerFired["GithubAppAuthorizationService.onGithubAppAuthorizationRevoked"] = true;
+        }
     }
 }
 
 service OrganizationService on triggerTestListener {
-    remote function onOrganizationMemberAdded(OrganizationPayload payload) returns error? {
-        triggerFired["OrganizationService.onOrganizationMemberAdded"] = true;
+    isolated remote function onOrganizationMemberAdded(OrganizationPayload payload) returns error? {
+        lock {
+            triggerFired["OrganizationService.onOrganizationMemberAdded"] = true;
+        }
     }
 
-    remote function onOrganizationMemberRemoved(OrganizationPayload payload) returns error? {
-        triggerFired["OrganizationService.onOrganizationMemberRemoved"] = true;
+    isolated remote function onOrganizationMemberRemoved(OrganizationPayload payload) returns error? {
+        lock {
+            triggerFired["OrganizationService.onOrganizationMemberRemoved"] = true;
+        }
     }
 
-    remote function onOrganizationDeleted(OrganizationPayload payload) returns error? {
-        triggerFired["OrganizationService.onOrganizationDeleted"] = true;
+    isolated remote function onOrganizationDeleted(OrganizationPayload payload) returns error? {
+        lock {
+            triggerFired["OrganizationService.onOrganizationDeleted"] = true;
+        }
     }
 
-    remote function onOrganizationRenamed(OrganizationPayload payload) returns error? {
-        triggerFired["OrganizationService.onOrganizationRenamed"] = true;
+    isolated remote function onOrganizationRenamed(OrganizationPayload payload) returns error? {
+        lock {
+            triggerFired["OrganizationService.onOrganizationRenamed"] = true;
+        }
     }
 
-    remote function onOrganizationMemberInvited(OrganizationPayload payload) returns error? {
-        triggerFired["OrganizationService.onOrganizationMemberInvited"] = true;
+    isolated remote function onOrganizationMemberInvited(OrganizationPayload payload) returns error? {
+        lock {
+            triggerFired["OrganizationService.onOrganizationMemberInvited"] = true;
+        }
     }
 }
 
 service WorkflowJobService on triggerTestListener {
-    remote function onWorkflowJobQueued(WorkflowJobPayload payload) returns error? {
-        triggerFired["WorkflowJobService.onWorkflowJobQueued"] = true;
+    isolated remote function onWorkflowJobQueued(WorkflowJobPayload payload) returns error? {
+        lock {
+            triggerFired["WorkflowJobService.onWorkflowJobQueued"] = true;
+        }
     }
 
-    remote function onWorkflowJobWaiting(WorkflowJobPayload payload) returns error? {
-        triggerFired["WorkflowJobService.onWorkflowJobWaiting"] = true;
+    isolated remote function onWorkflowJobWaiting(WorkflowJobPayload payload) returns error? {
+        lock {
+            triggerFired["WorkflowJobService.onWorkflowJobWaiting"] = true;
+        }
     }
 
-    remote function onWorkflowJobCompleted(WorkflowJobPayload payload) returns error? {
-        triggerFired["WorkflowJobService.onWorkflowJobCompleted"] = true;
+    isolated remote function onWorkflowJobCompleted(WorkflowJobPayload payload) returns error? {
+        lock {
+            triggerFired["WorkflowJobService.onWorkflowJobCompleted"] = true;
+        }
     }
 
-    remote function onWorkflowJobInProgress(WorkflowJobPayload payload) returns error? {
-        triggerFired["WorkflowJobService.onWorkflowJobInProgress"] = true;
+    isolated remote function onWorkflowJobInProgress(WorkflowJobPayload payload) returns error? {
+        lock {
+            triggerFired["WorkflowJobService.onWorkflowJobInProgress"] = true;
+        }
     }
 }
 
 service SecurityAndAnalysisService on triggerTestListener {
-    remote function onSecurityAndAnalysis(SecurityAndAnalysisPayload payload) returns error? {
-        triggerFired["SecurityAndAnalysisService.onSecurityAndAnalysis"] = true;
+    isolated remote function onSecurityAndAnalysis(SecurityAndAnalysisPayload payload) returns error? {
+        lock {
+            triggerFired["SecurityAndAnalysisService.onSecurityAndAnalysis"] = true;
+        }
     }
 }
 
 service PullRequestService on triggerTestListener {
-    remote function onPullRequestEnqueued(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestEnqueued"] = true;
+    isolated remote function onPullRequestEnqueued(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestEnqueued"] = true;
+        }
     }
 
-    remote function onPullRequestReviewRequestRemoved(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestReviewRequestRemoved"] = true;
+    isolated remote function onPullRequestReviewRequestRemoved(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestReviewRequestRemoved"] = true;
+        }
     }
 
-    remote function onPullRequestOpened(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestOpened"] = true;
+    isolated remote function onPullRequestOpened(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestOpened"] = true;
+        }
     }
 
-    remote function onPullRequestReadyForReview(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestReadyForReview"] = true;
+    isolated remote function onPullRequestReadyForReview(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestReadyForReview"] = true;
+        }
     }
 
-    remote function onPullRequestLabeled(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestLabeled"] = true;
+    isolated remote function onPullRequestLabeled(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestLabeled"] = true;
+        }
     }
 
-    remote function onPullRequestUnassigned(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestUnassigned"] = true;
+    isolated remote function onPullRequestUnassigned(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestUnassigned"] = true;
+        }
     }
 
-    remote function onPullRequestEdited(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestEdited"] = true;
+    isolated remote function onPullRequestEdited(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestEdited"] = true;
+        }
     }
 
-    remote function onPullRequestSynchronize(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestSynchronize"] = true;
+    isolated remote function onPullRequestSynchronize(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestSynchronize"] = true;
+        }
     }
 
-    remote function onPullRequestReviewRequested(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestReviewRequested"] = true;
+    isolated remote function onPullRequestReviewRequested(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestReviewRequested"] = true;
+        }
     }
 
-    remote function onPullRequestReopened(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestReopened"] = true;
+    isolated remote function onPullRequestReopened(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestReopened"] = true;
+        }
     }
 
-    remote function onPullRequestAutoMergeDisabled(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestAutoMergeDisabled"] = true;
+    isolated remote function onPullRequestAutoMergeDisabled(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestAutoMergeDisabled"] = true;
+        }
     }
 
-    remote function onPullRequestLocked(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestLocked"] = true;
+    isolated remote function onPullRequestLocked(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestLocked"] = true;
+        }
     }
 
-    remote function onPullRequestAutoMergeEnabled(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestAutoMergeEnabled"] = true;
+    isolated remote function onPullRequestAutoMergeEnabled(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestAutoMergeEnabled"] = true;
+        }
     }
 
-    remote function onPullRequestMilestoned(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestMilestoned"] = true;
+    isolated remote function onPullRequestMilestoned(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestMilestoned"] = true;
+        }
     }
 
-    remote function onPullRequestDequeued(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestDequeued"] = true;
+    isolated remote function onPullRequestDequeued(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestDequeued"] = true;
+        }
     }
 
-    remote function onPullRequestUnlabeled(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestUnlabeled"] = true;
+    isolated remote function onPullRequestUnlabeled(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestUnlabeled"] = true;
+        }
     }
 
-    remote function onPullRequestClosed(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestClosed"] = true;
+    isolated remote function onPullRequestClosed(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestClosed"] = true;
+        }
     }
 
-    remote function onPullRequestUnlocked(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestUnlocked"] = true;
+    isolated remote function onPullRequestUnlocked(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestUnlocked"] = true;
+        }
     }
 
-    remote function onPullRequestAssigned(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestAssigned"] = true;
+    isolated remote function onPullRequestAssigned(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestAssigned"] = true;
+        }
     }
 
-    remote function onPullRequestConvertedToDraft(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestConvertedToDraft"] = true;
+    isolated remote function onPullRequestConvertedToDraft(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestConvertedToDraft"] = true;
+        }
     }
 
-    remote function onPullRequestDemilestoned(PullRequestPayload payload) returns error? {
-        triggerFired["PullRequestService.onPullRequestDemilestoned"] = true;
+    isolated remote function onPullRequestDemilestoned(PullRequestPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestService.onPullRequestDemilestoned"] = true;
+        }
     }
 }
 
 service ProjectsV2statusUpdateService on triggerTestListener {
-    remote function onProjectsV2StatusUpdateEdited('ProjectsV2StatusUpdatePayload payload) returns error? {
-        triggerFired["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateEdited"] = true;
+    isolated remote function onProjectsV2StatusUpdateEdited('ProjectsV2StatusUpdatePayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateEdited"] = true;
+        }
     }
 
-    remote function onProjectsV2StatusUpdateDeleted('ProjectsV2StatusUpdatePayload payload) returns error? {
-        triggerFired["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateDeleted"] = true;
+    isolated remote function onProjectsV2StatusUpdateDeleted('ProjectsV2StatusUpdatePayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateDeleted"] = true;
+        }
     }
 
-    remote function onProjectsV2StatusUpdateCreated('ProjectsV2StatusUpdatePayload payload) returns error? {
-        triggerFired["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateCreated"] = true;
+    isolated remote function onProjectsV2StatusUpdateCreated('ProjectsV2StatusUpdatePayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateCreated"] = true;
+        }
     }
 }
 
 service GollumService on triggerTestListener {
-    remote function onGollum(GollumPayload payload) returns error? {
-        triggerFired["GollumService.onGollum"] = true;
+    isolated remote function onGollum(GollumPayload payload) returns error? {
+        lock {
+            triggerFired["GollumService.onGollum"] = true;
+        }
     }
 }
 
 service DeploymentService on triggerTestListener {
-    remote function onDeploymentCreated(DeploymentPayload payload) returns error? {
-        triggerFired["DeploymentService.onDeploymentCreated"] = true;
+    isolated remote function onDeploymentCreated(DeploymentPayload payload) returns error? {
+        lock {
+            triggerFired["DeploymentService.onDeploymentCreated"] = true;
+        }
     }
 }
 
 service PageBuildService on triggerTestListener {
-    remote function onPageBuild(PageBuildPayload payload) returns error? {
-        triggerFired["PageBuildService.onPageBuild"] = true;
+    isolated remote function onPageBuild(PageBuildPayload payload) returns error? {
+        lock {
+            triggerFired["PageBuildService.onPageBuild"] = true;
+        }
     }
 }
 
 service RepositoryImportService on triggerTestListener {
-    remote function onRepositoryImport(RepositoryImportPayload payload) returns error? {
-        triggerFired["RepositoryImportService.onRepositoryImport"] = true;
+    isolated remote function onRepositoryImport(RepositoryImportPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryImportService.onRepositoryImport"] = true;
+        }
     }
 }
 
 service BranchProtectionRuleService on triggerTestListener {
-    remote function onBranchProtectionRuleDeleted(BranchProtectionRulePayload payload) returns error? {
-        triggerFired["BranchProtectionRuleService.onBranchProtectionRuleDeleted"] = true;
+    isolated remote function onBranchProtectionRuleDeleted(BranchProtectionRulePayload payload) returns error? {
+        lock {
+            triggerFired["BranchProtectionRuleService.onBranchProtectionRuleDeleted"] = true;
+        }
     }
 
-    remote function onBranchProtectionRuleEdited(BranchProtectionRulePayload payload) returns error? {
-        triggerFired["BranchProtectionRuleService.onBranchProtectionRuleEdited"] = true;
+    isolated remote function onBranchProtectionRuleEdited(BranchProtectionRulePayload payload) returns error? {
+        lock {
+            triggerFired["BranchProtectionRuleService.onBranchProtectionRuleEdited"] = true;
+        }
     }
 
-    remote function onBranchProtectionRuleCreated(BranchProtectionRulePayload payload) returns error? {
-        triggerFired["BranchProtectionRuleService.onBranchProtectionRuleCreated"] = true;
+    isolated remote function onBranchProtectionRuleCreated(BranchProtectionRulePayload payload) returns error? {
+        lock {
+            triggerFired["BranchProtectionRuleService.onBranchProtectionRuleCreated"] = true;
+        }
     }
 }
 
 service DependabotAlertService on triggerTestListener {
-    remote function onDependabotAlertAutoDismissed(DependabotAlertPayload payload) returns error? {
-        triggerFired["DependabotAlertService.onDependabotAlertAutoDismissed"] = true;
+    isolated remote function onDependabotAlertAutoDismissed(DependabotAlertPayload payload) returns error? {
+        lock {
+            triggerFired["DependabotAlertService.onDependabotAlertAutoDismissed"] = true;
+        }
     }
 
-    remote function onDependabotAlertAutoReopened(DependabotAlertPayload payload) returns error? {
-        triggerFired["DependabotAlertService.onDependabotAlertAutoReopened"] = true;
+    isolated remote function onDependabotAlertAutoReopened(DependabotAlertPayload payload) returns error? {
+        lock {
+            triggerFired["DependabotAlertService.onDependabotAlertAutoReopened"] = true;
+        }
     }
 
-    remote function onDependabotAlertCreated(DependabotAlertPayload payload) returns error? {
-        triggerFired["DependabotAlertService.onDependabotAlertCreated"] = true;
+    isolated remote function onDependabotAlertCreated(DependabotAlertPayload payload) returns error? {
+        lock {
+            triggerFired["DependabotAlertService.onDependabotAlertCreated"] = true;
+        }
     }
 
-    remote function onDependabotAlertDismissed(DependabotAlertPayload payload) returns error? {
-        triggerFired["DependabotAlertService.onDependabotAlertDismissed"] = true;
+    isolated remote function onDependabotAlertDismissed(DependabotAlertPayload payload) returns error? {
+        lock {
+            triggerFired["DependabotAlertService.onDependabotAlertDismissed"] = true;
+        }
     }
 
-    remote function onDependabotAlertReopened(DependabotAlertPayload payload) returns error? {
-        triggerFired["DependabotAlertService.onDependabotAlertReopened"] = true;
+    isolated remote function onDependabotAlertReopened(DependabotAlertPayload payload) returns error? {
+        lock {
+            triggerFired["DependabotAlertService.onDependabotAlertReopened"] = true;
+        }
     }
 
-    remote function onDependabotAlertReintroduced(DependabotAlertPayload payload) returns error? {
-        triggerFired["DependabotAlertService.onDependabotAlertReintroduced"] = true;
+    isolated remote function onDependabotAlertReintroduced(DependabotAlertPayload payload) returns error? {
+        lock {
+            triggerFired["DependabotAlertService.onDependabotAlertReintroduced"] = true;
+        }
     }
 
-    remote function onDependabotAlertAssigneesChanged(DependabotAlertPayload payload) returns error? {
-        triggerFired["DependabotAlertService.onDependabotAlertAssigneesChanged"] = true;
+    isolated remote function onDependabotAlertAssigneesChanged(DependabotAlertPayload payload) returns error? {
+        lock {
+            triggerFired["DependabotAlertService.onDependabotAlertAssigneesChanged"] = true;
+        }
     }
 
-    remote function onDependabotAlertFixed(DependabotAlertPayload payload) returns error? {
-        triggerFired["DependabotAlertService.onDependabotAlertFixed"] = true;
+    isolated remote function onDependabotAlertFixed(DependabotAlertPayload payload) returns error? {
+        lock {
+            triggerFired["DependabotAlertService.onDependabotAlertFixed"] = true;
+        }
     }
 }
 
 service TeamService on triggerTestListener {
-    remote function onTeamCreated(TeamPayload payload) returns error? {
-        triggerFired["TeamService.onTeamCreated"] = true;
+    isolated remote function onTeamCreated(TeamPayload payload) returns error? {
+        lock {
+            triggerFired["TeamService.onTeamCreated"] = true;
+        }
     }
 
-    remote function onTeamDeleted(TeamPayload payload) returns error? {
-        triggerFired["TeamService.onTeamDeleted"] = true;
+    isolated remote function onTeamDeleted(TeamPayload payload) returns error? {
+        lock {
+            triggerFired["TeamService.onTeamDeleted"] = true;
+        }
     }
 
-    remote function onTeamEdited(TeamPayload payload) returns error? {
-        triggerFired["TeamService.onTeamEdited"] = true;
+    isolated remote function onTeamEdited(TeamPayload payload) returns error? {
+        lock {
+            triggerFired["TeamService.onTeamEdited"] = true;
+        }
     }
 
-    remote function onTeamAddedToRepository(TeamPayload payload) returns error? {
-        triggerFired["TeamService.onTeamAddedToRepository"] = true;
+    isolated remote function onTeamAddedToRepository(TeamPayload payload) returns error? {
+        lock {
+            triggerFired["TeamService.onTeamAddedToRepository"] = true;
+        }
     }
 
-    remote function onTeamRemovedFromRepository(TeamPayload payload) returns error? {
-        triggerFired["TeamService.onTeamRemovedFromRepository"] = true;
+    isolated remote function onTeamRemovedFromRepository(TeamPayload payload) returns error? {
+        lock {
+            triggerFired["TeamService.onTeamRemovedFromRepository"] = true;
+        }
     }
 }
 
 service SecretScanningAlertLocationService on triggerTestListener {
-    remote function onSecretScanningAlertLocation(SecretScanningAlertLocationPayload payload) returns error? {
-        triggerFired["SecretScanningAlertLocationService.onSecretScanningAlertLocation"] = true;
+    isolated remote function onSecretScanningAlertLocation(SecretScanningAlertLocationPayload payload) returns error? {
+        lock {
+            triggerFired["SecretScanningAlertLocationService.onSecretScanningAlertLocation"] = true;
+        }
     }
 }
 
 service WorkflowRunService on triggerTestListener {
-    remote function onWorkflowRunInProgress(WorkflowRunPayload payload) returns error? {
-        triggerFired["WorkflowRunService.onWorkflowRunInProgress"] = true;
+    isolated remote function onWorkflowRunInProgress(WorkflowRunPayload payload) returns error? {
+        lock {
+            triggerFired["WorkflowRunService.onWorkflowRunInProgress"] = true;
+        }
     }
 
-    remote function onWorkflowRunCompleted(WorkflowRunPayload payload) returns error? {
-        triggerFired["WorkflowRunService.onWorkflowRunCompleted"] = true;
+    isolated remote function onWorkflowRunCompleted(WorkflowRunPayload payload) returns error? {
+        lock {
+            triggerFired["WorkflowRunService.onWorkflowRunCompleted"] = true;
+        }
     }
 
-    remote function onWorkflowRunRequested(WorkflowRunPayload payload) returns error? {
-        triggerFired["WorkflowRunService.onWorkflowRunRequested"] = true;
+    isolated remote function onWorkflowRunRequested(WorkflowRunPayload payload) returns error? {
+        lock {
+            triggerFired["WorkflowRunService.onWorkflowRunRequested"] = true;
+        }
     }
 }
 
 service DeployKeyService on triggerTestListener {
-    remote function onDeployKeyCreated(DeployKeyPayload payload) returns error? {
-        triggerFired["DeployKeyService.onDeployKeyCreated"] = true;
+    isolated remote function onDeployKeyCreated(DeployKeyPayload payload) returns error? {
+        lock {
+            triggerFired["DeployKeyService.onDeployKeyCreated"] = true;
+        }
     }
 
-    remote function onDeployKeyDeleted(DeployKeyPayload payload) returns error? {
-        triggerFired["DeployKeyService.onDeployKeyDeleted"] = true;
+    isolated remote function onDeployKeyDeleted(DeployKeyPayload payload) returns error? {
+        lock {
+            triggerFired["DeployKeyService.onDeployKeyDeleted"] = true;
+        }
     }
 }
 
 service StarService on triggerTestListener {
-    remote function onStarCreated(StarPayload payload) returns error? {
-        triggerFired["StarService.onStarCreated"] = true;
+    isolated remote function onStarCreated(StarPayload payload) returns error? {
+        lock {
+            triggerFired["StarService.onStarCreated"] = true;
+        }
     }
 
-    remote function onStarDeleted(StarPayload payload) returns error? {
-        triggerFired["StarService.onStarDeleted"] = true;
+    isolated remote function onStarDeleted(StarPayload payload) returns error? {
+        lock {
+            triggerFired["StarService.onStarDeleted"] = true;
+        }
     }
 }
 
 service RegistryPackageService on triggerTestListener {
-    remote function onRegistryPackageUpdated(RegistryPackagePayload payload) returns error? {
-        triggerFired["RegistryPackageService.onRegistryPackageUpdated"] = true;
+    isolated remote function onRegistryPackageUpdated(RegistryPackagePayload payload) returns error? {
+        lock {
+            triggerFired["RegistryPackageService.onRegistryPackageUpdated"] = true;
+        }
     }
 
-    remote function onRegistryPackagePublished(RegistryPackagePayload payload) returns error? {
-        triggerFired["RegistryPackageService.onRegistryPackagePublished"] = true;
+    isolated remote function onRegistryPackagePublished(RegistryPackagePayload payload) returns error? {
+        lock {
+            triggerFired["RegistryPackageService.onRegistryPackagePublished"] = true;
+        }
     }
 }
 
 service RepositoryRulesetService on triggerTestListener {
-    remote function onRepositoryRulesetCreated(RepositoryRulesetPayload payload) returns error? {
-        triggerFired["RepositoryRulesetService.onRepositoryRulesetCreated"] = true;
+    isolated remote function onRepositoryRulesetCreated(RepositoryRulesetPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryRulesetService.onRepositoryRulesetCreated"] = true;
+        }
     }
 
-    remote function onRepositoryRulesetEdited(RepositoryRulesetPayload payload) returns error? {
-        triggerFired["RepositoryRulesetService.onRepositoryRulesetEdited"] = true;
+    isolated remote function onRepositoryRulesetEdited(RepositoryRulesetPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryRulesetService.onRepositoryRulesetEdited"] = true;
+        }
     }
 
-    remote function onRepositoryRulesetDeleted(RepositoryRulesetPayload payload) returns error? {
-        triggerFired["RepositoryRulesetService.onRepositoryRulesetDeleted"] = true;
+    isolated remote function onRepositoryRulesetDeleted(RepositoryRulesetPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryRulesetService.onRepositoryRulesetDeleted"] = true;
+        }
     }
 }
 
 service OrgBlockService on triggerTestListener {
-    remote function onOrgBlockBlocked(OrgBlockPayload payload) returns error? {
-        triggerFired["OrgBlockService.onOrgBlockBlocked"] = true;
+    isolated remote function onOrgBlockBlocked(OrgBlockPayload payload) returns error? {
+        lock {
+            triggerFired["OrgBlockService.onOrgBlockBlocked"] = true;
+        }
     }
 
-    remote function onOrgBlockUnblocked(OrgBlockPayload payload) returns error? {
-        triggerFired["OrgBlockService.onOrgBlockUnblocked"] = true;
+    isolated remote function onOrgBlockUnblocked(OrgBlockPayload payload) returns error? {
+        lock {
+            triggerFired["OrgBlockService.onOrgBlockUnblocked"] = true;
+        }
     }
 }
 
 service PullRequestReviewService on triggerTestListener {
-    remote function onPullRequestReviewSubmitted(PullRequestReviewPayload payload) returns error? {
-        triggerFired["PullRequestReviewService.onPullRequestReviewSubmitted"] = true;
+    isolated remote function onPullRequestReviewSubmitted(PullRequestReviewPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestReviewService.onPullRequestReviewSubmitted"] = true;
+        }
     }
 
-    remote function onPullRequestReviewEdited(PullRequestReviewPayload payload) returns error? {
-        triggerFired["PullRequestReviewService.onPullRequestReviewEdited"] = true;
+    isolated remote function onPullRequestReviewEdited(PullRequestReviewPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestReviewService.onPullRequestReviewEdited"] = true;
+        }
     }
 
-    remote function onPullRequestReviewDismissed(PullRequestReviewPayload payload) returns error? {
-        triggerFired["PullRequestReviewService.onPullRequestReviewDismissed"] = true;
+    isolated remote function onPullRequestReviewDismissed(PullRequestReviewPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestReviewService.onPullRequestReviewDismissed"] = true;
+        }
     }
 }
 
 service InstallationRepositoriesService on triggerTestListener {
-    remote function onInstallationRepositoriesRemoved(InstallationRepositoriesPayload payload) returns error? {
-        triggerFired["InstallationRepositoriesService.onInstallationRepositoriesRemoved"] = true;
+    isolated remote function onInstallationRepositoriesRemoved(InstallationRepositoriesPayload payload) returns error? {
+        lock {
+            triggerFired["InstallationRepositoriesService.onInstallationRepositoriesRemoved"] = true;
+        }
     }
 
-    remote function onInstallationRepositoriesAdded(InstallationRepositoriesPayload payload) returns error? {
-        triggerFired["InstallationRepositoriesService.onInstallationRepositoriesAdded"] = true;
+    isolated remote function onInstallationRepositoriesAdded(InstallationRepositoriesPayload payload) returns error? {
+        lock {
+            triggerFired["InstallationRepositoriesService.onInstallationRepositoriesAdded"] = true;
+        }
     }
 }
 
 service IssuesService on triggerTestListener {
-    remote function onIssuesReopened(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesReopened"] = true;
+    isolated remote function onIssuesReopened(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesReopened"] = true;
+        }
     }
 
-    remote function onIssuesTransferred(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesTransferred"] = true;
+    isolated remote function onIssuesTransferred(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesTransferred"] = true;
+        }
     }
 
-    remote function onIssuesUnpinned(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesUnpinned"] = true;
+    isolated remote function onIssuesUnpinned(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesUnpinned"] = true;
+        }
     }
 
-    remote function onIssuesAssigned(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesAssigned"] = true;
+    isolated remote function onIssuesAssigned(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesAssigned"] = true;
+        }
     }
 
-    remote function onIssuesMilestoned(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesMilestoned"] = true;
+    isolated remote function onIssuesMilestoned(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesMilestoned"] = true;
+        }
     }
 
-    remote function onIssuesLabeled(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesLabeled"] = true;
+    isolated remote function onIssuesLabeled(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesLabeled"] = true;
+        }
     }
 
-    remote function onIssuesOpened(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesOpened"] = true;
+    isolated remote function onIssuesOpened(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesOpened"] = true;
+        }
     }
 
-    remote function onIssuesPinned(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesPinned"] = true;
+    isolated remote function onIssuesPinned(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesPinned"] = true;
+        }
     }
 
-    remote function onIssuesTyped(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesTyped"] = true;
+    isolated remote function onIssuesTyped(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesTyped"] = true;
+        }
     }
 
-    remote function onIssuesEdited(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesEdited"] = true;
+    isolated remote function onIssuesEdited(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesEdited"] = true;
+        }
     }
 
-    remote function onIssuesUntyped(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesUntyped"] = true;
+    isolated remote function onIssuesUntyped(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesUntyped"] = true;
+        }
     }
 
-    remote function onIssuesDemilestoned(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesDemilestoned"] = true;
+    isolated remote function onIssuesDemilestoned(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesDemilestoned"] = true;
+        }
     }
 
-    remote function onIssuesLocked(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesLocked"] = true;
+    isolated remote function onIssuesLocked(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesLocked"] = true;
+        }
     }
 
-    remote function onIssuesUnassigned(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesUnassigned"] = true;
+    isolated remote function onIssuesUnassigned(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesUnassigned"] = true;
+        }
     }
 
-    remote function onIssuesUnlocked(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesUnlocked"] = true;
+    isolated remote function onIssuesUnlocked(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesUnlocked"] = true;
+        }
     }
 
-    remote function onIssuesUnlabeled(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesUnlabeled"] = true;
+    isolated remote function onIssuesUnlabeled(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesUnlabeled"] = true;
+        }
     }
 
-    remote function onIssuesClosed(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesClosed"] = true;
+    isolated remote function onIssuesClosed(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesClosed"] = true;
+        }
     }
 
-    remote function onIssuesDeleted(IssuesPayload payload) returns error? {
-        triggerFired["IssuesService.onIssuesDeleted"] = true;
+    isolated remote function onIssuesDeleted(IssuesPayload payload) returns error? {
+        lock {
+            triggerFired["IssuesService.onIssuesDeleted"] = true;
+        }
     }
 }
 
 service CheckRunService on triggerTestListener {
-    remote function onCheckRunCreated(CheckRunPayload payload) returns error? {
-        triggerFired["CheckRunService.onCheckRunCreated"] = true;
+    isolated remote function onCheckRunCreated(CheckRunPayload payload) returns error? {
+        lock {
+            triggerFired["CheckRunService.onCheckRunCreated"] = true;
+        }
     }
 
-    remote function onCheckRunCompleted(CheckRunPayload payload) returns error? {
-        triggerFired["CheckRunService.onCheckRunCompleted"] = true;
+    isolated remote function onCheckRunCompleted(CheckRunPayload payload) returns error? {
+        lock {
+            triggerFired["CheckRunService.onCheckRunCompleted"] = true;
+        }
     }
 
-    remote function onCheckRunRequestedAction(CheckRunPayload payload) returns error? {
-        triggerFired["CheckRunService.onCheckRunRequestedAction"] = true;
+    isolated remote function onCheckRunRequestedAction(CheckRunPayload payload) returns error? {
+        lock {
+            triggerFired["CheckRunService.onCheckRunRequestedAction"] = true;
+        }
     }
 
-    remote function onCheckRunRerequested(CheckRunPayload payload) returns error? {
-        triggerFired["CheckRunService.onCheckRunRerequested"] = true;
+    isolated remote function onCheckRunRerequested(CheckRunPayload payload) returns error? {
+        lock {
+            triggerFired["CheckRunService.onCheckRunRerequested"] = true;
+        }
     }
 }
 
 service DiscussionCommentService on triggerTestListener {
-    remote function onDiscussionCommentDeleted(DiscussionCommentPayload payload) returns error? {
-        triggerFired["DiscussionCommentService.onDiscussionCommentDeleted"] = true;
+    isolated remote function onDiscussionCommentDeleted(DiscussionCommentPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionCommentService.onDiscussionCommentDeleted"] = true;
+        }
     }
 
-    remote function onDiscussionCommentCreated(DiscussionCommentPayload payload) returns error? {
-        triggerFired["DiscussionCommentService.onDiscussionCommentCreated"] = true;
+    isolated remote function onDiscussionCommentCreated(DiscussionCommentPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionCommentService.onDiscussionCommentCreated"] = true;
+        }
     }
 
-    remote function onDiscussionCommentEdited(DiscussionCommentPayload payload) returns error? {
-        triggerFired["DiscussionCommentService.onDiscussionCommentEdited"] = true;
+    isolated remote function onDiscussionCommentEdited(DiscussionCommentPayload payload) returns error? {
+        lock {
+            triggerFired["DiscussionCommentService.onDiscussionCommentEdited"] = true;
+        }
     }
 }
 
 service CustomPropertyValuesService on triggerTestListener {
-    remote function onCustomPropertyValuesUpdated(CustomPropertyValuesPayload payload) returns error? {
-        triggerFired["CustomPropertyValuesService.onCustomPropertyValuesUpdated"] = true;
+    isolated remote function onCustomPropertyValuesUpdated(CustomPropertyValuesPayload payload) returns error? {
+        lock {
+            triggerFired["CustomPropertyValuesService.onCustomPropertyValuesUpdated"] = true;
+        }
     }
 }
 
 service CommitCommentService on triggerTestListener {
-    remote function onCommitCommentCreated(CommitCommentPayload payload) returns error? {
-        triggerFired["CommitCommentService.onCommitCommentCreated"] = true;
+    isolated remote function onCommitCommentCreated(CommitCommentPayload payload) returns error? {
+        lock {
+            triggerFired["CommitCommentService.onCommitCommentCreated"] = true;
+        }
     }
 }
 
 service ForkService on triggerTestListener {
-    remote function onFork(ForkPayload payload) returns error? {
-        triggerFired["ForkService.onFork"] = true;
+    isolated remote function onFork(ForkPayload payload) returns error? {
+        lock {
+            triggerFired["ForkService.onFork"] = true;
+        }
     }
 }
 
 service SponsorshipService on triggerTestListener {
-    remote function onSponsorshipCancelled(SponsorshipPayload payload) returns error? {
-        triggerFired["SponsorshipService.onSponsorshipCancelled"] = true;
+    isolated remote function onSponsorshipCancelled(SponsorshipPayload payload) returns error? {
+        lock {
+            triggerFired["SponsorshipService.onSponsorshipCancelled"] = true;
+        }
     }
 
-    remote function onSponsorshipEdited(SponsorshipPayload payload) returns error? {
-        triggerFired["SponsorshipService.onSponsorshipEdited"] = true;
+    isolated remote function onSponsorshipEdited(SponsorshipPayload payload) returns error? {
+        lock {
+            triggerFired["SponsorshipService.onSponsorshipEdited"] = true;
+        }
     }
 
-    remote function onSponsorshipTierChanged(SponsorshipPayload payload) returns error? {
-        triggerFired["SponsorshipService.onSponsorshipTierChanged"] = true;
+    isolated remote function onSponsorshipTierChanged(SponsorshipPayload payload) returns error? {
+        lock {
+            triggerFired["SponsorshipService.onSponsorshipTierChanged"] = true;
+        }
     }
 
-    remote function onSponsorshipPendingCancellation(SponsorshipPayload payload) returns error? {
-        triggerFired["SponsorshipService.onSponsorshipPendingCancellation"] = true;
+    isolated remote function onSponsorshipPendingCancellation(SponsorshipPayload payload) returns error? {
+        lock {
+            triggerFired["SponsorshipService.onSponsorshipPendingCancellation"] = true;
+        }
     }
 
-    remote function onSponsorshipCreated(SponsorshipPayload payload) returns error? {
-        triggerFired["SponsorshipService.onSponsorshipCreated"] = true;
+    isolated remote function onSponsorshipCreated(SponsorshipPayload payload) returns error? {
+        lock {
+            triggerFired["SponsorshipService.onSponsorshipCreated"] = true;
+        }
     }
 
-    remote function onSponsorshipPendingTierChange(SponsorshipPayload payload) returns error? {
-        triggerFired["SponsorshipService.onSponsorshipPendingTierChange"] = true;
+    isolated remote function onSponsorshipPendingTierChange(SponsorshipPayload payload) returns error? {
+        lock {
+            triggerFired["SponsorshipService.onSponsorshipPendingTierChange"] = true;
+        }
     }
 }
 
 service PullRequestReviewThreadService on triggerTestListener {
-    remote function onPullRequestReviewThreadUnresolved(PullRequestReviewThreadPayload payload) returns error? {
-        triggerFired["PullRequestReviewThreadService.onPullRequestReviewThreadUnresolved"] = true;
+    isolated remote function onPullRequestReviewThreadUnresolved(PullRequestReviewThreadPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestReviewThreadService.onPullRequestReviewThreadUnresolved"] = true;
+        }
     }
 
-    remote function onPullRequestReviewThreadResolved(PullRequestReviewThreadPayload payload) returns error? {
-        triggerFired["PullRequestReviewThreadService.onPullRequestReviewThreadResolved"] = true;
+    isolated remote function onPullRequestReviewThreadResolved(PullRequestReviewThreadPayload payload) returns error? {
+        lock {
+            triggerFired["PullRequestReviewThreadService.onPullRequestReviewThreadResolved"] = true;
+        }
     }
 }
 
 service RepositoryDispatchService on triggerTestListener {
-    remote function onRepositoryDispatch(RepositoryDispatchPayload payload) returns error? {
-        triggerFired["RepositoryDispatchService.onRepositoryDispatch"] = true;
+    isolated remote function onRepositoryDispatch(RepositoryDispatchPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryDispatchService.onRepositoryDispatch"] = true;
+        }
     }
 }
 
 service DeploymentProtectionRuleService on triggerTestListener {
-    remote function onDeploymentProtectionRule(DeploymentProtectionRulePayload payload) returns error? {
-        triggerFired["DeploymentProtectionRuleService.onDeploymentProtectionRule"] = true;
+    isolated remote function onDeploymentProtectionRule(DeploymentProtectionRulePayload payload) returns error? {
+        lock {
+            triggerFired["DeploymentProtectionRuleService.onDeploymentProtectionRule"] = true;
+        }
     }
 }
 
 service CreateService on triggerTestListener {
-    remote function onCreate(CreatePayload payload) returns error? {
-        triggerFired["CreateService.onCreate"] = true;
+    isolated remote function onCreate(CreatePayload payload) returns error? {
+        lock {
+            triggerFired["CreateService.onCreate"] = true;
+        }
     }
 }
 
 service WorkflowDispatchService on triggerTestListener {
-    remote function onWorkflowDispatch(WorkflowDispatchPayload payload) returns error? {
-        triggerFired["WorkflowDispatchService.onWorkflowDispatch"] = true;
+    isolated remote function onWorkflowDispatch(WorkflowDispatchPayload payload) returns error? {
+        lock {
+            triggerFired["WorkflowDispatchService.onWorkflowDispatch"] = true;
+        }
     }
 }
 
 service BranchProtectionConfigurationService on triggerTestListener {
-    remote function onBranchProtectionConfigurationEnabled(BranchProtectionConfigurationPayload payload) returns error? {
-        triggerFired["BranchProtectionConfigurationService.onBranchProtectionConfigurationEnabled"] = true;
+    isolated remote function onBranchProtectionConfigurationEnabled(BranchProtectionConfigurationPayload payload) returns error? {
+        lock {
+            triggerFired["BranchProtectionConfigurationService.onBranchProtectionConfigurationEnabled"] = true;
+        }
     }
 
-    remote function onBranchProtectionConfigurationDisabled(BranchProtectionConfigurationPayload payload) returns error? {
-        triggerFired["BranchProtectionConfigurationService.onBranchProtectionConfigurationDisabled"] = true;
+    isolated remote function onBranchProtectionConfigurationDisabled(BranchProtectionConfigurationPayload payload) returns error? {
+        lock {
+            triggerFired["BranchProtectionConfigurationService.onBranchProtectionConfigurationDisabled"] = true;
+        }
     }
 }
 
 service ProjectsV2Service on triggerTestListener {
-    remote function onProjectsV2Created('ProjectsV2Payload payload) returns error? {
-        triggerFired["ProjectsV2Service.onProjectsV2Created"] = true;
+    isolated remote function onProjectsV2Created('ProjectsV2Payload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2Service.onProjectsV2Created"] = true;
+        }
     }
 
-    remote function onProjectsV2Edited('ProjectsV2Payload payload) returns error? {
-        triggerFired["ProjectsV2Service.onProjectsV2Edited"] = true;
+    isolated remote function onProjectsV2Edited('ProjectsV2Payload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2Service.onProjectsV2Edited"] = true;
+        }
     }
 
-    remote function onProjectsV2Closed('ProjectsV2Payload payload) returns error? {
-        triggerFired["ProjectsV2Service.onProjectsV2Closed"] = true;
+    isolated remote function onProjectsV2Closed('ProjectsV2Payload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2Service.onProjectsV2Closed"] = true;
+        }
     }
 
-    remote function onProjectsV2Reopened('ProjectsV2Payload payload) returns error? {
-        triggerFired["ProjectsV2Service.onProjectsV2Reopened"] = true;
+    isolated remote function onProjectsV2Reopened('ProjectsV2Payload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2Service.onProjectsV2Reopened"] = true;
+        }
     }
 
-    remote function onProjectsV2Deleted('ProjectsV2Payload payload) returns error? {
-        triggerFired["ProjectsV2Service.onProjectsV2Deleted"] = true;
+    isolated remote function onProjectsV2Deleted('ProjectsV2Payload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2Service.onProjectsV2Deleted"] = true;
+        }
     }
 }
 
 service ProjectCardService on triggerTestListener {
-    remote function onProjectCardEdited(ProjectCardPayload payload) returns error? {
-        triggerFired["ProjectCardService.onProjectCardEdited"] = true;
+    isolated remote function onProjectCardEdited(ProjectCardPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectCardService.onProjectCardEdited"] = true;
+        }
     }
 
-    remote function onProjectCardDeleted(ProjectCardPayload payload) returns error? {
-        triggerFired["ProjectCardService.onProjectCardDeleted"] = true;
+    isolated remote function onProjectCardDeleted(ProjectCardPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectCardService.onProjectCardDeleted"] = true;
+        }
     }
 
-    remote function onProjectCardMoved(ProjectCardPayload payload) returns error? {
-        triggerFired["ProjectCardService.onProjectCardMoved"] = true;
+    isolated remote function onProjectCardMoved(ProjectCardPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectCardService.onProjectCardMoved"] = true;
+        }
     }
 
-    remote function onProjectCardConverted(ProjectCardPayload payload) returns error? {
-        triggerFired["ProjectCardService.onProjectCardConverted"] = true;
+    isolated remote function onProjectCardConverted(ProjectCardPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectCardService.onProjectCardConverted"] = true;
+        }
     }
 
-    remote function onProjectCardCreated(ProjectCardPayload payload) returns error? {
-        triggerFired["ProjectCardService.onProjectCardCreated"] = true;
+    isolated remote function onProjectCardCreated(ProjectCardPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectCardService.onProjectCardCreated"] = true;
+        }
     }
 }
 
 service SubIssuesService on triggerTestListener {
-    remote function onSubIssuesSubIssueAdded(SubIssuesPayload payload) returns error? {
-        triggerFired["SubIssuesService.onSubIssuesSubIssueAdded"] = true;
+    isolated remote function onSubIssuesSubIssueAdded(SubIssuesPayload payload) returns error? {
+        lock {
+            triggerFired["SubIssuesService.onSubIssuesSubIssueAdded"] = true;
+        }
     }
 
-    remote function onSubIssuesParentIssueAdded(SubIssuesPayload payload) returns error? {
-        triggerFired["SubIssuesService.onSubIssuesParentIssueAdded"] = true;
+    isolated remote function onSubIssuesParentIssueAdded(SubIssuesPayload payload) returns error? {
+        lock {
+            triggerFired["SubIssuesService.onSubIssuesParentIssueAdded"] = true;
+        }
     }
 
-    remote function onSubIssuesSubIssueRemoved(SubIssuesPayload payload) returns error? {
-        triggerFired["SubIssuesService.onSubIssuesSubIssueRemoved"] = true;
+    isolated remote function onSubIssuesSubIssueRemoved(SubIssuesPayload payload) returns error? {
+        lock {
+            triggerFired["SubIssuesService.onSubIssuesSubIssueRemoved"] = true;
+        }
     }
 
-    remote function onSubIssuesParentIssueRemoved(SubIssuesPayload payload) returns error? {
-        triggerFired["SubIssuesService.onSubIssuesParentIssueRemoved"] = true;
+    isolated remote function onSubIssuesParentIssueRemoved(SubIssuesPayload payload) returns error? {
+        lock {
+            triggerFired["SubIssuesService.onSubIssuesParentIssueRemoved"] = true;
+        }
     }
 }
 
 service PingService on triggerTestListener {
-    remote function onPing(PingPayload payload) returns error? {
-        triggerFired["PingService.onPing"] = true;
+    isolated remote function onPing(PingPayload payload) returns error? {
+        lock {
+            triggerFired["PingService.onPing"] = true;
+        }
     }
 }
 
 service PackageService on triggerTestListener {
-    remote function onPackagePublished(PackagePayload payload) returns error? {
-        triggerFired["PackageService.onPackagePublished"] = true;
+    isolated remote function onPackagePublished(PackagePayload payload) returns error? {
+        lock {
+            triggerFired["PackageService.onPackagePublished"] = true;
+        }
     }
 
-    remote function onPackageUpdated(PackagePayload payload) returns error? {
-        triggerFired["PackageService.onPackageUpdated"] = true;
+    isolated remote function onPackageUpdated(PackagePayload payload) returns error? {
+        lock {
+            triggerFired["PackageService.onPackageUpdated"] = true;
+        }
     }
 }
 
 service RepositoryService on triggerTestListener {
-    remote function onRepositoryPrivatized(RepositoryPayload payload) returns error? {
-        triggerFired["RepositoryService.onRepositoryPrivatized"] = true;
+    isolated remote function onRepositoryPrivatized(RepositoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryService.onRepositoryPrivatized"] = true;
+        }
     }
 
-    remote function onRepositoryCreated(RepositoryPayload payload) returns error? {
-        triggerFired["RepositoryService.onRepositoryCreated"] = true;
+    isolated remote function onRepositoryCreated(RepositoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryService.onRepositoryCreated"] = true;
+        }
     }
 
-    remote function onRepositoryRenamed(RepositoryPayload payload) returns error? {
-        triggerFired["RepositoryService.onRepositoryRenamed"] = true;
+    isolated remote function onRepositoryRenamed(RepositoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryService.onRepositoryRenamed"] = true;
+        }
     }
 
-    remote function onRepositoryTransferred(RepositoryPayload payload) returns error? {
-        triggerFired["RepositoryService.onRepositoryTransferred"] = true;
+    isolated remote function onRepositoryTransferred(RepositoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryService.onRepositoryTransferred"] = true;
+        }
     }
 
-    remote function onRepositoryEdited(RepositoryPayload payload) returns error? {
-        triggerFired["RepositoryService.onRepositoryEdited"] = true;
+    isolated remote function onRepositoryEdited(RepositoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryService.onRepositoryEdited"] = true;
+        }
     }
 
-    remote function onRepositoryDeleted(RepositoryPayload payload) returns error? {
-        triggerFired["RepositoryService.onRepositoryDeleted"] = true;
+    isolated remote function onRepositoryDeleted(RepositoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryService.onRepositoryDeleted"] = true;
+        }
     }
 
-    remote function onRepositoryArchived(RepositoryPayload payload) returns error? {
-        triggerFired["RepositoryService.onRepositoryArchived"] = true;
+    isolated remote function onRepositoryArchived(RepositoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryService.onRepositoryArchived"] = true;
+        }
     }
 
-    remote function onRepositoryPublicized(RepositoryPayload payload) returns error? {
-        triggerFired["RepositoryService.onRepositoryPublicized"] = true;
+    isolated remote function onRepositoryPublicized(RepositoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryService.onRepositoryPublicized"] = true;
+        }
     }
 
-    remote function onRepositoryUnarchived(RepositoryPayload payload) returns error? {
-        triggerFired["RepositoryService.onRepositoryUnarchived"] = true;
+    isolated remote function onRepositoryUnarchived(RepositoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryService.onRepositoryUnarchived"] = true;
+        }
     }
 }
 
 service MemberService on triggerTestListener {
-    remote function onMemberEdited(MemberPayload payload) returns error? {
-        triggerFired["MemberService.onMemberEdited"] = true;
+    isolated remote function onMemberEdited(MemberPayload payload) returns error? {
+        lock {
+            triggerFired["MemberService.onMemberEdited"] = true;
+        }
     }
 
-    remote function onMemberAdded(MemberPayload payload) returns error? {
-        triggerFired["MemberService.onMemberAdded"] = true;
+    isolated remote function onMemberAdded(MemberPayload payload) returns error? {
+        lock {
+            triggerFired["MemberService.onMemberAdded"] = true;
+        }
     }
 
-    remote function onMemberRemoved(MemberPayload payload) returns error? {
-        triggerFired["MemberService.onMemberRemoved"] = true;
+    isolated remote function onMemberRemoved(MemberPayload payload) returns error? {
+        lock {
+            triggerFired["MemberService.onMemberRemoved"] = true;
+        }
     }
 }
 
 service SecretScanningScanService on triggerTestListener {
-    remote function onSecretScanningScan(SecretScanningScanPayload payload) returns error? {
-        triggerFired["SecretScanningScanService.onSecretScanningScan"] = true;
+    isolated remote function onSecretScanningScan(SecretScanningScanPayload payload) returns error? {
+        lock {
+            triggerFired["SecretScanningScanService.onSecretScanningScan"] = true;
+        }
     }
 }
 
 service StatusService on triggerTestListener {
-    remote function onStatus(StatusPayload payload) returns error? {
-        triggerFired["StatusService.onStatus"] = true;
+    isolated remote function onStatus(StatusPayload payload) returns error? {
+        lock {
+            triggerFired["StatusService.onStatus"] = true;
+        }
     }
 }
 
 service DeploymentReviewService on triggerTestListener {
-    remote function onDeploymentReviewRequested(DeploymentReviewPayload payload) returns error? {
-        triggerFired["DeploymentReviewService.onDeploymentReviewRequested"] = true;
+    isolated remote function onDeploymentReviewRequested(DeploymentReviewPayload payload) returns error? {
+        lock {
+            triggerFired["DeploymentReviewService.onDeploymentReviewRequested"] = true;
+        }
     }
 
-    remote function onDeploymentReviewRejected(DeploymentReviewPayload payload) returns error? {
-        triggerFired["DeploymentReviewService.onDeploymentReviewRejected"] = true;
+    isolated remote function onDeploymentReviewRejected(DeploymentReviewPayload payload) returns error? {
+        lock {
+            triggerFired["DeploymentReviewService.onDeploymentReviewRejected"] = true;
+        }
     }
 
-    remote function onDeploymentReviewApproved(DeploymentReviewPayload payload) returns error? {
-        triggerFired["DeploymentReviewService.onDeploymentReviewApproved"] = true;
+    isolated remote function onDeploymentReviewApproved(DeploymentReviewPayload payload) returns error? {
+        lock {
+            triggerFired["DeploymentReviewService.onDeploymentReviewApproved"] = true;
+        }
     }
 }
 
 service ProjectsV2itemService on triggerTestListener {
-    remote function onProjectsV2ItemEdited('ProjectsV2ItemPayload payload) returns error? {
-        triggerFired["ProjectsV2itemService.onProjectsV2ItemEdited"] = true;
+    isolated remote function onProjectsV2ItemEdited('ProjectsV2ItemPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2itemService.onProjectsV2ItemEdited"] = true;
+        }
     }
 
-    remote function onProjectsV2ItemCreated('ProjectsV2ItemPayload payload) returns error? {
-        triggerFired["ProjectsV2itemService.onProjectsV2ItemCreated"] = true;
+    isolated remote function onProjectsV2ItemCreated('ProjectsV2ItemPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2itemService.onProjectsV2ItemCreated"] = true;
+        }
     }
 
-    remote function onProjectsV2ItemArchived('ProjectsV2ItemPayload payload) returns error? {
-        triggerFired["ProjectsV2itemService.onProjectsV2ItemArchived"] = true;
+    isolated remote function onProjectsV2ItemArchived('ProjectsV2ItemPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2itemService.onProjectsV2ItemArchived"] = true;
+        }
     }
 
-    remote function onProjectsV2ItemDeleted('ProjectsV2ItemPayload payload) returns error? {
-        triggerFired["ProjectsV2itemService.onProjectsV2ItemDeleted"] = true;
+    isolated remote function onProjectsV2ItemDeleted('ProjectsV2ItemPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2itemService.onProjectsV2ItemDeleted"] = true;
+        }
     }
 
-    remote function onProjectsV2ItemRestored('ProjectsV2ItemPayload payload) returns error? {
-        triggerFired["ProjectsV2itemService.onProjectsV2ItemRestored"] = true;
+    isolated remote function onProjectsV2ItemRestored('ProjectsV2ItemPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2itemService.onProjectsV2ItemRestored"] = true;
+        }
     }
 
-    remote function onProjectsV2ItemReordered('ProjectsV2ItemPayload payload) returns error? {
-        triggerFired["ProjectsV2itemService.onProjectsV2ItemReordered"] = true;
+    isolated remote function onProjectsV2ItemReordered('ProjectsV2ItemPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2itemService.onProjectsV2ItemReordered"] = true;
+        }
     }
 
-    remote function onProjectsV2ItemConverted('ProjectsV2ItemPayload payload) returns error? {
-        triggerFired["ProjectsV2itemService.onProjectsV2ItemConverted"] = true;
+    isolated remote function onProjectsV2ItemConverted('ProjectsV2ItemPayload payload) returns error? {
+        lock {
+            triggerFired["ProjectsV2itemService.onProjectsV2ItemConverted"] = true;
+        }
     }
 }
 
 service RepositoryVulnerabilityAlertService on triggerTestListener {
-    remote function onRepositoryVulnerabilityAlertResolve(RepositoryVulnerabilityAlertPayload payload) returns error? {
-        triggerFired["RepositoryVulnerabilityAlertService.onRepositoryVulnerabilityAlertResolve"] = true;
+    isolated remote function onRepositoryVulnerabilityAlertResolve(RepositoryVulnerabilityAlertPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryVulnerabilityAlertService.onRepositoryVulnerabilityAlertResolve"] = true;
+        }
     }
 
-    remote function onRepositoryVulnerabilityAlertReopen(RepositoryVulnerabilityAlertPayload payload) returns error? {
-        triggerFired["RepositoryVulnerabilityAlertService.onRepositoryVulnerabilityAlertReopen"] = true;
+    isolated remote function onRepositoryVulnerabilityAlertReopen(RepositoryVulnerabilityAlertPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryVulnerabilityAlertService.onRepositoryVulnerabilityAlertReopen"] = true;
+        }
     }
 
-    remote function onRepositoryVulnerabilityAlertDismiss(RepositoryVulnerabilityAlertPayload payload) returns error? {
-        triggerFired["RepositoryVulnerabilityAlertService.onRepositoryVulnerabilityAlertDismiss"] = true;
+    isolated remote function onRepositoryVulnerabilityAlertDismiss(RepositoryVulnerabilityAlertPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryVulnerabilityAlertService.onRepositoryVulnerabilityAlertDismiss"] = true;
+        }
     }
 
-    remote function onRepositoryVulnerabilityAlertCreate(RepositoryVulnerabilityAlertPayload payload) returns error? {
-        triggerFired["RepositoryVulnerabilityAlertService.onRepositoryVulnerabilityAlertCreate"] = true;
+    isolated remote function onRepositoryVulnerabilityAlertCreate(RepositoryVulnerabilityAlertPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryVulnerabilityAlertService.onRepositoryVulnerabilityAlertCreate"] = true;
+        }
     }
 }
 
 service IssueDependenciesService on triggerTestListener {
-    remote function onIssueDependenciesBlockingRemoved(IssueDependenciesPayload payload) returns error? {
-        triggerFired["IssueDependenciesService.onIssueDependenciesBlockingRemoved"] = true;
+    isolated remote function onIssueDependenciesBlockingRemoved(IssueDependenciesPayload payload) returns error? {
+        lock {
+            triggerFired["IssueDependenciesService.onIssueDependenciesBlockingRemoved"] = true;
+        }
     }
 
-    remote function onIssueDependenciesBlockedByRemoved(IssueDependenciesPayload payload) returns error? {
-        triggerFired["IssueDependenciesService.onIssueDependenciesBlockedByRemoved"] = true;
+    isolated remote function onIssueDependenciesBlockedByRemoved(IssueDependenciesPayload payload) returns error? {
+        lock {
+            triggerFired["IssueDependenciesService.onIssueDependenciesBlockedByRemoved"] = true;
+        }
     }
 
-    remote function onIssueDependenciesBlockingAdded(IssueDependenciesPayload payload) returns error? {
-        triggerFired["IssueDependenciesService.onIssueDependenciesBlockingAdded"] = true;
+    isolated remote function onIssueDependenciesBlockingAdded(IssueDependenciesPayload payload) returns error? {
+        lock {
+            triggerFired["IssueDependenciesService.onIssueDependenciesBlockingAdded"] = true;
+        }
     }
 
-    remote function onIssueDependenciesBlockedByAdded(IssueDependenciesPayload payload) returns error? {
-        triggerFired["IssueDependenciesService.onIssueDependenciesBlockedByAdded"] = true;
+    isolated remote function onIssueDependenciesBlockedByAdded(IssueDependenciesPayload payload) returns error? {
+        lock {
+            triggerFired["IssueDependenciesService.onIssueDependenciesBlockedByAdded"] = true;
+        }
     }
 }
 
 service RepositoryAdvisoryService on triggerTestListener {
-    remote function onRepositoryAdvisoryReported(RepositoryAdvisoryPayload payload) returns error? {
-        triggerFired["RepositoryAdvisoryService.onRepositoryAdvisoryReported"] = true;
+    isolated remote function onRepositoryAdvisoryReported(RepositoryAdvisoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryAdvisoryService.onRepositoryAdvisoryReported"] = true;
+        }
     }
 
-    remote function onRepositoryAdvisoryPublished(RepositoryAdvisoryPayload payload) returns error? {
-        triggerFired["RepositoryAdvisoryService.onRepositoryAdvisoryPublished"] = true;
+    isolated remote function onRepositoryAdvisoryPublished(RepositoryAdvisoryPayload payload) returns error? {
+        lock {
+            triggerFired["RepositoryAdvisoryService.onRepositoryAdvisoryPublished"] = true;
+        }
     }
 }
 
 service TeamAddService on triggerTestListener {
-    remote function onTeamAdd(TeamAddPayload payload) returns error? {
-        triggerFired["TeamAddService.onTeamAdd"] = true;
+    isolated remote function onTeamAdd(TeamAddPayload payload) returns error? {
+        lock {
+            triggerFired["TeamAddService.onTeamAdd"] = true;
+        }
     }
 }
 
 service MilestoneService on triggerTestListener {
-    remote function onMilestoneCreated(MilestonePayload payload) returns error? {
-        triggerFired["MilestoneService.onMilestoneCreated"] = true;
+    isolated remote function onMilestoneCreated(MilestonePayload payload) returns error? {
+        lock {
+            triggerFired["MilestoneService.onMilestoneCreated"] = true;
+        }
     }
 
-    remote function onMilestoneEdited(MilestonePayload payload) returns error? {
-        triggerFired["MilestoneService.onMilestoneEdited"] = true;
+    isolated remote function onMilestoneEdited(MilestonePayload payload) returns error? {
+        lock {
+            triggerFired["MilestoneService.onMilestoneEdited"] = true;
+        }
     }
 
-    remote function onMilestoneOpened(MilestonePayload payload) returns error? {
-        triggerFired["MilestoneService.onMilestoneOpened"] = true;
+    isolated remote function onMilestoneOpened(MilestonePayload payload) returns error? {
+        lock {
+            triggerFired["MilestoneService.onMilestoneOpened"] = true;
+        }
     }
 
-    remote function onMilestoneDeleted(MilestonePayload payload) returns error? {
-        triggerFired["MilestoneService.onMilestoneDeleted"] = true;
+    isolated remote function onMilestoneDeleted(MilestonePayload payload) returns error? {
+        lock {
+            triggerFired["MilestoneService.onMilestoneDeleted"] = true;
+        }
     }
 
-    remote function onMilestoneClosed(MilestonePayload payload) returns error? {
-        triggerFired["MilestoneService.onMilestoneClosed"] = true;
+    isolated remote function onMilestoneClosed(MilestonePayload payload) returns error? {
+        lock {
+            triggerFired["MilestoneService.onMilestoneClosed"] = true;
+        }
     }
 }
 
 isolated function sendSignedTriggerWebhook(string headerValue, string eventIdentifier) returns http:Response|error {
     byte[] body = check io:fileReadBytes(string `${TRIGGER_PAYLOAD_DIR}/${eventIdentifier}.json`);
-    byte[] digest = check crypto:hmacSha256(body, TRIGGER_TEST_SECRET.toBytes());
-    string computedSignature = digest.toBase16();
-    string signature = string `sha256=${computedSignature}`;
-
-    http:Client triggerClient = check new (string `http://localhost:${TRIGGER_TEST_PORT}`);
-    http:Request request = new;
-    request.setBinaryPayload(body, contentType = "application/json");
-    request.setHeader("X-GitHub-Event", headerValue);
-    request.setHeader("X-Hub-Signature-256", signature);
-    return triggerClient->post("/", request);
+    string bodyText = check string:fromBytes(body);
+    string payloadToHash = string `${bodyText}`;
+    byte[] computedDigest = check crypto:hmacSha256(payloadToHash.toBytes(), TRIGGER_TEST_SECRET.toBytes());
+    string computedSignature = computedDigest.toBase16();
+    map<string> headers = {
+        "X-GitHub-Event": headerValue,
+        "X-Hub-Signature-256": string `sha256=${computedSignature}`
+    };
+    return triggerClient->post("/", body, headers, "application/json");
 }
 
 function waitForDispatch(string trackerKey) returns boolean {
     foreach int i in 0 ..< 20 {
-        if triggerFired[trackerKey] ?: false {
-            return true;
+        lock {
+            if triggerFired[trackerKey] ?: false {
+                return true;
+            }
         }
         runtime:sleep(0.05);
     }

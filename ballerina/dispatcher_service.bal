@@ -1,4 +1,4 @@
-// Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+// Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com).
 //
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -31,14 +31,14 @@ service class DispatcherService {
 
     isolated function addServiceRef(string serviceType, GenericServiceType genericService) returns error? {
         if (self.services.hasKey(serviceType)) {
-            return error("Service of type " + serviceType + " has already been attached");
+            return error(string `Service of type ${serviceType} has already been attached`);
         }
         self.services[serviceType] = genericService;
     }
 
     isolated function removeServiceRef(string serviceType) returns error? {
         if (!self.services.hasKey(serviceType)) {
-            return error("Cannot detach the service of type " + serviceType + ". Service has not been attached to the listener before");
+            return error(string `Cannot detach the service of type ${serviceType}. Service has not been attached to the listener before`);
         }
         _ = self.services.remove(serviceType);
     }
@@ -66,18 +66,20 @@ service class DispatcherService {
             eventIdentifier = eventType + "_" + actionField.toString();
         }
         GenericDataType genericDataType = check payload.cloneWithType(GenericDataType);
-        http:Response ackResponse = new;ackResponse.statusCode = http:STATUS_OK; check caller->respond(ackResponse);
+        http:Response ackResponse = new;
+        ackResponse.statusCode = http:STATUS_OK;
+        check caller->respond(ackResponse);
         error? dispatchResult = self.matchRemoteFunc(genericDataType, eventIdentifier, eventType);
         if dispatchResult is error {
             log:printError("DISPATCH_FAILED", dispatchResult);
         }
     }
 
-    private function verifyWebhookSignature(http:Request request, string webhookSecret) returns error? {
+    private isolated function verifyWebhookSignature(http:Request request, string webhookSecret) returns error? {
         if !request.hasHeader("X-Hub-Signature-256") {
             return error("Unauthorized: Missing Signature Header");
         }
-        string receivedHeader = let var headerValue = trap request.getHeader("X-Hub-Signature-256") in (headerValue is string ? headerValue : "");
+        string receivedHeader = check request.getHeader("X-Hub-Signature-256");
         map<string> extractedHeaderValues = {};
         int headerCursor = 0;
         if !receivedHeader.substring(headerCursor).startsWith("sha256=") {
@@ -89,11 +91,6 @@ service class DispatcherService {
         if !extractedHeaderValues.hasKey("signature") {
             return error("Unauthorized: Missing Header Component: signature");
         }
-        string signature = extractedHeaderValues["signature"] ?: "";
-        if !extractedHeaderValues.hasKey("signature") {
-            return error("Unauthorized: Missing Signature Value");
-        }
-        string extractedSignature = extractedHeaderValues["signature"] ?: "";
         string payloadToHash = string `${check request.getTextPayload()}`;
         byte[] computedDigest = check crypto:hmacSha256(payloadToHash.toBytes(), webhookSecret.toBytes());
         string computedSignature = computedDigest.toBase16();
@@ -101,10 +98,9 @@ service class DispatcherService {
         if !crypto:equalConstantTime(receivedHeader.toBytes(), expectedHeader.toBytes()) {
             return error("Unauthorized: Signature Mismatch");
         }
-        return;
     }
 
-    private function matchRemoteFunc(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFunc(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         check self.matchRemoteFuncForDelete(genericDataType, eventIdentifier, eventType);
         check self.matchRemoteFuncForMeta(genericDataType, eventIdentifier, eventType);
         check self.matchRemoteFuncForWorkflowDispatch(genericDataType, eventIdentifier, eventType);
@@ -182,7 +178,7 @@ service class DispatcherService {
         check self.matchRemoteFuncForPullRequestReviewThread(genericDataType, eventIdentifier, eventType);
     }
 
-    private function matchRemoteFuncForDelete(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForDelete(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "delete" => {
                 check self.executeRemoteFunc(genericDataType, "delete", "DeleteService", "onDelete");
@@ -190,7 +186,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForMeta(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForMeta(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "meta_deleted" => {
                 check self.executeRemoteFunc(genericDataType, "meta_deleted", "MetaService", "onMetaDeleted");
@@ -198,7 +194,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForWorkflowDispatch(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForWorkflowDispatch(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "workflow_dispatch" => {
                 check self.executeRemoteFunc(genericDataType, "workflow_dispatch", "WorkflowDispatchService", "onWorkflowDispatch");
@@ -206,7 +202,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForSecurityAndAnalysis(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForSecurityAndAnalysis(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "security_and_analysis" => {
                 check self.executeRemoteFunc(genericDataType, "security_and_analysis", "SecurityAndAnalysisService", "onSecurityAndAnalysis");
@@ -214,7 +210,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForDeployKey(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForDeployKey(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "deploy_key_created" => {
                 check self.executeRemoteFunc(genericDataType, "deploy_key_created", "DeployKeyService", "onDeployKeyCreated");
@@ -225,7 +221,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForProjectColumn(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForProjectColumn(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "project_column_moved" => {
                 check self.executeRemoteFunc(genericDataType, "project_column_moved", "ProjectColumnService", "onProjectColumnMoved");
@@ -242,7 +238,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForMarketplacePurchase(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForMarketplacePurchase(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "marketplace_purchase_purchased" => {
                 check self.executeRemoteFunc(genericDataType, "marketplace_purchase_purchased", "MarketplacePurchaseService", "onMarketplacePurchasePurchased");
@@ -262,7 +258,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForBranchProtectionConfiguration(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForBranchProtectionConfiguration(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "branch_protection_configuration_enabled" => {
                 check self.executeRemoteFunc(genericDataType, "branch_protection_configuration_enabled", "BranchProtectionConfigurationService", "onBranchProtectionConfigurationEnabled");
@@ -273,7 +269,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPullRequest(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPullRequest(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "pull_request_enqueued" => {
                 check self.executeRemoteFunc(genericDataType, "pull_request_enqueued", "PullRequestService", "onPullRequestEnqueued");
@@ -341,7 +337,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForLabel(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForLabel(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "label_edited" => {
                 check self.executeRemoteFunc(genericDataType, "label_edited", "LabelService", "onLabelEdited");
@@ -355,7 +351,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForDeployment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForDeployment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "deployment_created" => {
                 check self.executeRemoteFunc(genericDataType, "deployment_created", "DeploymentService", "onDeploymentCreated");
@@ -363,7 +359,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForTeamAdd(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForTeamAdd(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "team_add" => {
                 check self.executeRemoteFunc(genericDataType, "team_add", "TeamAddService", "onTeamAdd");
@@ -371,7 +367,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForCodeScanningAlert(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForCodeScanningAlert(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "code_scanning_alert_appeared_in_branch" => {
                 check self.executeRemoteFunc(genericDataType, "code_scanning_alert_appeared_in_branch", "CodeScanningAlertService", "onCodeScanningAlertAppearedInBranch");
@@ -397,7 +393,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForMembership(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForMembership(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "membership_added" => {
                 check self.executeRemoteFunc(genericDataType, "membership_added", "MembershipService", "onMembershipAdded");
@@ -408,7 +404,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForSecretScanningAlert(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForSecretScanningAlert(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "secret_scanning_alert_assigned" => {
                 check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_assigned", "SecretScanningAlertService", "onSecretScanningAlertAssigned");
@@ -434,7 +430,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPush(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPush(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "push" => {
                 check self.executeRemoteFunc(genericDataType, "push", "PushService", "onPush");
@@ -442,7 +438,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForMember(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForMember(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "member_edited" => {
                 check self.executeRemoteFunc(genericDataType, "member_edited", "MemberService", "onMemberEdited");
@@ -456,7 +452,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForRepositoryDispatch(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForRepositoryDispatch(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventType {
             "repository_dispatch" => {
                 check self.executeRemoteFunc(genericDataType, "repository_dispatch", "RepositoryDispatchService", "onRepositoryDispatch");
@@ -464,7 +460,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForStatus(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForStatus(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "status" => {
                 check self.executeRemoteFunc(genericDataType, "status", "StatusService", "onStatus");
@@ -472,7 +468,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForRepositoryImport(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForRepositoryImport(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "repository_import" => {
                 check self.executeRemoteFunc(genericDataType, "repository_import", "RepositoryImportService", "onRepositoryImport");
@@ -480,7 +476,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPersonalAccessTokenRequest(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPersonalAccessTokenRequest(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "personal_access_token_request_created" => {
                 check self.executeRemoteFunc(genericDataType, "personal_access_token_request_created", "PersonalAccessTokenRequestService", "onPersonalAccessTokenRequestCreated");
@@ -497,7 +493,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForSubIssues(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForSubIssues(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "sub_issues_sub_issue_added" => {
                 check self.executeRemoteFunc(genericDataType, "sub_issues_sub_issue_added", "SubIssuesService", "onSubIssuesSubIssueAdded");
@@ -514,7 +510,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForRepositoryRuleset(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForRepositoryRuleset(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "repository_ruleset_created" => {
                 check self.executeRemoteFunc(genericDataType, "repository_ruleset_created", "RepositoryRulesetService", "onRepositoryRulesetCreated");
@@ -528,7 +524,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForMilestone(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForMilestone(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "milestone_created" => {
                 check self.executeRemoteFunc(genericDataType, "milestone_created", "MilestoneService", "onMilestoneCreated");
@@ -548,7 +544,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPublic(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPublic(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "public" => {
                 check self.executeRemoteFunc(genericDataType, "public", "PublicService", "onPublic");
@@ -556,7 +552,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForWorkflowRun(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForWorkflowRun(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "workflow_run_in_progress" => {
                 check self.executeRemoteFunc(genericDataType, "workflow_run_in_progress", "WorkflowRunService", "onWorkflowRunInProgress");
@@ -570,7 +566,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForProjectsV2statusUpdate(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForProjectsV2statusUpdate(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "projects_v2_status_update_edited" => {
                 check self.executeRemoteFunc(genericDataType, "projects_v2_status_update_edited", "ProjectsV2statusUpdateService", "onProjectsV2StatusUpdateEdited");
@@ -584,7 +580,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForProjectsV2item(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForProjectsV2item(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "projects_v2_item_edited" => {
                 check self.executeRemoteFunc(genericDataType, "projects_v2_item_edited", "ProjectsV2itemService", "onProjectsV2ItemEdited");
@@ -610,7 +606,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForSponsorship(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForSponsorship(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "sponsorship_cancelled" => {
                 check self.executeRemoteFunc(genericDataType, "sponsorship_cancelled", "SponsorshipService", "onSponsorshipCancelled");
@@ -633,7 +629,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForMergeGroup(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForMergeGroup(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "merge_group_destroyed" => {
                 check self.executeRemoteFunc(genericDataType, "merge_group_destroyed", "MergeGroupService", "onMergeGroupDestroyed");
@@ -644,7 +640,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForProject(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForProject(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "project_deleted" => {
                 check self.executeRemoteFunc(genericDataType, "project_deleted", "ProjectService", "onProjectDeleted");
@@ -664,7 +660,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForOrgBlock(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForOrgBlock(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "org_block_blocked" => {
                 check self.executeRemoteFunc(genericDataType, "org_block_blocked", "OrgBlockService", "onOrgBlockBlocked");
@@ -675,7 +671,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForSecretScanningAlertLocation(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForSecretScanningAlertLocation(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "secret_scanning_alert_location" => {
                 check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_location", "SecretScanningAlertLocationService", "onSecretScanningAlertLocation");
@@ -683,7 +679,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForInstallationTarget(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForInstallationTarget(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "installation_target_renamed" => {
                 check self.executeRemoteFunc(genericDataType, "installation_target_renamed", "InstallationTargetService", "onInstallationTargetRenamed");
@@ -691,7 +687,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForCheckSuite(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForCheckSuite(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "check_suite_completed" => {
                 check self.executeRemoteFunc(genericDataType, "check_suite_completed", "CheckSuiteService", "onCheckSuiteCompleted");
@@ -705,7 +701,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPing(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPing(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "ping" => {
                 check self.executeRemoteFunc(genericDataType, "ping", "PingService", "onPing");
@@ -713,7 +709,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForIssueComment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForIssueComment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "issue_comment_edited" => {
                 check self.executeRemoteFunc(genericDataType, "issue_comment_edited", "IssueCommentService", "onIssueCommentEdited");
@@ -733,7 +729,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForSecurityAdvisory(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForSecurityAdvisory(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "security_advisory_withdrawn" => {
                 check self.executeRemoteFunc(genericDataType, "security_advisory_withdrawn", "SecurityAdvisoryService", "onSecurityAdvisoryWithdrawn");
@@ -747,7 +743,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPackage(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPackage(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "package_published" => {
                 check self.executeRemoteFunc(genericDataType, "package_published", "PackageService", "onPackagePublished");
@@ -758,7 +754,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForDiscussion(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForDiscussion(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "discussion_unanswered" => {
                 check self.executeRemoteFunc(genericDataType, "discussion_unanswered", "DiscussionService", "onDiscussionUnanswered");
@@ -808,7 +804,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForFork(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForFork(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "fork" => {
                 check self.executeRemoteFunc(genericDataType, "fork", "ForkService", "onFork");
@@ -816,7 +812,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPullRequestReview(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPullRequestReview(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "pull_request_review_submitted" => {
                 check self.executeRemoteFunc(genericDataType, "pull_request_review_submitted", "PullRequestReviewService", "onPullRequestReviewSubmitted");
@@ -830,7 +826,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForOrganization(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForOrganization(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "organization_member_added" => {
                 check self.executeRemoteFunc(genericDataType, "organization_member_added", "OrganizationService", "onOrganizationMemberAdded");
@@ -850,7 +846,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForIssues(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForIssues(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "issues_reopened" => {
                 check self.executeRemoteFunc(genericDataType, "issues_reopened", "IssuesService", "onIssuesReopened");
@@ -909,7 +905,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForRegistryPackage(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForRegistryPackage(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "registry_package_updated" => {
                 check self.executeRemoteFunc(genericDataType, "registry_package_updated", "RegistryPackageService", "onRegistryPackageUpdated");
@@ -920,7 +916,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForProjectsV2(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForProjectsV2(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "projects_v2_created" => {
                 check self.executeRemoteFunc(genericDataType, "projects_v2_created", "ProjectsV2Service", "onProjectsV2Created");
@@ -940,7 +936,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForRepositoryVulnerabilityAlert(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForRepositoryVulnerabilityAlert(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "repository_vulnerability_alert_resolve" => {
                 check self.executeRemoteFunc(genericDataType, "repository_vulnerability_alert_resolve", "RepositoryVulnerabilityAlertService", "onRepositoryVulnerabilityAlertResolve");
@@ -957,7 +953,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForStar(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForStar(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "star_created" => {
                 check self.executeRemoteFunc(genericDataType, "star_created", "StarService", "onStarCreated");
@@ -968,7 +964,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForCreate(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForCreate(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "create" => {
                 check self.executeRemoteFunc(genericDataType, "create", "CreateService", "onCreate");
@@ -976,7 +972,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForDeploymentReview(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForDeploymentReview(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "deployment_review_requested" => {
                 check self.executeRemoteFunc(genericDataType, "deployment_review_requested", "DeploymentReviewService", "onDeploymentReviewRequested");
@@ -990,7 +986,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForGollum(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForGollum(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "gollum" => {
                 check self.executeRemoteFunc(genericDataType, "gollum", "GollumService", "onGollum");
@@ -998,7 +994,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForGithubAppAuthorization(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForGithubAppAuthorization(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "github_app_authorization_revoked" => {
                 check self.executeRemoteFunc(genericDataType, "github_app_authorization_revoked", "GithubAppAuthorizationService", "onGithubAppAuthorizationRevoked");
@@ -1006,7 +1002,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForWatch(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForWatch(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "watch_started" => {
                 check self.executeRemoteFunc(genericDataType, "watch_started", "WatchService", "onWatchStarted");
@@ -1014,7 +1010,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForTeam(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForTeam(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "team_created" => {
                 check self.executeRemoteFunc(genericDataType, "team_created", "TeamService", "onTeamCreated");
@@ -1034,7 +1030,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForWorkflowJob(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForWorkflowJob(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "workflow_job_queued" => {
                 check self.executeRemoteFunc(genericDataType, "workflow_job_queued", "WorkflowJobService", "onWorkflowJobQueued");
@@ -1051,7 +1047,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForRelease(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForRelease(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "release_created" => {
                 check self.executeRemoteFunc(genericDataType, "release_created", "ReleaseService", "onReleaseCreated");
@@ -1077,7 +1073,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForInstallation(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForInstallation(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "installation_new_permissions_accepted" => {
                 check self.executeRemoteFunc(genericDataType, "installation_new_permissions_accepted", "InstallationService", "onInstallationNewPermissionsAccepted");
@@ -1097,7 +1093,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForCommitComment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForCommitComment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "commit_comment_created" => {
                 check self.executeRemoteFunc(genericDataType, "commit_comment_created", "CommitCommentService", "onCommitCommentCreated");
@@ -1105,7 +1101,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForDiscussionComment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForDiscussionComment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "discussion_comment_deleted" => {
                 check self.executeRemoteFunc(genericDataType, "discussion_comment_deleted", "DiscussionCommentService", "onDiscussionCommentDeleted");
@@ -1119,7 +1115,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForBranchProtectionRule(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForBranchProtectionRule(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "branch_protection_rule_deleted" => {
                 check self.executeRemoteFunc(genericDataType, "branch_protection_rule_deleted", "BranchProtectionRuleService", "onBranchProtectionRuleDeleted");
@@ -1133,7 +1129,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForIssueDependencies(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForIssueDependencies(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "issue_dependencies_blocking_removed" => {
                 check self.executeRemoteFunc(genericDataType, "issue_dependencies_blocking_removed", "IssueDependenciesService", "onIssueDependenciesBlockingRemoved");
@@ -1150,7 +1146,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForRepository(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForRepository(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "repository_privatized" => {
                 check self.executeRemoteFunc(genericDataType, "repository_privatized", "RepositoryService", "onRepositoryPrivatized");
@@ -1182,7 +1178,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPullRequestReviewComment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPullRequestReviewComment(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "pull_request_review_comment_created" => {
                 check self.executeRemoteFunc(genericDataType, "pull_request_review_comment_created", "PullRequestReviewCommentService", "onPullRequestReviewCommentCreated");
@@ -1196,7 +1192,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForDeploymentProtectionRule(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForDeploymentProtectionRule(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "deployment_protection_rule" => {
                 check self.executeRemoteFunc(genericDataType, "deployment_protection_rule", "DeploymentProtectionRuleService", "onDeploymentProtectionRule");
@@ -1204,7 +1200,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForCustomPropertyValues(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForCustomPropertyValues(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "custom_property_values_updated" => {
                 check self.executeRemoteFunc(genericDataType, "custom_property_values_updated", "CustomPropertyValuesService", "onCustomPropertyValuesUpdated");
@@ -1212,7 +1208,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForInstallationRepositories(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForInstallationRepositories(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "installation_repositories_removed" => {
                 check self.executeRemoteFunc(genericDataType, "installation_repositories_removed", "InstallationRepositoriesService", "onInstallationRepositoriesRemoved");
@@ -1223,7 +1219,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForSecretScanningScan(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForSecretScanningScan(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "secret_scanning_scan" => {
                 check self.executeRemoteFunc(genericDataType, "secret_scanning_scan", "SecretScanningScanService", "onSecretScanningScan");
@@ -1231,7 +1227,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForProjectCard(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForProjectCard(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "project_card_edited" => {
                 check self.executeRemoteFunc(genericDataType, "project_card_edited", "ProjectCardService", "onProjectCardEdited");
@@ -1251,7 +1247,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForCheckRun(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForCheckRun(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "check_run_created" => {
                 check self.executeRemoteFunc(genericDataType, "check_run_created", "CheckRunService", "onCheckRunCreated");
@@ -1268,7 +1264,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPageBuild(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPageBuild(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "page_build" => {
                 check self.executeRemoteFunc(genericDataType, "page_build", "PageBuildService", "onPageBuild");
@@ -1276,7 +1272,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForCustomProperty(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForCustomProperty(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "custom_property_updated" => {
                 check self.executeRemoteFunc(genericDataType, "custom_property_updated", "CustomPropertyService", "onCustomPropertyUpdated");
@@ -1293,7 +1289,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForDependabotAlert(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForDependabotAlert(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "dependabot_alert_auto_dismissed" => {
                 check self.executeRemoteFunc(genericDataType, "dependabot_alert_auto_dismissed", "DependabotAlertService", "onDependabotAlertAutoDismissed");
@@ -1322,7 +1318,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForDeploymentStatus(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForDeploymentStatus(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "deployment_status_created" => {
                 check self.executeRemoteFunc(genericDataType, "deployment_status_created", "DeploymentStatusService", "onDeploymentStatusCreated");
@@ -1330,7 +1326,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForRepositoryAdvisory(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForRepositoryAdvisory(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "repository_advisory_reported" => {
                 check self.executeRemoteFunc(genericDataType, "repository_advisory_reported", "RepositoryAdvisoryService", "onRepositoryAdvisoryReported");
@@ -1341,7 +1337,7 @@ service class DispatcherService {
         }
     }
 
-    private function matchRemoteFuncForPullRequestReviewThread(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
+    private isolated function matchRemoteFuncForPullRequestReviewThread(GenericDataType genericDataType, string eventIdentifier, string eventType) returns error? {
         match eventIdentifier {
             "pull_request_review_thread_unresolved" => {
                 check self.executeRemoteFunc(genericDataType, "pull_request_review_thread_unresolved", "PullRequestReviewThreadService", "onPullRequestReviewThreadUnresolved");
@@ -1352,7 +1348,7 @@ service class DispatcherService {
         }
     }
 
-    private function executeRemoteFunc(GenericDataType genericEvent, string eventName, string serviceTypeStr, string eventFunction) returns error? {
+    private isolated function executeRemoteFunc(GenericDataType genericEvent, string eventName, string serviceTypeStr, string eventFunction) returns error? {
         GenericServiceType? genericService = self.services[serviceTypeStr];
         if genericService is GenericServiceType {
             check self.nativeHandler.invokeRemoteFunction(genericEvent, eventName, eventFunction, genericService);
