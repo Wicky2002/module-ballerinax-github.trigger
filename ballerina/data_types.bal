@@ -49,20 +49,6 @@ public type WorkflowRunPayload record {
     Enterprise enterprise?;
 };
 
-# The workflow that is being run
-public type Workflow record {
-    int id?;
-    string node_id?;
-    string name?;
-    string path?;
-    string state?;
-    string created_at?;
-    string updated_at?;
-    string url?;
-    string html_url?;
-    string badge_url?;
-};
-
 # Payload for gollum (wiki) events
 public type GollumPayload record {
     # The pages that were updated
@@ -263,8 +249,8 @@ public type DeploymentStatusPayload record {
     Deployment deployment;
     DeploymentStatus deployment_status;
     CheckRun? check_run?;
-    record {}? workflow?;
-    record {}? workflow_run?;
+    Workflow? workflow?;
+    WorkflowRun? workflow_run?;
     User sender;
     Repository repository;
     Organization organization?;
@@ -405,11 +391,6 @@ public type DependabotAlertPayload record {
     Enterprise enterprise?;
 };
 
-public type Package record {
-    string ecosystem?;
-    string name?;
-};
-
 public type Dependency record {
     Package package?;
     string manifest_path?;
@@ -430,7 +411,7 @@ public type FirstPatchedVersion record {
 };
 
 public type SecurityVulnerability record {
-    record {} package?;
+    Package package?;
     string severity?;
     string vulnerable_version_range?;
     FirstPatchedVersion? first_patched_version?;
@@ -454,6 +435,20 @@ public type DependabotAlertPayloadAlert record {
     string? fixed_at?;
     string? auto_dismissed_at?;
     User[] assignees?;
+};
+
+# A GitHub Actions workflow
+public type Workflow record {
+    int id?;
+    string node_id?;
+    string name?;
+    string path?;
+    string state?;
+    string created_at?;
+    string updated_at?;
+    string url?;
+    string html_url?;
+    string badge_url?;
 };
 
 # Payload for custom_property_values events
@@ -614,6 +609,12 @@ public type RegistryPackage record {
     User owner?;
     PackageVersion? package_version?;
     Registry? registry?;
+};
+
+# The ecosystem and name identifying a Dependabot-tracked package
+public type Package record {
+    string ecosystem?;
+    string name?;
 };
 
 # Payload for check_suite events
@@ -1262,7 +1263,7 @@ public type TeamPayloadChanges record {
     Privacy privacy?;
     NotificationSetting notification_setting?;
     # For added_to_repository/removed_from_repository events
-    record {} repository?;
+    Repository repository?;
 };
 
 # A GitHub Enterprise account
@@ -2212,9 +2213,9 @@ public type DeploymentPayload record {
     string action;
     Deployment deployment;
     # The workflow that triggered the deployment (if applicable)
-    record {}? workflow;
+    Workflow? workflow;
     # The workflow run that triggered the deployment (if applicable)
-    record {}? workflow_run;
+    WorkflowRun? workflow_run;
     User sender;
     Repository repository;
     Organization organization?;
@@ -2765,4 +2766,4 @@ public type MembershipPayload record {
 };
 
 # The union of every possible webhook payload type this listener can receive.
-public type GenericDataType ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|DependabotAlertPayload|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|IssueComment|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|WorkflowRun|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|Discussion|User|PullRequestReview|DeletePayload|MetaPayload|DeploymentPayload|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|Commit|CheckRun|MembershipPayload|Organization|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|CommonPayload|DeploymentProtectionRulePayload;
+public type GenericDataType ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|DependabotAlertPayload|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|IssueComment|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|WorkflowRun|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|Discussion|User|PullRequestReview|DeletePayload|MetaPayload|DeploymentPayload|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|Commit|CheckRun|MembershipPayload|Workflow|Package|Organization|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|CommonPayload|DeploymentProtectionRulePayload;

@@ -5574,6 +5574,36 @@ components:
           type: object
           nullable: true
 
+    Workflow:
+      type: object
+      description: A GitHub Actions workflow
+      properties:
+        id:
+          type: integer
+        node_id:
+          type: string
+        name:
+          type: string
+        path:
+          type: string
+        state:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+        html_url:
+          type: string
+          format: uri
+        badge_url:
+          type: string
+          format: uri
+
     WorkflowRun:
       type: object
       description: A GitHub Actions workflow run
@@ -5676,6 +5706,15 @@ components:
           $ref: '#/components/schemas/Commit'
         repository:
           $ref: '#/components/schemas/Repository'
+
+    Package:
+      type: object
+      description: The ecosystem and name identifying a Dependabot-tracked package
+      properties:
+        ecosystem:
+          type: string
+        name:
+          type: string
 
     WorkflowJob:
       type: object
@@ -6393,11 +6432,11 @@ components:
         deployment:
           $ref: '#/components/schemas/Deployment'
         workflow:
-          type: object
+          $ref: '#/components/schemas/Workflow'
           nullable: true
           description: The workflow that triggered the deployment (if applicable)
         workflow_run:
-          type: object
+          $ref: '#/components/schemas/WorkflowRun'
           nullable: true
           description: The workflow run that triggered the deployment (if applicable)
         sender:
@@ -6433,10 +6472,10 @@ components:
           $ref: '#/components/schemas/CheckRun'
           nullable: true
         workflow:
-          type: object
+          $ref: '#/components/schemas/Workflow'
           nullable: true
         workflow_run:
-          type: object
+          $ref: '#/components/schemas/WorkflowRun'
           nullable: true
         sender:
           $ref: '#/components/schemas/User'
@@ -6466,35 +6505,9 @@ components:
         workflow_run:
           $ref: '#/components/schemas/WorkflowRun'
         workflow:
-          type: object
+          $ref: '#/components/schemas/Workflow'
           nullable: true
           description: The workflow that is being run
-          properties:
-            id:
-              type: integer
-            node_id:
-              type: string
-            name:
-              type: string
-            path:
-              type: string
-            state:
-              type: string
-            created_at:
-              type: string
-              format: date-time
-            updated_at:
-              type: string
-              format: date-time
-            url:
-              type: string
-              format: uri
-            html_url:
-              type: string
-              format: uri
-            badge_url:
-              type: string
-              format: uri
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -7163,7 +7176,7 @@ components:
                 from:
                   type: string
             repository:
-              type: object
+              $ref: '#/components/schemas/Repository'
               description: For added_to_repository/removed_from_repository events
         repository:
           $ref: '#/components/schemas/Repository'
@@ -7388,12 +7401,7 @@ components:
               type: object
               properties:
                 package:
-                  type: object
-                  properties:
-                    ecosystem:
-                      type: string
-                    name:
-                      type: string
+                  $ref: '#/components/schemas/Package'
                 manifest_path:
                   type: string
                 scope:
@@ -7429,7 +7437,7 @@ components:
               type: object
               properties:
                 package:
-                  type: object
+                  $ref: '#/components/schemas/Package'
                 severity:
                   type: string
                 vulnerable_version_range:
