@@ -5094,6 +5094,20 @@ components:
         auto_merge:
           type: object
           nullable: true
+          description: Details of an auto-merge request, if one is enabled on this pull request
+          properties:
+            enabled_by:
+              $ref: '#/components/schemas/User'
+            merge_method:
+              type: string
+              enum:
+                - merge
+                - squash
+                - rebase
+            commit_title:
+              type: string
+            commit_message:
+              type: string
 
     Release:
       type: object
@@ -5138,6 +5152,57 @@ components:
           type: array
           items:
             type: object
+            description: A file attached to a release
+            required:
+              - id
+              - node_id
+              - name
+              - content_type
+              - state
+              - size
+              - download_count
+              - created_at
+              - updated_at
+              - url
+              - browser_download_url
+            properties:
+              url:
+                type: string
+                format: uri
+              browser_download_url:
+                type: string
+                format: uri
+              id:
+                type: integer
+              node_id:
+                type: string
+              name:
+                type: string
+              label:
+                type: string
+                nullable: true
+              state:
+                type: string
+                enum:
+                  - uploaded
+                  - open
+              content_type:
+                type: string
+              size:
+                type: integer
+              digest:
+                type: string
+                nullable: true
+              download_count:
+                type: integer
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+              uploader:
+                $ref: '#/components/schemas/User'
         created_at:
           type: string
           format: date-time
@@ -5407,11 +5472,11 @@ components:
             id:
               type: integer
         app:
-          type: object
+          $ref: '#/components/schemas/App'
         pull_requests:
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/PullRequestMinimal'
 
     CheckSuite:
       type: object
@@ -5459,9 +5524,9 @@ components:
         pull_requests:
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/PullRequestMinimal'
         app:
-          type: object
+          $ref: '#/components/schemas/App'
         created_at:
           type: string
           format: date-time
@@ -5491,6 +5556,8 @@ components:
           type: string
         payload:
           type: object
+          additionalProperties: true
+          description: JSON payload with extra information about the deployment
         original_environment:
           type: string
         environment:
@@ -5517,7 +5584,7 @@ components:
         production_environment:
           type: boolean
         performed_via_github_app:
-          type: object
+          $ref: '#/components/schemas/App'
           nullable: true
 
     DeploymentStatus:
@@ -5571,7 +5638,7 @@ components:
           type: string
           format: date-time
         performed_via_github_app:
-          type: object
+          $ref: '#/components/schemas/App'
           nullable: true
 
     Workflow:
@@ -5665,7 +5732,7 @@ components:
         pull_requests:
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/PullRequestMinimal'
         created_at:
           type: string
           format: date-time
@@ -5842,6 +5909,134 @@ components:
               type: array
               items:
                 type: string
+
+    Category:
+      type: object
+      description: A discussion category
+      required:
+        - id
+        - node_id
+        - repository_id
+        - name
+        - slug
+      properties:
+        id:
+          type: integer
+        node_id:
+          type: string
+        repository_id:
+          type: integer
+        emoji:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        is_answerable:
+          type: boolean
+
+    PullRequestMinimal:
+      type: object
+      description: |
+        A minimal cross-reference to a pull request, as delivered in workflow_run/check_suite/
+        check_run/deployment_review's pull_requests[] - NOT the full pull request resource (no
+        title, state, user, etc.), so this must not $ref PullRequest or PullRequestRef.
+      required:
+        - id
+        - number
+        - url
+        - head
+        - base
+      properties:
+        id:
+          type: integer
+        number:
+          type: integer
+        url:
+          type: string
+          format: uri
+        head:
+          type: object
+          properties:
+            ref:
+              type: string
+            sha:
+              type: string
+            repo:
+              type: object
+              properties:
+                id:
+                  type: integer
+                url:
+                  type: string
+                  format: uri
+                name:
+                  type: string
+        base:
+          type: object
+          properties:
+            ref:
+              type: string
+            sha:
+              type: string
+            repo:
+              type: object
+              properties:
+                id:
+                  type: integer
+                url:
+                  type: string
+                  format: uri
+                name:
+                  type: string
+
+    App:
+      type: object
+      description: A GitHub App
+      required:
+        - id
+        - node_id
+        - name
+      properties:
+        id:
+          type: integer
+        node_id:
+          type: string
+        owner:
+          $ref: '#/components/schemas/User'
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        external_url:
+          type: string
+          format: uri
+        html_url:
+          type: string
+          format: uri
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        permissions:
+          type: object
+          additionalProperties:
+            type: string
+        events:
+          type: array
+          items:
+            type: string
 
     WorkflowJob:
       type: object
@@ -6124,6 +6319,30 @@ components:
         changes:
           type: object
           description: For edited events, the changes to the pull request
+          properties:
+            title:
+              type: object
+              properties:
+                from:
+                  type: string
+            body:
+              type: object
+              properties:
+                from:
+                  type: string
+            base:
+              type: object
+              properties:
+                ref:
+                  type: object
+                  properties:
+                    from:
+                      type: string
+                sha:
+                  type: object
+                  properties:
+                    from:
+                      type: string
         requested_reviewer:
           $ref: '#/components/schemas/User'
         label:
@@ -6182,6 +6401,17 @@ components:
         changes:
           type: object
           description: For edited events, the changes to the issue
+          properties:
+            title:
+              type: object
+              properties:
+                from:
+                  type: string
+            body:
+              type: object
+              properties:
+                from:
+                  type: string
         milestone:
           $ref: '#/components/schemas/Milestone'
         sender:
@@ -6220,6 +6450,28 @@ components:
         changes:
           type: object
           description: For edited events, the changes to the release
+          properties:
+            body:
+              type: object
+              properties:
+                from:
+                  type: string
+            name:
+              type: object
+              properties:
+                from:
+                  type: string
+            tag_name:
+              type: object
+              properties:
+                from:
+                  type: string
+            make_latest:
+              type: object
+              description: Whether this release was explicitly edited to be the latest
+              properties:
+                to:
+                  type: boolean
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -6256,6 +6508,14 @@ components:
         changes:
           type: object
           description: For edited events, the changes to the comment
+          required:
+            - body
+          properties:
+            body:
+              type: object
+              properties:
+                from:
+                  type: string
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -6290,6 +6550,12 @@ components:
         changes:
           type: object
           description: For edited events, the changes to the review
+          properties:
+            body:
+              type: object
+              properties:
+                from:
+                  type: string
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -6324,6 +6590,12 @@ components:
         changes:
           type: object
           description: For edited events, the changes to the comment
+          properties:
+            body:
+              type: object
+              properties:
+                from:
+                  type: string
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -6697,6 +6969,51 @@ components:
         changes:
           type: object
           description: For edited/renamed/transferred events, the changes that occurred
+          properties:
+            description:
+              type: object
+              properties:
+                from:
+                  type: string
+                  nullable: true
+            homepage:
+              type: object
+              properties:
+                from:
+                  type: string
+                  nullable: true
+            topics:
+              type: object
+              properties:
+                from:
+                  type: array
+                  items:
+                    type: string
+            default_branch:
+              type: object
+              properties:
+                from:
+                  type: string
+            repository:
+              type: object
+              description: Present for a renamed event
+              properties:
+                name:
+                  type: object
+                  properties:
+                    from:
+                      type: string
+            owner:
+              type: object
+              description: Present for a transferred event
+              properties:
+                from:
+                  type: object
+                  properties:
+                    user:
+                      $ref: '#/components/schemas/User'
+                    organization:
+                      $ref: '#/components/schemas/Organization'
         repository:
           $ref: '#/components/schemas/Repository'
         sender:
@@ -6785,30 +7102,7 @@ components:
             - converted
             - locked
         category:
-          type: object
-          properties:
-            id:
-              type: integer
-            node_id:
-              type: string
-            repository_id:
-              type: integer
-            emoji:
-              type: string
-            name:
-              type: string
-            description:
-              type: string
-            created_at:
-              type: string
-              format: date-time
-            updated_at:
-              type: string
-              format: date-time
-            slug:
-              type: string
-            is_answerable:
-              type: boolean
+          $ref: '#/components/schemas/Category'
         user:
           $ref: '#/components/schemas/User'
         html_url:
@@ -6887,6 +7181,53 @@ components:
         parent:
           type: object
           nullable: true
+          description: |
+            A reduced "team-simple" shape, not a full Team - no nested parent (a team's parent
+            is never itself nested further, avoiding unbounded recursion).
+          required:
+            - id
+            - node_id
+            - name
+            - slug
+            - type
+          properties:
+            id:
+              type: integer
+            node_id:
+              type: string
+            url:
+              type: string
+              format: uri
+            members_url:
+              type: string
+            name:
+              type: string
+            description:
+              type: string
+              nullable: true
+            permission:
+              type: string
+            privacy:
+              type: string
+            notification_setting:
+              type: string
+            html_url:
+              type: string
+              format: uri
+            repositories_url:
+              type: string
+              format: uri
+            slug:
+              type: string
+            type:
+              type: string
+              enum:
+                - enterprise
+                - organization
+            organization_id:
+              type: integer
+            enterprise_id:
+              type: integer
 
     # -----------------------------------------------------------------------
     # Batch 2 event payload schemas
@@ -6921,13 +7262,64 @@ components:
           $ref: '#/components/schemas/Discussion'
         answer:
           type: object
-          description: Present on answered action — the comment marked as answer
+          description: |
+            Present on answered action - the comment marked as answer. Richer than the
+            Comment schema used for discussion_comment (has parent_id, child_comment_count,
+            repository_url, discussion_id in addition to Comment's fields), so this is its
+            own shape rather than a $ref to Comment.
           nullable: true
+          properties:
+            id:
+              type: integer
+            node_id:
+              type: string
+            html_url:
+              type: string
+              format: uri
+            parent_id:
+              type: integer
+              nullable: true
+            child_comment_count:
+              type: integer
+            repository_url:
+              type: string
+              format: uri
+            discussion_id:
+              type: integer
+            author_association:
+              type: string
+            user:
+              $ref: '#/components/schemas/User'
+            body:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
         label:
           $ref: '#/components/schemas/Label'
         changes:
           type: object
           description: For edited/category_changed events, the changes made
+          properties:
+            title:
+              type: object
+              properties:
+                from:
+                  type: string
+            body:
+              type: object
+              properties:
+                from:
+                  type: string
+            category:
+              type: object
+              description: Present on category_changed
+              properties:
+                from:
+                  $ref: '#/components/schemas/Category'
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -6981,6 +7373,12 @@ components:
         changes:
           type: object
           description: For edited events, the changes to the comment
+          properties:
+            body:
+              type: object
+              properties:
+                from:
+                  type: string
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -7147,6 +7545,56 @@ components:
               type: string
             commit:
               type: object
+              description: The raw git commit data (distinct from the GitHub account in the sibling author/committer fields)
+              properties:
+                author:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                committer:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                message:
+                  type: string
+                tree:
+                  type: object
+                  properties:
+                    sha:
+                      type: string
+                    url:
+                      type: string
+                      format: uri
+                url:
+                  type: string
+                  format: uri
+                comment_count:
+                  type: integer
+                verification:
+                  type: object
+                  properties:
+                    verified:
+                      type: boolean
+                    reason:
+                      type: string
+                    signature:
+                      type: string
+                      nullable: true
+                    payload:
+                      type: string
+                      nullable: true
             url:
               type: string
               format: uri
@@ -7361,10 +7809,57 @@ components:
           type: object
           nullable: true
           description: Present when action is member_invited
+          required:
+            - id
+            - role
+            - created_at
+            - inviter
+            - team_count
+            - node_id
+            - invitation_teams_url
+          properties:
+            id:
+              type: integer
+            login:
+              type: string
+              nullable: true
+            email:
+              type: string
+              nullable: true
+            role:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+            failed_at:
+              type: string
+              format: date-time
+              nullable: true
+            failed_reason:
+              type: string
+              nullable: true
+            inviter:
+              $ref: '#/components/schemas/User'
+            team_count:
+              type: integer
+            node_id:
+              type: string
+            invitation_teams_url:
+              type: string
+              format: uri
+            invitation_source:
+              type: string
+              nullable: true
         changes:
           type: object
           nullable: true
           description: For renamed events, the old and new organization name
+          properties:
+            login:
+              type: object
+              properties:
+                from:
+                  type: string
         sender:
           $ref: '#/components/schemas/User'
         organization:
@@ -8111,7 +8606,112 @@ components:
                 type: string
         changes:
           type: object
-          description: For edited events, the changes to the rule
+          description: For edited events, the changes to the rule - one entry per changed setting, each wrapped in "from"
+          properties:
+            pull_request_reviews_enforcement_level:
+              type: object
+              properties:
+                from:
+                  type: string
+            required_approving_review_count:
+              type: object
+              properties:
+                from:
+                  type: integer
+            dismiss_stale_reviews_on_push:
+              type: object
+              properties:
+                from:
+                  type: boolean
+            require_code_owner_review:
+              type: object
+              properties:
+                from:
+                  type: boolean
+            authorized_dismissal_actors_only:
+              type: object
+              properties:
+                from:
+                  type: boolean
+            ignore_approvals_from_contributors:
+              type: object
+              properties:
+                from:
+                  type: boolean
+            require_last_push_approval:
+              type: object
+              properties:
+                from:
+                  type: boolean
+            required_status_checks:
+              type: object
+              properties:
+                from:
+                  type: array
+                  items:
+                    type: string
+            required_status_checks_enforcement_level:
+              type: object
+              properties:
+                from:
+                  type: string
+            strict_required_status_checks_policy:
+              type: object
+              properties:
+                from:
+                  type: boolean
+            signature_requirement_enforcement_level:
+              type: object
+              properties:
+                from:
+                  type: string
+            linear_history_requirement_enforcement_level:
+              type: object
+              properties:
+                from:
+                  type: string
+            admin_enforced:
+              type: object
+              properties:
+                from:
+                  type: boolean
+            allow_force_pushes_enforcement_level:
+              type: object
+              properties:
+                from:
+                  type: string
+            allow_deletions_enforcement_level:
+              type: object
+              properties:
+                from:
+                  type: string
+            merge_queue_enforcement_level:
+              type: object
+              properties:
+                from:
+                  type: string
+            required_deployments_enforcement_level:
+              type: object
+              properties:
+                from:
+                  type: string
+            required_conversation_resolution_level:
+              type: object
+              properties:
+                from:
+                  type: string
+            authorized_actors_only:
+              type: object
+              properties:
+                from:
+                  type: boolean
+            authorized_actor_names:
+              type: object
+              properties:
+                from:
+                  type: array
+                  items:
+                    type: string
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -8244,6 +8844,21 @@ components:
                   type: string
                 location:
                   type: object
+                  description: |
+                    Where in the code this alert instance was found - unrelated to, and a
+                    different shape from, secret_scanning's own "location" field elsewhere in
+                    this spec (that one identifies a commit/path, this one a line/column range).
+                  properties:
+                    path:
+                      type: string
+                    start_line:
+                      type: integer
+                    end_line:
+                      type: integer
+                    start_column:
+                      type: integer
+                    end_column:
+                      type: integer
         commit_oid:
           type: string
           description: |
@@ -8510,6 +9125,39 @@ components:
                 release:
                   type: object
                   nullable: true
+                  description: |
+                    A reduced Release shape as delivered on a package version, not the full
+                    Release resource (missing node_id, assets_url, upload_url, body, assets) -
+                    must not $ref Release.
+                  properties:
+                    url:
+                      type: string
+                      format: uri
+                    html_url:
+                      type: string
+                      format: uri
+                    id:
+                      type: integer
+                    tag_name:
+                      type: string
+                    target_commitish:
+                      type: string
+                    name:
+                      type: string
+                      nullable: true
+                    draft:
+                      type: boolean
+                    author:
+                      $ref: '#/components/schemas/User'
+                    prerelease:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date-time
+                    published_at:
+                      type: string
+                      format: date-time
+                      nullable: true
                 manifest:
                   type: string
                   nullable: true
@@ -8540,6 +9188,44 @@ components:
                 container_metadata:
                   type: object
                   nullable: true
+                  description: Metadata for a container (Docker) package version
+                  properties:
+                    tag:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        digest:
+                          type: string
+                    labels:
+                      type: object
+                      properties:
+                        description:
+                          type: string
+                          nullable: true
+                        source:
+                          type: string
+                          nullable: true
+                        revision:
+                          type: string
+                          nullable: true
+                        image_url:
+                          type: string
+                          nullable: true
+                        licenses:
+                          type: string
+                          nullable: true
+                        all_labels:
+                          type: object
+                          additionalProperties:
+                            type: string
+                    manifest:
+                      type: object
+                      properties:
+                        digest:
+                          type: string
+                        media_type:
+                          type: string
                 npm_metadata:
                   type: object
                   nullable: true
@@ -8557,6 +9243,33 @@ components:
                   type: array
                   items:
                     type: object
+                    description: A single downloadable file within a published package version
+                    properties:
+                      download_url:
+                        type: string
+                        format: uri
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      sha256:
+                        type: string
+                      sha1:
+                        type: string
+                      md5:
+                        type: string
+                      content_type:
+                        type: string
+                      state:
+                        type: string
+                      size:
+                        type: integer
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
                 package_url:
                   type: string
                   nullable: true
@@ -8752,6 +9465,10 @@ components:
             submission:
               type: object
               nullable: true
+              description: The accept/reject decision on a repository security advisory publish request
+              properties:
+                accepted:
+                  type: boolean
             vulnerabilities:
               type: array
               items:
@@ -9385,6 +10102,19 @@ components:
             conditions:
               type: object
               nullable: true
+              description: Which refs this ruleset applies to
+              properties:
+                ref_name:
+                  type: object
+                  properties:
+                    include:
+                      type: array
+                      items:
+                        type: string
+                    exclude:
+                      type: array
+                      items:
+                        type: string
             rules:
               type: array
               items:
@@ -9424,7 +10154,118 @@ components:
         changes:
           type: object
           nullable: true
-          description: For edited events, the changes made to the ruleset
+          description: |
+            For edited events, the changes made to the ruleset. conditions/rules are each a
+            genuine added/deleted/updated diff (entries added or removed wholesale, or an
+            existing entry's own fields changed), not a flat "field changed from X" map like
+            most other changes payloads - bypass_actors is never part of this diff at all.
+          properties:
+            name:
+              type: object
+              properties:
+                from:
+                  type: string
+            enforcement:
+              type: object
+              properties:
+                from:
+                  type: string
+            conditions:
+              type: object
+              properties:
+                added:
+                  type: array
+                  items:
+                    type: object
+                deleted:
+                  type: array
+                  items:
+                    type: object
+                updated:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      condition:
+                        type: object
+                      changes:
+                        type: object
+                        properties:
+                          condition_type:
+                            type: object
+                            properties:
+                              from:
+                                type: string
+                          target:
+                            type: object
+                            properties:
+                              from:
+                                type: string
+                          include:
+                            type: object
+                            properties:
+                              from:
+                                type: array
+                                items:
+                                  type: string
+                          exclude:
+                            type: object
+                            properties:
+                              from:
+                                type: array
+                                items:
+                                  type: string
+            rules:
+              type: object
+              properties:
+                added:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      parameters:
+                        type: object
+                deleted:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      parameters:
+                        type: object
+                updated:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rule:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          parameters:
+                            type: object
+                      changes:
+                        type: object
+                        properties:
+                          configuration:
+                            type: object
+                            properties:
+                              from:
+                                type: string
+                          rule_type:
+                            type: object
+                            properties:
+                              from:
+                                type: string
+                          pattern:
+                            type: object
+                            properties:
+                              from:
+                                type: string
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -10091,7 +10932,7 @@ components:
             pull_requests:
               type: array
               items:
-                type: object
+                $ref: '#/components/schemas/PullRequestMinimal'
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -10260,43 +11101,68 @@ components:
               $ref: '#/components/schemas/User'
             permissions_added:
               type: object
-              description: Permissions added by the request
+              description: |
+                Permissions added by the request - each of organization/repository/other is a
+                map of permission name to access level (e.g. "contents": "read"), NOT a
+                reference to the Organization/Repository entity schemas despite the field names.
               properties:
                 organization:
                   type: object
                   nullable: true
+                  additionalProperties:
+                    type: string
                 repository:
                   type: object
                   nullable: true
+                  additionalProperties:
+                    type: string
                 other:
                   type: object
                   nullable: true
+                  additionalProperties:
+                    type: string
             permissions_upgraded:
               type: object
-              description: Permissions upgraded from existing token
+              description: |
+                Permissions upgraded from existing token - same permission-name-to-access-level
+                map shape as permissions_added, not an entity reference.
               properties:
                 organization:
                   type: object
                   nullable: true
+                  additionalProperties:
+                    type: string
                 repository:
                   type: object
                   nullable: true
+                  additionalProperties:
+                    type: string
                 other:
                   type: object
                   nullable: true
+                  additionalProperties:
+                    type: string
             permissions_result:
               type: object
-              description: The resulting full set of permissions if approved
+              description: |
+                The resulting full set of permissions if approved - same permission-name-to-
+                access-level map shape as permissions_added, not an entity reference.
               properties:
                 organization:
                   type: object
                   nullable: true
+                  additionalProperties:
+                    type: string
                 repository:
                   type: object
                   nullable: true
+                  additionalProperties:
+                    type: string
                 other:
                   type: object
                   nullable: true
+                  additionalProperties:
+                    type: string
             repository_selection:
               type: string
               enum:
