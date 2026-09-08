@@ -5716,6 +5716,133 @@ components:
         name:
           type: string
 
+    SecurityVulnerability:
+      type: object
+      description: A vulnerable version range affecting a package, and the version it was patched in
+      properties:
+        package:
+          $ref: '#/components/schemas/Package'
+        severity:
+          type: string
+        vulnerable_version_range:
+          type: string
+        first_patched_version:
+          type: object
+          nullable: true
+          properties:
+            identifier:
+              type: string
+
+    Tier:
+      type: object
+      description: A GitHub Sponsors tier
+      required:
+        - node_id
+        - name
+        - monthly_price_in_cents
+        - monthly_price_in_dollars
+      properties:
+        node_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        description:
+          type: string
+        monthly_price_in_cents:
+          type: integer
+        monthly_price_in_dollars:
+          type: integer
+        name:
+          type: string
+        is_one_time:
+          type: boolean
+        is_custom_amount:
+          type: boolean
+
+    MarketplacePurchase:
+      type: object
+      description: The GitHub Marketplace purchase
+      required:
+        - account
+        - billing_cycle
+        - unit_count
+        - plan
+      properties:
+        account:
+          type: object
+          required:
+            - type
+            - id
+            - login
+          properties:
+            type:
+              type: string
+              enum:
+                - User
+                - Organization
+            id:
+              type: integer
+            node_id:
+              type: string
+            login:
+              type: string
+            organization_billing_email:
+              type: string
+              nullable: true
+        billing_cycle:
+          type: string
+          enum:
+            - monthly
+            - yearly
+        unit_count:
+          type: integer
+        on_free_trial:
+          type: boolean
+        free_trial_ends_on:
+          type: string
+          format: date-time
+          nullable: true
+        next_billing_date:
+          type: string
+          format: date-time
+          nullable: true
+        plan:
+          type: object
+          required:
+            - id
+            - name
+            - description
+            - monthly_price_in_cents
+            - yearly_price_in_cents
+            - price_model
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            description:
+              type: string
+            monthly_price_in_cents:
+              type: integer
+            yearly_price_in_cents:
+              type: integer
+            price_model:
+              type: string
+              enum:
+                - FREE
+                - FLAT_RATE
+                - PER_UNIT
+            has_free_trial:
+              type: boolean
+            unit_name:
+              type: string
+              nullable: true
+            bullets:
+              type: array
+              items:
+                type: string
+
     WorkflowJob:
       type: object
       description: A job in a GitHub Actions workflow run
@@ -7432,22 +7559,9 @@ components:
                 vulnerabilities:
                   type: array
                   items:
-                    type: object
+                    $ref: '#/components/schemas/SecurityVulnerability'
             security_vulnerability:
-              type: object
-              properties:
-                package:
-                  $ref: '#/components/schemas/Package'
-                severity:
-                  type: string
-                vulnerable_version_range:
-                  type: string
-                first_patched_version:
-                  type: object
-                  nullable: true
-                  properties:
-                    identifier:
-                      type: string
+              $ref: '#/components/schemas/SecurityVulnerability'
             url:
               type: string
               format: uri
@@ -9739,31 +9853,7 @@ components:
                 - public
                 - private
             tier:
-              type: object
-              description: The tier the sponsor has chosen
-              required:
-                - node_id
-                - name
-                - monthly_price_in_cents
-                - monthly_price_in_dollars
-              properties:
-                node_id:
-                  type: string
-                created_at:
-                  type: string
-                  format: date-time
-                description:
-                  type: string
-                monthly_price_in_cents:
-                  type: integer
-                monthly_price_in_dollars:
-                  type: integer
-                name:
-                  type: string
-                is_one_time:
-                  type: boolean
-                is_custom_amount:
-                  type: boolean
+              $ref: '#/components/schemas/Tier'
             sponsor:
               $ref: '#/components/schemas/User'
             sponsorable:
@@ -9777,8 +9867,7 @@ components:
               type: object
               properties:
                 from:
-                  type: object
-                  description: The previous tier object (same shape as sponsorship.tier)
+                  $ref: '#/components/schemas/Tier'
             privacy_level:
               type: object
               properties:
@@ -10130,89 +10219,9 @@ components:
             - pending_change_cancelled
             - purchased
         marketplace_purchase:
-          type: object
-          description: The GitHub Marketplace purchase
-          required:
-            - account
-            - billing_cycle
-            - unit_count
-            - plan
-          properties:
-            account:
-              type: object
-              required:
-                - type
-                - id
-                - login
-              properties:
-                type:
-                  type: string
-                  enum:
-                    - User
-                    - Organization
-                id:
-                  type: integer
-                node_id:
-                  type: string
-                login:
-                  type: string
-                organization_billing_email:
-                  type: string
-                  nullable: true
-            billing_cycle:
-              type: string
-              enum:
-                - monthly
-                - yearly
-            unit_count:
-              type: integer
-            on_free_trial:
-              type: boolean
-            free_trial_ends_on:
-              type: string
-              format: date-time
-              nullable: true
-            next_billing_date:
-              type: string
-              format: date-time
-              nullable: true
-            plan:
-              type: object
-              required:
-                - id
-                - name
-                - description
-                - monthly_price_in_cents
-                - yearly_price_in_cents
-                - price_model
-              properties:
-                id:
-                  type: integer
-                name:
-                  type: string
-                description:
-                  type: string
-                monthly_price_in_cents:
-                  type: integer
-                yearly_price_in_cents:
-                  type: integer
-                price_model:
-                  type: string
-                  enum:
-                    - FREE
-                    - FLAT_RATE
-                    - PER_UNIT
-                has_free_trial:
-                  type: boolean
-                unit_name:
-                  type: string
-                  nullable: true
-                bullets:
-                  type: array
-                  items:
-                    type: string
+          $ref: '#/components/schemas/MarketplacePurchase'
         previous_marketplace_purchase:
-          type: object
+          $ref: '#/components/schemas/MarketplacePurchase'
           nullable: true
           description: The previous purchase state (for changed/pending_change events)
         effective_date:

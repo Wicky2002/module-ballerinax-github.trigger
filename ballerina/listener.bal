@@ -22,13 +22,14 @@ public class Listener {
     private http:Listener httpListener;
     private DispatcherService dispatcherService;
 
-    public function init(ListenerConfig listenerConfig = {webhookSecret: DEFAULT_SECRET}, @cloud:Expose int|http:Listener listenOn = 8090) returns error? {
+    public function init(ListenerConfig listenerConfig = {}, @cloud:Expose int|http:Listener listenOn = 8090) returns error? {
         if listenOn is http:Listener {
             self.httpListener = listenOn;
         } else {
             self.httpListener = check new (listenOn);
         }
         self.dispatcherService = new DispatcherService(listenerConfig.webhookSecret);
+        check self.httpListener.attach(self.dispatcherService, ());
     }
 
     public isolated function attach(GenericServiceType serviceRef, () attachPoint) returns error? {
@@ -42,7 +43,6 @@ public class Listener {
     }
 
     public isolated function 'start() returns error? {
-        check self.httpListener.attach(self.dispatcherService, ());
         return self.httpListener.'start();
     }
 
@@ -55,158 +55,235 @@ public class Listener {
     }
 
     private isolated function getServiceTypeStr(GenericServiceType serviceRef) returns string|error {
-        if serviceRef is DeleteService {
-            return "DeleteService";
-        } else if serviceRef is MetaService {
-            return "MetaService";
-        } else if serviceRef is WorkflowDispatchService {
-            return "WorkflowDispatchService";
-        } else if serviceRef is SecurityAndAnalysisService {
-            return "SecurityAndAnalysisService";
-        } else if serviceRef is DeployKeyService {
-            return "DeployKeyService";
-        } else if serviceRef is ProjectColumnService {
-            return "ProjectColumnService";
-        } else if serviceRef is MarketplacePurchaseService {
-            return "MarketplacePurchaseService";
-        } else if serviceRef is BranchProtectionConfigurationService {
-            return "BranchProtectionConfigurationService";
-        } else if serviceRef is PullRequestService {
-            return "PullRequestService";
-        } else if serviceRef is LabelService {
-            return "LabelService";
-        } else if serviceRef is DeploymentService {
-            return "DeploymentService";
-        } else if serviceRef is TeamAddService {
-            return "TeamAddService";
-        } else if serviceRef is CodeScanningAlertService {
-            return "CodeScanningAlertService";
-        } else if serviceRef is MembershipService {
-            return "MembershipService";
-        } else if serviceRef is SecretScanningAlertService {
-            return "SecretScanningAlertService";
-        } else if serviceRef is PushService {
-            return "PushService";
-        } else if serviceRef is MemberService {
-            return "MemberService";
-        } else if serviceRef is RepositoryDispatchService {
-            return "RepositoryDispatchService";
-        } else if serviceRef is StatusService {
-            return "StatusService";
-        } else if serviceRef is RepositoryImportService {
-            return "RepositoryImportService";
-        } else if serviceRef is PersonalAccessTokenRequestService {
-            return "PersonalAccessTokenRequestService";
-        } else if serviceRef is SubIssuesService {
-            return "SubIssuesService";
-        } else if serviceRef is RepositoryRulesetService {
-            return "RepositoryRulesetService";
-        } else if serviceRef is MilestoneService {
-            return "MilestoneService";
-        } else if serviceRef is PublicService {
-            return "PublicService";
-        } else if serviceRef is WorkflowRunService {
-            return "WorkflowRunService";
-        } else if serviceRef is ProjectsV2statusUpdateService {
-            return "ProjectsV2statusUpdateService";
-        } else if serviceRef is ProjectsV2itemService {
-            return "ProjectsV2itemService";
-        } else if serviceRef is SponsorshipService {
-            return "SponsorshipService";
-        } else if serviceRef is MergeGroupService {
-            return "MergeGroupService";
-        } else if serviceRef is ProjectService {
-            return "ProjectService";
-        } else if serviceRef is OrgBlockService {
-            return "OrgBlockService";
-        } else if serviceRef is SecretScanningAlertLocationService {
-            return "SecretScanningAlertLocationService";
-        } else if serviceRef is InstallationTargetService {
-            return "InstallationTargetService";
-        } else if serviceRef is CheckSuiteService {
-            return "CheckSuiteService";
-        } else if serviceRef is PingService {
-            return "PingService";
-        } else if serviceRef is IssueCommentService {
-            return "IssueCommentService";
-        } else if serviceRef is SecurityAdvisoryService {
-            return "SecurityAdvisoryService";
-        } else if serviceRef is PackageService {
-            return "PackageService";
-        } else if serviceRef is DiscussionService {
-            return "DiscussionService";
-        } else if serviceRef is ForkService {
-            return "ForkService";
-        } else if serviceRef is PullRequestReviewService {
-            return "PullRequestReviewService";
-        } else if serviceRef is OrganizationService {
-            return "OrganizationService";
-        } else if serviceRef is IssuesService {
-            return "IssuesService";
-        } else if serviceRef is RegistryPackageService {
-            return "RegistryPackageService";
-        } else if serviceRef is ProjectsV2Service {
-            return "ProjectsV2Service";
-        } else if serviceRef is RepositoryVulnerabilityAlertService {
-            return "RepositoryVulnerabilityAlertService";
-        } else if serviceRef is StarService {
-            return "StarService";
-        } else if serviceRef is CreateService {
-            return "CreateService";
-        } else if serviceRef is DeploymentReviewService {
-            return "DeploymentReviewService";
-        } else if serviceRef is GollumService {
-            return "GollumService";
-        } else if serviceRef is GithubAppAuthorizationService {
-            return "GithubAppAuthorizationService";
-        } else if serviceRef is WatchService {
-            return "WatchService";
-        } else if serviceRef is TeamService {
-            return "TeamService";
-        } else if serviceRef is WorkflowJobService {
-            return "WorkflowJobService";
-        } else if serviceRef is ReleaseService {
-            return "ReleaseService";
-        } else if serviceRef is InstallationService {
-            return "InstallationService";
-        } else if serviceRef is CommitCommentService {
-            return "CommitCommentService";
-        } else if serviceRef is DiscussionCommentService {
-            return "DiscussionCommentService";
-        } else if serviceRef is BranchProtectionRuleService {
-            return "BranchProtectionRuleService";
-        } else if serviceRef is IssueDependenciesService {
-            return "IssueDependenciesService";
-        } else if serviceRef is RepositoryService {
-            return "RepositoryService";
-        } else if serviceRef is PullRequestReviewCommentService {
-            return "PullRequestReviewCommentService";
-        } else if serviceRef is DeploymentProtectionRuleService {
-            return "DeploymentProtectionRuleService";
-        } else if serviceRef is CustomPropertyValuesService {
-            return "CustomPropertyValuesService";
-        } else if serviceRef is InstallationRepositoriesService {
-            return "InstallationRepositoriesService";
-        } else if serviceRef is SecretScanningScanService {
-            return "SecretScanningScanService";
-        } else if serviceRef is ProjectCardService {
-            return "ProjectCardService";
-        } else if serviceRef is CheckRunService {
-            return "CheckRunService";
-        } else if serviceRef is PageBuildService {
-            return "PageBuildService";
-        } else if serviceRef is CustomPropertyService {
-            return "CustomPropertyService";
-        } else if serviceRef is DependabotAlertService {
-            return "DependabotAlertService";
-        } else if serviceRef is DeploymentStatusService {
-            return "DeploymentStatusService";
-        } else if serviceRef is RepositoryAdvisoryService {
-            return "RepositoryAdvisoryService";
-        } else if serviceRef is PullRequestReviewThreadService {
-            return "PullRequestReviewThreadService";
-        } else {
-            return error("Unrecognized service type attached to the listener");
+        match serviceRef {
+            var v if v is DeleteService => {
+                return "DeleteService";
+            }
+            var v if v is MetaService => {
+                return "MetaService";
+            }
+            var v if v is WorkflowDispatchService => {
+                return "WorkflowDispatchService";
+            }
+            var v if v is SecurityAndAnalysisService => {
+                return "SecurityAndAnalysisService";
+            }
+            var v if v is DeployKeyService => {
+                return "DeployKeyService";
+            }
+            var v if v is ProjectColumnService => {
+                return "ProjectColumnService";
+            }
+            var v if v is MarketplacePurchaseService => {
+                return "MarketplacePurchaseService";
+            }
+            var v if v is BranchProtectionConfigurationService => {
+                return "BranchProtectionConfigurationService";
+            }
+            var v if v is PullRequestService => {
+                return "PullRequestService";
+            }
+            var v if v is LabelService => {
+                return "LabelService";
+            }
+            var v if v is DeploymentService => {
+                return "DeploymentService";
+            }
+            var v if v is TeamAddService => {
+                return "TeamAddService";
+            }
+            var v if v is CodeScanningAlertService => {
+                return "CodeScanningAlertService";
+            }
+            var v if v is MembershipService => {
+                return "MembershipService";
+            }
+            var v if v is SecretScanningAlertService => {
+                return "SecretScanningAlertService";
+            }
+            var v if v is PushService => {
+                return "PushService";
+            }
+            var v if v is MemberService => {
+                return "MemberService";
+            }
+            var v if v is RepositoryDispatchService => {
+                return "RepositoryDispatchService";
+            }
+            var v if v is StatusService => {
+                return "StatusService";
+            }
+            var v if v is RepositoryImportService => {
+                return "RepositoryImportService";
+            }
+            var v if v is PersonalAccessTokenRequestService => {
+                return "PersonalAccessTokenRequestService";
+            }
+            var v if v is SubIssuesService => {
+                return "SubIssuesService";
+            }
+            var v if v is RepositoryRulesetService => {
+                return "RepositoryRulesetService";
+            }
+            var v if v is MilestoneService => {
+                return "MilestoneService";
+            }
+            var v if v is PublicService => {
+                return "PublicService";
+            }
+            var v if v is WorkflowRunService => {
+                return "WorkflowRunService";
+            }
+            var v if v is ProjectsV2statusUpdateService => {
+                return "ProjectsV2statusUpdateService";
+            }
+            var v if v is ProjectsV2itemService => {
+                return "ProjectsV2itemService";
+            }
+            var v if v is SponsorshipService => {
+                return "SponsorshipService";
+            }
+            var v if v is MergeGroupService => {
+                return "MergeGroupService";
+            }
+            var v if v is ProjectService => {
+                return "ProjectService";
+            }
+            var v if v is OrgBlockService => {
+                return "OrgBlockService";
+            }
+            var v if v is SecretScanningAlertLocationService => {
+                return "SecretScanningAlertLocationService";
+            }
+            var v if v is InstallationTargetService => {
+                return "InstallationTargetService";
+            }
+            var v if v is CheckSuiteService => {
+                return "CheckSuiteService";
+            }
+            var v if v is PingService => {
+                return "PingService";
+            }
+            var v if v is IssueCommentService => {
+                return "IssueCommentService";
+            }
+            var v if v is SecurityAdvisoryService => {
+                return "SecurityAdvisoryService";
+            }
+            var v if v is PackageService => {
+                return "PackageService";
+            }
+            var v if v is DiscussionService => {
+                return "DiscussionService";
+            }
+            var v if v is ForkService => {
+                return "ForkService";
+            }
+            var v if v is PullRequestReviewService => {
+                return "PullRequestReviewService";
+            }
+            var v if v is OrganizationService => {
+                return "OrganizationService";
+            }
+            var v if v is IssuesService => {
+                return "IssuesService";
+            }
+            var v if v is RegistryPackageService => {
+                return "RegistryPackageService";
+            }
+            var v if v is ProjectsV2Service => {
+                return "ProjectsV2Service";
+            }
+            var v if v is RepositoryVulnerabilityAlertService => {
+                return "RepositoryVulnerabilityAlertService";
+            }
+            var v if v is StarService => {
+                return "StarService";
+            }
+            var v if v is CreateService => {
+                return "CreateService";
+            }
+            var v if v is DeploymentReviewService => {
+                return "DeploymentReviewService";
+            }
+            var v if v is GollumService => {
+                return "GollumService";
+            }
+            var v if v is GithubAppAuthorizationService => {
+                return "GithubAppAuthorizationService";
+            }
+            var v if v is WatchService => {
+                return "WatchService";
+            }
+            var v if v is TeamService => {
+                return "TeamService";
+            }
+            var v if v is WorkflowJobService => {
+                return "WorkflowJobService";
+            }
+            var v if v is ReleaseService => {
+                return "ReleaseService";
+            }
+            var v if v is InstallationService => {
+                return "InstallationService";
+            }
+            var v if v is CommitCommentService => {
+                return "CommitCommentService";
+            }
+            var v if v is DiscussionCommentService => {
+                return "DiscussionCommentService";
+            }
+            var v if v is BranchProtectionRuleService => {
+                return "BranchProtectionRuleService";
+            }
+            var v if v is IssueDependenciesService => {
+                return "IssueDependenciesService";
+            }
+            var v if v is RepositoryService => {
+                return "RepositoryService";
+            }
+            var v if v is PullRequestReviewCommentService => {
+                return "PullRequestReviewCommentService";
+            }
+            var v if v is DeploymentProtectionRuleService => {
+                return "DeploymentProtectionRuleService";
+            }
+            var v if v is CustomPropertyValuesService => {
+                return "CustomPropertyValuesService";
+            }
+            var v if v is InstallationRepositoriesService => {
+                return "InstallationRepositoriesService";
+            }
+            var v if v is SecretScanningScanService => {
+                return "SecretScanningScanService";
+            }
+            var v if v is ProjectCardService => {
+                return "ProjectCardService";
+            }
+            var v if v is CheckRunService => {
+                return "CheckRunService";
+            }
+            var v if v is PageBuildService => {
+                return "PageBuildService";
+            }
+            var v if v is CustomPropertyService => {
+                return "CustomPropertyService";
+            }
+            var v if v is DependabotAlertService => {
+                return "DependabotAlertService";
+            }
+            var v if v is DeploymentStatusService => {
+                return "DeploymentStatusService";
+            }
+            var v if v is RepositoryAdvisoryService => {
+                return "RepositoryAdvisoryService";
+            }
+            var v if v is PullRequestReviewThreadService => {
+                return "PullRequestReviewThreadService";
+            }
+            var _ => {
+                return error("Unrecognized service type attached to the listener");
+            }
         }
     }
 }

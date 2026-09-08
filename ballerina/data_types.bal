@@ -16,13 +16,10 @@
 
 import ballerina/http;
 
-const string DEFAULT_SECRET = "";
-
 # Configuration for the webhook listener, including the secret used to verify incoming requests.
 public type ListenerConfig record {
-    # The secret used to verify incoming webhook signatures.
-    @display {label: "Webhook Secret"}
-    string webhookSecret = DEFAULT_SECRET;
+    # Webhook Secret
+    string webhookSecret?;
 };
 
 # Payload for fork events
@@ -85,6 +82,37 @@ public type ReleasePayload record {
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
+};
+
+# The GitHub Marketplace purchase
+public type MarketplacePurchase record {
+    Account account;
+    string billing_cycle;
+    int unit_count;
+    boolean on_free_trial?;
+    string? free_trial_ends_on?;
+    string? next_billing_date?;
+    Plan plan;
+};
+
+public type Account record {
+    string 'type;
+    int id;
+    string node_id?;
+    string login;
+    string? organization_billing_email?;
+};
+
+public type Plan record {
+    int id;
+    string name;
+    string description;
+    int monthly_price_in_cents;
+    int yearly_price_in_cents;
+    string price_model;
+    boolean has_free_trial?;
+    string? unit_name?;
+    string[] bullets?;
 };
 
 # Payload for secret_scanning_alert_location events
@@ -321,7 +349,7 @@ public type RepositoryDispatchPayload record {
     # The branch from which the dispatch was triggered
     string branch;
     # The client_payload from the dispatch request body
-    record {}? client_payload;
+    map<json>? client_payload;
     Installation installation?;
     User sender?;
     Repository repository?;
@@ -379,6 +407,18 @@ public type OrgBlockPayload record {
     Enterprise enterprise?;
 };
 
+# A GitHub Sponsors tier
+public type Tier record {
+    string node_id;
+    string created_at?;
+    string description?;
+    int monthly_price_in_cents;
+    int monthly_price_in_dollars;
+    string name;
+    boolean is_one_time?;
+    boolean is_custom_amount?;
+};
+
 # Payload for dependabot_alert events
 public type DependabotAlertPayload record {
     string action;
@@ -403,18 +443,7 @@ public type SecurityAdvisory record {
     string summary?;
     string description?;
     string severity?;
-    record {}[] vulnerabilities?;
-};
-
-public type FirstPatchedVersion record {
-    string identifier?;
-};
-
-public type SecurityVulnerability record {
-    Package package?;
-    string severity?;
-    string vulnerable_version_range?;
-    FirstPatchedVersion? first_patched_version?;
+    SecurityVulnerability[] vulnerabilities?;
 };
 
 # A Dependabot alert
@@ -702,6 +731,18 @@ public type StarPayload record {
     Enterprise enterprise?;
 };
 
+# A vulnerable version range affecting a package, and the version it was patched in
+public type SecurityVulnerability record {
+    Package package?;
+    string severity?;
+    string vulnerable_version_range?;
+    FirstPatchedVersion? first_patched_version?;
+};
+
+public type FirstPatchedVersion record {
+    string identifier?;
+};
+
 # Payload for watch events (someone started watching the repository)
 public type WatchPayload record {
     string action;
@@ -781,7 +822,7 @@ public type PackagePayloadPackage record {
 # Payload for workflow_dispatch events (manually triggered workflows)
 public type WorkflowDispatchPayload record {
     # The inputs provided when manually triggering the workflow
-    record {}? inputs?;
+    map<json>? inputs?;
     # The branch or tag ref from which the workflow was triggered
     string ref;
     # The path to the workflow file (e.g. .github/workflows/main.yml)
@@ -808,32 +849,18 @@ public type SponsorshipPayload record {
     Installation installation?;
 };
 
-# The tier the sponsor has chosen
-public type Tier record {
-    string node_id;
-    string created_at?;
-    string description?;
-    int monthly_price_in_cents;
-    int monthly_price_in_dollars;
-    string name;
-    boolean is_one_time?;
-    boolean is_custom_amount?;
-};
-
 # The sponsorship object
 public type Sponsorship record {
     string node_id;
     string created_at;
     string privacy_level;
-    # The tier the sponsor has chosen
     Tier tier;
     User sponsor;
     User sponsorable;
 };
 
 public type SponsorshipPayloadTier record {
-    # The previous tier object (same shape as sponsorship.tier)
-    record {} 'from?;
+    Tier 'from?;
 };
 
 public type PrivacyLevel record {
@@ -924,45 +951,13 @@ public type Team record {
 # Payload for marketplace_purchase events
 public type MarketplacePurchasePayload record {
     string action;
-    # The GitHub Marketplace purchase
     MarketplacePurchase marketplace_purchase;
     # The previous purchase state (for changed/pending_change events)
-    record {}? previous_marketplace_purchase?;
+    MarketplacePurchase? previous_marketplace_purchase?;
     # ISO 8601 date when the change takes effect
     string effective_date;
     User sender;
     Installation installation?;
-};
-
-public type Account record {
-    string 'type;
-    int id;
-    string node_id?;
-    string login;
-    string? organization_billing_email?;
-};
-
-public type Plan record {
-    int id;
-    string name;
-    string description;
-    int monthly_price_in_cents;
-    int yearly_price_in_cents;
-    string price_model;
-    boolean has_free_trial?;
-    string? unit_name?;
-    string[] bullets?;
-};
-
-# The GitHub Marketplace purchase
-public type MarketplacePurchase record {
-    Account account;
-    string billing_cycle;
-    int unit_count;
-    boolean on_free_trial?;
-    string? free_trial_ends_on?;
-    string? next_billing_date?;
-    Plan plan;
 };
 
 # Payload for the push event
@@ -2766,4 +2761,4 @@ public type MembershipPayload record {
 };
 
 # The union of every possible webhook payload type this listener can receive.
-public type GenericDataType ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|DependabotAlertPayload|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|IssueComment|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|WorkflowRun|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|Discussion|User|PullRequestReview|DeletePayload|MetaPayload|DeploymentPayload|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|Commit|CheckRun|MembershipPayload|Workflow|Package|Organization|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|CommonPayload|DeploymentProtectionRulePayload;
+public type GenericDataType ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|MarketplacePurchase|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|Tier|DependabotAlertPayload|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|IssueComment|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|WorkflowRun|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|Discussion|User|PullRequestReview|DeletePayload|MetaPayload|DeploymentPayload|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|Commit|CheckRun|MembershipPayload|Workflow|Package|Organization|SecurityVulnerability|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|CommonPayload|DeploymentProtectionRulePayload;
