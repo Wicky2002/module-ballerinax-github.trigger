@@ -52,6 +52,7 @@ public type DeployKeyService service object {
     # + payload - the DeployKeyPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDeployKeyCreated(DeployKeyPayload payload) returns error?;
+
     # Triggered on Deploy key deleted.
     # + payload - the DeployKeyPayload webhook payload
     # + return - an error if handling the event fails
@@ -64,14 +65,17 @@ public type ProjectColumnService service object {
     # + payload - the ProjectColumnPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectColumnMoved(ProjectColumnPayload payload) returns error?;
+
     # Triggered on Project column edited.
     # + payload - the ProjectColumnPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectColumnEdited(ProjectColumnPayload payload) returns error?;
+
     # Triggered on Project column deleted.
     # + payload - the ProjectColumnPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectColumnDeleted(ProjectColumnPayload payload) returns error?;
+
     # Triggered on Project column created.
     # + payload - the ProjectColumnPayload webhook payload
     # + return - an error if handling the event fails
@@ -84,18 +88,22 @@ public type MarketplacePurchaseService service object {
     # + payload - the MarketplacePurchasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onMarketplacePurchasePurchased(MarketplacePurchasePayload payload) returns error?;
+
     # Triggered on Marketplace purchase cancelled.
     # + payload - the MarketplacePurchasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onMarketplacePurchaseCancelled(MarketplacePurchasePayload payload) returns error?;
+
     # Triggered on Marketplace purchase pending change cancelled.
     # + payload - the MarketplacePurchasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onMarketplacePurchasePendingChangeCancelled(MarketplacePurchasePayload payload) returns error?;
+
     # Triggered on Marketplace purchase pending change.
     # + payload - the MarketplacePurchasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onMarketplacePurchasePendingChange(MarketplacePurchasePayload payload) returns error?;
+
     # Triggered on Marketplace purchase changed.
     # + payload - the MarketplacePurchasePayload webhook payload
     # + return - an error if handling the event fails
@@ -108,6 +116,7 @@ public type BranchProtectionConfigurationService service object {
     # + payload - the BranchProtectionConfigurationPayload webhook payload
     # + return - an error if handling the event fails
     remote function onBranchProtectionConfigurationEnabled(BranchProtectionConfigurationPayload payload) returns error?;
+
     # Triggered on Branch protection configuration disabled.
     # + payload - the BranchProtectionConfigurationPayload webhook payload
     # + return - an error if handling the event fails
@@ -120,82 +129,102 @@ public type PullRequestService service object {
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestEnqueued(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request review request removed.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestReviewRequestRemoved(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request opened.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestOpened(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request ready for review.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestReadyForReview(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request labeled.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestLabeled(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request unassigned.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestUnassigned(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request edited.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestEdited(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request synchronize.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestSynchronize(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request review requested.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestReviewRequested(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request reopened.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestReopened(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request auto merge disabled.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestAutoMergeDisabled(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request locked.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestLocked(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request auto merge enabled.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestAutoMergeEnabled(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request milestoned.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestMilestoned(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request dequeued.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestDequeued(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request unlabeled.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestUnlabeled(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request closed.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestClosed(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request unlocked.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestUnlocked(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request assigned.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestAssigned(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request converted to draft.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestConvertedToDraft(PullRequestPayload payload) returns error?;
+
     # Triggered on Pull request demilestoned.
     # + payload - the PullRequestPayload webhook payload
     # + return - an error if handling the event fails
@@ -208,10 +237,12 @@ public type LabelService service object {
     # + payload - the LabelPayload webhook payload
     # + return - an error if handling the event fails
     remote function onLabelEdited(LabelPayload payload) returns error?;
+
     # Triggered on Label created.
     # + payload - the LabelPayload webhook payload
     # + return - an error if handling the event fails
     remote function onLabelCreated(LabelPayload payload) returns error?;
+
     # Triggered on Label deleted.
     # + payload - the LabelPayload webhook payload
     # + return - an error if handling the event fails
@@ -240,26 +271,32 @@ public type CodeScanningAlertService service object {
     # + payload - the CodeScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCodeScanningAlertAppearedInBranch(CodeScanningAlertPayload payload) returns error?;
+
     # Triggered on Code scanning alert closed by user.
     # + payload - the CodeScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCodeScanningAlertClosedByUser(CodeScanningAlertPayload payload) returns error?;
+
     # Triggered on Code scanning alert created.
     # + payload - the CodeScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCodeScanningAlertCreated(CodeScanningAlertPayload payload) returns error?;
+
     # Triggered on Code scanning alert fixed.
     # + payload - the CodeScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCodeScanningAlertFixed(CodeScanningAlertPayload payload) returns error?;
+
     # Triggered on Code scanning alert reopened.
     # + payload - the CodeScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCodeScanningAlertReopened(CodeScanningAlertPayload payload) returns error?;
+
     # Triggered on Code scanning alert reopened by user.
     # + payload - the CodeScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCodeScanningAlertReopenedByUser(CodeScanningAlertPayload payload) returns error?;
+
     # Triggered on Code scanning alert updated assignment.
     # + payload - the CodeScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
@@ -272,6 +309,7 @@ public type MembershipService service object {
     # + payload - the MembershipPayload webhook payload
     # + return - an error if handling the event fails
     remote function onMembershipAdded(MembershipPayload payload) returns error?;
+
     # Triggered on Membership removed.
     # + payload - the MembershipPayload webhook payload
     # + return - an error if handling the event fails
@@ -284,26 +322,32 @@ public type SecretScanningAlertService service object {
     # + payload - the SecretScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSecretScanningAlertAssigned(SecretScanningAlertPayload payload) returns error?;
+
     # Triggered on Secret scanning alert reopened.
     # + payload - the SecretScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSecretScanningAlertReopened(SecretScanningAlertPayload payload) returns error?;
+
     # Triggered on Secret scanning alert unassigned.
     # + payload - the SecretScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSecretScanningAlertUnassigned(SecretScanningAlertPayload payload) returns error?;
+
     # Triggered on Secret scanning alert created.
     # + payload - the SecretScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSecretScanningAlertCreated(SecretScanningAlertPayload payload) returns error?;
+
     # Triggered on Secret scanning alert publicly leaked.
     # + payload - the SecretScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSecretScanningAlertPubliclyLeaked(SecretScanningAlertPayload payload) returns error?;
+
     # Triggered on Secret scanning alert validated.
     # + payload - the SecretScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSecretScanningAlertValidated(SecretScanningAlertPayload payload) returns error?;
+
     # Triggered on Secret scanning alert resolved.
     # + payload - the SecretScanningAlertPayload webhook payload
     # + return - an error if handling the event fails
@@ -324,10 +368,12 @@ public type MemberService service object {
     # + payload - the MemberPayload webhook payload
     # + return - an error if handling the event fails
     remote function onMemberEdited(MemberPayload payload) returns error?;
+
     # Triggered on Member added.
     # + payload - the MemberPayload webhook payload
     # + return - an error if handling the event fails
     remote function onMemberAdded(MemberPayload payload) returns error?;
+
     # Triggered on Member removed.
     # + payload - the MemberPayload webhook payload
     # + return - an error if handling the event fails
@@ -364,14 +410,17 @@ public type PersonalAccessTokenRequestService service object {
     # + payload - the PersonalAccessTokenRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPersonalAccessTokenRequestCreated(PersonalAccessTokenRequestPayload payload) returns error?;
+
     # Triggered on Personal access token request approved.
     # + payload - the PersonalAccessTokenRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPersonalAccessTokenRequestApproved(PersonalAccessTokenRequestPayload payload) returns error?;
+
     # Triggered on Personal access token request denied.
     # + payload - the PersonalAccessTokenRequestPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPersonalAccessTokenRequestDenied(PersonalAccessTokenRequestPayload payload) returns error?;
+
     # Triggered on Personal access token request cancelled.
     # + payload - the PersonalAccessTokenRequestPayload webhook payload
     # + return - an error if handling the event fails
@@ -384,14 +433,17 @@ public type SubIssuesService service object {
     # + payload - the SubIssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSubIssuesSubIssueAdded(SubIssuesPayload payload) returns error?;
+
     # Triggered on Sub issues parent issue added.
     # + payload - the SubIssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSubIssuesParentIssueAdded(SubIssuesPayload payload) returns error?;
+
     # Triggered on Sub issues sub issue removed.
     # + payload - the SubIssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSubIssuesSubIssueRemoved(SubIssuesPayload payload) returns error?;
+
     # Triggered on Sub issues parent issue removed.
     # + payload - the SubIssuesPayload webhook payload
     # + return - an error if handling the event fails
@@ -404,10 +456,12 @@ public type RepositoryRulesetService service object {
     # + payload - the RepositoryRulesetPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryRulesetCreated(RepositoryRulesetPayload payload) returns error?;
+
     # Triggered on Repository ruleset edited.
     # + payload - the RepositoryRulesetPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryRulesetEdited(RepositoryRulesetPayload payload) returns error?;
+
     # Triggered on Repository ruleset deleted.
     # + payload - the RepositoryRulesetPayload webhook payload
     # + return - an error if handling the event fails
@@ -420,18 +474,22 @@ public type MilestoneService service object {
     # + payload - the MilestonePayload webhook payload
     # + return - an error if handling the event fails
     remote function onMilestoneCreated(MilestonePayload payload) returns error?;
+
     # Triggered on Milestone edited.
     # + payload - the MilestonePayload webhook payload
     # + return - an error if handling the event fails
     remote function onMilestoneEdited(MilestonePayload payload) returns error?;
+
     # Triggered on Milestone opened.
     # + payload - the MilestonePayload webhook payload
     # + return - an error if handling the event fails
     remote function onMilestoneOpened(MilestonePayload payload) returns error?;
+
     # Triggered on Milestone deleted.
     # + payload - the MilestonePayload webhook payload
     # + return - an error if handling the event fails
     remote function onMilestoneDeleted(MilestonePayload payload) returns error?;
+
     # Triggered on Milestone closed.
     # + payload - the MilestonePayload webhook payload
     # + return - an error if handling the event fails
@@ -452,10 +510,12 @@ public type WorkflowRunService service object {
     # + payload - the WorkflowRunPayload webhook payload
     # + return - an error if handling the event fails
     remote function onWorkflowRunInProgress(WorkflowRunPayload payload) returns error?;
+
     # Triggered on Workflow run completed.
     # + payload - the WorkflowRunPayload webhook payload
     # + return - an error if handling the event fails
     remote function onWorkflowRunCompleted(WorkflowRunPayload payload) returns error?;
+
     # Triggered on Workflow run requested.
     # + payload - the WorkflowRunPayload webhook payload
     # + return - an error if handling the event fails
@@ -468,10 +528,12 @@ public type ProjectsV2statusUpdateService service object {
     # + payload - the 'ProjectsV2StatusUpdatePayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2StatusUpdateEdited('ProjectsV2StatusUpdatePayload payload) returns error?;
+
     # Triggered on Projects v2 status update deleted.
     # + payload - the 'ProjectsV2StatusUpdatePayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2StatusUpdateDeleted('ProjectsV2StatusUpdatePayload payload) returns error?;
+
     # Triggered on Projects v2 status update created.
     # + payload - the 'ProjectsV2StatusUpdatePayload webhook payload
     # + return - an error if handling the event fails
@@ -484,26 +546,32 @@ public type ProjectsV2itemService service object {
     # + payload - the 'ProjectsV2ItemPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2ItemEdited('ProjectsV2ItemPayload payload) returns error?;
+
     # Triggered on Projects v2 item created.
     # + payload - the 'ProjectsV2ItemPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2ItemCreated('ProjectsV2ItemPayload payload) returns error?;
+
     # Triggered on Projects v2 item archived.
     # + payload - the 'ProjectsV2ItemPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2ItemArchived('ProjectsV2ItemPayload payload) returns error?;
+
     # Triggered on Projects v2 item deleted.
     # + payload - the 'ProjectsV2ItemPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2ItemDeleted('ProjectsV2ItemPayload payload) returns error?;
+
     # Triggered on Projects v2 item restored.
     # + payload - the 'ProjectsV2ItemPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2ItemRestored('ProjectsV2ItemPayload payload) returns error?;
+
     # Triggered on Projects v2 item reordered.
     # + payload - the 'ProjectsV2ItemPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2ItemReordered('ProjectsV2ItemPayload payload) returns error?;
+
     # Triggered on Projects v2 item converted.
     # + payload - the 'ProjectsV2ItemPayload webhook payload
     # + return - an error if handling the event fails
@@ -516,22 +584,27 @@ public type SponsorshipService service object {
     # + payload - the SponsorshipPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSponsorshipCancelled(SponsorshipPayload payload) returns error?;
+
     # Triggered on Sponsorship edited.
     # + payload - the SponsorshipPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSponsorshipEdited(SponsorshipPayload payload) returns error?;
+
     # Triggered on Sponsorship tier changed.
     # + payload - the SponsorshipPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSponsorshipTierChanged(SponsorshipPayload payload) returns error?;
+
     # Triggered on Sponsorship pending cancellation.
     # + payload - the SponsorshipPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSponsorshipPendingCancellation(SponsorshipPayload payload) returns error?;
+
     # Triggered on Sponsorship created.
     # + payload - the SponsorshipPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSponsorshipCreated(SponsorshipPayload payload) returns error?;
+
     # Triggered on Sponsorship pending tier change.
     # + payload - the SponsorshipPayload webhook payload
     # + return - an error if handling the event fails
@@ -544,6 +617,7 @@ public type MergeGroupService service object {
     # + payload - the MergeGroupPayload webhook payload
     # + return - an error if handling the event fails
     remote function onMergeGroupDestroyed(MergeGroupPayload payload) returns error?;
+
     # Triggered on Merge group checks requested.
     # + payload - the MergeGroupPayload webhook payload
     # + return - an error if handling the event fails
@@ -556,18 +630,22 @@ public type ProjectService service object {
     # + payload - the ProjectPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectDeleted(ProjectPayload payload) returns error?;
+
     # Triggered on Project created.
     # + payload - the ProjectPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectCreated(ProjectPayload payload) returns error?;
+
     # Triggered on Project closed.
     # + payload - the ProjectPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectClosed(ProjectPayload payload) returns error?;
+
     # Triggered on Project reopened.
     # + payload - the ProjectPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectReopened(ProjectPayload payload) returns error?;
+
     # Triggered on Project edited.
     # + payload - the ProjectPayload webhook payload
     # + return - an error if handling the event fails
@@ -580,6 +658,7 @@ public type OrgBlockService service object {
     # + payload - the OrgBlockPayload webhook payload
     # + return - an error if handling the event fails
     remote function onOrgBlockBlocked(OrgBlockPayload payload) returns error?;
+
     # Triggered on Org block unblocked.
     # + payload - the OrgBlockPayload webhook payload
     # + return - an error if handling the event fails
@@ -608,10 +687,12 @@ public type CheckSuiteService service object {
     # + payload - the CheckSuitePayload webhook payload
     # + return - an error if handling the event fails
     remote function onCheckSuiteCompleted(CheckSuitePayload payload) returns error?;
+
     # Triggered on Check suite requested.
     # + payload - the CheckSuitePayload webhook payload
     # + return - an error if handling the event fails
     remote function onCheckSuiteRequested(CheckSuitePayload payload) returns error?;
+
     # Triggered on Check suite rerequested.
     # + payload - the CheckSuitePayload webhook payload
     # + return - an error if handling the event fails
@@ -632,18 +713,22 @@ public type IssueCommentService service object {
     # + payload - the IssueCommentPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssueCommentEdited(IssueCommentPayload payload) returns error?;
+
     # Triggered on Issue comment pinned.
     # + payload - the IssueCommentPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssueCommentPinned(IssueCommentPayload payload) returns error?;
+
     # Triggered on Issue comment deleted.
     # + payload - the IssueCommentPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssueCommentDeleted(IssueCommentPayload payload) returns error?;
+
     # Triggered on Issue comment created.
     # + payload - the IssueCommentPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssueCommentCreated(IssueCommentPayload payload) returns error?;
+
     # Triggered on Issue comment unpinned.
     # + payload - the IssueCommentPayload webhook payload
     # + return - an error if handling the event fails
@@ -656,10 +741,12 @@ public type SecurityAdvisoryService service object {
     # + payload - the SecurityAdvisoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSecurityAdvisoryWithdrawn(SecurityAdvisoryPayload payload) returns error?;
+
     # Triggered on Security advisory published.
     # + payload - the SecurityAdvisoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onSecurityAdvisoryPublished(SecurityAdvisoryPayload payload) returns error?;
+
     # Triggered on Security advisory updated.
     # + payload - the SecurityAdvisoryPayload webhook payload
     # + return - an error if handling the event fails
@@ -672,6 +759,7 @@ public type PackageService service object {
     # + payload - the PackagePayload webhook payload
     # + return - an error if handling the event fails
     remote function onPackagePublished(PackagePayload payload) returns error?;
+
     # Triggered on Package updated.
     # + payload - the PackagePayload webhook payload
     # + return - an error if handling the event fails
@@ -684,58 +772,72 @@ public type DiscussionService service object {
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionUnanswered(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion created.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionCreated(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion transferred.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionTransferred(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion category changed.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionCategoryChanged(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion deleted.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionDeleted(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion unlocked.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionUnlocked(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion pinned.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionPinned(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion edited.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionEdited(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion reopened.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionReopened(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion answered.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionAnswered(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion closed.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionClosed(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion unlabeled.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionUnlabeled(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion labeled.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionLabeled(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion unpinned.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionUnpinned(DiscussionPayload payload) returns error?;
+
     # Triggered on Discussion locked.
     # + payload - the DiscussionPayload webhook payload
     # + return - an error if handling the event fails
@@ -756,10 +858,12 @@ public type PullRequestReviewService service object {
     # + payload - the PullRequestReviewPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestReviewSubmitted(PullRequestReviewPayload payload) returns error?;
+
     # Triggered on Pull request review edited.
     # + payload - the PullRequestReviewPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestReviewEdited(PullRequestReviewPayload payload) returns error?;
+
     # Triggered on Pull request review dismissed.
     # + payload - the PullRequestReviewPayload webhook payload
     # + return - an error if handling the event fails
@@ -772,18 +876,22 @@ public type OrganizationService service object {
     # + payload - the OrganizationPayload webhook payload
     # + return - an error if handling the event fails
     remote function onOrganizationMemberAdded(OrganizationPayload payload) returns error?;
+
     # Triggered on Organization member removed.
     # + payload - the OrganizationPayload webhook payload
     # + return - an error if handling the event fails
     remote function onOrganizationMemberRemoved(OrganizationPayload payload) returns error?;
+
     # Triggered on Organization deleted.
     # + payload - the OrganizationPayload webhook payload
     # + return - an error if handling the event fails
     remote function onOrganizationDeleted(OrganizationPayload payload) returns error?;
+
     # Triggered on Organization renamed.
     # + payload - the OrganizationPayload webhook payload
     # + return - an error if handling the event fails
     remote function onOrganizationRenamed(OrganizationPayload payload) returns error?;
+
     # Triggered on Organization member invited.
     # + payload - the OrganizationPayload webhook payload
     # + return - an error if handling the event fails
@@ -796,70 +904,87 @@ public type IssuesService service object {
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesReopened(IssuesPayload payload) returns error?;
+
     # Triggered on Issues transferred.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesTransferred(IssuesPayload payload) returns error?;
+
     # Triggered on Issues unpinned.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesUnpinned(IssuesPayload payload) returns error?;
+
     # Triggered on Issues assigned.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesAssigned(IssuesPayload payload) returns error?;
+
     # Triggered on Issues milestoned.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesMilestoned(IssuesPayload payload) returns error?;
+
     # Triggered on Issues labeled.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesLabeled(IssuesPayload payload) returns error?;
+
     # Triggered on Issues opened.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesOpened(IssuesPayload payload) returns error?;
+
     # Triggered on Issues pinned.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesPinned(IssuesPayload payload) returns error?;
+
     # Triggered on Issues typed.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesTyped(IssuesPayload payload) returns error?;
+
     # Triggered on Issues edited.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesEdited(IssuesPayload payload) returns error?;
+
     # Triggered on Issues untyped.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesUntyped(IssuesPayload payload) returns error?;
+
     # Triggered on Issues demilestoned.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesDemilestoned(IssuesPayload payload) returns error?;
+
     # Triggered on Issues locked.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesLocked(IssuesPayload payload) returns error?;
+
     # Triggered on Issues unassigned.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesUnassigned(IssuesPayload payload) returns error?;
+
     # Triggered on Issues unlocked.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesUnlocked(IssuesPayload payload) returns error?;
+
     # Triggered on Issues unlabeled.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesUnlabeled(IssuesPayload payload) returns error?;
+
     # Triggered on Issues closed.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssuesClosed(IssuesPayload payload) returns error?;
+
     # Triggered on Issues deleted.
     # + payload - the IssuesPayload webhook payload
     # + return - an error if handling the event fails
@@ -872,6 +997,7 @@ public type RegistryPackageService service object {
     # + payload - the RegistryPackagePayload webhook payload
     # + return - an error if handling the event fails
     remote function onRegistryPackageUpdated(RegistryPackagePayload payload) returns error?;
+
     # Triggered on Registry package published.
     # + payload - the RegistryPackagePayload webhook payload
     # + return - an error if handling the event fails
@@ -884,18 +1010,22 @@ public type ProjectsV2Service service object {
     # + payload - the 'ProjectsV2Payload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2Created('ProjectsV2Payload payload) returns error?;
+
     # Triggered on Projects v2 edited.
     # + payload - the 'ProjectsV2Payload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2Edited('ProjectsV2Payload payload) returns error?;
+
     # Triggered on Projects v2 closed.
     # + payload - the 'ProjectsV2Payload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2Closed('ProjectsV2Payload payload) returns error?;
+
     # Triggered on Projects v2 reopened.
     # + payload - the 'ProjectsV2Payload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectsV2Reopened('ProjectsV2Payload payload) returns error?;
+
     # Triggered on Projects v2 deleted.
     # + payload - the 'ProjectsV2Payload webhook payload
     # + return - an error if handling the event fails
@@ -908,14 +1038,17 @@ public type RepositoryVulnerabilityAlertService service object {
     # + payload - the RepositoryVulnerabilityAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryVulnerabilityAlertResolve(RepositoryVulnerabilityAlertPayload payload) returns error?;
+
     # Triggered on Repository vulnerability alert reopen.
     # + payload - the RepositoryVulnerabilityAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryVulnerabilityAlertReopen(RepositoryVulnerabilityAlertPayload payload) returns error?;
+
     # Triggered on Repository vulnerability alert dismiss.
     # + payload - the RepositoryVulnerabilityAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryVulnerabilityAlertDismiss(RepositoryVulnerabilityAlertPayload payload) returns error?;
+
     # Triggered on Repository vulnerability alert create.
     # + payload - the RepositoryVulnerabilityAlertPayload webhook payload
     # + return - an error if handling the event fails
@@ -928,6 +1061,7 @@ public type StarService service object {
     # + payload - the StarPayload webhook payload
     # + return - an error if handling the event fails
     remote function onStarCreated(StarPayload payload) returns error?;
+
     # Triggered on Star deleted.
     # + payload - the StarPayload webhook payload
     # + return - an error if handling the event fails
@@ -948,10 +1082,12 @@ public type DeploymentReviewService service object {
     # + payload - the DeploymentReviewPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDeploymentReviewRequested(DeploymentReviewPayload payload) returns error?;
+
     # Triggered on Deployment review rejected.
     # + payload - the DeploymentReviewPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDeploymentReviewRejected(DeploymentReviewPayload payload) returns error?;
+
     # Triggered on Deployment review approved.
     # + payload - the DeploymentReviewPayload webhook payload
     # + return - an error if handling the event fails
@@ -988,18 +1124,22 @@ public type TeamService service object {
     # + payload - the TeamPayload webhook payload
     # + return - an error if handling the event fails
     remote function onTeamCreated(TeamPayload payload) returns error?;
+
     # Triggered on Team deleted.
     # + payload - the TeamPayload webhook payload
     # + return - an error if handling the event fails
     remote function onTeamDeleted(TeamPayload payload) returns error?;
+
     # Triggered on Team edited.
     # + payload - the TeamPayload webhook payload
     # + return - an error if handling the event fails
     remote function onTeamEdited(TeamPayload payload) returns error?;
+
     # Triggered on Team added to repository.
     # + payload - the TeamPayload webhook payload
     # + return - an error if handling the event fails
     remote function onTeamAddedToRepository(TeamPayload payload) returns error?;
+
     # Triggered on Team removed from repository.
     # + payload - the TeamPayload webhook payload
     # + return - an error if handling the event fails
@@ -1012,14 +1152,17 @@ public type WorkflowJobService service object {
     # + payload - the WorkflowJobPayload webhook payload
     # + return - an error if handling the event fails
     remote function onWorkflowJobQueued(WorkflowJobPayload payload) returns error?;
+
     # Triggered on Workflow job waiting.
     # + payload - the WorkflowJobPayload webhook payload
     # + return - an error if handling the event fails
     remote function onWorkflowJobWaiting(WorkflowJobPayload payload) returns error?;
+
     # Triggered on Workflow job completed.
     # + payload - the WorkflowJobPayload webhook payload
     # + return - an error if handling the event fails
     remote function onWorkflowJobCompleted(WorkflowJobPayload payload) returns error?;
+
     # Triggered on Workflow job in progress.
     # + payload - the WorkflowJobPayload webhook payload
     # + return - an error if handling the event fails
@@ -1032,26 +1175,32 @@ public type ReleaseService service object {
     # + payload - the ReleasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onReleaseCreated(ReleasePayload payload) returns error?;
+
     # Triggered on Release published.
     # + payload - the ReleasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onReleasePublished(ReleasePayload payload) returns error?;
+
     # Triggered on Release released.
     # + payload - the ReleasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onReleaseReleased(ReleasePayload payload) returns error?;
+
     # Triggered on Release prereleased.
     # + payload - the ReleasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onReleasePrereleased(ReleasePayload payload) returns error?;
+
     # Triggered on Release unpublished.
     # + payload - the ReleasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onReleaseUnpublished(ReleasePayload payload) returns error?;
+
     # Triggered on Release deleted.
     # + payload - the ReleasePayload webhook payload
     # + return - an error if handling the event fails
     remote function onReleaseDeleted(ReleasePayload payload) returns error?;
+
     # Triggered on Release edited.
     # + payload - the ReleasePayload webhook payload
     # + return - an error if handling the event fails
@@ -1064,18 +1213,22 @@ public type InstallationService service object {
     # + payload - the InstallationPayload webhook payload
     # + return - an error if handling the event fails
     remote function onInstallationNewPermissionsAccepted(InstallationPayload payload) returns error?;
+
     # Triggered on Installation suspend.
     # + payload - the InstallationPayload webhook payload
     # + return - an error if handling the event fails
     remote function onInstallationSuspend(InstallationPayload payload) returns error?;
+
     # Triggered on Installation created.
     # + payload - the InstallationPayload webhook payload
     # + return - an error if handling the event fails
     remote function onInstallationCreated(InstallationPayload payload) returns error?;
+
     # Triggered on Installation deleted.
     # + payload - the InstallationPayload webhook payload
     # + return - an error if handling the event fails
     remote function onInstallationDeleted(InstallationPayload payload) returns error?;
+
     # Triggered on Installation unsuspend.
     # + payload - the InstallationPayload webhook payload
     # + return - an error if handling the event fails
@@ -1096,10 +1249,12 @@ public type DiscussionCommentService service object {
     # + payload - the DiscussionCommentPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionCommentDeleted(DiscussionCommentPayload payload) returns error?;
+
     # Triggered on Discussion comment created.
     # + payload - the DiscussionCommentPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDiscussionCommentCreated(DiscussionCommentPayload payload) returns error?;
+
     # Triggered on Discussion comment edited.
     # + payload - the DiscussionCommentPayload webhook payload
     # + return - an error if handling the event fails
@@ -1112,10 +1267,12 @@ public type BranchProtectionRuleService service object {
     # + payload - the BranchProtectionRulePayload webhook payload
     # + return - an error if handling the event fails
     remote function onBranchProtectionRuleDeleted(BranchProtectionRulePayload payload) returns error?;
+
     # Triggered on Branch protection rule edited.
     # + payload - the BranchProtectionRulePayload webhook payload
     # + return - an error if handling the event fails
     remote function onBranchProtectionRuleEdited(BranchProtectionRulePayload payload) returns error?;
+
     # Triggered on Branch protection rule created.
     # + payload - the BranchProtectionRulePayload webhook payload
     # + return - an error if handling the event fails
@@ -1128,14 +1285,17 @@ public type IssueDependenciesService service object {
     # + payload - the IssueDependenciesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssueDependenciesBlockingRemoved(IssueDependenciesPayload payload) returns error?;
+
     # Triggered on Issue dependencies blocked by removed.
     # + payload - the IssueDependenciesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssueDependenciesBlockedByRemoved(IssueDependenciesPayload payload) returns error?;
+
     # Triggered on Issue dependencies blocking added.
     # + payload - the IssueDependenciesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onIssueDependenciesBlockingAdded(IssueDependenciesPayload payload) returns error?;
+
     # Triggered on Issue dependencies blocked by added.
     # + payload - the IssueDependenciesPayload webhook payload
     # + return - an error if handling the event fails
@@ -1148,34 +1308,42 @@ public type RepositoryService service object {
     # + payload - the RepositoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryPrivatized(RepositoryPayload payload) returns error?;
+
     # Triggered on Repository created.
     # + payload - the RepositoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryCreated(RepositoryPayload payload) returns error?;
+
     # Triggered on Repository renamed.
     # + payload - the RepositoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryRenamed(RepositoryPayload payload) returns error?;
+
     # Triggered on Repository transferred.
     # + payload - the RepositoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryTransferred(RepositoryPayload payload) returns error?;
+
     # Triggered on Repository edited.
     # + payload - the RepositoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryEdited(RepositoryPayload payload) returns error?;
+
     # Triggered on Repository deleted.
     # + payload - the RepositoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryDeleted(RepositoryPayload payload) returns error?;
+
     # Triggered on Repository archived.
     # + payload - the RepositoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryArchived(RepositoryPayload payload) returns error?;
+
     # Triggered on Repository publicized.
     # + payload - the RepositoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryPublicized(RepositoryPayload payload) returns error?;
+
     # Triggered on Repository unarchived.
     # + payload - the RepositoryPayload webhook payload
     # + return - an error if handling the event fails
@@ -1188,10 +1356,12 @@ public type PullRequestReviewCommentService service object {
     # + payload - the PullRequestReviewCommentPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestReviewCommentCreated(PullRequestReviewCommentPayload payload) returns error?;
+
     # Triggered on Pull request review comment deleted.
     # + payload - the PullRequestReviewCommentPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestReviewCommentDeleted(PullRequestReviewCommentPayload payload) returns error?;
+
     # Triggered on Pull request review comment edited.
     # + payload - the PullRequestReviewCommentPayload webhook payload
     # + return - an error if handling the event fails
@@ -1220,6 +1390,7 @@ public type InstallationRepositoriesService service object {
     # + payload - the InstallationRepositoriesPayload webhook payload
     # + return - an error if handling the event fails
     remote function onInstallationRepositoriesRemoved(InstallationRepositoriesPayload payload) returns error?;
+
     # Triggered on Installation repositories added.
     # + payload - the InstallationRepositoriesPayload webhook payload
     # + return - an error if handling the event fails
@@ -1240,18 +1411,22 @@ public type ProjectCardService service object {
     # + payload - the ProjectCardPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectCardEdited(ProjectCardPayload payload) returns error?;
+
     # Triggered on Project card deleted.
     # + payload - the ProjectCardPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectCardDeleted(ProjectCardPayload payload) returns error?;
+
     # Triggered on Project card moved.
     # + payload - the ProjectCardPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectCardMoved(ProjectCardPayload payload) returns error?;
+
     # Triggered on Project card converted.
     # + payload - the ProjectCardPayload webhook payload
     # + return - an error if handling the event fails
     remote function onProjectCardConverted(ProjectCardPayload payload) returns error?;
+
     # Triggered on Project card created.
     # + payload - the ProjectCardPayload webhook payload
     # + return - an error if handling the event fails
@@ -1264,14 +1439,17 @@ public type CheckRunService service object {
     # + payload - the CheckRunPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCheckRunCreated(CheckRunPayload payload) returns error?;
+
     # Triggered on Check run completed.
     # + payload - the CheckRunPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCheckRunCompleted(CheckRunPayload payload) returns error?;
+
     # Triggered on Check run requested action.
     # + payload - the CheckRunPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCheckRunRequestedAction(CheckRunPayload payload) returns error?;
+
     # Triggered on Check run rerequested.
     # + payload - the CheckRunPayload webhook payload
     # + return - an error if handling the event fails
@@ -1292,14 +1470,17 @@ public type CustomPropertyService service object {
     # + payload - the CustomPropertyPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCustomPropertyUpdated(CustomPropertyPayload payload) returns error?;
+
     # Triggered on Custom property deleted.
     # + payload - the CustomPropertyPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCustomPropertyDeleted(CustomPropertyPayload payload) returns error?;
+
     # Triggered on Custom property promote to enterprise.
     # + payload - the CustomPropertyPayload webhook payload
     # + return - an error if handling the event fails
     remote function onCustomPropertyPromoteToEnterprise(CustomPropertyPayload payload) returns error?;
+
     # Triggered on Custom property created.
     # + payload - the CustomPropertyPayload webhook payload
     # + return - an error if handling the event fails
@@ -1312,30 +1493,37 @@ public type DependabotAlertService service object {
     # + payload - the DependabotAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDependabotAlertAutoDismissed(DependabotAlertPayload payload) returns error?;
+
     # Triggered on Dependabot alert auto reopened.
     # + payload - the DependabotAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDependabotAlertAutoReopened(DependabotAlertPayload payload) returns error?;
+
     # Triggered on Dependabot alert created.
     # + payload - the DependabotAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDependabotAlertCreated(DependabotAlertPayload payload) returns error?;
+
     # Triggered on Dependabot alert dismissed.
     # + payload - the DependabotAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDependabotAlertDismissed(DependabotAlertPayload payload) returns error?;
+
     # Triggered on Dependabot alert reopened.
     # + payload - the DependabotAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDependabotAlertReopened(DependabotAlertPayload payload) returns error?;
+
     # Triggered on Dependabot alert reintroduced.
     # + payload - the DependabotAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDependabotAlertReintroduced(DependabotAlertPayload payload) returns error?;
+
     # Triggered on Dependabot alert assignees changed.
     # + payload - the DependabotAlertPayload webhook payload
     # + return - an error if handling the event fails
     remote function onDependabotAlertAssigneesChanged(DependabotAlertPayload payload) returns error?;
+
     # Triggered on Dependabot alert fixed.
     # + payload - the DependabotAlertPayload webhook payload
     # + return - an error if handling the event fails
@@ -1356,6 +1544,7 @@ public type RepositoryAdvisoryService service object {
     # + payload - the RepositoryAdvisoryPayload webhook payload
     # + return - an error if handling the event fails
     remote function onRepositoryAdvisoryReported(RepositoryAdvisoryPayload payload) returns error?;
+
     # Triggered on Repository advisory published.
     # + payload - the RepositoryAdvisoryPayload webhook payload
     # + return - an error if handling the event fails
@@ -1368,6 +1557,7 @@ public type PullRequestReviewThreadService service object {
     # + payload - the PullRequestReviewThreadPayload webhook payload
     # + return - an error if handling the event fails
     remote function onPullRequestReviewThreadUnresolved(PullRequestReviewThreadPayload payload) returns error?;
+
     # Triggered on Pull request review thread resolved.
     # + payload - the PullRequestReviewThreadPayload webhook payload
     # + return - an error if handling the event fails
