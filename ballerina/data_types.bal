@@ -215,10 +215,25 @@ public type DeploymentReviewPayload record {
     Enterprise enterprise?;
 };
 
+# Team reviewer
+public type 'ReviewerBranch1 record {
+    int id?;
+    string node_id?;
+    string name?;
+    string slug?;
+    string? description?;
+    string privacy?;
+    string permission?;
+    string html_url?;
+};
+
+# A User or Team object depending on type
+public type Reviewer anydata|'ReviewerBranch1;
+
 public type ReviewersItem record {
     string 'type?;
     # A User or Team object depending on type
-    anydata reviewer?;
+    Reviewer reviewer?;
 };
 
 # The workflow run associated with the deployment
@@ -564,6 +579,12 @@ public type Workflow record {
     string badge_url?;
 };
 
+# An actor allowed to dismiss pull request reviews
+public type RuleActor record {
+    int id;
+    string 'type;
+};
+
 # Payload for custom_property_values events
 public type CustomPropertyValuesPayload record {
     string action;
@@ -648,6 +669,20 @@ public type PullRequestReviewThreadPayloadThread record {
     PullRequestReviewComment[] comments?;
 };
 
+# A workflow that must run for this rule to pass
+public type RuleWorkflowFileReference record {
+    string path;
+    string ref?;
+    int repository_id;
+    string sha?;
+};
+
+# Specify people, teams, or apps allowed to dismiss pull request reviews.
+public type RuleDismissalRestriction record {
+    RuleActor[] allowed_actors?;
+    boolean enabled;
+};
+
 # A comment on an issue or pull request
 public type IssueComment record {
     int id;
@@ -659,6 +694,16 @@ public type IssueComment record {
     string created_at?;
     string updated_at?;
     string author_association?;
+};
+
+# Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+# commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+# tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
+public type RulePatternParameters record {
+    string name?;
+    boolean negate?;
+    string operator;
+    string pattern;
 };
 
 # Payload for registry_package events (legacy GitHub Packages event)
@@ -923,29 +968,85 @@ public type PackagePayloadRelease record {
 };
 
 public type Tag record {
+    string digest?;
     string name?;
-    string digest?;
-};
-
-public type Labels record {
-    string? description?;
-    string? 'source?;
-    string? revision?;
-    string? image_url?;
-    string? licenses?;
-    map<json> all_labels?;
-};
-
-public type Manifest record {
-    string digest?;
-    string media_type?;
 };
 
 # Metadata for a container (Docker) package version
 public type ContainerMetadata record {
     Tag tag?;
-    Labels labels?;
-    Manifest manifest?;
+    # Untyped even in GitHub's own webhook schema - genuinely open, not incomplete.
+    map<json>? labels?;
+    # Untyped even in GitHub's own webhook schema - genuinely open, not incomplete.
+    map<json>? manifest?;
+};
+
+public type NpmMetadata record {
+    string name?;
+    string 'version?;
+    string npm_user?;
+    map<json>? author?;
+    map<json>? bugs?;
+    map<json> dependencies?;
+    map<json> dev_dependencies?;
+    map<json> peer_dependencies?;
+    map<json> optional_dependencies?;
+    string description?;
+    map<json>? dist?;
+    string git_head?;
+    string homepage?;
+    string license?;
+    string main?;
+    map<json>? repository?;
+    map<json> scripts?;
+    string id?;
+    string node_version?;
+    string npm_version?;
+    boolean has_shrinkwrap?;
+    map<json>[] maintainers?;
+    map<json>[] contributors?;
+    map<json> engines?;
+    string[] keywords?;
+    string[] files?;
+    map<json> bin?;
+    map<json> man?;
+    map<json>? directories?;
+    string[] os?;
+    string[] cpu?;
+    string readme?;
+    string installation_command?;
+    int release_id?;
+    string commit_oid?;
+    boolean published_via_actions?;
+    int deleted_by_id?;
+};
+
+public type NugetMetadataItem record {
+    # Real payloads may send this as either an integer or a string
+    string id?;
+    string name?;
+    # Real payloads may send this as a boolean, string, integer, or an object
+    # with url/branch/commit/type fields - kept as string here since AsyncAPI
+    # schemas have no first-class "any of these primitive types" construct;
+    # the object variant's fields are lost by this simplification.
+    string value?;
+};
+
+public type VersionInfo record {
+    string 'version?;
+};
+
+public type RubygemsMetadataItem record {
+    string name?;
+    string description?;
+    string readme?;
+    string homepage?;
+    VersionInfo version_info?;
+    string platform?;
+    map<json> metadata?;
+    string repo?;
+    map<json>[] dependencies?;
+    string commit_oid?;
 };
 
 # A single downloadable file within a published package version
@@ -984,12 +1085,15 @@ public type PackagePayloadPackageVersion record {
     boolean prerelease?;
     string created_at?;
     string updated_at?;
-    record {}[] metadata?;
+    # Genuinely arbitrary per GitHub's own webhook schema - each entry declares no
+    # fixed shape (additionalProperties: true, no properties), confirmed via
+    # github/rest-api-description's webhook-package-published schema.
+    map<json>[] metadata?;
     # Metadata for a container (Docker) package version
     ContainerMetadata? container_metadata?;
-    record {}? npm_metadata?;
-    record {}[]? nuget_metadata?;
-    record {}[]? rubygems_metadata?;
+    NpmMetadata? npm_metadata?;
+    NugetMetadataItem[]? nuget_metadata?;
+    RubygemsMetadataItem[]? rubygems_metadata?;
     PackagePayloadPackageFilesItem[] package_files?;
     string? package_url?;
     User author?;
@@ -1034,6 +1138,13 @@ public type WorkflowDispatchPayload record {
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
+};
+
+# A tool that must provide code scanning results for this rule to pass.
+public type RuleCodeScanningTool record {
+    string alerts_threshold;
+    string security_alerts_threshold;
+    string tool;
 };
 
 # Payload for sponsorship events
@@ -1839,10 +1950,190 @@ public type Conditions record {
     RefName ref_name?;
 };
 
-public type RulesItem record {
-    string 'type?;
-    record {} parameters?;
+# Only allow users with bypass permission to create matching refs.
+public type RulesItemCreation record {
+    string 'type;
 };
+
+public type RulesItemUpdateParameters record {
+    # Branch can pull changes from its upstream repository
+    boolean update_allows_fetch_and_merge;
+};
+
+# Only allow users with bypass permission to update matching refs.
+public type RulesItemUpdate record {
+    string 'type;
+    RulesItemUpdateParameters parameters?;
+};
+
+# Only allow users with bypass permissions to delete matching refs.
+public type RulesItemDeletion record {
+    string 'type;
+};
+
+# Prevent merge commits from being pushed to matching refs.
+public type RulesItemRequiredLinearHistory record {
+    string 'type;
+};
+
+public type RulesItemMergeQueueParameters record {
+    # Maximum time (minutes) for a required status check to report a conclusion.
+    int check_response_timeout_minutes;
+    string grouping_strategy;
+    int max_entries_to_build;
+    int max_entries_to_merge;
+    string merge_method;
+    int min_entries_to_merge;
+    int min_entries_to_merge_wait_minutes;
+};
+
+# Merges must be performed via a merge queue.
+public type RulesItemMergeQueue record {
+    string 'type;
+    RulesItemMergeQueueParameters parameters?;
+};
+
+public type RulesItemRequiredDeploymentsParameters record {
+    string[] required_deployment_environments;
+};
+
+# Choose which environments must be successfully deployed to before refs can be pushed.
+public type RulesItemRequiredDeployments record {
+    string 'type;
+    RulesItemRequiredDeploymentsParameters parameters?;
+};
+
+# Commits pushed to matching refs must have verified signatures.
+public type RulesItemRequiredSignatures record {
+    string 'type;
+};
+
+public type RulesItemPullRequestParameters record {
+    string[] allowed_merge_methods?;
+    boolean dismiss_stale_reviews_on_push;
+    RuleDismissalRestriction dismissal_restriction?;
+    boolean require_code_owner_review;
+    boolean require_last_push_approval;
+    int required_approving_review_count;
+    boolean required_review_thread_resolution;
+    RuleRequiredReviewerConfiguration[] required_reviewers?;
+};
+
+# Require commits be submitted via a pull request before they can be merged.
+public type RulesItemPullRequest record {
+    string 'type;
+    RulesItemPullRequestParameters parameters?;
+};
+
+public type RulesItemRequiredStatusChecksParameters record {
+    boolean do_not_enforce_on_create?;
+    RuleStatusCheckConfiguration[] required_status_checks;
+    boolean strict_required_status_checks_policy;
+};
+
+# Choose which status checks must pass before the ref is updated.
+public type RulesItemRequiredStatusChecks record {
+    string 'type;
+    RulesItemRequiredStatusChecksParameters parameters?;
+};
+
+# Prevent users with push access from force pushing to refs.
+public type RulesItemNonFastForward record {
+    string 'type;
+};
+
+# Restrict commit messages matching a pattern.
+public type RulesItemCommitMessagePattern record {
+    string 'type;
+    RulePatternParameters parameters?;
+};
+
+# Restrict commit author emails matching a pattern.
+public type RulesItemCommitAuthorEmailPattern record {
+    string 'type;
+    RulePatternParameters parameters?;
+};
+
+# Restrict committer emails matching a pattern.
+public type RulesItemCommitterEmailPattern record {
+    string 'type;
+    RulePatternParameters parameters?;
+};
+
+# Restrict branch names matching a pattern.
+public type RulesItemBranchNamePattern record {
+    string 'type;
+    RulePatternParameters parameters?;
+};
+
+# Restrict tag names matching a pattern.
+public type RulesItemTagNamePattern record {
+    string 'type;
+    RulePatternParameters parameters?;
+};
+
+public type RulesItemFilePathRestrictionParameters record {
+    string[] restricted_file_paths;
+};
+
+# Restrict file and folder paths from being pushed.
+public type RulesItemFilePathRestriction record {
+    string 'type;
+    RulesItemFilePathRestrictionParameters parameters?;
+};
+
+public type RulesItemMaxFilePathLengthParameters record {
+    int max_file_path_length;
+};
+
+# Restrict file paths exceeding a character limit.
+public type RulesItemMaxFilePathLength record {
+    string 'type;
+    RulesItemMaxFilePathLengthParameters parameters?;
+};
+
+public type RulesItemFileExtensionRestrictionParameters record {
+    string[] restricted_file_extensions;
+};
+
+# Restrict files with specified file extensions.
+public type RulesItemFileExtensionRestriction record {
+    string 'type;
+    RulesItemFileExtensionRestrictionParameters parameters?;
+};
+
+public type RulesItemMaxFileSizeParameters record {
+    int max_file_size;
+};
+
+# Restrict individual files exceeding a size limit (MB).
+public type RulesItemMaxFileSize record {
+    string 'type;
+    RulesItemMaxFileSizeParameters parameters?;
+};
+
+public type RulesItemWorkflowsParameters record {
+    boolean do_not_enforce_on_create?;
+    RuleWorkflowFileReference[] workflows;
+};
+
+# Require specified workflows to pass before changes can be merged.
+public type RulesItemWorkflows record {
+    string 'type;
+    RulesItemWorkflowsParameters parameters?;
+};
+
+public type RulesItemCodeScanningParameters record {
+    RuleCodeScanningTool[] code_scanning_tools;
+};
+
+# Choose which code scanning tools must provide results before the reference is updated.
+public type RulesItemCodeScanning record {
+    string 'type;
+    RulesItemCodeScanningParameters parameters?;
+};
+
+public type RulesItem RulesItemCreation|RulesItemUpdate|RulesItemDeletion|RulesItemRequiredLinearHistory|RulesItemMergeQueue|RulesItemRequiredDeployments|RulesItemRequiredSignatures|RulesItemPullRequest|RulesItemRequiredStatusChecks|RulesItemNonFastForward|RulesItemCommitMessagePattern|RulesItemCommitAuthorEmailPattern|RulesItemCommitterEmailPattern|RulesItemBranchNamePattern|RulesItemTagNamePattern|RulesItemFilePathRestriction|RulesItemMaxFilePathLength|RulesItemFileExtensionRestriction|RulesItemMaxFileSize|RulesItemWorkflows|RulesItemCodeScanning;
 
 public type BypassActorsItem record {
     int? actor_id?;
@@ -1860,6 +2151,10 @@ public type RepositoryRuleset record {
     string enforcement;
     # Which refs this ruleset applies to
     Conditions? conditions?;
+    # Each entry's real shape depends on its "type" - 20 real rule types confirmed
+    # against github/rest-api-description's authoritative OpenAPI spec (the actual
+    # source powering docs.github.com and every GitHub SDK), not guessed from field
+    # names or a third-party summary.
     RulesItem[] rules?;
     BypassActorsItem[] bypass_actors?;
     string created_at?;
@@ -2862,6 +3157,12 @@ public type PullRequestsItem record {
     PullRequestRef base?;
 };
 
+# Required status check
+public type RuleStatusCheckConfiguration record {
+    string context;
+    int integration_id?;
+};
+
 # Payload for label events
 public type LabelPayload record {
     string action;
@@ -3356,6 +3657,19 @@ public type CommitCommentPayloadComment record {
     string author_association?;
 };
 
+# A required reviewing team
+public type RuleReviewer record {
+    int id;
+    string 'type;
+};
+
+# A reviewing team, and file patterns describing which files they must approve changes to.
+public type RuleRequiredReviewerConfiguration record {
+    string[] file_patterns;
+    int minimum_approvals;
+    RuleReviewer reviewer;
+};
+
 # A Git commit
 public type Commit record {
     # The commit SHA
@@ -3422,4 +3736,4 @@ public type MembershipPayload record {
 };
 
 # The union of every possible webhook payload type this listener can receive.
-public type GenericDataType App|ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|MarketplacePurchase|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|Tier|DependabotAlertPayload|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|IssueComment|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|WorkflowRun|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|PullRequestMinimal|Discussion|User|PullRequestReview|Category|DeletePayload|MetaPayload|DeploymentPayload|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|Commit|CheckRun|MembershipPayload|Workflow|Package|Organization|SecurityVulnerability|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|CommonPayload|DeploymentProtectionRulePayload;
+public type GenericDataType App|ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|MarketplacePurchase|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|Tier|DependabotAlertPayload|RuleActor|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|RuleWorkflowFileReference|RuleDismissalRestriction|IssueComment|RulePatternParameters|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|RuleCodeScanningTool|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|WorkflowRun|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|PullRequestMinimal|Discussion|User|PullRequestReview|Category|DeletePayload|MetaPayload|DeploymentPayload|RuleStatusCheckConfiguration|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|RuleReviewer|RuleRequiredReviewerConfiguration|Commit|CheckRun|MembershipPayload|Workflow|Package|Organization|SecurityVulnerability|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|CommonPayload|DeploymentProtectionRulePayload;

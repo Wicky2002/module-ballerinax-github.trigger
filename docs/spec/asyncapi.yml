@@ -5910,6 +5910,144 @@ components:
               items:
                 type: string
 
+    RulePatternParameters:
+      type: object
+      description: |
+        Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+        commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+        tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
+      required:
+        - operator
+        - pattern
+      properties:
+        name:
+          type: string
+        negate:
+          type: boolean
+        operator:
+          type: string
+          enum:
+            - starts_with
+            - ends_with
+            - contains
+            - regex
+        pattern:
+          type: string
+
+    RuleActor:
+      type: object
+      description: An actor allowed to dismiss pull request reviews
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - User
+            - Team
+            - IntegrationInstallation
+            - RepositoryRole
+
+    RuleReviewer:
+      type: object
+      description: A required reviewing team
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - Team
+
+    RuleDismissalRestriction:
+      type: object
+      description: Specify people, teams, or apps allowed to dismiss pull request reviews.
+      required:
+        - enabled
+      properties:
+        allowed_actors:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleActor'
+        enabled:
+          type: boolean
+
+    RuleRequiredReviewerConfiguration:
+      type: object
+      description: A reviewing team, and file patterns describing which files they must approve changes to.
+      required:
+        - file_patterns
+        - minimum_approvals
+        - reviewer
+      properties:
+        file_patterns:
+          type: array
+          items:
+            type: string
+        minimum_approvals:
+          type: integer
+        reviewer:
+          $ref: '#/components/schemas/RuleReviewer'
+
+    RuleStatusCheckConfiguration:
+      type: object
+      description: Required status check
+      required:
+        - context
+      properties:
+        context:
+          type: string
+        integration_id:
+          type: integer
+
+    RuleWorkflowFileReference:
+      type: object
+      description: A workflow that must run for this rule to pass
+      required:
+        - path
+        - repository_id
+      properties:
+        path:
+          type: string
+        ref:
+          type: string
+        repository_id:
+          type: integer
+        sha:
+          type: string
+
+    RuleCodeScanningTool:
+      type: object
+      description: A tool that must provide code scanning results for this rule to pass.
+      required:
+        - alerts_threshold
+        - security_alerts_threshold
+        - tool
+      properties:
+        alerts_threshold:
+          type: string
+          enum:
+            - none
+            - errors
+            - errors_and_warnings
+            - all
+        security_alerts_threshold:
+          type: string
+          enum:
+            - none
+            - critical
+            - high_or_higher
+            - medium_or_higher
+            - all
+        tool:
+          type: string
+
     Category:
       type: object
       description: A discussion category
@@ -9183,8 +9321,13 @@ components:
                   format: date-time
                 metadata:
                   type: array
+                  description: |
+                    Genuinely arbitrary per GitHub's own webhook schema - each entry declares no
+                    fixed shape (additionalProperties: true, no properties), confirmed via
+                    github/rest-api-description's webhook-package-published schema.
                   items:
                     type: object
+                    additionalProperties: true
                 container_metadata:
                   type: object
                   nullable: true
@@ -9193,52 +9336,183 @@ components:
                     tag:
                       type: object
                       properties:
-                        name:
-                          type: string
                         digest:
+                          type: string
+                        name:
                           type: string
                     labels:
                       type: object
-                      properties:
-                        description:
-                          type: string
-                          nullable: true
-                        source:
-                          type: string
-                          nullable: true
-                        revision:
-                          type: string
-                          nullable: true
-                        image_url:
-                          type: string
-                          nullable: true
-                        licenses:
-                          type: string
-                          nullable: true
-                        all_labels:
-                          type: object
-                          additionalProperties:
-                            type: string
+                      nullable: true
+                      description: Untyped even in GitHub's own webhook schema - genuinely open, not incomplete.
+                      additionalProperties: true
                     manifest:
                       type: object
-                      properties:
-                        digest:
-                          type: string
-                        media_type:
-                          type: string
+                      nullable: true
+                      description: Untyped even in GitHub's own webhook schema - genuinely open, not incomplete.
+                      additionalProperties: true
                 npm_metadata:
                   type: object
                   nullable: true
+                  properties:
+                    name:
+                      type: string
+                    version:
+                      type: string
+                    npm_user:
+                      type: string
+                    author:
+                      type: object
+                      nullable: true
+                      additionalProperties: true
+                    bugs:
+                      type: object
+                      nullable: true
+                      additionalProperties: true
+                    dependencies:
+                      type: object
+                      additionalProperties: true
+                    dev_dependencies:
+                      type: object
+                      additionalProperties: true
+                    peer_dependencies:
+                      type: object
+                      additionalProperties: true
+                    optional_dependencies:
+                      type: object
+                      additionalProperties: true
+                    description:
+                      type: string
+                    dist:
+                      type: object
+                      nullable: true
+                      additionalProperties: true
+                    git_head:
+                      type: string
+                    homepage:
+                      type: string
+                    license:
+                      type: string
+                    main:
+                      type: string
+                    repository:
+                      type: object
+                      nullable: true
+                      additionalProperties: true
+                    scripts:
+                      type: object
+                      additionalProperties: true
+                    id:
+                      type: string
+                    node_version:
+                      type: string
+                    npm_version:
+                      type: string
+                    has_shrinkwrap:
+                      type: boolean
+                    maintainers:
+                      type: array
+                      items:
+                        type: object
+                        additionalProperties: true
+                    contributors:
+                      type: array
+                      items:
+                        type: object
+                        additionalProperties: true
+                    engines:
+                      type: object
+                      additionalProperties: true
+                    keywords:
+                      type: array
+                      items:
+                        type: string
+                    files:
+                      type: array
+                      items:
+                        type: string
+                    bin:
+                      type: object
+                      additionalProperties: true
+                    man:
+                      type: object
+                      additionalProperties: true
+                    directories:
+                      type: object
+                      nullable: true
+                      additionalProperties: true
+                    os:
+                      type: array
+                      items:
+                        type: string
+                    cpu:
+                      type: array
+                      items:
+                        type: string
+                    readme:
+                      type: string
+                    installation_command:
+                      type: string
+                    release_id:
+                      type: integer
+                    commit_oid:
+                      type: string
+                    published_via_actions:
+                      type: boolean
+                    deleted_by_id:
+                      type: integer
                 nuget_metadata:
                   type: array
                   nullable: true
                   items:
                     type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Real payloads may send this as either an integer or a string
+                      name:
+                        type: string
+                      value:
+                        type: string
+                        description: |
+                          Real payloads may send this as a boolean, string, integer, or an object
+                          with url/branch/commit/type fields - kept as string here since AsyncAPI
+                          schemas have no first-class "any of these primitive types" construct;
+                          the object variant's fields are lost by this simplification.
                 rubygems_metadata:
                   type: array
                   nullable: true
                   items:
                     type: object
+                    properties:
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      readme:
+                        type: string
+                      homepage:
+                        type: string
+                      version_info:
+                        type: object
+                        properties:
+                          version:
+                            type: string
+                      platform:
+                        type: string
+                      metadata:
+                        type: object
+                        additionalProperties:
+                          type: string
+                      repo:
+                        type: string
+                      dependencies:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties:
+                            type: string
+                      commit_oid:
+                        type: string
                 package_files:
                   type: array
                   items:
@@ -10117,13 +10391,303 @@ components:
                         type: string
             rules:
               type: array
+              description: |
+                Each entry's real shape depends on its "type" - 20 real rule types confirmed
+                against github/rest-api-description's authoritative OpenAPI spec (the actual
+                source powering docs.github.com and every GitHub SDK), not guessed from field
+                names or a third-party summary.
               items:
-                type: object
-                properties:
-                  type:
-                    type: string
-                  parameters:
-                    type: object
+                oneOf:
+                  - type: object
+                    description: Only allow users with bypass permission to create matching refs.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [creation]
+                  - type: object
+                    description: Only allow users with bypass permission to update matching refs.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [update]
+                      parameters:
+                        type: object
+                        required: [update_allows_fetch_and_merge]
+                        properties:
+                          update_allows_fetch_and_merge:
+                            type: boolean
+                            description: Branch can pull changes from its upstream repository
+                  - type: object
+                    description: Only allow users with bypass permissions to delete matching refs.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [deletion]
+                  - type: object
+                    description: Prevent merge commits from being pushed to matching refs.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [required_linear_history]
+                  - type: object
+                    description: Merges must be performed via a merge queue.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [merge_queue]
+                      parameters:
+                        type: object
+                        required:
+                          - check_response_timeout_minutes
+                          - grouping_strategy
+                          - max_entries_to_build
+                          - max_entries_to_merge
+                          - merge_method
+                          - min_entries_to_merge
+                          - min_entries_to_merge_wait_minutes
+                        properties:
+                          check_response_timeout_minutes:
+                            type: integer
+                            description: Maximum time (minutes) for a required status check to report a conclusion.
+                          grouping_strategy:
+                            type: string
+                            enum: [ALLGREEN, HEADGREEN]
+                          max_entries_to_build:
+                            type: integer
+                          max_entries_to_merge:
+                            type: integer
+                          merge_method:
+                            type: string
+                            enum: [MERGE, SQUASH, REBASE]
+                          min_entries_to_merge:
+                            type: integer
+                          min_entries_to_merge_wait_minutes:
+                            type: integer
+                  - type: object
+                    description: Choose which environments must be successfully deployed to before refs can be pushed.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [required_deployments]
+                      parameters:
+                        type: object
+                        required: [required_deployment_environments]
+                        properties:
+                          required_deployment_environments:
+                            type: array
+                            items:
+                              type: string
+                  - type: object
+                    description: Commits pushed to matching refs must have verified signatures.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [required_signatures]
+                  - type: object
+                    description: Require commits be submitted via a pull request before they can be merged.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [pull_request]
+                      parameters:
+                        type: object
+                        required:
+                          - dismiss_stale_reviews_on_push
+                          - require_code_owner_review
+                          - require_last_push_approval
+                          - required_approving_review_count
+                          - required_review_thread_resolution
+                        properties:
+                          allowed_merge_methods:
+                            type: array
+                            items:
+                              type: string
+                              enum: [merge, squash, rebase]
+                          dismiss_stale_reviews_on_push:
+                            type: boolean
+                          dismissal_restriction:
+                            $ref: '#/components/schemas/RuleDismissalRestriction'
+                          require_code_owner_review:
+                            type: boolean
+                          require_last_push_approval:
+                            type: boolean
+                          required_approving_review_count:
+                            type: integer
+                          required_review_thread_resolution:
+                            type: boolean
+                          required_reviewers:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/RuleRequiredReviewerConfiguration'
+                  - type: object
+                    description: Choose which status checks must pass before the ref is updated.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [required_status_checks]
+                      parameters:
+                        type: object
+                        required:
+                          - required_status_checks
+                          - strict_required_status_checks_policy
+                        properties:
+                          do_not_enforce_on_create:
+                            type: boolean
+                          required_status_checks:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/RuleStatusCheckConfiguration'
+                          strict_required_status_checks_policy:
+                            type: boolean
+                  - type: object
+                    description: Prevent users with push access from force pushing to refs.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [non_fast_forward]
+                  - type: object
+                    description: Restrict commit messages matching a pattern.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [commit_message_pattern]
+                      parameters:
+                        $ref: '#/components/schemas/RulePatternParameters'
+                  - type: object
+                    description: Restrict commit author emails matching a pattern.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [commit_author_email_pattern]
+                      parameters:
+                        $ref: '#/components/schemas/RulePatternParameters'
+                  - type: object
+                    description: Restrict committer emails matching a pattern.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [committer_email_pattern]
+                      parameters:
+                        $ref: '#/components/schemas/RulePatternParameters'
+                  - type: object
+                    description: Restrict branch names matching a pattern.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [branch_name_pattern]
+                      parameters:
+                        $ref: '#/components/schemas/RulePatternParameters'
+                  - type: object
+                    description: Restrict tag names matching a pattern.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [tag_name_pattern]
+                      parameters:
+                        $ref: '#/components/schemas/RulePatternParameters'
+                  - type: object
+                    description: Restrict file and folder paths from being pushed.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [file_path_restriction]
+                      parameters:
+                        type: object
+                        required: [restricted_file_paths]
+                        properties:
+                          restricted_file_paths:
+                            type: array
+                            items:
+                              type: string
+                  - type: object
+                    description: Restrict file paths exceeding a character limit.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [max_file_path_length]
+                      parameters:
+                        type: object
+                        required: [max_file_path_length]
+                        properties:
+                          max_file_path_length:
+                            type: integer
+                  - type: object
+                    description: Restrict files with specified file extensions.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [file_extension_restriction]
+                      parameters:
+                        type: object
+                        required: [restricted_file_extensions]
+                        properties:
+                          restricted_file_extensions:
+                            type: array
+                            items:
+                              type: string
+                  - type: object
+                    description: Restrict individual files exceeding a size limit (MB).
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [max_file_size]
+                      parameters:
+                        type: object
+                        required: [max_file_size]
+                        properties:
+                          max_file_size:
+                            type: integer
+                  - type: object
+                    description: Require specified workflows to pass before changes can be merged.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [workflows]
+                      parameters:
+                        type: object
+                        required: [workflows]
+                        properties:
+                          do_not_enforce_on_create:
+                            type: boolean
+                          workflows:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/RuleWorkflowFileReference'
+                  - type: object
+                    description: Choose which code scanning tools must provide results before the reference is updated.
+                    required: [type]
+                    properties:
+                      type:
+                        type: string
+                        enum: [code_scanning]
+                      parameters:
+                        type: object
+                        required: [code_scanning_tools]
+                        properties:
+                          code_scanning_tools:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/RuleCodeScanningTool'
             bypass_actors:
               type: array
               items:
