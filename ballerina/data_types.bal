@@ -24,16 +24,21 @@ public type ListenerConfig record {
 
 # A GitHub App
 public type App record {
+    # Unique identifier of the GitHub app.
     int id;
     string node_id;
+    # A GitHub user
     User owner?;
+    # The name of the GitHub app.
     string name;
     string? description?;
     string external_url?;
     string html_url?;
     string created_at?;
     string updated_at?;
+    # The set of permissions for the GitHub app.
     map<json> permissions?;
+    # The list of events for the GitHub app. Note that the `installation_target`, `security_advisory`, and `meta` events are not included because they are global events and not specific to an installation.
     string[] events?;
 };
 
@@ -41,23 +46,34 @@ public type App record {
 public type ForkPayload record {
     # The created (forked) repository
     Repository forkee;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # Payload for workflow_run events
 public type WorkflowRunPayload record {
     string action;
+    # A GitHub Actions workflow run
     WorkflowRun workflow_run;
     # The workflow that is being run
     Workflow? workflow;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -65,10 +81,15 @@ public type WorkflowRunPayload record {
 public type GollumPayload record {
     # The pages that were updated
     PagesItem[] pages;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -89,13 +110,19 @@ public type PagesItem record {
 public type ReleasePayload record {
     # The action that was performed
     string action;
+    # A GitHub release
     Release release;
     # For edited events, the changes to the release
     Changes changes?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -162,34 +189,51 @@ public type SecretScanningAlertLocationPayload record {
     Alert alert;
     # The location where the secret was found
     Location location;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # The existing secret scanning alert the location was added to
 public type Alert record {
+    # The security alert number.
     int number;
+    # The type of secret that secret scanning detected.
     string secret_type;
 };
 
 # Location details; shape varies by type
 public type Details record {
+    # The file path in the repository.
     string path?;
+    # Line number at which the secret starts in the file.
     int start_line?;
+    # Line number at which the secret ends in the file.
     int end_line?;
+    # The column at which the secret starts within the start line when the file is interpreted as 8BIT ASCII.
     int start_column?;
+    # The column at which the secret ends within the end line when the file is interpreted as 8BIT ASCII.
     int end_column?;
+    # SHA-1 hash ID of the associated blob.
     string blob_sha?;
+    # The API URL to get the associated blob resource.
     string blob_url?;
+    # SHA-1 hash ID of the associated commit.
     string commit_sha?;
+    # The API URL to get the associated commit resource.
     string commit_url?;
 };
 
 # The location where the secret was found
 public type Location record {
+    # The location type. Because secrets may be found in different types of resources (ie. code, comments, issues, pull requests, discussions), this field identifies the type of resource where the secret was found.
     string 'type;
     # Location details; shape varies by type
     Details details?;
@@ -208,21 +252,31 @@ public type DeploymentReviewPayload record {
     ReviewersItem[] reviewers?;
     # The workflow run associated with the deployment
     DeploymentReviewPayloadWorkflowRun workflow_run;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # Team reviewer
 public type 'ReviewerBranch1 record {
+    # Unique identifier of the team.
     int id?;
     string node_id?;
+    # Name of the team.
     string name?;
     string slug?;
+    # Description of the team.
     string? description?;
+    # The level of privacy this team should have.
     string privacy?;
+    # Permission that the team will have for its repositories.
     string permission?;
     string html_url?;
 };
@@ -238,14 +292,19 @@ public type ReviewersItem record {
 
 # The workflow run associated with the deployment
 public type DeploymentReviewPayloadWorkflowRun record {
+    # The ID of the workflow run.
     int id;
+    # The name of the workflow run.
     string? name;
+    # The SHA of the head commit that points to the version of the workflow being run.
     string head_sha?;
     string? head_branch?;
+    # The auto incrementing run number for the workflow run.
     int run_number?;
     string status?;
     string? conclusion?;
     string html_url?;
+    # Pull requests that are open with a `head_sha` or `head_branch` that matches the workflow run. The returned pull requests do not necessarily indicate pull requests that triggered the run.
     PullRequestMinimal[] pull_requests?;
 };
 
@@ -257,18 +316,27 @@ public type PullRequest record {
     string html_url?;
     string diff_url?;
     string patch_url?;
+    # Number uniquely identifying the pull request within its repository.
     int number;
+    # State of this Pull Request. Either `open` or `closed`.
     string state;
     boolean locked?;
+    # The title of the pull request.
     string title;
     string? body?;
+    # A GitHub user
     User user?;
     Label[] labels?;
+    # A GitHub user
     User? assignee?;
     User[] assignees?;
+    # A milestone on an issue or pull request
     Milestone milestone?;
+    # A pull request head or base ref
     PullRequestRef head?;
+    # A pull request head or base ref
     PullRequestRef base?;
+    # Indicates whether or not the pull request is a draft.
     boolean draft?;
     boolean? merged?;
     boolean? mergeable?;
@@ -285,6 +353,7 @@ public type PullRequest record {
     string updated_at?;
     string? closed_at?;
     string? merged_at?;
+    # A GitHub user
     User? merged_by?;
     string author_association?;
     # Details of an auto-merge request, if one is enabled on this pull request
@@ -293,9 +362,13 @@ public type PullRequest record {
 
 # Details of an auto-merge request, if one is enabled on this pull request
 public type AutoMerge record {
+    # A GitHub user
     User enabled_by?;
+    # The merge method to use.
     string merge_method?;
+    # Title for the merge commit message.
     string commit_title?;
+    # Commit message for the merge commit.
     string commit_message?;
 };
 
@@ -315,24 +388,36 @@ public type SecretScanningScanPayload record {
     string? custom_pattern_name?;
     # If triggered by a custom pattern update, the scope of that pattern
     string? custom_pattern_scope?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # Payload for issue_comment events
 public type IssueCommentPayload record {
     string action;
+    # An issue on GitHub
     Issue issue;
+    # A comment on an issue or pull request
     IssueComment comment;
     # For edited events, the changes to the comment
     IssueCommentPayloadChanges changes?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -348,15 +433,25 @@ public type IssueCommentPayloadChanges record {
 # Payload for deployment_status events
 public type DeploymentStatusPayload record {
     string action;
+    # A deployment request for a specific ref
     Deployment deployment;
+    # A deployment status
     DeploymentStatus deployment_status;
+    # A check performed on the code of a given code change
     CheckRun? check_run?;
+    # A GitHub Actions workflow
     Workflow? workflow?;
+    # A GitHub Actions workflow run
     WorkflowRun? workflow_run?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -370,9 +465,13 @@ public type OrganizationPayload record {
     Invitation? invitation?;
     # For renamed events, the old and new organization name
     OrganizationPayloadChanges? changes?;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -380,9 +479,12 @@ public type OrganizationPayload record {
 # Not present when the action is member_invited.
 public type Membership record {
     string url?;
+    # The state of the member in the organization. The `pending` state indicates the user has not yet accepted an invitation.
     string state?;
+    # The user's membership type in the organization.
     string role?;
     string organization_url?;
+    # A GitHub user
     User user?;
 };
 
@@ -395,6 +497,7 @@ public type Invitation record {
     string created_at;
     string? failed_at?;
     string? failed_reason?;
+    # A GitHub user
     User inviter;
     int team_count;
     string node_id;
@@ -449,10 +552,15 @@ public type RepositoryDispatchPayload record {
     string branch;
     # The client_payload from the dispatch request body
     map<json>? client_payload;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -463,10 +571,15 @@ public type MergeGroupPayload record {
     MergeGroup merge_group;
     # For destroyed action, the reason the merge group was destroyed
     string? reason?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -480,29 +593,41 @@ public type MergeGroup record {
     string base_sha;
     # The full ref of the branch being merged into
     string base_ref;
+    # A Git commit
     Commit head_commit?;
 };
 
 # Payload for workflow_job events
 public type WorkflowJobPayload record {
     string action;
+    # A job in a GitHub Actions workflow run
     WorkflowJob workflow_job;
     # The deployment associated with the workflow job (if applicable)
     Deployment deployment?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # Payload for org_block events
 public type OrgBlockPayload record {
     string action;
+    # A GitHub user
     User? blocked_user;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -523,16 +648,25 @@ public type DependabotAlertPayload record {
     string action;
     # A Dependabot alert
     DependabotAlertPayloadAlert alert;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
+# Details for the vulnerable dependency.
 public type Dependency record {
+    # The ecosystem and name identifying a Dependabot-tracked package
     Package package?;
+    # The full path to the dependency manifest file, relative to the root of the repository.
     string manifest_path?;
+    # The execution scope of the vulnerable dependency.
     string? scope?;
 };
 
@@ -547,21 +681,36 @@ public type SecurityAdvisory record {
 
 # A Dependabot alert
 public type DependabotAlertPayloadAlert record {
+    # The security alert number.
     int number;
+    # The state of the Dependabot alert.
     string state;
+    # Details for the vulnerable dependency.
     Dependency dependency?;
     SecurityAdvisory security_advisory?;
+    # A vulnerable version range affecting a package, and the version it was patched in
     SecurityVulnerability security_vulnerability?;
+    # The REST API URL of the alert resource.
     string url?;
+    # The GitHub URL of the alert resource.
     string html_url?;
+    # The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string created_at?;
+    # The time that the alert was last updated in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string updated_at?;
+    # The time that the alert was dismissed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string? dismissed_at?;
+    # A GitHub user
     User? dismissed_by?;
+    # The reason that the alert was dismissed.
     string? dismissed_reason?;
+    # An optional comment associated with the alert's dismissal.
     string? dismissed_comment?;
+    # The time that the alert was no longer detected and was considered fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string? fixed_at?;
+    # The time that the alert was auto-dismissed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string? auto_dismissed_at?;
+    # The users assigned to this alert.
     User[] assignees?;
 };
 
@@ -592,10 +741,15 @@ public type CustomPropertyValuesPayload record {
     NewPropertyValuesItem[] new_property_values;
     # The old custom property values for the repository
     OldPropertyValuesItem[] old_property_values;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -618,48 +772,76 @@ public type SecretScanningAlertPayload record {
     SecretScanningAlertPayloadAlert alert;
     # Present on assigned/unassigned actions
     User? assignee?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # The secret scanning alert
 public type SecretScanningAlertPayloadAlert record {
+    # The security alert number.
     int number;
+    # The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string created_at?;
+    # The time that the alert was last updated in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string? updated_at?;
+    # The REST API URL of the alert resource.
     string url?;
+    # The GitHub URL of the alert resource.
     string html_url?;
+    # The REST API URL of the code locations for this alert.
     string locations_url?;
     string state;
+    # The reason for resolving the alert.
     string? resolution?;
+    # The time that the alert was resolved in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string? resolved_at?;
+    # A GitHub user
     User? resolved_by?;
+    # An optional comment to resolve an alert.
     string? resolution_comment?;
     # The type of secret that was detected
     string secret_type?;
+    # User-friendly name for the detected secret, matching the `secret_type`.
     string secret_type_display_name?;
+    # The token status as of the latest validity check.
     string validity?;
+    # Whether the detected secret was publicly leaked.
     boolean publicly_leaked?;
+    # Whether the detected secret was found in multiple repositories under the same organization or enterprise.
     boolean multi_repo?;
+    # Whether push protection was bypassed for the detected secret.
     boolean? push_protection_bypassed?;
+    # A GitHub user
     User? push_protection_bypassed_by?;
+    # The time that push protection was bypassed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string? push_protection_bypassed_at?;
 };
 
 # Payload for pull_request_review_thread events
 public type PullRequestReviewThreadPayload record {
     string action;
+    # A pull request
     PullRequest pull_request;
     # The review thread that was resolved or unresolved
     PullRequestReviewThreadPayloadThread thread;
     string? updated_at?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -671,25 +853,35 @@ public type PullRequestReviewThreadPayloadThread record {
 
 # A workflow that must run for this rule to pass
 public type RuleWorkflowFileReference record {
+    # The path to the workflow file.
     string path;
+    # The ref (branch or tag) of the workflow file to use.
     string ref?;
+    # The ID of the repository where the workflow is defined.
     int repository_id;
+    # The commit SHA of the workflow file to use.
     string sha?;
 };
 
 # Specify people, teams, or apps allowed to dismiss pull request reviews.
 public type RuleDismissalRestriction record {
+    # Specify people, teams, or apps allowed to dismiss pull request reviews.
     RuleActor[] allowed_actors?;
+    # Whether to restrict review dismissal to specific actors.
     boolean enabled;
 };
 
 # A comment on an issue or pull request
 public type IssueComment record {
+    # Unique identifier of the issue comment.
     int id;
     string node_id?;
+    # URL for the issue comment.
     string url?;
     string html_url?;
+    # Contents of the issue comment.
     string body;
+    # A GitHub user
     User user?;
     string created_at?;
     string updated_at?;
@@ -700,9 +892,13 @@ public type IssueComment record {
 # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
 # tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
 public type RulePatternParameters record {
+    # How this rule appears when configuring it.
     string name?;
+    # If true, the rule will fail if the pattern matches.
     boolean negate?;
+    # The operator to use for matching.
     string operator;
+    # The pattern to match with.
     string pattern;
 };
 
@@ -711,10 +907,15 @@ public type RegistryPackagePayload record {
     string action;
     # The registry package object
     RegistryPackage registry_package;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -741,6 +942,7 @@ public type PackageVersion record {
     string created_at?;
     string updated_at?;
     PackageFilesItem[] package_files?;
+    # A GitHub user
     User author?;
     string? installation_command?;
 };
@@ -755,15 +957,19 @@ public type Registry record {
 
 # The registry package object
 public type RegistryPackage record {
+    # Unique identifier of the package.
     int id;
+    # The name of the package.
     string name;
     string namespace?;
     string? description?;
     string ecosystem?;
+    # The type of supported package. Packages in GitHub's Gradle registry have the type `maven`. Docker images pushed to GitHub's Container registry (`ghcr.io`) have the type `container`. You can use the type `docker` to find images that were pushed to GitHub's Docker registry (`docker.pkg.github.com`), even if these have now been migrated to the Container registry.
     string package_type;
     string html_url?;
     string created_at?;
     string updated_at?;
+    # A GitHub user
     User owner?;
     PackageVersion? package_version?;
     Registry? registry?;
@@ -771,18 +977,26 @@ public type RegistryPackage record {
 
 # The ecosystem and name identifying a Dependabot-tracked package
 public type Package record {
+    # The package's language or package management ecosystem.
     string ecosystem?;
+    # The unique package name within its ecosystem.
     string name?;
 };
 
 # Payload for check_suite events
 public type CheckSuitePayload record {
     string action;
+    # A check suite
     CheckSuite check_suite;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -791,13 +1005,19 @@ public type DiscussionCommentPayload record {
     string action;
     # The discussion comment
     Comment comment;
+    # A GitHub Discussion in a repository
     Discussion discussion;
     # For edited events, the changes to the comment
     DiscussionCommentPayloadChanges changes?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -807,9 +1027,11 @@ public type Comment record {
     string node_id?;
     string html_url?;
     string body?;
+    # A GitHub user
     User user?;
     string created_at?;
     string updated_at?;
+    # How the author is associated with the repository.
     string author_association?;
 };
 
@@ -839,9 +1061,13 @@ public type Organization record {
 public type RepositoryImportPayload record {
     # The final status of the import
     string status;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
 };
 
@@ -850,10 +1076,15 @@ public type RepositoryPayload record {
     string action;
     # For edited/renamed/transferred events, the changes that occurred
     RepositoryPayloadChanges changes?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -883,7 +1114,9 @@ public type RepositoryPayloadRepository record {
 };
 
 public type 'from record {
+    # A GitHub user
     User user?;
+    # A GitHub organization
     Organization organization?;
 };
 
@@ -909,32 +1142,48 @@ public type StarPayload record {
     string action;
     # The time the star was created (ISO 8601). Null for the deleted action.
     string? starred_at;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # A vulnerable version range affecting a package, and the version it was patched in
 public type SecurityVulnerability record {
+    # The ecosystem and name identifying a Dependabot-tracked package
     Package package?;
+    # The severity of the vulnerability.
     string severity?;
+    # Conditions that identify vulnerable versions of this vulnerability's package.
     string vulnerable_version_range?;
+    # Details pertaining to the package version that patches this vulnerability.
     FirstPatchedVersion? first_patched_version?;
 };
 
+# Details pertaining to the package version that patches this vulnerability.
 public type FirstPatchedVersion record {
+    # The package version that patches this vulnerability.
     string identifier?;
 };
 
 # Payload for watch events (someone started watching the repository)
 public type WatchPayload record {
     string action;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -943,10 +1192,15 @@ public type PackagePayload record {
     string action;
     # Information about the package
     PackagePayloadPackage package;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -957,11 +1211,16 @@ public type PackagePayloadRelease record {
     string url?;
     string html_url?;
     int id?;
+    # The name of the tag.
     string tag_name?;
+    # Specifies the commitish value that determines where the Git tag is created from.
     string target_commitish?;
     string? name?;
+    # Whether the release is a draft or published.
     boolean draft?;
+    # A GitHub user
     User author?;
+    # Whether the release is identified as a prerelease or a full release.
     boolean prerelease?;
     string created_at?;
     string? published_at?;
@@ -1096,6 +1355,7 @@ public type PackagePayloadPackageVersion record {
     RubygemsMetadataItem[]? rubygems_metadata?;
     PackagePayloadPackageFilesItem[] package_files?;
     string? package_url?;
+    # A GitHub user
     User author?;
     string? source_url?;
     string? installation_command?;
@@ -1111,15 +1371,19 @@ public type PackagePayloadRegistry record {
 
 # Information about the package
 public type PackagePayloadPackage record {
+    # Unique identifier of the package.
     int id;
+    # The name of the package.
     string name;
     string namespace?;
     string? description?;
     string ecosystem?;
+    # The type of supported package. Packages in GitHub's Gradle registry have the type `maven`. Docker images pushed to GitHub's Container registry (`ghcr.io`) have the type `container`. You can use the type `docker` to find images that were pushed to GitHub's Docker registry (`docker.pkg.github.com`), even if these have now been migrated to the Container registry.
     string package_type?;
     string html_url?;
     string created_at?;
     string updated_at?;
+    # A GitHub user
     User owner?;
     PackagePayloadPackageVersion? package_version?;
     PackagePayloadRegistry? registry?;
@@ -1133,17 +1397,25 @@ public type WorkflowDispatchPayload record {
     string ref;
     # The path to the workflow file (e.g. .github/workflows/main.yml)
     string workflow;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # A tool that must provide code scanning results for this rule to pass.
 public type RuleCodeScanningTool record {
+    # The severity level at which code scanning results that raise alerts block a reference update.
     string alerts_threshold;
+    # The severity level at which code scanning results that raise security alerts block a reference update.
     string security_alerts_threshold;
+    # The name of a code scanning tool.
     string tool;
 };
 
@@ -1157,8 +1429,11 @@ public type SponsorshipPayload record {
     # For pending_cancellation and pending_tier_change, the date the
     # change takes effect (ISO 8601 date).
     string? effective_date?;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
 };
 
@@ -1167,12 +1442,16 @@ public type Sponsorship record {
     string node_id;
     string created_at;
     string privacy_level;
+    # A GitHub Sponsors tier
     Tier tier;
+    # A GitHub user
     User sponsor;
+    # A GitHub user
     User sponsorable;
 };
 
 public type SponsorshipPayloadTier record {
+    # A GitHub Sponsors tier
     Tier 'from?;
 };
 
@@ -1199,10 +1478,15 @@ public type SubIssuesPayload record {
     int sub_issue_id;
     # The sub-issue.
     Issue sub_issue;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -1214,20 +1498,27 @@ public type ProjectColumnPayload record {
     ProjectColumn project_column;
     # For edited events, the changes made to the column
     ProjectColumnPayloadChanges? changes?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # A column in a classic project board
 public type ProjectColumn record {
+    # The unique identifier of the project column.
     int id;
     string node_id;
     string url?;
     string project_url?;
     string cards_url?;
+    # Name of the project column.
     string name;
     # The ID of the column this column was moved after
     int? after_id?;
@@ -1246,14 +1537,20 @@ public type ProjectColumnPayloadChanges record {
 
 # A GitHub organization team
 public type Team record {
+    # Unique identifier of the team.
     int id;
     string node_id?;
+    # Name of the team.
     string name;
     string slug;
+    # Description of the team.
     string? description?;
     string privacy?;
+    # Whether team members will receive notifications when their team is @mentioned.
     string notification_setting?;
+    # Permission that the team will have for its repositories.
     string permission?;
+    # URL for the team.
     string url?;
     string html_url?;
     string members_url?;
@@ -1266,32 +1563,45 @@ public type Team record {
 # A reduced "team-simple" shape, not a full Team - no nested parent (a team's parent
 # is never itself nested further, avoiding unbounded recursion).
 public type Parent record {
+    # Unique identifier of the team.
     int id;
     string node_id;
+    # URL for the team.
     string url?;
     string members_url?;
+    # Name of the team.
     string name;
+    # Description of the team.
     string? description?;
+    # Permission that the team will have for its repositories.
     string permission?;
+    # The level of privacy this team should have.
     string privacy?;
+    # The notification setting the team has set.
     string notification_setting?;
     string html_url?;
     string repositories_url?;
     string slug;
+    # The ownership type of the team.
     string 'type;
+    # Unique identifier of the organization to which this team belongs.
     int organization_id?;
+    # Unique identifier of the enterprise to which this team belongs.
     int enterprise_id?;
 };
 
 # Payload for marketplace_purchase events
 public type MarketplacePurchasePayload record {
     string action;
+    # The GitHub Marketplace purchase
     MarketplacePurchase marketplace_purchase;
     # The previous purchase state (for changed/pending_change events)
     MarketplacePurchase? previous_marketplace_purchase?;
     # ISO 8601 date when the change takes effect
     string effective_date;
+    # A GitHub user
     User sender;
+    # A GitHub App installation
     Installation installation?;
 };
 
@@ -1315,13 +1625,19 @@ public type PushPayload record {
     string compare;
     # Array of commit objects (maximum 2048)
     Commit[] commits;
+    # A Git commit
     Commit? head_commit?;
     # Metaproperties for the Git author/committer
     CommitAuthor pusher;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -1341,10 +1657,15 @@ public type BranchProtectionRulePayload record {
     Rule rule;
     # For edited events, the changes to the rule - one entry per changed setting, each wrapped in "from"
     BranchProtectionRulePayloadChanges changes?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -1487,14 +1808,21 @@ public type BranchProtectionRulePayloadChanges record {
 # Payload for pull_request_review_comment events
 public type PullRequestReviewCommentPayload record {
     string action;
+    # A comment on a pull request diff
     PullRequestReviewComment comment;
+    # A pull request
     PullRequest pull_request;
     # For edited events, the changes to the comment
     PullRequestReviewCommentPayloadChanges changes?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -1512,7 +1840,9 @@ public type PullRequestRef record {
     string label?;
     string ref?;
     string sha?;
+    # A GitHub user
     User user?;
+    # A repository on GitHub
     Repository repo?;
 };
 
@@ -1523,21 +1853,32 @@ public type 'ProjectsV2ItemPayload record {
     'projectsV2Item 'projects_v2_item;
     # The changes made to the item (for edited events)
     'ProjectsV2ItemPayloadChanges changes;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
 };
 
 # An item belonging to a Projects v2 project
 public type 'projectsV2Item record {
+    # The unique identifier of the project item.
     int id;
+    # The node ID of the project item.
     string node_id;
+    # The node ID of the project that contains this item.
     string project_node_id;
+    # The node ID of the content represented by this item.
     string content_node_id;
     string content_type;
+    # The time when the item was created.
     string created_at?;
+    # The time when the item was last updated.
     string updated_at?;
+    # The time when the item was archived.
     string? archived_at?;
+    # A GitHub user
     User creator?;
 };
 
@@ -1559,8 +1900,11 @@ public type PingPayload record {
     int hook_id?;
     # The webhook that is being pinged
     Hook hook?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
 };
 
@@ -1573,9 +1917,13 @@ public type Config record {
 # The webhook that is being pinged
 public type Hook record {
     string 'type?;
+    # Unique identifier of the webhook.
     int id?;
+    # The name of a valid service, use 'web' for a webhook.
     string name?;
+    # Determines whether the hook is actually triggered on pushes.
     boolean active?;
+    # Determines what events the hook is triggered for. Default: ['push'].
     string[] events?;
     Config config?;
     string updated_at?;
@@ -1595,44 +1943,65 @@ public type CreatePayload record {
     string? description?;
     # The pusher type; either user or a deploy key
     string pusher_type;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # A repository on GitHub
 public type Repository record {
+    # Unique identifier of the repository.
     int id;
+    # The GraphQL identifier of the repository.
     string node_id?;
     # The repository name
     string name;
     # The full repository name including owner (e.g. octocat/Hello-World)
     string full_name;
+    # A GitHub user
     User owner;
     # Whether the repository is private
     boolean 'private;
+    # The URL to view the repository on GitHub.com.
     string html_url?;
+    # The repository description.
     string? description?;
+    # Whether the repository is a fork.
     boolean 'fork?;
+    # The URL to get more information about the repository from the GitHub API.
     string url?;
     string? homepage?;
     string? language?;
     int forks_count?;
     int stargazers_count?;
     int watchers_count?;
+    # The size of the repository, in kilobytes. Size is calculated hourly. When a repository is initially created, the size is 0.
     int size?;
+    # The default branch of the repository.
     string default_branch?;
     int open_issues_count?;
     string[] topics?;
+    # Whether issues are enabled.
     boolean has_issues?;
+    # Whether projects are enabled.
     boolean has_projects?;
+    # Whether the wiki is enabled.
     boolean has_wiki?;
     boolean has_pages?;
+    # Whether downloads are enabled.
     boolean has_downloads?;
+    # Whether the repository is archived.
     boolean archived?;
+    # Returns whether or not this repository is disabled.
     boolean disabled?;
+    # The repository visibility: public, private, or internal.
     string visibility?;
     string? pushed_at?;
     string created_at?;
@@ -1649,37 +2018,57 @@ public type License record {
 
 # A comment on a pull request diff
 public type PullRequestReviewComment record {
+    # The ID of the pull request review comment.
     int id;
+    # The node ID of the pull request review comment.
     string node_id?;
+    # The ID of the pull request review to which the comment belongs.
     int? pull_request_review_id?;
+    # URL for the pull request review comment.
     string url?;
+    # HTML URL for the pull request review comment.
     string html_url?;
+    # The text of the comment.
     string body;
+    # The diff of the line that the comment refers to.
     string diff_hunk?;
+    # The relative path of the file to which the comment applies.
     string path?;
+    # The line index in the diff to which the comment applies. This field is closing down; use `line` instead.
     int? position?;
+    # The index of the original line in the diff to which the comment applies. This field is closing down; use `original_line` instead.
     int original_position?;
+    # The SHA of the commit to which the comment applies.
     string commit_id?;
+    # The SHA of the original commit to which the comment applies.
     string original_commit_id?;
+    # A GitHub user
     User user?;
     string created_at?;
     string updated_at?;
     string author_association?;
+    # The side of the diff to which the comment applies. The side of the last line of the range for a multi-line comment.
     string side?;
+    # The side of the first line of the range for a multi-line comment.
     string? start_side?;
 };
 
 # Payload for team events
 public type TeamPayload record {
     string action;
+    # A GitHub organization team
     Team team;
     # For edited events, the changes to the team
     TeamPayloadChanges changes?;
     # Present for added_to_repository and removed_from_repository actions
     Repository repository?;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -1711,12 +2100,17 @@ public type TeamPayloadChanges record {
 
 # A GitHub Enterprise account
 public type Enterprise record {
+    # Unique identifier of the enterprise.
     int id?;
+    # The slug url identifier for the enterprise.
     string slug?;
+    # The name of the enterprise.
     string name?;
     string node_id?;
     string avatar_url?;
+    # A short description of the enterprise.
     string? description?;
+    # The enterprise's website URL.
     string? website_url?;
     string html_url?;
     string created_at?;
@@ -1731,10 +2125,15 @@ public type ProjectPayload record {
     Project project;
     # For edited events, the changes made to the project
     ProjectPayloadChanges? changes?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -1745,10 +2144,14 @@ public type Project record {
     string url?;
     string html_url?;
     string columns_url?;
+    # Name of the project.
     string name;
+    # Body of the project.
     string? body?;
     int number;
+    # State of the project; either 'open' or 'closed'.
     string state;
+    # A GitHub user
     User creator?;
     string created_at?;
     string updated_at?;
@@ -1776,6 +2179,7 @@ public type InstallationTargetPayload record {
     string target_type;
     # The changes made to the account
     InstallationTargetPayloadChanges changes;
+    # A GitHub App installation
     Installation installation?;
 };
 
@@ -1808,17 +2212,25 @@ public type InstallationTargetPayloadChanges record {
 public type DeploymentStatus record {
     int id;
     string node_id?;
+    # The new state. Can be `pending`, `success`, `failure`, or `error`.
     string state;
+    # A GitHub user
     User creator?;
+    # The optional human-readable description added to the status.
     string? description?;
+    # The environment of the deployment that the status is for.
     string environment?;
+    # The URL for accessing your environment.
     string? environment_url?;
+    # The URL to associate with this status.
     string? log_url?;
+    # The optional link added to the status.
     string? target_url?;
     string deployment_url?;
     string repository_url?;
     string created_at?;
     string updated_at?;
+    # A GitHub App
     App? performed_via_github_app?;
 };
 
@@ -1831,10 +2243,15 @@ public type InstallationRepositoriesPayload record {
     RepositoriesRemovedItem[] repositories_removed;
     # Whether all repositories or a selection are accessible
     string repository_selection;
+    # A GitHub user
     User? requester;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -1865,10 +2282,13 @@ public type Issue record {
     string? body?;
     string state;
     boolean locked?;
+    # A GitHub user
     User user?;
     Label[] labels?;
+    # A GitHub user
     User? assignee?;
     User[] assignees?;
+    # A milestone on an issue or pull request
     Milestone milestone?;
     int comments?;
     string created_at?;
@@ -1880,35 +2300,48 @@ public type Issue record {
 
 # A label on an issue or pull request
 public type Label record {
+    # Unique identifier for the label.
     int id;
     string node_id?;
+    # URL for the label.
     string url?;
+    # The name of the label.
     string name;
     # 6-character hex color code
     string color;
+    # Whether this label comes by default in a new repository.
     boolean 'default?;
+    # Optional description of the label, such as its purpose.
     string? description?;
 };
 
 # A deployment request for a specific ref
 public type Deployment record {
+    # Unique identifier of the deployment.
     int id;
     string node_id?;
     string sha;
+    # The ref to deploy. This can be a branch, tag, or sha.
     string ref;
+    # Parameter to specify a task to execute.
     string task;
     # JSON payload with extra information about the deployment
     map<json> payload?;
     string original_environment?;
+    # Name of the target deployment environment.
     string environment;
     string? description?;
+    # A GitHub user
     User creator?;
     string created_at?;
     string updated_at?;
     string statuses_url?;
     string repository_url?;
+    # Specifies if the given environment will no longer exist at some point in the future. Default: false.
     boolean transient_environment?;
+    # Specifies if the given environment is one that end-users directly interact with. Default: false.
     boolean production_environment?;
+    # A GitHub App
     App? performed_via_github_app?;
 };
 
@@ -1916,10 +2349,15 @@ public type Deployment record {
 public type BranchProtectionConfigurationPayload record {
     # disabled — all branch protections were disabled. enabled — all were enabled.
     string action;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -1933,20 +2371,29 @@ public type RepositoryRulesetPayload record {
     # existing entry's own fields changed), not a flat "field changed from X" map like
     # most other changes payloads - bypass_actors is never part of this diff at all.
     RepositoryRulesetPayloadChanges? changes?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
+# Parameters for a repository ruleset ref name condition.
 public type RefName record {
+    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
     string[] include?;
+    # Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
     string[] exclude?;
 };
 
 # Which refs this ruleset applies to
 public type Conditions record {
+    # Parameters for a repository ruleset ref name condition.
     RefName ref_name?;
 };
 
@@ -2011,6 +2458,7 @@ public type RulesItemRequiredSignatures record {
 public type RulesItemPullRequestParameters record {
     string[] allowed_merge_methods?;
     boolean dismiss_stale_reviews_on_push;
+    # Specify people, teams, or apps allowed to dismiss pull request reviews.
     RuleDismissalRestriction dismissal_restriction?;
     boolean require_code_owner_review;
     boolean require_last_push_approval;
@@ -2045,30 +2493,45 @@ public type RulesItemNonFastForward record {
 # Restrict commit messages matching a pattern.
 public type RulesItemCommitMessagePattern record {
     string 'type;
+    # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+    # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+    # tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
     RulePatternParameters parameters?;
 };
 
 # Restrict commit author emails matching a pattern.
 public type RulesItemCommitAuthorEmailPattern record {
     string 'type;
+    # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+    # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+    # tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
     RulePatternParameters parameters?;
 };
 
 # Restrict committer emails matching a pattern.
 public type RulesItemCommitterEmailPattern record {
     string 'type;
+    # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+    # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+    # tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
     RulePatternParameters parameters?;
 };
 
 # Restrict branch names matching a pattern.
 public type RulesItemBranchNamePattern record {
     string 'type;
+    # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+    # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+    # tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
     RulePatternParameters parameters?;
 };
 
 # Restrict tag names matching a pattern.
 public type RulesItemTagNamePattern record {
     string 'type;
+    # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+    # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+    # tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
     RulePatternParameters parameters?;
 };
 
@@ -2143,10 +2606,15 @@ public type BypassActorsItem record {
 
 # A set of rules to apply when specified conditions are met
 public type RepositoryRuleset record {
+    # The ID of the ruleset.
     int id;
+    # The name of the ruleset.
     string name;
+    # The target of the ruleset.
     string? target?;
+    # The type of the source of the ruleset.
     string? source_type?;
+    # The name of the source.
     string 'source?;
     string enforcement;
     # Which refs this ruleset applies to
@@ -2156,6 +2624,7 @@ public type RepositoryRuleset record {
     # source powering docs.github.com and every GitHub SDK), not guessed from field
     # names or a third-party summary.
     RulesItem[] rules?;
+    # The actors that can bypass the rules in this ruleset.
     BypassActorsItem[] bypass_actors?;
     string created_at?;
     string updated_at?;
@@ -2263,10 +2732,15 @@ public type RepositoryRulesetPayloadChanges record {
 public type SecurityAndAnalysisPayload record {
     # The security and analysis settings that changed
     SecurityAndAnalysisPayloadChanges changes;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2324,7 +2798,9 @@ public type SecurityAndAnalysisPayloadChanges record {
 
 # Git author/committer metadata
 public type CommitAuthor record {
+    # The git author's name.
     string name?;
+    # The git author's email address.
     string email?;
     string username?;
 };
@@ -2334,10 +2810,15 @@ public type DeployKeyPayload record {
     string action;
     # The deploy key resource
     'key 'key;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2360,15 +2841,23 @@ public type IssueDependenciesPayload record {
     string action;
     # The ID of the blocked issue.
     int blocked_issue_id?;
+    # An issue on GitHub
     Issue blocked_issue?;
     # The ID of the blocking issue.
     int blocking_issue_id?;
+    # An issue on GitHub
     Issue blocking_issue?;
+    # A repository on GitHub
     Repository blocking_issue_repo?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2377,10 +2866,15 @@ public type RepositoryAdvisoryPayload record {
     string action;
     # A repository security advisory
     RepositoryAdvisory repository_advisory;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2391,6 +2885,7 @@ public type IdentifiersItem record {
 
 # The accept/reject decision on a repository security advisory publish request
 public type Submission record {
+    # Whether a private vulnerability report was accepted by the repository's administrators.
     boolean accepted?;
 };
 
@@ -2417,6 +2912,7 @@ public type CwesItem record {
 };
 
 public type CreditsItem record {
+    # A GitHub user
     User user?;
     string 'type?;
 };
@@ -2425,19 +2921,32 @@ public type CreditsItem record {
 public type RepositoryAdvisory record {
     # The GitHub Security Advisory identifier
     string ghsa_id;
+    # The Common Vulnerabilities and Exposures (CVE) ID.
     string? cve_id;
+    # The API URL for the advisory.
     string url?;
+    # The URL for the advisory.
     string html_url?;
+    # A short summary of the advisory.
     string summary;
+    # A detailed description of what the advisory entails.
     string? description?;
+    # The severity of the advisory.
     string severity;
+    # A GitHub user
     User author?;
+    # A GitHub user
     User? publisher?;
     IdentifiersItem[] identifiers?;
+    # The state of the advisory.
     string state;
+    # The date and time of when the advisory was created, in ISO 8601 format.
     string created_at?;
+    # The date and time of when the advisory was last updated, in ISO 8601 format.
     string updated_at?;
+    # The date and time of when the advisory was published, in ISO 8601 format.
     string? published_at?;
+    # The date and time of when the advisory was withdrawn, in ISO 8601 format.
     string? withdrawn_at?;
     # The accept/reject decision on a repository security advisory publish request
     Submission? submission?;
@@ -2452,9 +2961,13 @@ public type RepositoryVulnerabilityAlertPayload record {
     string action;
     # The security alert of the vulnerable dependency
     RepositoryVulnerabilityAlertPayloadAlert alert;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
 };
 
@@ -2472,6 +2985,7 @@ public type RepositoryVulnerabilityAlertPayloadAlert record {
     string? auto_dismissed_at?;
     string? dismiss_reason?;
     string? dismissed_at?;
+    # A GitHub user
     User? dismissed_by?;
     int number?;
 };
@@ -2480,9 +2994,12 @@ public type RepositoryVulnerabilityAlertPayloadAlert record {
 public type Milestone record {
     int id?;
     string node_id?;
+    # The number of the milestone.
     int number?;
+    # The title of the milestone.
     string title?;
     string? description?;
+    # The state of the milestone.
     string state?;
     int open_issues?;
     int closed_issues?;
@@ -2490,6 +3007,7 @@ public type Milestone record {
     string updated_at?;
     string? due_on?;
     string? closed_at?;
+    # A GitHub user
     User creator?;
 };
 
@@ -2497,16 +3015,25 @@ public type Milestone record {
 public type IssuesPayload record {
     # The action that was performed
     string action;
+    # An issue on GitHub
     Issue issue;
+    # A GitHub user
     User? assignee?;
+    # A label on an issue or pull request
     Label label?;
     # For edited events, the changes to the issue
     IssuesPayloadChanges changes?;
+    # A milestone on an issue or pull request
     Milestone milestone?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2535,10 +3062,15 @@ public type CodeScanningAlertPayload record {
     # The git ref of the alert. Empty when action is reopened_by_user
     # or closed_by_user.
     string ref;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2584,16 +3116,27 @@ public type MostRecentInstance record {
 
 # The code scanning alert involved in the event
 public type CodeScanningAlertPayloadAlert record {
+    # The security alert number.
     int number;
+    # The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string created_at?;
+    # The time that the alert was last updated in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string? updated_at?;
+    # The REST API URL of the alert resource.
     string url?;
+    # The GitHub URL of the alert resource.
     string html_url?;
+    # State of a code scanning alert.
     string state;
+    # The time that the alert was no longer detected and was considered fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string? fixed_at?;
+    # A GitHub user
     User? dismissed_by?;
+    # The time that the alert was dismissed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
     string? dismissed_at?;
+    # The reason for dismissing or closing the alert.
     string? dismissed_reason?;
+    # The dismissal comment associated with the dismissal of the alert.
     string? dismissed_comment?;
     CodeScanningAlertPayloadRule rule?;
     Tool tool?;
@@ -2603,14 +3146,21 @@ public type CodeScanningAlertPayloadAlert record {
 # Payload for pull_request_review events
 public type PullRequestReviewPayload record {
     string action;
+    # A pull request review
     PullRequestReview review;
+    # A pull request
     PullRequest pull_request;
     # For edited events, the changes to the review
     PullRequestReviewPayloadChanges changes?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2628,26 +3178,43 @@ public type 'ProjectsV2Payload record {
     string action;
     # A Projects v2 project
     'projectsV2 'projects_v2;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
 };
 
 # A Projects v2 project
 public type 'projectsV2 record {
+    # The unique identifier of the project.
     int id;
+    # The node ID of the project.
     string node_id;
+    # A GitHub user
     User owner;
+    # A GitHub user
     User creator?;
+    # The project title.
     string title;
+    # A short description of the project.
     string? description?;
+    # Whether the project is visible to anyone with access to the owner.
     boolean 'public?;
+    # The time when the project was closed.
     string? closed_at?;
+    # The time when the project was created.
     string created_at?;
+    # The time when the project was last updated.
     string updated_at?;
+    # The time when the project was deleted.
     string? deleted_at?;
+    # A GitHub user
     User? deleted_by?;
+    # The project number.
     int number?;
+    # A concise summary of the project.
     string? short_description?;
     string? status?;
 };
@@ -2657,9 +3224,13 @@ public type PersonalAccessTokenRequestPayload record {
     string action;
     # A fine-grained personal access token request
     PersonalAccessTokenRequest personal_access_token_request;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2690,7 +3261,9 @@ public type PermissionsResult record {
 
 # A fine-grained personal access token request
 public type PersonalAccessTokenRequest record {
+    # Unique identifier of the request for access via fine-grained personal access token. Used as the `pat_request_id` parameter in the list and review API calls.
     int id;
+    # A GitHub user
     User owner;
     # Permissions added by the request - each of organization/repository/other is a
     # map of permission name to access level (e.g. "contents": "read"), NOT a
@@ -2702,24 +3275,35 @@ public type PersonalAccessTokenRequest record {
     # The resulting full set of permissions if approved - same permission-name-to-
     # access-level map shape as permissions_added, not an entity reference.
     PermissionsResult permissions_result?;
+    # Type of repository selection requested.
     string repository_selection?;
     string? repositories_url?;
+    # An array of repository objects the token is requesting access to. This field is only populated when `repository_selection` is `subset`.
     Repository[]? repositories?;
+    # Whether the associated fine-grained personal access token has expired.
     boolean token_expired?;
+    # Date and time when the associated fine-grained personal access token expires.
     string? token_expires_at?;
+    # Date and time when the associated fine-grained personal access token was last used for authentication.
     string? token_last_used_at?;
+    # Date and time when the request for access was created.
     string created_at?;
 };
 
 # Payload for installation events
 public type InstallationPayload record {
     string action;
+    # A GitHub App installation
     Installation installation;
     # An array of repositories the installation can access
     RepositoriesItem[] repositories?;
+    # A GitHub user
     User? requester?;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2733,54 +3317,83 @@ public type RepositoriesItem record {
 
 # A GitHub Actions workflow run
 public type WorkflowRun record {
+    # The ID of the workflow run.
     int id;
+    # The name of the workflow run.
     string name;
     string node_id?;
+    # The ID of the associated check suite.
     int check_suite_id?;
+    # The node ID of the associated check suite.
     string check_suite_node_id?;
     string? head_branch?;
+    # The SHA of the head commit that points to the version of the workflow being run.
     string head_sha?;
+    # The auto incrementing run number for the workflow run.
     int run_number?;
     string event?;
     string status;
     string? conclusion?;
+    # The ID of the parent workflow.
     int workflow_id?;
+    # The URL to the workflow run.
     string url?;
     string html_url?;
+    # Pull requests that are open with a `head_sha` or `head_branch` that matches the workflow run. The returned pull requests do not necessarily indicate pull requests that triggered the run.
     PullRequestMinimal[] pull_requests?;
     string created_at?;
     string updated_at?;
+    # Attempt number of the run, 1 for first attempt and higher if the workflow was re-run.
     int run_attempt?;
+    # The start time of the latest run. Resets on re-run.
     string run_started_at?;
+    # A GitHub user
     User actor?;
+    # A GitHub user
     User triggering_actor?;
+    # The URL to the jobs for the workflow run.
     string jobs_url?;
+    # The URL to download the logs for the workflow run.
     string logs_url?;
+    # The URL to the associated check suite.
     string check_suite_url?;
+    # The URL to the artifacts for the workflow run.
     string artifacts_url?;
+    # The URL to cancel the workflow run.
     string cancel_url?;
+    # The URL to rerun the workflow run.
     string rerun_url?;
+    # The URL to the workflow.
     string workflow_url?;
+    # A Git commit
     Commit head_commit?;
+    # A repository on GitHub
     Repository repository?;
 };
 
 # Payload for discussion events
 public type DiscussionPayload record {
     string action;
+    # A GitHub Discussion in a repository
     Discussion discussion;
     # Present on answered action - the comment marked as answer. Richer than the
     # Comment schema used for discussion_comment (has parent_id, child_comment_count,
     # repository_url, discussion_id in addition to Comment's fields), so this is its
     # own shape rather than a $ref to Comment.
     Answer? answer?;
+    # A label on an issue or pull request
     Label label?;
     # For edited/category_changed events, the changes made
     DiscussionPayloadChanges changes?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -2796,7 +3409,9 @@ public type Answer record {
     int child_comment_count?;
     string repository_url?;
     int discussion_id?;
+    # How the author is associated with the repository.
     string author_association?;
+    # A GitHub user
     User user?;
     string body?;
     string created_at?;
@@ -2813,6 +3428,7 @@ public type DiscussionPayloadBody record {
 
 # Present on category_changed
 public type DiscussionPayloadCategory record {
+    # A discussion category
     Category 'from?;
 };
 
@@ -2828,14 +3444,21 @@ public type DiscussionPayloadChanges record {
 public type CheckSuite record {
     int id;
     string node_id?;
+    # The head branch name the changes are on.
     string? head_branch?;
+    # The SHA of the head commit that is being checked.
     string head_sha?;
+    # The summary status for all check runs that are part of the check suite. Can be `queued`, `requested`, `in_progress`, or `completed`.
     string status?;
+    # The summary conclusion for all check runs that are part of the check suite. This value will be `null` until the check suite has `completed`.
     string? conclusion?;
+    # URL that points to the check suite API resource.
     string url?;
     string? before?;
     string? after?;
+    # An array of pull requests that match this check suite. A pull request matches a check suite if they have the same `head_sha` and `head_branch`. When the check suite's `head_branch` is in a forked repository it will be `null` and the `pull_requests` array will be empty.
     PullRequestMinimal[] pull_requests?;
+    # A GitHub App
     App app?;
     string created_at?;
     string updated_at?;
@@ -2865,22 +3488,35 @@ public type StatusPayload record {
     BranchesItem[] branches;
     string created_at;
     string updated_at;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
+# Identifying information for the git-user.
 public type Author record {
+    # Name of the git user.
     string name?;
+    # Git email address of the user.
     string email?;
+    # Timestamp of the commit.
     string date?;
 };
 
+# Identifying information for the git-user.
 public type Committer record {
+    # Name of the git user.
     string name?;
+    # Git email address of the user.
     string email?;
+    # Timestamp of the commit.
     string date?;
 };
 
@@ -2898,8 +3534,11 @@ public type Verification record {
 
 # The raw git commit data (distinct from the GitHub account in the sibling author/committer fields)
 public type StatusPayloadCommit record {
+    # Identifying information for the git-user.
     Author author?;
+    # Identifying information for the git-user.
     Committer committer?;
+    # Message describing the purpose of the commit.
     string message?;
     Tree tree?;
     string url?;
@@ -2909,12 +3548,15 @@ public type StatusPayloadCommit record {
 
 # The commit the status is associated with
 public type 'commit record {
+    # The commit SHA.
     string sha?;
     # The raw git commit data (distinct from the GitHub account in the sibling author/committer fields)
     StatusPayloadCommit 'commit?;
     string url?;
     string html_url?;
+    # A GitHub user
     User author?;
+    # A GitHub user
     User committer?;
 };
 
@@ -2934,30 +3576,48 @@ public type 'ProjectsV2StatusUpdatePayload record {
     string action;
     # A status update belonging to a Projects v2 project
     'projectsV2StatusUpdate 'projects_v2_status_update;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
 };
 
 # A status update belonging to a Projects v2 project
 public type 'projectsV2StatusUpdate record {
+    # The unique identifier of the status update.
     int id;
+    # The node ID of the status update.
     string node_id;
+    # The node ID of the project that this status update belongs to.
     string project_node_id;
+    # The current status.
     string? status?;
+    # Body of the status update.
     string? body?;
+    # The time when the status update was created.
     string created_at?;
+    # The time when the status update was last updated.
     string updated_at?;
+    # The start date of the period covered by the update.
     string? start_date?;
+    # The target date associated with the update.
     string? target_date?;
+    # A GitHub user
     User creator?;
 };
 
 public type CommonPayload record {
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3001,10 +3661,15 @@ public type Discussion record {
     int id;
     string node_id?;
     int number;
+    # The discussion post's title.
     string title;
+    # The discussion post's body text.
     string? body?;
+    # The current state of the discussion. `converting` means that the discussion is being converted from an issue. `transferring` means that the discussion is being transferred from another repository.
     string state;
+    # A discussion category
     Category category?;
+    # A GitHub user
     User user?;
     string html_url?;
     int comments?;
@@ -3013,6 +3678,7 @@ public type Discussion record {
     string? active_lock_reason?;
     string? answer_html_url?;
     string? answer_chosen_at?;
+    # A GitHub user
     User? answer_chosen_by?;
     string created_at?;
     string updated_at?;
@@ -3035,14 +3701,18 @@ public type User record {
 
 # A pull request review
 public type PullRequestReview record {
+    # Unique identifier of the review.
     int id;
     string node_id?;
+    # A GitHub user
     User user?;
+    # The text of the review.
     string? body?;
     string state;
     string html_url?;
     string pull_request_url?;
     string submitted_at?;
+    # A commit SHA for the review. If the commit object was garbage collected or forcibly deleted, then it no longer exists in Git and this value will be `null`.
     string commit_id?;
     string author_association?;
 };
@@ -3069,10 +3739,15 @@ public type DeletePayload record {
     string ref_type;
     # The pusher type; either user or a deploy key
     string pusher_type;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3085,10 +3760,15 @@ public type MetaPayload record {
     # The deleted webhook. Fields vary by webhook type (repository,
     # organization, business, app, or GitHub Marketplace).
     MetaPayloadHook hook;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3104,9 +3784,13 @@ public type MetaPayloadConfig record {
 # organization, business, app, or GitHub Marketplace).
 public type MetaPayloadHook record {
     string 'type;
+    # Unique identifier of the webhook.
     int id;
+    # The name of a valid service, use 'web' for a webhook.
     string name;
+    # Determines whether the hook is actually triggered on pushes.
     boolean active;
+    # Determines what events the hook is triggered for. Default: ['push'].
     string[] events?;
     MetaPayloadConfig config?;
     string updated_at?;
@@ -3116,15 +3800,21 @@ public type MetaPayloadHook record {
 # Payload for deployment events
 public type DeploymentPayload record {
     string action;
+    # A deployment request for a specific ref
     Deployment deployment;
     # The workflow that triggered the deployment (if applicable)
     Workflow? workflow;
     # The workflow run that triggered the deployment (if applicable)
     WorkflowRun? workflow_run;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3144,16 +3834,22 @@ public type DeploymentProtectionRulePayload record {
     Deployment deployment?;
     # The pull requests associated with the deployment
     PullRequestsItem[] pull_requests?;
+    # A GitHub user
     User sender?;
+    # A GitHub App installation
     Installation installation?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
 };
 
 public type PullRequestsItem record {
     int number?;
     string url?;
+    # A pull request head or base ref
     PullRequestRef head?;
+    # A pull request head or base ref
     PullRequestRef base?;
 };
 
@@ -3166,13 +3862,19 @@ public type RuleStatusCheckConfiguration record {
 # Payload for label events
 public type LabelPayload record {
     string action;
+    # A label on an issue or pull request
     Label label;
     # For edited events, the changes to the label
     LabelPayloadChanges changes?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3199,7 +3901,9 @@ public type LabelPayloadChanges record {
 public type GithubAppAuthorizationPayload record {
     # Always revoked — a user revoked their GitHub App authorization
     string action;
+    # A GitHub user
     User sender?;
+    # A GitHub App installation
     Installation installation?;
 };
 
@@ -3209,10 +3913,15 @@ public type PageBuildPayload record {
     int id;
     # The GitHub Pages build object
     Build build;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3228,6 +3937,7 @@ public type Build record {
     string status;
     # Error information if the build failed
     PageBuildPayloadError 'error;
+    # A GitHub user
     User pusher;
     # The SHA of the commit that triggered the build
     string 'commit;
@@ -3245,15 +3955,21 @@ public type ProjectCardPayload record {
     ProjectCard project_card;
     # For edited/moved events, the changes made
     ProjectCardPayloadChanges? changes?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # A card on a classic project board
 public type ProjectCard record {
+    # The project card's ID.
     int id;
     string node_id;
     string url?;
@@ -3265,6 +3981,7 @@ public type ProjectCard record {
     string? content_url?;
     # The ID of the card this card was moved after
     int? after_id?;
+    # A GitHub user
     User creator?;
     string created_at?;
     string updated_at?;
@@ -3290,17 +4007,27 @@ public type PullRequestPayload record {
     string action;
     # The pull request number
     int number;
+    # A pull request
     PullRequest pull_request;
+    # A GitHub user
     User? assignee;
     # For edited events, the changes to the pull request
     PullRequestPayloadChanges changes?;
+    # A GitHub user
     User requested_reviewer?;
+    # A label on an issue or pull request
     Label label?;
+    # A milestone on an issue or pull request
     Milestone milestone?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3337,21 +4064,31 @@ public type PullRequestPayloadChanges record {
 public type TeamAddPayload record {
     # The team that was granted access to the repository
     TeamAddPayloadTeam team;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # The parent team, if this is a child team
 public type TeamAddPayloadParent record {
+    # Unique identifier of the team.
     int id?;
     string node_id?;
+    # Name of the team.
     string name?;
     string slug?;
+    # Description of the team.
     string? description?;
+    # The level of privacy this team should have.
     string privacy?;
+    # Permission that the team will have for its repositories.
     string permission?;
     string members_url?;
     string repositories_url?;
@@ -3360,15 +4097,22 @@ public type TeamAddPayloadParent record {
 
 # The team that was granted access to the repository
 public type TeamAddPayloadTeam record {
+    # Unique identifier of the team.
     int id;
     string node_id;
+    # URL for the team.
     string url?;
     string html_url?;
+    # Name of the team.
     string name;
     string slug;
+    # Description of the team.
     string? description?;
+    # The level of privacy this team should have.
     string privacy?;
+    # The notification setting the team has set.
     string notification_setting?;
+    # Permission that the team will have for its repositories.
     string permission?;
     string members_url?;
     string repositories_url?;
@@ -3378,28 +4122,46 @@ public type TeamAddPayloadTeam record {
 
 # A job in a GitHub Actions workflow run
 public type WorkflowJob record {
+    # The id of the job.
     int id;
+    # The id of the associated workflow run.
     int run_id?;
     string run_url?;
+    # Attempt number of the associated workflow run, 1 for first attempt and higher if the workflow was re-run.
     int run_attempt?;
     string node_id?;
+    # The SHA of the commit that is being run.
     string head_sha?;
     string url?;
     string html_url?;
+    # The phase of the lifecycle that the job is currently in.
     string status;
+    # The outcome of the job.
     string? conclusion?;
+    # The time that the job created, in ISO 8601 format.
     string created_at?;
+    # The time that the job started, in ISO 8601 format.
     string started_at?;
+    # The time that the job finished, in ISO 8601 format.
     string? completed_at?;
+    # The name of the job.
     string name;
+    # Steps in this job.
     StepsItem[] steps?;
     string check_run_url?;
+    # Labels for the workflow job. Specified by the "runs_on" attribute in the action's workflow file.
     string[] labels?;
+    # The ID of the runner to which this job has been assigned. (If a runner hasn't yet been assigned, this will be null.)
     int? runner_id?;
+    # The name of the runner to which this job has been assigned. (If a runner hasn't yet been assigned, this will be null.)
     string? runner_name?;
+    # The ID of the runner group to which this job has been assigned. (If a runner hasn't yet been assigned, this will be null.)
     int? runner_group_id?;
+    # The name of the runner group to which this job has been assigned. (If a runner hasn't yet been assigned, this will be null.)
     string? runner_group_name?;
+    # The name of the workflow.
     string? workflow_name?;
+    # The name of the current branch.
     string? head_branch?;
 };
 
@@ -3420,12 +4182,17 @@ public type Release record {
     string html_url?;
     string assets_url?;
     string upload_url?;
+    # The name of the tag.
     string tag_name;
     string? name;
     string? body?;
+    # Whether the release is a draft or published.
     boolean draft?;
+    # Whether the release is identified as a prerelease or a full release.
     boolean prerelease?;
+    # Specifies the commitish value that determines where the Git tag is created from.
     string target_commitish?;
+    # A GitHub user
     User author?;
     AssetsItem[] assets?;
     string created_at?;
@@ -3438,8 +4205,10 @@ public type AssetsItem record {
     string browser_download_url;
     int id;
     string node_id;
+    # The file name of the asset.
     string name;
     string? label?;
+    # State of the release asset.
     string state;
     string content_type;
     int size;
@@ -3447,6 +4216,7 @@ public type AssetsItem record {
     int download_count;
     string created_at;
     string updated_at;
+    # A GitHub user
     User uploader?;
 };
 
@@ -3455,43 +4225,63 @@ public type CustomPropertyPayload record {
     string action;
     # Custom property defined on an organization
     Definition definition;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # Custom property defined on an organization
 public type Definition record {
+    # The name of the property.
     string property_name;
+    # The type of the value for the property.
     string value_type;
+    # Whether the property is required.
     string? required?;
     # Default value (string or array of strings)
     anydata? default_value?;
+    # Short description of the property.
     string? description?;
+    # An ordered list of the allowed values of the property. The property can have up to 200 allowed values.
     string[]? allowed_values?;
 };
 
 # Payload for public events. Fired when a repository visibility changes
 # from private to public. No action field.
 public type PublicPayload record {
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # Payload for member events (repository collaborator activity)
 public type MemberPayload record {
     string action;
+    # A GitHub user
     User? member;
     # For edited events, the changes to the member's permissions
     MemberPayloadChanges changes?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3513,13 +4303,19 @@ public type MemberPayloadChanges record {
 # Payload for milestone events
 public type MilestonePayload record {
     string action;
+    # A milestone on an issue or pull request
     Milestone milestone;
     # For edited events, the changes to the milestone
     MilestonePayloadChanges changes?;
+    # A GitHub user
     User sender;
+    # A repository on GitHub
     Repository repository;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3548,6 +4344,7 @@ public type SecurityAdvisoryPayload record {
     # The details of the global security advisory, including summary,
     # description, severity, and affected packages.
     SecurityAdvisoryPayloadSecurityAdvisory security_advisory;
+    # A GitHub App installation
     Installation installation?;
 };
 
@@ -3590,18 +4387,29 @@ public type SecurityAdvisoryPayloadCwesItem record {
 # description, severity, and affected packages.
 public type SecurityAdvisoryPayloadSecurityAdvisory record {
     string schema_version?;
+    # The GitHub Security Advisory ID.
     string ghsa_id;
+    # The Common Vulnerabilities and Exposures (CVE) ID.
     string? cve_id?;
+    # The API URL for the advisory.
     string url?;
+    # The URL for the advisory.
     string html_url?;
+    # A short summary of the advisory.
     string summary;
+    # A detailed description of what the advisory entails.
     string description?;
+    # The severity of the advisory.
     string severity;
     SecurityAdvisoryPayloadIdentifiersItem[] identifiers?;
     ReferencesItem[] references?;
+    # The date and time of when the advisory was published, in ISO 8601 format.
     string published_at?;
+    # The date and time of when the advisory was last updated, in ISO 8601 format.
     string updated_at?;
+    # The date and time of when the advisory was withdrawn, in ISO 8601 format.
     string? withdrawn_at?;
+    # The products and respective version ranges affected by the advisory.
     SecurityAdvisoryPayloadVulnerabilitiesItem[] vulnerabilities?;
     SecurityAdvisoryPayloadCvss cvss?;
     SecurityAdvisoryPayloadCwesItem[] cwes?;
@@ -3610,18 +4418,25 @@ public type SecurityAdvisoryPayloadSecurityAdvisory record {
 # Payload for check_run events
 public type CheckRunPayload record {
     string action;
+    # A check performed on the code of a given code change
     CheckRun check_run;
     # Present for requested_action events
     RequestedAction requested_action?;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
 # Present for requested_action events
 public type RequestedAction record {
+    # The integrator reference of the action requested by the user.
     string identifier?;
 };
 
@@ -3630,10 +4445,15 @@ public type CommitCommentPayload record {
     string action;
     # The commit comment resource
     CommitCommentPayloadComment comment;
+    # A GitHub user
     User sender?;
+    # A repository on GitHub
     Repository repository?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
@@ -3651,9 +4471,11 @@ public type CommitCommentPayloadComment record {
     # The line of the blob the comment refers to
     int? line?;
     string commit_id?;
+    # A GitHub user
     User user?;
     string created_at?;
     string updated_at?;
+    # How the author is associated with the repository.
     string author_association?;
 };
 
@@ -3667,6 +4489,7 @@ public type RuleReviewer record {
 public type RuleRequiredReviewerConfiguration record {
     string[] file_patterns;
     int minimum_approvals;
+    # A required reviewing team
     RuleReviewer reviewer;
 };
 
@@ -3680,7 +4503,9 @@ public type Commit record {
     string message;
     string timestamp?;
     string url?;
+    # Git author/committer metadata
     CommitAuthor author?;
+    # Git author/committer metadata
     CommitAuthor committer?;
     # Files added in this commit
     string[] added?;
@@ -3692,21 +4517,30 @@ public type Commit record {
 
 # A check performed on the code of a given code change
 public type CheckRun record {
+    # The id of the check.
     int id;
+    # The name of the check run.
     string name;
     string node_id?;
+    # The SHA of the commit that is being checked.
     string head_sha?;
     string? external_id?;
     string url?;
     string html_url?;
     string? details_url?;
+    # The phase of the lifecycle that the check is currently in. Statuses of waiting, requested, and pending are reserved for GitHub Actions check runs.
     string status?;
+    # The result of the completed check run. This value will be `null` until the check run has completed.
     string? conclusion?;
+    # The time that the check run began.
     string? started_at?;
+    # The time the check completed.
     string? completed_at?;
     Output output?;
     CheckRunCheckSuite check_suite?;
+    # A GitHub App
     App app?;
+    # Pull requests that are open with a `head_sha` or `head_branch` that matches the check. The returned pull requests do not necessarily indicate pull requests that triggered the check.
     PullRequestMinimal[] pull_requests?;
 };
 
@@ -3725,13 +4559,19 @@ public type CheckRunCheckSuite record {
 # Payload for membership events (team member added/removed)
 public type MembershipPayload record {
     string action;
+    # A GitHub user
     User? member;
     # The scope of the membership (currently always "team")
     string scope;
+    # A GitHub organization team
     Team team;
+    # A GitHub user
     User sender?;
+    # A GitHub organization
     Organization organization?;
+    # A GitHub App installation
     Installation installation?;
+    # A GitHub Enterprise account
     Enterprise enterprise?;
 };
 
