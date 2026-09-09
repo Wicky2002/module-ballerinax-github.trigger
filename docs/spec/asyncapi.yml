@@ -4785,6 +4785,7 @@ components:
       properties:
         id:
           type: integer
+          description: The ID of the installation.
         node_id:
           type: string
 
@@ -4931,21 +4932,26 @@ components:
         url:
           type: string
           format: uri
+          description: URL for the issue.
         html_url:
           type: string
           format: uri
         number:
           type: integer
+          description: Number uniquely identifying the issue within its repository.
         title:
           type: string
+          description: Title of the issue.
         body:
           type: string
           nullable: true
+          description: Contents of the issue.
         state:
           type: string
           enum:
             - open
             - closed
+          description: State of the issue; either `open` or `closed`.
         locked:
           type: boolean
         user:
@@ -4986,6 +4992,7 @@ components:
             - MEMBER
             - NONE
             - OWNER
+          description: How the author is associated with the repository.
         active_lock_reason:
           type: string
           nullable: true
@@ -5114,6 +5121,7 @@ components:
           nullable: true
         author_association:
           type: string
+          description: How the author is associated with the repository.
           enum:
             - COLLABORATOR
             - CONTRIBUTOR
@@ -5283,12 +5291,15 @@ components:
           description: Whether this commit is distinct from any that have been pushed before
         message:
           type: string
+          description: The commit message.
         timestamp:
           type: string
           format: date-time
+          description: The ISO 8601 timestamp of the commit.
         url:
           type: string
           format: uri
+          description: URL that points to the commit API resource.
         author:
           $ref: '#/components/schemas/CommitAuthor'
         committer:
@@ -5341,6 +5352,7 @@ components:
           format: date-time
         author_association:
           type: string
+          description: How the author is associated with the repository.
 
     PullRequestReview:
       type: object
@@ -5382,6 +5394,7 @@ components:
           description: A commit SHA for the review. If the commit object was garbage collected or forcibly deleted, then it no longer exists in Git and this value will be `null`.
         author_association:
           type: string
+          description: How the author is associated with the repository.
 
     PullRequestReviewComment:
       type: object
@@ -5440,6 +5453,7 @@ components:
           format: date-time
         author_association:
           type: string
+          description: How the author is associated with the repository.
         side:
           type: string
           enum:
@@ -6060,8 +6074,10 @@ components:
       properties:
         id:
           type: integer
+          description: The ID of the actor that can bypass the rule.
         type:
           type: string
+          description: The type of actor that can bypass the rule.
           enum:
             - User
             - Team
@@ -6077,8 +6093,10 @@ components:
       properties:
         id:
           type: integer
+          description: The ID of the team required to review matching pull requests.
         type:
           type: string
+          description: The type of actor required to review - always `Team`.
           enum:
             - Team
 
@@ -6109,8 +6127,10 @@ components:
           type: array
           items:
             type: string
+          description: The file patterns the required reviewer must approve changes to.
         minimum_approvals:
           type: integer
+          description: The number of approvals required from the reviewing team.
         reviewer:
           $ref: '#/components/schemas/RuleReviewer'
 
@@ -6122,8 +6142,10 @@ components:
       properties:
         context:
           type: string
+          description: The status check context name that must pass for this rule to pass.
         integration_id:
           type: integer
+          description: The ID of the GitHub App that must provide this status check.
 
     RuleWorkflowFileReference:
       type: object
@@ -6472,17 +6494,21 @@ components:
               description: "Determines what events the hook is triggered for. Default: ['push']."
             config:
               type: object
+              description: Configuration object of the webhook.
               properties:
                 content_type:
                   type: string
                   enum:
                     - json
                     - form
+                  description: The media type used to serialize the payloads. The default is `form`.
                 insecure_ssl:
                   type: string
+                  description: Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`.
                 url:
                   type: string
                   format: uri
+                  description: The URL to which the payloads will be delivered.
             updated_at:
               type: string
               format: date-time
@@ -6612,26 +6638,33 @@ components:
           properties:
             title:
               type: object
+              description: The pull request's previous title, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             body:
               type: object
+              description: The pull request's previous body text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             base:
               type: object
+              description: The pull request's previous base branch, before this edit.
               properties:
                 ref:
                   type: object
                   properties:
                     from:
+                      description: The previous value, before this change.
                       type: string
                 sha:
                   type: object
                   properties:
                     from:
+                      description: The previous value, before this change.
                       type: string
         requested_reviewer:
           $ref: '#/components/schemas/User'
@@ -6694,13 +6727,17 @@ components:
           properties:
             title:
               type: object
+              description: The issue's previous title, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             body:
               type: object
+              description: The issue's previous body text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         milestone:
           $ref: '#/components/schemas/Milestone'
@@ -6743,18 +6780,24 @@ components:
           properties:
             body:
               type: object
+              description: The release's previous body text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             name:
               type: object
+              description: The release's previous name, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             tag_name:
               type: object
+              description: The release's previous tag name, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             make_latest:
               type: object
@@ -6803,8 +6846,10 @@ components:
           properties:
             body:
               type: object
+              description: The comment's previous body text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -6843,8 +6888,10 @@ components:
           properties:
             body:
               type: object
+              description: The review's previous body text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -6883,8 +6930,10 @@ components:
           properties:
             body:
               type: object
+              description: The comment's previous body text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -7263,27 +7312,35 @@ components:
           properties:
             description:
               type: object
+              description: The repository's previous description, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   nullable: true
             homepage:
               type: object
+              description: The repository's previous homepage URL, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   nullable: true
             topics:
               type: object
+              description: The repository's previous topics, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: array
                   items:
                     type: string
             default_branch:
               type: object
+              description: The repository's previous default branch, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             repository:
               type: object
@@ -7293,12 +7350,14 @@ components:
                   type: object
                   properties:
                     from:
+                      description: The previous value, before this change.
                       type: string
             owner:
               type: object
               description: Present for a transferred event
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: object
                   properties:
                     user:
@@ -7340,16 +7399,21 @@ components:
           properties:
             old_permission:
               type: object
+              description: The collaborator's previous permission level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             permission:
               type: object
+              description: The collaborator's permission level change.
               properties:
                 from:
                   type: string
+                  description: The collaborator's permission level before this change.
                 to:
                   type: string
+                  description: The collaborator's permission level after this change.
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -7408,6 +7472,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Label'
+          description: Color-coded labels categorizing the discussion.
         locked:
           type: boolean
         active_lock_reason:
@@ -7617,13 +7682,17 @@ components:
           properties:
             title:
               type: object
+              description: The discussion's previous title, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             body:
               type: object
+              description: The discussion's previous body text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             category:
               type: object
@@ -7688,8 +7757,10 @@ components:
           properties:
             body:
               type: object
+              description: The comment's previous body text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -7725,18 +7796,24 @@ components:
           properties:
             color:
               type: object
+              description: The label's previous color, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             name:
               type: object
+              description: The label's previous name, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             description:
               type: object
+              description: The label's previous description, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -7774,20 +7851,26 @@ components:
           properties:
             description:
               type: object
+              description: The milestone's previous description, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             due_on:
               type: object
+              description: The milestone's previous due date, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   format: date-time
                   nullable: true
             title:
               type: object
+              description: The milestone's previous title, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -8054,23 +8137,31 @@ components:
           properties:
             description:
               type: object
+              description: The team's previous description, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             name:
               type: object
+              description: The team's previous name, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             privacy:
               type: object
+              description: The team's previous privacy level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             notification_setting:
               type: object
+              description: The team's previous notification setting, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             repository:
               $ref: '#/components/schemas/Repository'
@@ -8181,8 +8272,10 @@ components:
           properties:
             login:
               type: object
+              description: The organization's previous login (name), before this rename.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -8896,174 +8989,239 @@ components:
           properties:
             id:
               type: integer
+              description: The branch protection rule's database ID.
             repository_id:
               type: integer
+              description: The ID of the repository the rule applies to.
             name:
               type: string
+              description: The name of the branch, or branch name pattern, the rule applies to.
             created_at:
               type: string
               format: date-time
+              description: The time the branch protection rule was created, in ISO 8601 format.
             updated_at:
               type: string
               format: date-time
+              description: The time the branch protection rule was last updated, in ISO 8601 format.
             pull_request_reviews_enforcement_level:
               type: string
               enum: ["off", non_admins, everyone]
+              description: Enforcement level for requiring an approving pull request review before merging.
             required_approving_review_count:
               type: integer
+              description: The number of approving reviews required on a pull request before merging.
             dismiss_stale_reviews_on_push:
               type: boolean
+              description: Whether approving reviews are automatically dismissed when someone pushes a new commit.
             require_code_owner_review:
               type: boolean
+              description: Whether pull requests are blocked from merging until code owners review them.
             authorized_dismissal_actors_only:
               type: boolean
+              description: Whether only specific users, teams, or apps can dismiss pull request reviews.
             ignore_approvals_from_contributors:
               type: boolean
+              description: Whether approvals from contributors who have also pushed to the branch are ignored when counting required approvals.
             require_last_push_approval:
               type: boolean
+              description: Whether the most recent push to the pull request must be approved by someone other than whoever pushed it.
             required_status_checks:
               type: array
               items:
                 type: string
+              description: The list of status checks that must pass before merging into the branch.
             required_status_checks_enforcement_level:
               type: string
               enum: ["off", non_admins, everyone]
+              description: Enforcement level for required status checks.
             strict_required_status_checks_policy:
               type: boolean
+              description: Whether branches must be up to date with the base branch before merging.
             signature_requirement_enforcement_level:
               type: string
               enum: ["off", non_admins, everyone]
+              description: Enforcement level for requiring signed commits.
             linear_history_requirement_enforcement_level:
               type: string
               enum: ["off", non_admins, everyone]
+              description: Enforcement level for requiring a linear commit history.
             admin_enforced:
               type: boolean
+              description: Whether the branch protection rule's restrictions are also enforced for repository administrators.
             allow_force_pushes_enforcement_level:
               type: string
               enum: ["off", non_admins, everyone]
+              description: Enforcement level for permitting force pushes to matching branches.
             allow_deletions_enforcement_level:
               type: string
               enum: ["off", non_admins, everyone]
+              description: Enforcement level for permitting deletion of matching branches.
             merge_queue_enforcement_level:
               type: string
               enum: ["off", non_admins, everyone]
+              description: Enforcement level for requiring merges to go through a merge queue.
             required_deployments_enforcement_level:
               type: string
               enum: ["off", non_admins, everyone]
+              description: Enforcement level for requiring successful deployments to specific environments before merging.
             required_conversation_resolution_level:
               type: string
               enum: ["off", non_admins, everyone]
+              description: Enforcement level for requiring all pull request conversations to be resolved before merging.
             authorized_actors_only:
               type: boolean
+              description: Whether only specific users, teams, or apps can push to the branch.
             authorized_actor_names:
               type: array
               items:
                 type: string
+              description: The names of the users, teams, or apps authorized to push to the branch.
         changes:
           type: object
           description: For edited events, the changes to the rule - one entry per changed setting, each wrapped in "from"
           properties:
             pull_request_reviews_enforcement_level:
               type: object
+              description: The rule's previous pull request review enforcement level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             required_approving_review_count:
               type: object
+              description: The rule's previous required approving review count, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: integer
             dismiss_stale_reviews_on_push:
               type: object
+              description: The rule's previous dismiss-stale-reviews-on-push setting, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: boolean
             require_code_owner_review:
               type: object
+              description: The rule's previous require-code-owner-review setting, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: boolean
             authorized_dismissal_actors_only:
               type: object
+              description: The rule's previous authorized-dismissal-actors-only setting, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: boolean
             ignore_approvals_from_contributors:
               type: object
+              description: The rule's previous ignore-approvals-from-contributors setting, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: boolean
             require_last_push_approval:
               type: object
+              description: The rule's previous require-last-push-approval setting, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: boolean
             required_status_checks:
               type: object
+              description: The rule's previous list of required status checks, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: array
                   items:
                     type: string
             required_status_checks_enforcement_level:
               type: object
+              description: The rule's previous required status checks enforcement level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             strict_required_status_checks_policy:
               type: object
+              description: The rule's previous strict required status checks policy setting, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: boolean
             signature_requirement_enforcement_level:
               type: object
+              description: The rule's previous signature requirement enforcement level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             linear_history_requirement_enforcement_level:
               type: object
+              description: The rule's previous linear history requirement enforcement level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             admin_enforced:
               type: object
+              description: The rule's previous admin-enforced setting, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: boolean
             allow_force_pushes_enforcement_level:
               type: object
+              description: The rule's previous allow-force-pushes enforcement level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             allow_deletions_enforcement_level:
               type: object
+              description: The rule's previous allow-deletions enforcement level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             merge_queue_enforcement_level:
               type: object
+              description: The rule's previous merge queue enforcement level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             required_deployments_enforcement_level:
               type: object
+              description: The rule's previous required deployments enforcement level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             required_conversation_resolution_level:
               type: object
+              description: The rule's previous required conversation resolution enforcement level, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             authorized_actors_only:
               type: object
+              description: The rule's previous authorized-actors-only setting, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: boolean
             authorized_actor_names:
               type: object
+              description: The rule's previous list of authorized actor names, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: array
                   items:
                     type: string
@@ -10006,6 +10164,7 @@ components:
                   description: Whether a private vulnerability report was accepted by the repository's administrators.
             vulnerabilities:
               type: array
+              description: The products affected by the vulnerability detailed in the advisory.
               items:
                 type: object
                 properties:
@@ -10155,6 +10314,7 @@ components:
               description: The date and time of when the advisory was withdrawn, in ISO 8601 format.
             vulnerabilities:
               type: array
+              description: The products affected by the vulnerability detailed in the advisory.
               items:
                 type: object
                 properties:
@@ -10378,6 +10538,7 @@ components:
               description: The node ID of the content represented by this item.
             content_type:
               type: string
+              description: The type of content tracked in the project item.
               enum:
                 - DraftIssue
                 - Issue
@@ -10403,11 +10564,14 @@ components:
           properties:
             field_value:
               type: object
+              description: Which project field's value changed on this item.
               properties:
                 field_node_id:
                   type: string
+                  description: The node ID of the field whose value changed.
                 field_type:
                   type: string
+                  description: The type of the field whose value changed.
         sender:
           $ref: '#/components/schemas/User'
         organization:
@@ -10674,6 +10838,7 @@ components:
                 - disabled
                 - active
                 - evaluate
+              description: The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them and view insights on the Rule Insights page (Enterprise only).
             conditions:
               type: object
               nullable: true
@@ -10709,6 +10874,7 @@ components:
                       type:
                         type: string
                         enum: [creation]
+                        description: The rule type - always `creation`.
                   - type: object
                     description: Only allow users with bypass permission to update matching refs.
                     required: [type]
@@ -10716,8 +10882,10 @@ components:
                       type:
                         type: string
                         enum: [update]
+                        description: The rule type - always `update`.
                       parameters:
                         type: object
+                        description: Parameters for the `update` rule.
                         required: [update_allows_fetch_and_merge]
                         properties:
                           update_allows_fetch_and_merge:
@@ -10730,6 +10898,7 @@ components:
                       type:
                         type: string
                         enum: [deletion]
+                        description: The rule type - always `deletion`.
                   - type: object
                     description: Prevent merge commits from being pushed to matching refs.
                     required: [type]
@@ -10737,6 +10906,7 @@ components:
                       type:
                         type: string
                         enum: [required_linear_history]
+                        description: The rule type - always `required_linear_history`.
                   - type: object
                     description: Merges must be performed via a merge queue.
                     required: [type]
@@ -10744,8 +10914,10 @@ components:
                       type:
                         type: string
                         enum: [merge_queue]
+                        description: The rule type - always `merge_queue`.
                       parameters:
                         type: object
+                        description: Parameters for the `merge_queue` rule.
                         required:
                           - check_response_timeout_minutes
                           - grouping_strategy
@@ -10757,21 +10929,27 @@ components:
                         properties:
                           check_response_timeout_minutes:
                             type: integer
-                            description: Maximum time (minutes) for a required status check to report a conclusion.
+                            description: Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
                           grouping_strategy:
                             type: string
                             enum: [ALLGREEN, HEADGREEN]
+                            description: When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
                           max_entries_to_build:
                             type: integer
+                            description: Limit the number of queued pull requests requesting checks and workflow runs at the same time.
                           max_entries_to_merge:
                             type: integer
+                            description: The maximum number of PRs that will be merged together in a group.
                           merge_method:
                             type: string
                             enum: [MERGE, SQUASH, REBASE]
+                            description: Method to use when merging changes from queued pull requests.
                           min_entries_to_merge:
                             type: integer
+                            description: The minimum number of PRs that will be merged together in a group.
                           min_entries_to_merge_wait_minutes:
                             type: integer
+                            description: The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
                   - type: object
                     description: Choose which environments must be successfully deployed to before refs can be pushed.
                     required: [type]
@@ -10779,14 +10957,17 @@ components:
                       type:
                         type: string
                         enum: [required_deployments]
+                        description: The rule type - always `required_deployments`.
                       parameters:
                         type: object
+                        description: Parameters for the `required_deployments` rule.
                         required: [required_deployment_environments]
                         properties:
                           required_deployment_environments:
                             type: array
                             items:
                               type: string
+                            description: Environments that must be successfully deployed to before branches can be merged.
                   - type: object
                     description: Commits pushed to matching refs must have verified signatures.
                     required: [type]
@@ -10794,6 +10975,7 @@ components:
                       type:
                         type: string
                         enum: [required_signatures]
+                        description: The rule type - always `required_signatures`.
                   - type: object
                     description: Require commits be submitted via a pull request before they can be merged.
                     required: [type]
@@ -10801,8 +10983,10 @@ components:
                       type:
                         type: string
                         enum: [pull_request]
+                        description: The rule type - always `pull_request`.
                       parameters:
                         type: object
+                        description: Parameters for the `pull_request` rule.
                         required:
                           - dismiss_stale_reviews_on_push
                           - require_code_owner_review
@@ -10815,22 +10999,29 @@ components:
                             items:
                               type: string
                               enum: [merge, squash, rebase]
+                            description: Array of allowed merge methods. At least one option must be enabled.
                           dismiss_stale_reviews_on_push:
                             type: boolean
+                            description: New, reviewable commits pushed will dismiss previous pull request review approvals.
                           dismissal_restriction:
                             $ref: '#/components/schemas/RuleDismissalRestriction'
                           require_code_owner_review:
                             type: boolean
+                            description: Require an approving review in pull requests that modify files that have a designated code owner.
                           require_last_push_approval:
                             type: boolean
+                            description: Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
                           required_approving_review_count:
                             type: integer
+                            description: The number of approving reviews that are required before a pull request can be merged.
                           required_review_thread_resolution:
                             type: boolean
+                            description: All conversations on code must be resolved before a pull request can be merged.
                           required_reviewers:
                             type: array
                             items:
                               $ref: '#/components/schemas/RuleRequiredReviewerConfiguration'
+                            description: A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
                   - type: object
                     description: Choose which status checks must pass before the ref is updated.
                     required: [type]
@@ -10838,20 +11029,25 @@ components:
                       type:
                         type: string
                         enum: [required_status_checks]
+                        description: The rule type - always `required_status_checks`.
                       parameters:
                         type: object
+                        description: Parameters for the `required_status_checks` rule.
                         required:
                           - required_status_checks
                           - strict_required_status_checks_policy
                         properties:
                           do_not_enforce_on_create:
                             type: boolean
+                            description: Allow repositories and branches to be created if a check would otherwise prohibit it.
                           required_status_checks:
                             type: array
                             items:
                               $ref: '#/components/schemas/RuleStatusCheckConfiguration'
+                            description: Status checks that are required.
                           strict_required_status_checks_policy:
                             type: boolean
+                            description: Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
                   - type: object
                     description: Prevent users with push access from force pushing to refs.
                     required: [type]
@@ -10859,6 +11055,7 @@ components:
                       type:
                         type: string
                         enum: [non_fast_forward]
+                        description: The rule type - always `non_fast_forward`.
                   - type: object
                     description: Restrict commit messages matching a pattern.
                     required: [type]
@@ -10866,6 +11063,7 @@ components:
                       type:
                         type: string
                         enum: [commit_message_pattern]
+                        description: The rule type - always `commit_message_pattern`.
                       parameters:
                         $ref: '#/components/schemas/RulePatternParameters'
                   - type: object
@@ -10875,6 +11073,7 @@ components:
                       type:
                         type: string
                         enum: [commit_author_email_pattern]
+                        description: The rule type - always `commit_author_email_pattern`.
                       parameters:
                         $ref: '#/components/schemas/RulePatternParameters'
                   - type: object
@@ -10884,6 +11083,7 @@ components:
                       type:
                         type: string
                         enum: [committer_email_pattern]
+                        description: The rule type - always `committer_email_pattern`.
                       parameters:
                         $ref: '#/components/schemas/RulePatternParameters'
                   - type: object
@@ -10893,6 +11093,7 @@ components:
                       type:
                         type: string
                         enum: [branch_name_pattern]
+                        description: The rule type - always `branch_name_pattern`.
                       parameters:
                         $ref: '#/components/schemas/RulePatternParameters'
                   - type: object
@@ -10902,6 +11103,7 @@ components:
                       type:
                         type: string
                         enum: [tag_name_pattern]
+                        description: The rule type - always `tag_name_pattern`.
                       parameters:
                         $ref: '#/components/schemas/RulePatternParameters'
                   - type: object
@@ -10911,14 +11113,17 @@ components:
                       type:
                         type: string
                         enum: [file_path_restriction]
+                        description: The rule type - always `file_path_restriction`.
                       parameters:
                         type: object
+                        description: Parameters for the `file_path_restriction` rule.
                         required: [restricted_file_paths]
                         properties:
                           restricted_file_paths:
                             type: array
                             items:
                               type: string
+                            description: File paths that are restricted from being pushed to the commit graph.
                   - type: object
                     description: Restrict file paths exceeding a character limit.
                     required: [type]
@@ -10926,12 +11131,15 @@ components:
                       type:
                         type: string
                         enum: [max_file_path_length]
+                        description: The rule type - always `max_file_path_length`.
                       parameters:
                         type: object
+                        description: Parameters for the `max_file_path_length` rule.
                         required: [max_file_path_length]
                         properties:
                           max_file_path_length:
                             type: integer
+                            description: The maximum amount of characters allowed in file paths.
                   - type: object
                     description: Restrict files with specified file extensions.
                     required: [type]
@@ -10939,14 +11147,17 @@ components:
                       type:
                         type: string
                         enum: [file_extension_restriction]
+                        description: The rule type - always `file_extension_restriction`.
                       parameters:
                         type: object
+                        description: Parameters for the `file_extension_restriction` rule.
                         required: [restricted_file_extensions]
                         properties:
                           restricted_file_extensions:
                             type: array
                             items:
                               type: string
+                            description: File extensions that are restricted from being pushed to the commit graph.
                   - type: object
                     description: Restrict individual files exceeding a size limit (MB).
                     required: [type]
@@ -10954,12 +11165,15 @@ components:
                       type:
                         type: string
                         enum: [max_file_size]
+                        description: The rule type - always `max_file_size`.
                       parameters:
                         type: object
+                        description: Parameters for the `max_file_size` rule.
                         required: [max_file_size]
                         properties:
                           max_file_size:
                             type: integer
+                            description: The maximum file size allowed in megabytes.
                   - type: object
                     description: Require specified workflows to pass before changes can be merged.
                     required: [type]
@@ -10967,16 +11181,20 @@ components:
                       type:
                         type: string
                         enum: [workflows]
+                        description: The rule type - always `workflows`.
                       parameters:
                         type: object
+                        description: Parameters for the `workflows` rule.
                         required: [workflows]
                         properties:
                           do_not_enforce_on_create:
                             type: boolean
+                            description: Allow repositories and branches to be created if a check would otherwise prohibit it.
                           workflows:
                             type: array
                             items:
                               $ref: '#/components/schemas/RuleWorkflowFileReference'
+                            description: Workflows that must pass for this rule to pass.
                   - type: object
                     description: Choose which code scanning tools must provide results before the reference is updated.
                     required: [type]
@@ -10984,14 +11202,17 @@ components:
                       type:
                         type: string
                         enum: [code_scanning]
+                        description: The rule type - always `code_scanning`.
                       parameters:
                         type: object
+                        description: Parameters for the `code_scanning` rule.
                         required: [code_scanning_tools]
                         properties:
                           code_scanning_tools:
                             type: array
                             items:
                               $ref: '#/components/schemas/RuleCodeScanningTool'
+                            description: Tools that must provide code scanning results for this rule to pass.
             bypass_actors:
               type: array
               items:
@@ -11031,109 +11252,145 @@ components:
           properties:
             name:
               type: object
+              description: The ruleset's previous name, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             enforcement:
               type: object
+              description: The ruleset's previous enforcement status, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             conditions:
               type: object
+              description: The ref-targeting conditions added, deleted, or updated on the ruleset.
               properties:
                 added:
                   type: array
                   items:
                     type: object
+                  description: Conditions newly added to the ruleset.
                 deleted:
                   type: array
                   items:
                     type: object
+                  description: Conditions removed from the ruleset.
                 updated:
                   type: array
+                  description: Conditions whose own fields changed on the ruleset.
                   items:
                     type: object
                     properties:
                       condition:
                         type: object
+                        description: The current state of the updated condition.
                       changes:
                         type: object
+                        description: The fields of the condition that changed.
                         properties:
                           condition_type:
                             type: object
+                            description: The condition's previous type, before this edit.
                             properties:
                               from:
+                                description: The previous value, before this change.
                                 type: string
                           target:
                             type: object
+                            description: The condition's previous target, before this edit.
                             properties:
                               from:
+                                description: The previous value, before this change.
                                 type: string
                           include:
                             type: object
+                            description: The condition's previous list of included ref patterns, before this edit.
                             properties:
                               from:
+                                description: The previous value, before this change.
                                 type: array
                                 items:
                                   type: string
                           exclude:
                             type: object
+                            description: The condition's previous list of excluded ref patterns, before this edit.
                             properties:
                               from:
+                                description: The previous value, before this change.
                                 type: array
                                 items:
                                   type: string
             rules:
               type: object
+              description: The rules added, deleted, or updated on the ruleset.
               properties:
                 added:
                   type: array
+                  description: Rules newly added to the ruleset.
                   items:
                     type: object
                     properties:
                       type:
                         type: string
+                        description: The type of rule that was added.
                       parameters:
                         type: object
+                        description: The parameters of the rule that was added.
                 deleted:
                   type: array
+                  description: Rules removed from the ruleset.
                   items:
                     type: object
                     properties:
                       type:
                         type: string
+                        description: The type of rule that was removed.
                       parameters:
                         type: object
+                        description: The parameters of the rule that was removed.
                 updated:
                   type: array
+                  description: Rules whose own fields changed on the ruleset.
                   items:
                     type: object
                     properties:
                       rule:
                         type: object
+                        description: The current state of the updated rule.
                         properties:
                           type:
                             type: string
+                            description: The type of the updated rule.
                           parameters:
                             type: object
+                            description: The parameters of the updated rule.
                       changes:
                         type: object
+                        description: The fields of the rule that changed.
                         properties:
                           configuration:
                             type: object
+                            description: The rule's previous configuration, before this edit.
                             properties:
                               from:
+                                description: The previous value, before this change.
                                 type: string
                           rule_type:
                             type: object
+                            description: The rule's previous type, before this edit.
                             properties:
                               from:
+                                description: The previous value, before this change.
                                 type: string
                           pattern:
                             type: object
+                            description: The rule's previous pattern, before this edit.
                             properties:
                               from:
+                                description: The previous value, before this change.
                                 type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -11599,13 +11856,16 @@ components:
           properties:
             tier:
               type: object
+              description: The sponsorship's previous tier, before this change.
               properties:
                 from:
                   $ref: '#/components/schemas/Tier'
             privacy_level:
               type: object
+              description: The sponsorship's previous privacy level, before this change.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         effective_date:
           type: string
@@ -11638,6 +11898,7 @@ components:
               description: Change to GitHub Advanced Security enablement
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   enum:
                     - enabled
@@ -11652,6 +11913,7 @@ components:
               description: Change to Dependabot alerts enablement
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   enum:
                     - enabled
@@ -11666,6 +11928,7 @@ components:
               description: Change to Dependabot security updates enablement
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   enum:
                     - enabled
@@ -11680,6 +11943,7 @@ components:
               description: Change to secret scanning enablement
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   enum:
                     - enabled
@@ -11694,6 +11958,7 @@ components:
               description: Change to secret scanning push protection enablement
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   enum:
                     - enabled
@@ -11708,6 +11973,7 @@ components:
               description: Change to non-provider pattern scanning enablement
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   enum:
                     - enabled
@@ -11782,11 +12048,13 @@ components:
                         description: Unique identifier of the team.
                       node_id:
                         type: string
+                        description: The node ID of the team.
                       name:
                         type: string
                         description: Name of the team.
                       slug:
                         type: string
+                        description: The URL-friendly slug of the team's name.
                       description:
                         type: string
                         nullable: true
@@ -11800,6 +12068,7 @@ components:
                       html_url:
                         type: string
                         format: uri
+                        description: URL for the team.
         workflow_run:
           type: object
           description: The workflow run associated with the deployment
@@ -11820,17 +12089,21 @@ components:
             head_branch:
               type: string
               nullable: true
+              description: The branch that triggered the workflow run.
             run_number:
               type: integer
               description: The auto incrementing run number for the workflow run.
             status:
               type: string
+              description: The status of the workflow run.
             conclusion:
               type: string
               nullable: true
+              description: The result of the completed workflow run.
             html_url:
               type: string
               format: uri
+              description: The URL to view the workflow run on GitHub.
             pull_requests:
               type: array
               items:
@@ -11898,13 +12171,17 @@ components:
           properties:
             login:
               type: object
+              description: The account's previous login, before this rename.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             slug:
               type: object
+              description: The account's previous slug, before this rename.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         installation:
           $ref: '#/components/schemas/Installation'
@@ -12180,13 +12457,17 @@ components:
           properties:
             name:
               type: object
+              description: The project's previous name, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
             body:
               type: object
+              description: The project's previous body text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   nullable: true
         sender:
@@ -12268,14 +12549,18 @@ components:
           properties:
             note:
               type: object
+              description: The card's previous note text, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
                   nullable: true
             column_id:
               type: object
+              description: The ID of the column the card was previously in, before this move.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: integer
         sender:
           $ref: '#/components/schemas/User'
@@ -12346,8 +12631,10 @@ components:
           properties:
             name:
               type: object
+              description: The column's previous name, before this edit.
               properties:
                 from:
+                  description: The previous value, before this change.
                   type: string
         sender:
           $ref: '#/components/schemas/User'

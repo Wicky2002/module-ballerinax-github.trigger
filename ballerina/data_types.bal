@@ -126,15 +126,21 @@ public type ReleasePayload record {
     Enterprise enterprise?;
 };
 
+# The release's previous body text, before this edit.
 public type Body record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The release's previous name, before this edit.
 public type Name record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The release's previous tag name, before this edit.
 public type TagName record {
+    # The previous value, before this change.
     string 'from?;
 };
 
@@ -145,8 +151,11 @@ public type MakeLatest record {
 
 # For edited events, the changes to the release
 public type Changes record {
+    # The release's previous body text, before this edit.
     Body body?;
+    # The release's previous name, before this edit.
     Name name?;
+    # The release's previous tag name, before this edit.
     TagName tag_name?;
     # Whether this release was explicitly edited to be the latest
     MakeLatest make_latest?;
@@ -268,9 +277,11 @@ public type DeploymentReviewPayload record {
 public type 'ReviewerBranch1 record {
     # Unique identifier of the team.
     int id?;
+    # The node ID of the team.
     string node_id?;
     # Name of the team.
     string name?;
+    # The URL-friendly slug of the team's name.
     string slug?;
     # Description of the team.
     string? description?;
@@ -278,6 +289,7 @@ public type 'ReviewerBranch1 record {
     string privacy?;
     # Permission that the team will have for its repositories.
     string permission?;
+    # URL for the team.
     string html_url?;
 };
 
@@ -298,11 +310,15 @@ public type DeploymentReviewPayloadWorkflowRun record {
     string? name;
     # The SHA of the head commit that points to the version of the workflow being run.
     string head_sha?;
+    # The branch that triggered the workflow run.
     string? head_branch?;
     # The auto incrementing run number for the workflow run.
     int run_number?;
+    # The status of the workflow run.
     string status?;
+    # The result of the completed workflow run.
     string? conclusion?;
+    # The URL to view the workflow run on GitHub.
     string html_url?;
     # Pull requests that are open with a `head_sha` or `head_branch` that matches the workflow run. The returned pull requests do not necessarily indicate pull requests that triggered the run.
     PullRequestMinimal[] pull_requests?;
@@ -355,6 +371,7 @@ public type PullRequest record {
     string? merged_at?;
     # A GitHub user
     User? merged_by?;
+    # How the author is associated with the repository.
     string author_association?;
     # Details of an auto-merge request, if one is enabled on this pull request
     AutoMerge? auto_merge?;
@@ -421,12 +438,15 @@ public type IssueCommentPayload record {
     Enterprise enterprise?;
 };
 
+# The comment's previous body text, before this edit.
 public type IssueCommentPayloadBody record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited events, the changes to the comment
 public type IssueCommentPayloadChanges record {
+    # The comment's previous body text, before this edit.
     IssueCommentPayloadBody body;
 };
 
@@ -505,12 +525,15 @@ public type Invitation record {
     string? invitation_source?;
 };
 
+# The organization's previous login (name), before this rename.
 public type Login record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For renamed events, the old and new organization name
 public type OrganizationPayloadChanges record {
+    # The organization's previous login (name), before this rename.
     Login login?;
 };
 
@@ -730,7 +753,9 @@ public type Workflow record {
 
 # An actor allowed to dismiss pull request reviews
 public type RuleActor record {
+    # The ID of the actor that can bypass the rule.
     int id;
+    # The type of actor that can bypass the rule.
     string 'type;
 };
 
@@ -885,6 +910,7 @@ public type IssueComment record {
     User user?;
     string created_at?;
     string updated_at?;
+    # How the author is associated with the repository.
     string author_association?;
 };
 
@@ -1035,12 +1061,15 @@ public type Comment record {
     string author_association?;
 };
 
+# The comment's previous body text, before this edit.
 public type DiscussionCommentPayloadBody record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited events, the changes to the comment
 public type DiscussionCommentPayloadChanges record {
+    # The comment's previous body text, before this edit.
     DiscussionCommentPayloadBody body?;
 };
 
@@ -1088,23 +1117,32 @@ public type RepositoryPayload record {
     Enterprise enterprise?;
 };
 
+# The repository's previous description, before this edit.
 public type Description record {
+    # The previous value, before this change.
     string? 'from?;
 };
 
+# The repository's previous homepage URL, before this edit.
 public type Homepage record {
+    # The previous value, before this change.
     string? 'from?;
 };
 
+# The repository's previous topics, before this edit.
 public type Topics record {
+    # The previous value, before this change.
     string[] 'from?;
 };
 
+# The repository's previous default branch, before this edit.
 public type DefaultBranch record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 public type RepositoryPayloadName record {
+    # The previous value, before this change.
     string 'from?;
 };
 
@@ -1113,6 +1151,7 @@ public type RepositoryPayloadRepository record {
     RepositoryPayloadName name?;
 };
 
+# The previous value, before this change.
 public type 'from record {
     # A GitHub user
     User user?;
@@ -1122,14 +1161,19 @@ public type 'from record {
 
 # Present for a transferred event
 public type Owner record {
+    # The previous value, before this change.
     'from 'from?;
 };
 
 # For edited/renamed/transferred events, the changes that occurred
 public type RepositoryPayloadChanges record {
+    # The repository's previous description, before this edit.
     Description description?;
+    # The repository's previous homepage URL, before this edit.
     Homepage homepage?;
+    # The repository's previous topics, before this edit.
     Topics topics?;
+    # The repository's previous default branch, before this edit.
     DefaultBranch default_branch?;
     # Present for a renamed event
     RepositoryPayloadRepository repository?;
@@ -1450,18 +1494,23 @@ public type Sponsorship record {
     User sponsorable;
 };
 
+# The sponsorship's previous tier, before this change.
 public type SponsorshipPayloadTier record {
     # A GitHub Sponsors tier
     Tier 'from?;
 };
 
+# The sponsorship's previous privacy level, before this change.
 public type PrivacyLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited, tier_changed, and pending_tier_change events
 public type SponsorshipPayloadChanges record {
+    # The sponsorship's previous tier, before this change.
     SponsorshipPayloadTier tier?;
+    # The sponsorship's previous privacy level, before this change.
     PrivacyLevel privacy_level?;
 };
 
@@ -1526,12 +1575,15 @@ public type ProjectColumn record {
     string updated_at?;
 };
 
+# The column's previous name, before this edit.
 public type ProjectColumnPayloadName record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited events, the changes made to the column
 public type ProjectColumnPayloadChanges record {
+    # The column's previous name, before this edit.
     ProjectColumnPayloadName name?;
 };
 
@@ -1643,6 +1695,7 @@ public type PushPayload record {
 
 # A GitHub App installation
 public type Installation record {
+    # The ID of the installation.
     int id?;
     string node_id?;
 };
@@ -1674,134 +1727,219 @@ public type BranchProtectionRulePayload record {
 # multi-level configs are off, non_admins, or everyone; actor and
 # build lists are arrays of strings.
 public type Rule record {
+    # The branch protection rule's database ID.
     int id?;
+    # The ID of the repository the rule applies to.
     int repository_id?;
+    # The name of the branch, or branch name pattern, the rule applies to.
     string name?;
+    # The time the branch protection rule was created, in ISO 8601 format.
     string created_at?;
+    # The time the branch protection rule was last updated, in ISO 8601 format.
     string updated_at?;
+    # Enforcement level for requiring an approving pull request review before merging.
     string pull_request_reviews_enforcement_level?;
+    # The number of approving reviews required on a pull request before merging.
     int required_approving_review_count?;
+    # Whether approving reviews are automatically dismissed when someone pushes a new commit.
     boolean dismiss_stale_reviews_on_push?;
+    # Whether pull requests are blocked from merging until code owners review them.
     boolean require_code_owner_review?;
+    # Whether only specific users, teams, or apps can dismiss pull request reviews.
     boolean authorized_dismissal_actors_only?;
+    # Whether approvals from contributors who have also pushed to the branch are ignored when counting required approvals.
     boolean ignore_approvals_from_contributors?;
+    # Whether the most recent push to the pull request must be approved by someone other than whoever pushed it.
     boolean require_last_push_approval?;
+    # The list of status checks that must pass before merging into the branch.
     string[] required_status_checks?;
+    # Enforcement level for required status checks.
     string required_status_checks_enforcement_level?;
+    # Whether branches must be up to date with the base branch before merging.
     boolean strict_required_status_checks_policy?;
+    # Enforcement level for requiring signed commits.
     string signature_requirement_enforcement_level?;
+    # Enforcement level for requiring a linear commit history.
     string linear_history_requirement_enforcement_level?;
+    # Whether the branch protection rule's restrictions are also enforced for repository administrators.
     boolean admin_enforced?;
+    # Enforcement level for permitting force pushes to matching branches.
     string allow_force_pushes_enforcement_level?;
+    # Enforcement level for permitting deletion of matching branches.
     string allow_deletions_enforcement_level?;
+    # Enforcement level for requiring merges to go through a merge queue.
     string merge_queue_enforcement_level?;
+    # Enforcement level for requiring successful deployments to specific environments before merging.
     string required_deployments_enforcement_level?;
+    # Enforcement level for requiring all pull request conversations to be resolved before merging.
     string required_conversation_resolution_level?;
+    # Whether only specific users, teams, or apps can push to the branch.
     boolean authorized_actors_only?;
+    # The names of the users, teams, or apps authorized to push to the branch.
     string[] authorized_actor_names?;
 };
 
+# The rule's previous pull request review enforcement level, before this edit.
 public type PullRequestReviewsEnforcementLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous required approving review count, before this edit.
 public type RequiredApprovingReviewCount record {
+    # The previous value, before this change.
     int 'from?;
 };
 
+# The rule's previous dismiss-stale-reviews-on-push setting, before this edit.
 public type DismissStaleReviewsOnPush record {
+    # The previous value, before this change.
     boolean 'from?;
 };
 
+# The rule's previous require-code-owner-review setting, before this edit.
 public type RequireCodeOwnerReview record {
+    # The previous value, before this change.
     boolean 'from?;
 };
 
+# The rule's previous authorized-dismissal-actors-only setting, before this edit.
 public type AuthorizedDismissalActorsOnly record {
+    # The previous value, before this change.
     boolean 'from?;
 };
 
+# The rule's previous ignore-approvals-from-contributors setting, before this edit.
 public type IgnoreApprovalsFromContributors record {
+    # The previous value, before this change.
     boolean 'from?;
 };
 
+# The rule's previous require-last-push-approval setting, before this edit.
 public type RequireLastPushApproval record {
+    # The previous value, before this change.
     boolean 'from?;
 };
 
+# The rule's previous list of required status checks, before this edit.
 public type RequiredStatusChecks record {
+    # The previous value, before this change.
     string[] 'from?;
 };
 
+# The rule's previous required status checks enforcement level, before this edit.
 public type RequiredStatusChecksEnforcementLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous strict required status checks policy setting, before this edit.
 public type StrictRequiredStatusChecksPolicy record {
+    # The previous value, before this change.
     boolean 'from?;
 };
 
+# The rule's previous signature requirement enforcement level, before this edit.
 public type SignatureRequirementEnforcementLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous linear history requirement enforcement level, before this edit.
 public type LinearHistoryRequirementEnforcementLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous admin-enforced setting, before this edit.
 public type AdminEnforced record {
+    # The previous value, before this change.
     boolean 'from?;
 };
 
+# The rule's previous allow-force-pushes enforcement level, before this edit.
 public type AllowForcePushesEnforcementLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous allow-deletions enforcement level, before this edit.
 public type AllowDeletionsEnforcementLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous merge queue enforcement level, before this edit.
 public type MergeQueueEnforcementLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous required deployments enforcement level, before this edit.
 public type RequiredDeploymentsEnforcementLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous required conversation resolution enforcement level, before this edit.
 public type RequiredConversationResolutionLevel record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous authorized-actors-only setting, before this edit.
 public type AuthorizedActorsOnly record {
+    # The previous value, before this change.
     boolean 'from?;
 };
 
+# The rule's previous list of authorized actor names, before this edit.
 public type AuthorizedActorNames record {
+    # The previous value, before this change.
     string[] 'from?;
 };
 
 # For edited events, the changes to the rule - one entry per changed setting, each wrapped in "from"
 public type BranchProtectionRulePayloadChanges record {
+    # The rule's previous pull request review enforcement level, before this edit.
     PullRequestReviewsEnforcementLevel pull_request_reviews_enforcement_level?;
+    # The rule's previous required approving review count, before this edit.
     RequiredApprovingReviewCount required_approving_review_count?;
+    # The rule's previous dismiss-stale-reviews-on-push setting, before this edit.
     DismissStaleReviewsOnPush dismiss_stale_reviews_on_push?;
+    # The rule's previous require-code-owner-review setting, before this edit.
     RequireCodeOwnerReview require_code_owner_review?;
+    # The rule's previous authorized-dismissal-actors-only setting, before this edit.
     AuthorizedDismissalActorsOnly authorized_dismissal_actors_only?;
+    # The rule's previous ignore-approvals-from-contributors setting, before this edit.
     IgnoreApprovalsFromContributors ignore_approvals_from_contributors?;
+    # The rule's previous require-last-push-approval setting, before this edit.
     RequireLastPushApproval require_last_push_approval?;
+    # The rule's previous list of required status checks, before this edit.
     RequiredStatusChecks required_status_checks?;
+    # The rule's previous required status checks enforcement level, before this edit.
     RequiredStatusChecksEnforcementLevel required_status_checks_enforcement_level?;
+    # The rule's previous strict required status checks policy setting, before this edit.
     StrictRequiredStatusChecksPolicy strict_required_status_checks_policy?;
+    # The rule's previous signature requirement enforcement level, before this edit.
     SignatureRequirementEnforcementLevel signature_requirement_enforcement_level?;
+    # The rule's previous linear history requirement enforcement level, before this edit.
     LinearHistoryRequirementEnforcementLevel linear_history_requirement_enforcement_level?;
+    # The rule's previous admin-enforced setting, before this edit.
     AdminEnforced admin_enforced?;
+    # The rule's previous allow-force-pushes enforcement level, before this edit.
     AllowForcePushesEnforcementLevel allow_force_pushes_enforcement_level?;
+    # The rule's previous allow-deletions enforcement level, before this edit.
     AllowDeletionsEnforcementLevel allow_deletions_enforcement_level?;
+    # The rule's previous merge queue enforcement level, before this edit.
     MergeQueueEnforcementLevel merge_queue_enforcement_level?;
+    # The rule's previous required deployments enforcement level, before this edit.
     RequiredDeploymentsEnforcementLevel required_deployments_enforcement_level?;
+    # The rule's previous required conversation resolution enforcement level, before this edit.
     RequiredConversationResolutionLevel required_conversation_resolution_level?;
+    # The rule's previous authorized-actors-only setting, before this edit.
     AuthorizedActorsOnly authorized_actors_only?;
+    # The rule's previous list of authorized actor names, before this edit.
     AuthorizedActorNames authorized_actor_names?;
 };
 
@@ -1826,12 +1964,15 @@ public type PullRequestReviewCommentPayload record {
     Enterprise enterprise?;
 };
 
+# The comment's previous body text, before this edit.
 public type PullRequestReviewCommentPayloadBody record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited events, the changes to the comment
 public type PullRequestReviewCommentPayloadChanges record {
+    # The comment's previous body text, before this edit.
     PullRequestReviewCommentPayloadBody body?;
 };
 
@@ -1871,6 +2012,7 @@ public type 'projectsV2Item record {
     string project_node_id;
     # The node ID of the content represented by this item.
     string content_node_id;
+    # The type of content tracked in the project item.
     string content_type;
     # The time when the item was created.
     string created_at?;
@@ -1882,13 +2024,17 @@ public type 'projectsV2Item record {
     User creator?;
 };
 
+# Which project field's value changed on this item.
 public type FieldValue record {
+    # The node ID of the field whose value changed.
     string field_node_id?;
+    # The type of the field whose value changed.
     string field_type?;
 };
 
 # The changes made to the item (for edited events)
 public type 'ProjectsV2ItemPayloadChanges record {
+    # Which project field's value changed on this item.
     FieldValue field_value?;
 };
 
@@ -1908,9 +2054,13 @@ public type PingPayload record {
     Organization organization?;
 };
 
+# Configuration object of the webhook.
 public type Config record {
+    # The media type used to serialize the payloads. The default is `form`.
     string content_type?;
+    # Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`.
     string insecure_ssl?;
+    # The URL to which the payloads will be delivered.
     string url?;
 };
 
@@ -1925,6 +2075,7 @@ public type Hook record {
     boolean active?;
     # Determines what events the hook is triggered for. Default: ['push'].
     string[] events?;
+    # Configuration object of the webhook.
     Config config?;
     string updated_at?;
     string created_at?;
@@ -2046,6 +2197,7 @@ public type PullRequestReviewComment record {
     User user?;
     string created_at?;
     string updated_at?;
+    # How the author is associated with the repository.
     string author_association?;
     # The side of the diff to which the comment applies. The side of the last line of the range for a multi-line comment.
     string side?;
@@ -2072,27 +2224,39 @@ public type TeamPayload record {
     Enterprise enterprise?;
 };
 
+# The team's previous description, before this edit.
 public type TeamPayloadDescription record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The team's previous name, before this edit.
 public type TeamPayloadName record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The team's previous privacy level, before this edit.
 public type Privacy record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The team's previous notification setting, before this edit.
 public type NotificationSetting record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited events, the changes to the team
 public type TeamPayloadChanges record {
+    # The team's previous description, before this edit.
     TeamPayloadDescription description?;
+    # The team's previous name, before this edit.
     TeamPayloadName name?;
+    # The team's previous privacy level, before this edit.
     Privacy privacy?;
+    # The team's previous notification setting, before this edit.
     NotificationSetting notification_setting?;
     # For added_to_repository/removed_from_repository events
     Repository repository?;
@@ -2157,17 +2321,23 @@ public type Project record {
     string updated_at?;
 };
 
+# The project's previous name, before this edit.
 public type ProjectPayloadName record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The project's previous body text, before this edit.
 public type ProjectPayloadBody record {
+    # The previous value, before this change.
     string? 'from?;
 };
 
 # For edited events, the changes made to the project
 public type ProjectPayloadChanges record {
+    # The project's previous name, before this edit.
     ProjectPayloadName name?;
+    # The project's previous body text, before this edit.
     ProjectPayloadBody body?;
 };
 
@@ -2194,17 +2364,23 @@ public type InstallationTargetPayloadAccount record {
     boolean site_admin?;
 };
 
+# The account's previous login, before this rename.
 public type InstallationTargetPayloadLogin record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The account's previous slug, before this rename.
 public type Slug record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # The changes made to the account
 public type InstallationTargetPayloadChanges record {
+    # The account's previous login, before this rename.
     InstallationTargetPayloadLogin login?;
+    # The account's previous slug, before this rename.
     Slug slug?;
 };
 
@@ -2275,11 +2451,16 @@ public type RepositoriesRemovedItem record {
 public type Issue record {
     int id;
     string node_id?;
+    # URL for the issue.
     string url?;
     string html_url?;
+    # Number uniquely identifying the issue within its repository.
     int number;
+    # Title of the issue.
     string title;
+    # Contents of the issue.
     string? body?;
+    # State of the issue; either `open` or `closed`.
     string state;
     boolean locked?;
     # A GitHub user
@@ -2294,6 +2475,7 @@ public type Issue record {
     string created_at?;
     string updated_at?;
     string? closed_at?;
+    # How the author is associated with the repository.
     string author_association?;
     string? active_lock_reason?;
 };
@@ -2399,9 +2581,11 @@ public type Conditions record {
 
 # Only allow users with bypass permission to create matching refs.
 public type RulesItemCreation record {
+    # The rule type - always `creation`.
     string 'type;
 };
 
+# Parameters for the `update` rule.
 public type RulesItemUpdateParameters record {
     # Branch can pull changes from its upstream repository
     boolean update_allows_fetch_and_merge;
@@ -2409,89 +2593,125 @@ public type RulesItemUpdateParameters record {
 
 # Only allow users with bypass permission to update matching refs.
 public type RulesItemUpdate record {
+    # The rule type - always `update`.
     string 'type;
+    # Parameters for the `update` rule.
     RulesItemUpdateParameters parameters?;
 };
 
 # Only allow users with bypass permissions to delete matching refs.
 public type RulesItemDeletion record {
+    # The rule type - always `deletion`.
     string 'type;
 };
 
 # Prevent merge commits from being pushed to matching refs.
 public type RulesItemRequiredLinearHistory record {
+    # The rule type - always `required_linear_history`.
     string 'type;
 };
 
+# Parameters for the `merge_queue` rule.
 public type RulesItemMergeQueueParameters record {
-    # Maximum time (minutes) for a required status check to report a conclusion.
+    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
     int check_response_timeout_minutes;
+    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
     string grouping_strategy;
+    # Limit the number of queued pull requests requesting checks and workflow runs at the same time.
     int max_entries_to_build;
+    # The maximum number of PRs that will be merged together in a group.
     int max_entries_to_merge;
+    # Method to use when merging changes from queued pull requests.
     string merge_method;
+    # The minimum number of PRs that will be merged together in a group.
     int min_entries_to_merge;
+    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
     int min_entries_to_merge_wait_minutes;
 };
 
 # Merges must be performed via a merge queue.
 public type RulesItemMergeQueue record {
+    # The rule type - always `merge_queue`.
     string 'type;
+    # Parameters for the `merge_queue` rule.
     RulesItemMergeQueueParameters parameters?;
 };
 
+# Parameters for the `required_deployments` rule.
 public type RulesItemRequiredDeploymentsParameters record {
+    # Environments that must be successfully deployed to before branches can be merged.
     string[] required_deployment_environments;
 };
 
 # Choose which environments must be successfully deployed to before refs can be pushed.
 public type RulesItemRequiredDeployments record {
+    # The rule type - always `required_deployments`.
     string 'type;
+    # Parameters for the `required_deployments` rule.
     RulesItemRequiredDeploymentsParameters parameters?;
 };
 
 # Commits pushed to matching refs must have verified signatures.
 public type RulesItemRequiredSignatures record {
+    # The rule type - always `required_signatures`.
     string 'type;
 };
 
+# Parameters for the `pull_request` rule.
 public type RulesItemPullRequestParameters record {
+    # Array of allowed merge methods. At least one option must be enabled.
     string[] allowed_merge_methods?;
+    # New, reviewable commits pushed will dismiss previous pull request review approvals.
     boolean dismiss_stale_reviews_on_push;
     # Specify people, teams, or apps allowed to dismiss pull request reviews.
     RuleDismissalRestriction dismissal_restriction?;
+    # Require an approving review in pull requests that modify files that have a designated code owner.
     boolean require_code_owner_review;
+    # Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
     boolean require_last_push_approval;
+    # The number of approving reviews that are required before a pull request can be merged.
     int required_approving_review_count;
+    # All conversations on code must be resolved before a pull request can be merged.
     boolean required_review_thread_resolution;
+    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
     RuleRequiredReviewerConfiguration[] required_reviewers?;
 };
 
 # Require commits be submitted via a pull request before they can be merged.
 public type RulesItemPullRequest record {
+    # The rule type - always `pull_request`.
     string 'type;
+    # Parameters for the `pull_request` rule.
     RulesItemPullRequestParameters parameters?;
 };
 
+# Parameters for the `required_status_checks` rule.
 public type RulesItemRequiredStatusChecksParameters record {
+    # Allow repositories and branches to be created if a check would otherwise prohibit it.
     boolean do_not_enforce_on_create?;
+    # Status checks that are required.
     RuleStatusCheckConfiguration[] required_status_checks;
+    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
     boolean strict_required_status_checks_policy;
 };
 
 # Choose which status checks must pass before the ref is updated.
 public type RulesItemRequiredStatusChecks record {
+    # The rule type - always `required_status_checks`.
     string 'type;
+    # Parameters for the `required_status_checks` rule.
     RulesItemRequiredStatusChecksParameters parameters?;
 };
 
 # Prevent users with push access from force pushing to refs.
 public type RulesItemNonFastForward record {
+    # The rule type - always `non_fast_forward`.
     string 'type;
 };
 
 # Restrict commit messages matching a pattern.
 public type RulesItemCommitMessagePattern record {
+    # The rule type - always `commit_message_pattern`.
     string 'type;
     # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
     # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
@@ -2501,6 +2721,7 @@ public type RulesItemCommitMessagePattern record {
 
 # Restrict commit author emails matching a pattern.
 public type RulesItemCommitAuthorEmailPattern record {
+    # The rule type - always `commit_author_email_pattern`.
     string 'type;
     # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
     # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
@@ -2510,6 +2731,7 @@ public type RulesItemCommitAuthorEmailPattern record {
 
 # Restrict committer emails matching a pattern.
 public type RulesItemCommitterEmailPattern record {
+    # The rule type - always `committer_email_pattern`.
     string 'type;
     # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
     # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
@@ -2519,6 +2741,7 @@ public type RulesItemCommitterEmailPattern record {
 
 # Restrict branch names matching a pattern.
 public type RulesItemBranchNamePattern record {
+    # The rule type - always `branch_name_pattern`.
     string 'type;
     # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
     # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
@@ -2528,6 +2751,7 @@ public type RulesItemBranchNamePattern record {
 
 # Restrict tag names matching a pattern.
 public type RulesItemTagNamePattern record {
+    # The rule type - always `tag_name_pattern`.
     string 'type;
     # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
     # commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
@@ -2535,64 +2759,89 @@ public type RulesItemTagNamePattern record {
     RulePatternParameters parameters?;
 };
 
+# Parameters for the `file_path_restriction` rule.
 public type RulesItemFilePathRestrictionParameters record {
+    # File paths that are restricted from being pushed to the commit graph.
     string[] restricted_file_paths;
 };
 
 # Restrict file and folder paths from being pushed.
 public type RulesItemFilePathRestriction record {
+    # The rule type - always `file_path_restriction`.
     string 'type;
+    # Parameters for the `file_path_restriction` rule.
     RulesItemFilePathRestrictionParameters parameters?;
 };
 
+# Parameters for the `max_file_path_length` rule.
 public type RulesItemMaxFilePathLengthParameters record {
+    # The maximum amount of characters allowed in file paths.
     int max_file_path_length;
 };
 
 # Restrict file paths exceeding a character limit.
 public type RulesItemMaxFilePathLength record {
+    # The rule type - always `max_file_path_length`.
     string 'type;
+    # Parameters for the `max_file_path_length` rule.
     RulesItemMaxFilePathLengthParameters parameters?;
 };
 
+# Parameters for the `file_extension_restriction` rule.
 public type RulesItemFileExtensionRestrictionParameters record {
+    # File extensions that are restricted from being pushed to the commit graph.
     string[] restricted_file_extensions;
 };
 
 # Restrict files with specified file extensions.
 public type RulesItemFileExtensionRestriction record {
+    # The rule type - always `file_extension_restriction`.
     string 'type;
+    # Parameters for the `file_extension_restriction` rule.
     RulesItemFileExtensionRestrictionParameters parameters?;
 };
 
+# Parameters for the `max_file_size` rule.
 public type RulesItemMaxFileSizeParameters record {
+    # The maximum file size allowed in megabytes.
     int max_file_size;
 };
 
 # Restrict individual files exceeding a size limit (MB).
 public type RulesItemMaxFileSize record {
+    # The rule type - always `max_file_size`.
     string 'type;
+    # Parameters for the `max_file_size` rule.
     RulesItemMaxFileSizeParameters parameters?;
 };
 
+# Parameters for the `workflows` rule.
 public type RulesItemWorkflowsParameters record {
+    # Allow repositories and branches to be created if a check would otherwise prohibit it.
     boolean do_not_enforce_on_create?;
+    # Workflows that must pass for this rule to pass.
     RuleWorkflowFileReference[] workflows;
 };
 
 # Require specified workflows to pass before changes can be merged.
 public type RulesItemWorkflows record {
+    # The rule type - always `workflows`.
     string 'type;
+    # Parameters for the `workflows` rule.
     RulesItemWorkflowsParameters parameters?;
 };
 
+# Parameters for the `code_scanning` rule.
 public type RulesItemCodeScanningParameters record {
+    # Tools that must provide code scanning results for this rule to pass.
     RuleCodeScanningTool[] code_scanning_tools;
 };
 
 # Choose which code scanning tools must provide results before the reference is updated.
 public type RulesItemCodeScanning record {
+    # The rule type - always `code_scanning`.
     string 'type;
+    # Parameters for the `code_scanning` rule.
     RulesItemCodeScanningParameters parameters?;
 };
 
@@ -2616,6 +2865,7 @@ public type RepositoryRuleset record {
     string? source_type?;
     # The name of the source.
     string 'source?;
+    # The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them and view insights on the Rule Insights page (Enterprise only).
     string enforcement;
     # Which refs this ruleset applies to
     Conditions? conditions?;
@@ -2630,89 +2880,135 @@ public type RepositoryRuleset record {
     string updated_at?;
 };
 
+# The ruleset's previous name, before this edit.
 public type RepositoryRulesetPayloadName record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The ruleset's previous enforcement status, before this edit.
 public type Enforcement record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The condition's previous type, before this edit.
 public type ConditionType record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The condition's previous target, before this edit.
 public type Target record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The condition's previous list of included ref patterns, before this edit.
 public type Include record {
+    # The previous value, before this change.
     string[] 'from?;
 };
 
+# The condition's previous list of excluded ref patterns, before this edit.
 public type Exclude record {
+    # The previous value, before this change.
     string[] 'from?;
 };
 
+# The fields of the condition that changed.
 public type RepositoryRulesetPayloadChanges2 record {
+    # The condition's previous type, before this edit.
     ConditionType condition_type?;
+    # The condition's previous target, before this edit.
     Target target?;
+    # The condition's previous list of included ref patterns, before this edit.
     Include include?;
+    # The condition's previous list of excluded ref patterns, before this edit.
     Exclude exclude?;
 };
 
 public type UpdatedItem record {
+    # The current state of the updated condition.
     record {} condition?;
+    # The fields of the condition that changed.
     RepositoryRulesetPayloadChanges2 changes?;
 };
 
+# The ref-targeting conditions added, deleted, or updated on the ruleset.
 public type RepositoryRulesetPayloadConditions record {
+    # Conditions newly added to the ruleset.
     record {}[] added?;
+    # Conditions removed from the ruleset.
     record {}[] deleted?;
+    # Conditions whose own fields changed on the ruleset.
     UpdatedItem[] updated?;
 };
 
 public type AddedItem record {
+    # The type of rule that was added.
     string 'type?;
+    # The parameters of the rule that was added.
     record {} parameters?;
 };
 
 public type DeletedItem record {
+    # The type of rule that was removed.
     string 'type?;
+    # The parameters of the rule that was removed.
     record {} parameters?;
 };
 
+# The current state of the updated rule.
 public type RepositoryRulesetPayloadRule record {
+    # The type of the updated rule.
     string 'type?;
+    # The parameters of the updated rule.
     record {} parameters?;
 };
 
+# The rule's previous configuration, before this edit.
 public type Configuration record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous type, before this edit.
 public type RuleType record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The rule's previous pattern, before this edit.
 public type Pattern record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The fields of the rule that changed.
 public type RepositoryRulesetPayloadChanges3 record {
+    # The rule's previous configuration, before this edit.
     Configuration configuration?;
+    # The rule's previous type, before this edit.
     RuleType rule_type?;
+    # The rule's previous pattern, before this edit.
     Pattern pattern?;
 };
 
 public type RepositoryRulesetPayloadUpdatedItem record {
+    # The current state of the updated rule.
     RepositoryRulesetPayloadRule rule?;
+    # The fields of the rule that changed.
     RepositoryRulesetPayloadChanges3 changes?;
 };
 
+# The rules added, deleted, or updated on the ruleset.
 public type Rules record {
+    # Rules newly added to the ruleset.
     AddedItem[] added?;
+    # Rules removed from the ruleset.
     DeletedItem[] deleted?;
+    # Rules whose own fields changed on the ruleset.
     RepositoryRulesetPayloadUpdatedItem[] updated?;
 };
 
@@ -2721,9 +3017,13 @@ public type Rules record {
 # existing entry's own fields changed), not a flat "field changed from X" map like
 # most other changes payloads - bypass_actors is never part of this diff at all.
 public type RepositoryRulesetPayloadChanges record {
+    # The ruleset's previous name, before this edit.
     RepositoryRulesetPayloadName name?;
+    # The ruleset's previous enforcement status, before this edit.
     Enforcement enforcement?;
+    # The ref-targeting conditions added, deleted, or updated on the ruleset.
     RepositoryRulesetPayloadConditions conditions?;
+    # The rules added, deleted, or updated on the ruleset.
     Rules rules?;
 };
 
@@ -2746,36 +3046,42 @@ public type SecurityAndAnalysisPayload record {
 
 # Change to GitHub Advanced Security enablement
 public type AdvancedSecurity record {
+    # The previous value, before this change.
     string 'from?;
     string to?;
 };
 
 # Change to Dependabot alerts enablement
 public type DependabotAlerts record {
+    # The previous value, before this change.
     string 'from?;
     string to?;
 };
 
 # Change to Dependabot security updates enablement
 public type DependabotSecurityUpdates record {
+    # The previous value, before this change.
     string 'from?;
     string to?;
 };
 
 # Change to secret scanning enablement
 public type SecretScanning record {
+    # The previous value, before this change.
     string 'from?;
     string to?;
 };
 
 # Change to secret scanning push protection enablement
 public type SecretScanningPushProtection record {
+    # The previous value, before this change.
     string 'from?;
     string to?;
 };
 
 # Change to non-provider pattern scanning enablement
 public type SecretScanningNonProviderPatterns record {
+    # The previous value, before this change.
     string 'from?;
     string to?;
 };
@@ -2950,6 +3256,7 @@ public type RepositoryAdvisory record {
     string? withdrawn_at?;
     # The accept/reject decision on a repository security advisory publish request
     Submission? submission?;
+    # The products affected by the vulnerability detailed in the advisory.
     VulnerabilitiesItem[] vulnerabilities?;
     Cvss? cvss?;
     CwesItem[]? cwes?;
@@ -3037,17 +3344,23 @@ public type IssuesPayload record {
     Enterprise enterprise?;
 };
 
+# The issue's previous title, before this edit.
 public type Title record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The issue's previous body text, before this edit.
 public type IssuesPayloadBody record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited events, the changes to the issue
 public type IssuesPayloadChanges record {
+    # The issue's previous title, before this edit.
     Title title?;
+    # The issue's previous body text, before this edit.
     IssuesPayloadBody body?;
 };
 
@@ -3164,12 +3477,15 @@ public type PullRequestReviewPayload record {
     Enterprise enterprise?;
 };
 
+# The review's previous body text, before this edit.
 public type PullRequestReviewPayloadBody record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited events, the changes to the review
 public type PullRequestReviewPayloadChanges record {
+    # The review's previous body text, before this edit.
     PullRequestReviewPayloadBody body?;
 };
 
@@ -3418,11 +3734,15 @@ public type Answer record {
     string updated_at?;
 };
 
+# The discussion's previous title, before this edit.
 public type DiscussionPayloadTitle record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The discussion's previous body text, before this edit.
 public type DiscussionPayloadBody record {
+    # The previous value, before this change.
     string 'from?;
 };
 
@@ -3434,7 +3754,9 @@ public type DiscussionPayloadCategory record {
 
 # For edited/category_changed events, the changes made
 public type DiscussionPayloadChanges record {
+    # The discussion's previous title, before this edit.
     DiscussionPayloadTitle title?;
+    # The discussion's previous body text, before this edit.
     DiscussionPayloadBody body?;
     # Present on category_changed
     DiscussionPayloadCategory category?;
@@ -3673,6 +3995,7 @@ public type Discussion record {
     User user?;
     string html_url?;
     int comments?;
+    # Color-coded labels categorizing the discussion.
     Label[] labels?;
     boolean locked?;
     string? active_lock_reason?;
@@ -3714,6 +4037,7 @@ public type PullRequestReview record {
     string submitted_at?;
     # A commit SHA for the review. If the commit object was garbage collected or forcibly deleted, then it no longer exists in Git and this value will be `null`.
     string commit_id?;
+    # How the author is associated with the repository.
     string author_association?;
 };
 
@@ -3855,7 +4179,9 @@ public type PullRequestsItem record {
 
 # Required status check
 public type RuleStatusCheckConfiguration record {
+    # The status check context name that must pass for this rule to pass.
     string context;
+    # The ID of the GitHub App that must provide this status check.
     int integration_id?;
 };
 
@@ -3878,22 +4204,31 @@ public type LabelPayload record {
     Enterprise enterprise?;
 };
 
+# The label's previous color, before this edit.
 public type Color record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The label's previous name, before this edit.
 public type LabelPayloadName record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The label's previous description, before this edit.
 public type LabelPayloadDescription record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited events, the changes to the label
 public type LabelPayloadChanges record {
+    # The label's previous color, before this edit.
     Color color?;
+    # The label's previous name, before this edit.
     LabelPayloadName name?;
+    # The label's previous description, before this edit.
     LabelPayloadDescription description?;
 };
 
@@ -3987,17 +4322,23 @@ public type ProjectCard record {
     string updated_at?;
 };
 
+# The card's previous note text, before this edit.
 public type Note record {
+    # The previous value, before this change.
     string? 'from?;
 };
 
+# The ID of the column the card was previously in, before this move.
 public type ColumnId record {
+    # The previous value, before this change.
     int 'from?;
 };
 
 # For edited/moved events, the changes made
 public type ProjectCardPayloadChanges record {
+    # The card's previous note text, before this edit.
     Note note?;
+    # The ID of the column the card was previously in, before this move.
     ColumnId column_id?;
 };
 
@@ -4031,22 +4372,29 @@ public type PullRequestPayload record {
     Enterprise enterprise?;
 };
 
+# The pull request's previous title, before this edit.
 public type PullRequestPayloadTitle record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The pull request's previous body text, before this edit.
 public type PullRequestPayloadBody record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 public type Ref record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 public type Sha record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The pull request's previous base branch, before this edit.
 public type PullRequestPayloadBase record {
     Ref ref?;
     Sha sha?;
@@ -4054,8 +4402,11 @@ public type PullRequestPayloadBase record {
 
 # For edited events, the changes to the pull request
 public type PullRequestPayloadChanges record {
+    # The pull request's previous title, before this edit.
     PullRequestPayloadTitle title?;
+    # The pull request's previous body text, before this edit.
     PullRequestPayloadBody body?;
+    # The pull request's previous base branch, before this edit.
     PullRequestPayloadBase base?;
 };
 
@@ -4285,18 +4636,25 @@ public type MemberPayload record {
     Enterprise enterprise?;
 };
 
+# The collaborator's previous permission level, before this edit.
 public type OldPermission record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The collaborator's permission level change.
 public type Permission record {
+    # The collaborator's permission level before this change.
     string 'from?;
+    # The collaborator's permission level after this change.
     string to?;
 };
 
 # For edited events, the changes to the member's permissions
 public type MemberPayloadChanges record {
+    # The collaborator's previous permission level, before this edit.
     OldPermission old_permission?;
+    # The collaborator's permission level change.
     Permission permission?;
 };
 
@@ -4319,22 +4677,31 @@ public type MilestonePayload record {
     Enterprise enterprise?;
 };
 
+# The milestone's previous description, before this edit.
 public type MilestonePayloadDescription record {
+    # The previous value, before this change.
     string 'from?;
 };
 
+# The milestone's previous due date, before this edit.
 public type DueOn record {
+    # The previous value, before this change.
     string? 'from?;
 };
 
+# The milestone's previous title, before this edit.
 public type MilestonePayloadTitle record {
+    # The previous value, before this change.
     string 'from?;
 };
 
 # For edited events, the changes to the milestone
 public type MilestonePayloadChanges record {
+    # The milestone's previous description, before this edit.
     MilestonePayloadDescription description?;
+    # The milestone's previous due date, before this edit.
     DueOn due_on?;
+    # The milestone's previous title, before this edit.
     MilestonePayloadTitle title?;
 };
 
@@ -4481,13 +4848,17 @@ public type CommitCommentPayloadComment record {
 
 # A required reviewing team
 public type RuleReviewer record {
+    # The ID of the team required to review matching pull requests.
     int id;
+    # The type of actor required to review - always `Team`.
     string 'type;
 };
 
 # A reviewing team, and file patterns describing which files they must approve changes to.
 public type RuleRequiredReviewerConfiguration record {
+    # The file patterns the required reviewer must approve changes to.
     string[] file_patterns;
+    # The number of approvals required from the reviewing team.
     int minimum_approvals;
     # A required reviewing team
     RuleReviewer reviewer;
@@ -4500,8 +4871,11 @@ public type Commit record {
     string tree_id?;
     # Whether this commit is distinct from any that have been pushed before
     boolean 'distinct?;
+    # The commit message.
     string message;
+    # The ISO 8601 timestamp of the commit.
     string timestamp?;
+    # URL that points to the commit API resource.
     string url?;
     # Git author/committer metadata
     CommitAuthor author?;
