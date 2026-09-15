@@ -4548,6 +4548,7 @@ components:
     # Delivery headers present on every GitHub webhook POST request
     # -----------------------------------------------------------------------
     WebhookHeaders:
+      description: "HTTP headers sent with every GitHub webhook delivery."
       type: object
       required:
         - X-GitHub-Event
@@ -4614,26 +4615,33 @@ components:
           type: integer
           description: The user's unique numeric identifier
         node_id:
+          description: "The GraphQL node ID."
           type: string
         avatar_url:
+          description: "The URL of the user's or organization's avatar image."
           type: string
           format: uri
         gravatar_id:
+          description: "The user's Gravatar ID (legacy field, typically empty)."
           type: string
           nullable: true
         url:
+          description: "The API URL of the resource."
           type: string
           format: uri
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         type:
+          description: "The account type: User, Organization, or Bot."
           type: string
           enum:
             - User
             - Bot
             - Organization
         site_admin:
+          description: "Whether the user is a GitHub site administrator."
           type: boolean
 
     Repository:
@@ -4679,16 +4687,21 @@ components:
           format: uri
           description: The URL to get more information about the repository from the GitHub API.
         homepage:
+          description: "The repository's homepage URL, if set."
           type: string
           nullable: true
         language:
+          description: "The repository's primary programming language."
           type: string
           nullable: true
         forks_count:
+          description: "The number of forks of the repository."
           type: integer
         stargazers_count:
+          description: "The number of users who have starred the repository."
           type: integer
         watchers_count:
+          description: "The number of users watching the repository."
           type: integer
         size:
           type: integer
@@ -4697,8 +4710,10 @@ components:
           type: string
           description: The default branch of the repository.
         open_issues_count:
+          description: "The number of open issues and pull requests in the repository."
           type: integer
         topics:
+          description: "The list of topics associated with the repository."
           type: array
           items:
             type: string
@@ -4712,6 +4727,7 @@ components:
           type: boolean
           description: Whether the wiki is enabled.
         has_pages:
+          description: "Whether GitHub Pages is enabled for the repository."
           type: boolean
         has_downloads:
           type: boolean
@@ -4730,26 +4746,34 @@ components:
             - internal
           description: "The repository visibility: public, private, or internal."
         pushed_at:
+          description: "The date and time the repository was last pushed to."
           type: string
           format: date-time
           nullable: true
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         license:
+          description: "A repository's software license."
           type: object
           nullable: true
           properties:
             key:
+              description: "The SPDX license key identifier, e.g. mit."
               type: string
             name:
+              description: "The full name of the license."
               type: string
             spdx_id:
+              description: "The SPDX identifier of the license."
               type: string
             url:
+              description: "The API URL of the resource."
               type: string
               nullable: true
 
@@ -4758,24 +4782,32 @@ components:
       description: A GitHub organization
       properties:
         login:
+          description: "The organization's login name."
           type: string
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         url:
+          description: "The API URL of the resource."
           type: string
           format: uri
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         repos_url:
+          description: "The API URL listing the organization's repositories."
           type: string
           format: uri
         avatar_url:
+          description: "The URL of the user's or organization's avatar image."
           type: string
           format: uri
         description:
+          description: "A short description of the organization."
           type: string
           nullable: true
 
@@ -4787,6 +4819,7 @@ components:
           type: integer
           description: The ID of the installation.
         node_id:
+          description: "The GraphQL node ID."
           type: string
 
     Enterprise:
@@ -4803,8 +4836,10 @@ components:
           type: string
           description: The name of the enterprise.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         avatar_url:
+          description: "The URL of the user's or organization's avatar image."
           type: string
           format: uri
         description:
@@ -4816,17 +4851,21 @@ components:
           nullable: true
           description: The enterprise's website URL.
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
 
     # Common payload fields present on most webhook events
     CommonPayload:
+      description: "Shared sender/repository/organization/installation/enterprise fields; not referenced elsewhere in this module."
       type: object
       properties:
         sender:
@@ -4852,6 +4891,7 @@ components:
           type: integer
           description: Unique identifier for the label.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         url:
           type: string
@@ -4877,8 +4917,10 @@ components:
       description: A milestone on an issue or pull request
       properties:
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         number:
           type: integer
@@ -4887,6 +4929,7 @@ components:
           type: string
           description: The title of the milestone.
         description:
+          description: "A description of the milestone."
           type: string
           nullable: true
         state:
@@ -4896,20 +4939,26 @@ components:
             - closed
           description: The state of the milestone.
         open_issues:
+          description: "The number of open issues associated with the milestone."
           type: integer
         closed_issues:
+          description: "The number of closed issues associated with the milestone."
           type: integer
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         due_on:
+          description: "The date the milestone is due, in ISO 8601 format."
           type: string
           format: date-time
           nullable: true
         closed_at:
+          description: "The date and time the milestone was closed, in ISO 8601 format."
           type: string
           format: date-time
           nullable: true
@@ -4926,14 +4975,17 @@ components:
         - state
       properties:
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         url:
           type: string
           format: uri
           description: URL for the issue.
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         number:
@@ -4953,10 +5005,12 @@ components:
             - closed
           description: State of the issue; either `open` or `closed`.
         locked:
+          description: "Whether the issue's conversation has been locked."
           type: boolean
         user:
           $ref: '#/components/schemas/User'
         labels:
+          description: "Labels attached to the issue."
           type: array
           items:
             $ref: '#/components/schemas/Label'
@@ -4964,20 +5018,25 @@ components:
           $ref: '#/components/schemas/User'
           nullable: true
         assignees:
+          description: "The users assigned to the issue."
           type: array
           items:
             $ref: '#/components/schemas/User'
         milestone:
           $ref: '#/components/schemas/Milestone'
         comments:
+          description: "The number of comments on the issue."
           type: integer
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         closed_at:
+          description: "The date and time the issue was closed, if closed."
           type: string
           format: date-time
           nullable: true
@@ -4994,6 +5053,7 @@ components:
             - OWNER
           description: How the author is associated with the repository.
         active_lock_reason:
+          description: "The reason the issue's conversation was locked, if locked."
           type: string
           nullable: true
 
@@ -5002,10 +5062,13 @@ components:
       description: A pull request head or base ref
       properties:
         label:
+          description: "The ref's label in owner:branch form, e.g. octocat:main."
           type: string
         ref:
+          description: "The name of the branch or tag."
           type: string
         sha:
+          description: "The SHA of the commit at the tip of the ref."
           type: string
         user:
           $ref: '#/components/schemas/User'
@@ -5022,19 +5085,25 @@ components:
         - title
       properties:
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         url:
+          description: "The API URL of the resource."
           type: string
           format: uri
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         diff_url:
+          description: "The URL to the pull request's diff in unified diff format."
           type: string
           format: uri
         patch_url:
+          description: "The URL to the pull request's patch file."
           type: string
           format: uri
         number:
@@ -5047,16 +5116,19 @@ components:
             - closed
           description: State of this Pull Request. Either `open` or `closed`.
         locked:
+          description: "Whether the pull request's conversation is locked."
           type: boolean
         title:
           type: string
           description: The title of the pull request.
         body:
+          description: "The pull request's description text."
           type: string
           nullable: true
         user:
           $ref: '#/components/schemas/User'
         labels:
+          description: "The labels attached to the pull request."
           type: array
           items:
             $ref: '#/components/schemas/Label'
@@ -5064,6 +5136,7 @@ components:
           $ref: '#/components/schemas/User'
           nullable: true
         assignees:
+          description: "The users assigned to the pull request."
           type: array
           items:
             $ref: '#/components/schemas/User'
@@ -5077,42 +5150,57 @@ components:
           type: boolean
           description: Indicates whether or not the pull request is a draft.
         merged:
+          description: "Whether the pull request has been merged."
           type: boolean
           nullable: true
         mergeable:
+          description: "Whether the pull request can be merged into its base branch."
           type: boolean
           nullable: true
         rebaseable:
+          description: "Whether the pull request can be rebased against its base branch."
           type: boolean
           nullable: true
         mergeable_state:
+          description: "The mergeability state of the pull request, e.g. clean or dirty."
           type: string
         merge_commit_sha:
+          description: "The SHA of the merge commit, or the last commit if not yet merged."
           type: string
           nullable: true
         comments:
+          description: "The number of issue comments on the pull request."
           type: integer
         review_comments:
+          description: "The number of review comments on the pull request."
           type: integer
         commits:
+          description: "The number of commits in the pull request."
           type: integer
         additions:
+          description: "The number of lines added across the pull request's commits."
           type: integer
         deletions:
+          description: "The number of lines deleted across the pull request's commits."
           type: integer
         changed_files:
+          description: "The number of files changed in the pull request."
           type: integer
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         closed_at:
+          description: "The date and time the pull request was closed, in ISO 8601 format."
           type: string
           format: date-time
           nullable: true
         merged_at:
+          description: "The date and time the pull request was merged, in ISO 8601 format."
           type: string
           format: date-time
           nullable: true
@@ -5161,27 +5249,35 @@ components:
         - name
       properties:
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         url:
+          description: "The API URL of the resource."
           type: string
           format: uri
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         assets_url:
+          description: "The API URL listing the release's assets."
           type: string
           format: uri
         upload_url:
+          description: "The URI template for uploading assets to this release."
           type: string
         tag_name:
           type: string
           description: The name of the tag.
         name:
+          description: "The name of the release."
           type: string
           nullable: true
         body:
+          description: "Text describing the contents of the tag."
           type: string
           nullable: true
         draft:
@@ -5196,6 +5292,7 @@ components:
         author:
           $ref: '#/components/schemas/User'
         assets:
+          description: "The release's downloadable file attachments."
           type: array
           items:
             type: object
@@ -5214,19 +5311,24 @@ components:
               - browser_download_url
             properties:
               url:
+                description: "The API URL of the resource."
                 type: string
                 format: uri
               browser_download_url:
+                description: "The direct download URL for the asset file."
                 type: string
                 format: uri
               id:
+                description: "The unique identifier of the resource."
                 type: integer
               node_id:
+                description: "The GraphQL node ID."
                 type: string
               name:
                 type: string
                 description: The file name of the asset.
               label:
+                description: "The user-facing display label for the asset, if set."
                 type: string
                 nullable: true
               state:
@@ -5236,26 +5338,34 @@ components:
                   - open
                 description: State of the release asset.
               content_type:
+                description: "The MIME type of the asset file."
                 type: string
               size:
+                description: "The size of the asset file, in bytes."
                 type: integer
               digest:
+                description: "The checksum digest of the asset file, when available."
                 type: string
                 nullable: true
               download_count:
+                description: "The number of times the asset has been downloaded."
                 type: integer
               created_at:
+                description: "The date and time the resource was created, in ISO 8601 format."
                 type: string
                 format: date-time
               updated_at:
+                description: "The date and time the resource was last updated, in ISO 8601 format."
                 type: string
                 format: date-time
               uploader:
                 $ref: '#/components/schemas/User'
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         published_at:
+          description: "The date and time the release was published, in ISO 8601 format."
           type: string
           format: date-time
           nullable: true
@@ -5272,6 +5382,7 @@ components:
           format: email
           description: The git author's email address.
         username:
+          description: "The git author's GitHub username, if their email matched a GitHub account."
           type: string
 
     Commit:
@@ -5285,6 +5396,7 @@ components:
           type: string
           description: The commit SHA
         tree_id:
+          description: "The SHA of the Git tree associated with this commit."
           type: string
         distinct:
           type: boolean
@@ -5331,12 +5443,14 @@ components:
           type: integer
           description: Unique identifier of the issue comment.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         url:
           type: string
           format: uri
           description: URL for the issue comment.
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         body:
@@ -5345,9 +5459,11 @@ components:
         user:
           $ref: '#/components/schemas/User'
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         author_association:
@@ -5365,6 +5481,7 @@ components:
           type: integer
           description: Unique identifier of the review.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         user:
           $ref: '#/components/schemas/User'
@@ -5373,6 +5490,7 @@ components:
           nullable: true
           description: The text of the review.
         state:
+          description: "The review state, e.g. approved, changes_requested, commented, dismissed."
           type: string
           enum:
             - APPROVED
@@ -5381,12 +5499,15 @@ components:
             - DISMISSED
             - PENDING
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         pull_request_url:
+          description: "The API URL of the reviewed pull request."
           type: string
           format: uri
         submitted_at:
+          description: "The date and time the review was submitted, in ISO 8601 format."
           type: string
           format: date-time
         commit_id:
@@ -5446,9 +5567,11 @@ components:
         user:
           $ref: '#/components/schemas/User'
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         author_association:
@@ -5482,20 +5605,25 @@ components:
           type: string
           description: The name of the check run.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         head_sha:
           type: string
           description: The SHA of the commit that is being checked.
         external_id:
+          description: "A reference for the check run on the integrator's system."
           type: string
           nullable: true
         url:
+          description: "The API URL of the resource."
           type: string
           format: uri
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         details_url:
+          description: "The URL of the integrator's site with the full details of the check."
           type: string
           format: uri
           nullable: true
@@ -5534,26 +5662,34 @@ components:
           nullable: true
           description: The time the check completed.
         output:
+          description: "The check run's title, summary, and detailed output text."
           type: object
           properties:
             title:
+              description: "The title of the check run output, or null if not set."
               type: string
               nullable: true
             summary:
+              description: "The summary of the check run output, or null if not set."
               type: string
               nullable: true
             text:
+              description: "The detailed text of the check run output, or null if not set."
               type: string
               nullable: true
             annotations_count:
+              description: "The number of annotations included in the output."
               type: integer
             annotations_url:
+              description: "The API URL listing the annotations for this check run."
               type: string
               format: uri
         check_suite:
+          description: "The check suite this check run belongs to."
           type: object
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
         app:
           $ref: '#/components/schemas/App'
@@ -5570,8 +5706,10 @@ components:
         - id
       properties:
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         head_branch:
           type: string
@@ -5606,9 +5744,11 @@ components:
           format: uri
           description: URL that points to the check suite API resource.
         before:
+          description: "The SHA of the most recent commit on the branch before the push that triggered this check suite."
           type: string
           nullable: true
         after:
+          description: "The SHA of the most recent commit on the branch after this check suite's push."
           type: string
           nullable: true
         pull_requests:
@@ -5619,9 +5759,11 @@ components:
         app:
           $ref: '#/components/schemas/App'
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
 
@@ -5639,8 +5781,10 @@ components:
           type: integer
           description: Unique identifier of the deployment.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         sha:
+          description: "The SHA of the commit that was deployed."
           type: string
         ref:
           type: string
@@ -5653,25 +5797,31 @@ components:
           additionalProperties: true
           description: JSON payload with extra information about the deployment
         original_environment:
+          description: "The environment name originally requested, before normalization to `environment`."
           type: string
         environment:
           type: string
           description: Name of the target deployment environment.
         description:
+          description: "A short description of the deployment."
           type: string
           nullable: true
         creator:
           $ref: '#/components/schemas/User'
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         statuses_url:
+          description: "The API URL listing the deployment's statuses."
           type: string
           format: uri
         repository_url:
+          description: "The API URL of the repository the deployment belongs to."
           type: string
           format: uri
         transient_environment:
@@ -5692,8 +5842,10 @@ components:
         - state
       properties:
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         state:
           type: string
@@ -5729,15 +5881,19 @@ components:
           nullable: true
           description: The optional link added to the status.
         deployment_url:
+          description: "The API URL of the deployment this status belongs to."
           type: string
           format: uri
         repository_url:
+          description: "The API URL of the repository the deployment belongs to."
           type: string
           format: uri
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         performed_via_github_app:
@@ -5749,28 +5905,38 @@ components:
       description: A GitHub Actions workflow
       properties:
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         name:
+          description: "The name of the workflow."
           type: string
         path:
+          description: "The path of the workflow file relative to the repository root."
           type: string
         state:
+          description: "The state of the workflow, e.g. active or disabled_manually."
           type: string
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         url:
+          description: "The API URL of the resource."
           type: string
           format: uri
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         badge_url:
+          description: "The URL of the workflow's status badge image."
           type: string
           format: uri
 
@@ -5789,6 +5955,7 @@ components:
           type: string
           description: The name of the workflow run.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         check_suite_id:
           type: integer
@@ -5797,6 +5964,7 @@ components:
           type: string
           description: The node ID of the associated check suite.
         head_branch:
+          description: "The name of the branch the workflow run is on."
           type: string
           nullable: true
         head_sha:
@@ -5806,8 +5974,10 @@ components:
           type: integer
           description: The auto incrementing run number for the workflow run.
         event:
+          description: "The event that triggered the workflow run, e.g. push, pull_request."
           type: string
         status:
+          description: "The status of the workflow run, e.g. queued, in_progress, completed."
           type: string
           enum:
             - requested
@@ -5817,6 +5987,7 @@ components:
             - waiting
             - pending
         conclusion:
+          description: "The result of the completed workflow run, e.g. success, failure, cancelled."
           type: string
           nullable: true
           enum:
@@ -5838,6 +6009,7 @@ components:
           format: uri
           description: The URL to the workflow run.
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         pull_requests:
@@ -5846,9 +6018,11 @@ components:
             $ref: '#/components/schemas/PullRequestMinimal'
           description: Pull requests that are open with a `head_sha` or `head_branch` that matches the workflow run. The returned pull requests do not necessarily indicate pull requests that triggered the run.
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         run_attempt:
@@ -5937,21 +6111,29 @@ components:
         - monthly_price_in_dollars
       properties:
         node_id:
+          description: "The GraphQL node ID."
           type: string
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         description:
+          description: "A description of the sponsorship tier."
           type: string
         monthly_price_in_cents:
+          description: "The monthly price of the tier, in cents."
           type: integer
         monthly_price_in_dollars:
+          description: "The monthly price of the tier, in dollars."
           type: integer
         name:
+          description: "The name of the sponsorship tier."
           type: string
         is_one_time:
+          description: "Whether this is a one-time, non-recurring sponsorship tier."
           type: boolean
         is_custom_amount:
+          description: "Whether the sponsor can choose a custom amount for this tier."
           type: boolean
 
     MarketplacePurchase:
@@ -5964,6 +6146,7 @@ components:
         - plan
       properties:
         account:
+          description: "The GitHub account (user or organization) that made the Marketplace purchase."
           type: object
           required:
             - type
@@ -5971,37 +6154,48 @@ components:
             - login
           properties:
             type:
+              description: "The type of account, either User or Organization."
               type: string
               enum:
                 - User
                 - Organization
             id:
+              description: "The unique identifier of the resource."
               type: integer
             node_id:
+              description: "The GraphQL node ID."
               type: string
             login:
+              description: "The username or organization login of the account."
               type: string
             organization_billing_email:
+              description: "The organization's billing email address, if applicable."
               type: string
               nullable: true
         billing_cycle:
+          description: "The billing cycle of the plan, e.g. monthly or yearly."
           type: string
           enum:
             - monthly
             - yearly
         unit_count:
+          description: "The number of units purchased on the plan."
           type: integer
         on_free_trial:
+          description: "Whether the account is currently on a free trial."
           type: boolean
         free_trial_ends_on:
+          description: "The date the free trial ends, in ISO 8601 format."
           type: string
           format: date-time
           nullable: true
         next_billing_date:
+          description: "The date of the next billing charge, in ISO 8601 format."
           type: string
           format: date-time
           nullable: true
         plan:
+          description: "The Marketplace plan associated with the purchase."
           type: object
           required:
             - id
@@ -6012,27 +6206,36 @@ components:
             - price_model
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
             name:
+              description: "The name of the Marketplace plan."
               type: string
             description:
+              description: "The description of the Marketplace plan."
               type: string
             monthly_price_in_cents:
+              description: "The monthly price of the plan, in cents."
               type: integer
             yearly_price_in_cents:
+              description: "The yearly price of the plan, in cents."
               type: integer
             price_model:
+              description: "The pricing model of the plan, e.g. FLAT_RATE or PER_UNIT."
               type: string
               enum:
                 - FREE
                 - FLAT_RATE
                 - PER_UNIT
             has_free_trial:
+              description: "Whether the plan offers a free trial."
               type: boolean
             unit_name:
+              description: "The name of the unit used to calculate pricing, e.g. seat."
               type: string
               nullable: true
             bullets:
+              description: "The list of feature bullet points describing the plan."
               type: array
               items:
                 type: string
@@ -6207,26 +6410,36 @@ components:
         - slug
       properties:
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         repository_id:
+          description: "The ID of the repository this discussion category belongs to."
           type: integer
         emoji:
+          description: "The emoji associated with the discussion category."
           type: string
         name:
+          description: "The name of the discussion category."
           type: string
         description:
+          description: "The description of the discussion category."
           type: string
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         slug:
+          description: "The URL-friendly identifier of the resource."
           type: string
         is_answerable:
+          description: "Whether discussions in this category can be marked as answered."
           type: boolean
 
     PullRequestMinimal:
@@ -6243,45 +6456,62 @@ components:
         - base
       properties:
         id:
+          description: "The pull request's unique identifier."
           type: integer
         number:
+          description: "The pull request number."
           type: integer
         url:
+          description: "The API URL of the resource."
           type: string
           format: uri
         head:
+          description: "The head (source) branch, SHA, and repository of a minimal pull request reference."
           type: object
           properties:
             ref:
+              description: "The name of the branch."
               type: string
             sha:
+              description: "The SHA of the commit at the head of this branch."
               type: string
             repo:
+              description: "A minimal repository reference (id, URL, name) used within a pull request's head ref."
               type: object
               properties:
                 id:
+                  description: "The unique identifier of the resource."
                   type: integer
                 url:
+                  description: "The API URL of the resource."
                   type: string
                   format: uri
                 name:
+                  description: "The name of the repository."
                   type: string
         base:
+          description: "The base (target) branch, SHA, and repository of a minimal pull request reference."
           type: object
           properties:
             ref:
+              description: "The name of the branch."
               type: string
             sha:
+              description: "The SHA of the commit at the base of this branch."
               type: string
             repo:
+              description: "A minimal repository reference (id, URL, name) used within a pull request's base ref."
               type: object
               properties:
                 id:
+                  description: "The unique identifier of the resource."
                   type: integer
                 url:
+                  description: "The API URL of the resource."
                   type: string
                   format: uri
                 name:
+                  description: "The name of the repository."
                   type: string
 
     App:
@@ -6296,6 +6526,7 @@ components:
           type: integer
           description: Unique identifier of the GitHub app.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         owner:
           $ref: '#/components/schemas/User'
@@ -6303,18 +6534,23 @@ components:
           type: string
           description: The name of the GitHub app.
         description:
+          description: "The description of the GitHub App."
           type: string
           nullable: true
         external_url:
+          description: "The URL of the GitHub App's external website."
           type: string
           format: uri
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         permissions:
@@ -6343,20 +6579,24 @@ components:
           type: integer
           description: The id of the associated workflow run.
         run_url:
+          description: "The API URL of the associated workflow run."
           type: string
           format: uri
         run_attempt:
           type: integer
           description: Attempt number of the associated workflow run, 1 for first attempt and higher if the workflow was re-run.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         head_sha:
           type: string
           description: The SHA of the commit that is being run.
         url:
+          description: "The API URL of the resource."
           type: string
           format: uri
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         status:
@@ -6399,27 +6639,35 @@ components:
         steps:
           type: array
           items:
+            description: "A single step within a GitHub Actions job."
             type: object
             properties:
               name:
+                description: "The name of the step."
                 type: string
               status:
+                description: "The phase of the lifecycle that the step is currently in."
                 type: string
               conclusion:
+                description: "The result of the completed step, or null if not yet completed."
                 type: string
                 nullable: true
               number:
+                description: "The step's position within the job."
                 type: integer
               started_at:
+                description: "The time the step began, or null if not yet started."
                 type: string
                 format: date-time
                 nullable: true
               completed_at:
+                description: "The time the step completed, or null if not yet completed."
                 type: string
                 format: date-time
                 nullable: true
           description: Steps in this job.
         check_run_url:
+          description: "The API URL of the associated check run."
           type: string
           format: uri
         labels:
@@ -6471,6 +6719,7 @@ components:
           description: The webhook that is being pinged
           properties:
             type:
+              description: "The kind of target the webhook is attached to. Can be one of: Repository, Organization, App."
               type: string
               enum:
                 - Repository
@@ -6510,12 +6759,15 @@ components:
                   format: uri
                   description: The URL to which the payloads will be delivered.
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             url:
+              description: "The API URL of the resource."
               type: string
               format: uri
         sender:
@@ -6655,12 +6907,14 @@ components:
               description: The pull request's previous base branch, before this edit.
               properties:
                 ref:
+                  description: "The pull request's previous base branch ref, before this edit."
                   type: object
                   properties:
                     from:
                       description: The previous value, before this change.
                       type: string
                 sha:
+                  description: "The pull request's previous base branch SHA, before this edit."
                   type: object
                   properties:
                     from:
@@ -6804,6 +7058,7 @@ components:
               description: Whether this release was explicitly edited to be the latest
               properties:
                 to:
+                  description: "Whether the release became the latest release (best-effort; not documented by GitHub)."
                   type: boolean
         sender:
           $ref: '#/components/schemas/User'
@@ -6827,6 +7082,7 @@ components:
         - repository
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, deleted, pinned, unpinned."
           type: string
           enum:
             - created
@@ -6873,6 +7129,7 @@ components:
         - repository
       properties:
         action:
+          description: "The action that was performed. Can be one of: submitted, edited, dismissed."
           type: string
           enum:
             - dismissed
@@ -6915,6 +7172,7 @@ components:
         - repository
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, deleted, edited."
           type: string
           enum:
             - created
@@ -7050,6 +7308,7 @@ components:
         - starred_at
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, deleted."
           type: string
           enum:
             - created
@@ -7079,6 +7338,7 @@ components:
         - repository
       properties:
         action:
+          description: "The action that was performed. Always started."
           type: string
           enum:
             - started
@@ -7101,6 +7361,7 @@ components:
         - check_run
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, completed, requested_action, rerequested."
           type: string
           enum:
             - completed
@@ -7135,6 +7396,7 @@ components:
         - check_suite
       properties:
         action:
+          description: "The action that was performed. Can be one of: completed, requested, rerequested."
           type: string
           enum:
             - completed
@@ -7165,6 +7427,7 @@ components:
         - repository
       properties:
         action:
+          description: "The action that was performed. Always created."
           type: string
           enum:
             - created
@@ -7200,6 +7463,7 @@ components:
         - repository
       properties:
         action:
+          description: "The action that was performed. Always created."
           type: string
           enum:
             - created
@@ -7236,6 +7500,7 @@ components:
         - workflow
       properties:
         action:
+          description: "The action that was performed. Can be one of: in_progress, completed, requested."
           type: string
           enum:
             - completed
@@ -7266,6 +7531,7 @@ components:
         - workflow_job
       properties:
         action:
+          description: "The action that was performed. Can be one of: queued, waiting, completed, in_progress."
           type: string
           enum:
             - completed
@@ -7295,6 +7561,7 @@ components:
         - action
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, deleted, archived, unarchived, edited, renamed, transferred, publicized, privatized."
           type: string
           enum:
             - archived
@@ -7347,6 +7614,7 @@ components:
               description: Present for a renamed event
               properties:
                 name:
+                  description: "The repository's previous name, before this rename."
                   type: object
                   properties:
                     from:
@@ -7385,6 +7653,7 @@ components:
         - repository
       properties:
         action:
+          description: "The action that was performed. Can be one of: edited, added, removed."
           type: string
           enum:
             - added
@@ -7439,10 +7708,13 @@ components:
         - state
       properties:
         id:
+          description: "The unique identifier of the resource."
           type: integer
         node_id:
+          description: "The GraphQL node ID."
           type: string
         number:
+          description: "The discussion's number within the repository."
           type: integer
         title:
           type: string
@@ -7464,9 +7736,11 @@ components:
         user:
           $ref: '#/components/schemas/User'
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         comments:
+          description: "The number of comments on the discussion."
           type: integer
         labels:
           type: array
@@ -7474,14 +7748,18 @@ components:
             $ref: '#/components/schemas/Label'
           description: Color-coded labels categorizing the discussion.
         locked:
+          description: "Whether the discussion is locked."
           type: boolean
         active_lock_reason:
+          description: "The reason the discussion was locked, if applicable."
           type: string
           nullable: true
         answer_html_url:
+          description: "The URL of the comment marked as the answer, if any."
           type: string
           nullable: true
         answer_chosen_at:
+          description: "The date and time an answer was chosen, in ISO 8601 format."
           type: string
           format: date-time
           nullable: true
@@ -7489,9 +7767,11 @@ components:
           $ref: '#/components/schemas/User'
           nullable: true
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
 
@@ -7507,17 +7787,20 @@ components:
           type: integer
           description: Unique identifier of the team.
         node_id:
+          description: "The GraphQL node ID."
           type: string
         name:
           type: string
           description: Name of the team.
         slug:
+          description: "The URL-friendly identifier of the resource."
           type: string
         description:
           type: string
           nullable: true
           description: Description of the team.
         privacy:
+          description: "The level of privacy this team has (e.g. closed, secret)."
           type: string
           enum:
             - closed
@@ -7536,11 +7819,14 @@ components:
           format: uri
           description: URL for the team.
         html_url:
+          description: "The URL of the resource on GitHub.com."
           type: string
           format: uri
         members_url:
+          description: "The API URL listing the members of this team."
           type: string
         repositories_url:
+          description: "The API URL listing the repositories associated with this resource."
           type: string
           format: uri
         parent:
@@ -7560,12 +7846,14 @@ components:
               type: integer
               description: Unique identifier of the team.
             node_id:
+              description: "The GraphQL node ID."
               type: string
             url:
               type: string
               format: uri
               description: URL for the team.
             members_url:
+              description: "The API URL listing the members of this team."
               type: string
             name:
               type: string
@@ -7584,12 +7872,15 @@ components:
               type: string
               description: The notification setting the team has set.
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             repositories_url:
+              description: "The API URL listing the repositories associated with this resource."
               type: string
               format: uri
             slug:
+              description: "The URL-friendly identifier of the resource."
               type: string
             type:
               type: string
@@ -7616,6 +7907,7 @@ components:
         - discussion
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, deleted, pinned, unpinned, locked, unlocked, transferred, category_changed, answered, unanswered, labeled, unlabeled, closed, reopened."
           type: string
           enum:
             - answered
@@ -7645,21 +7937,28 @@ components:
           nullable: true
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
             node_id:
+              description: "The GraphQL node ID."
               type: string
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             parent_id:
+              description: "The ID of the parent comment, if this is a reply; otherwise null."
               type: integer
               nullable: true
             child_comment_count:
+              description: "The number of replies to this comment."
               type: integer
             repository_url:
+              description: "The API URL of the repository this comment belongs to."
               type: string
               format: uri
             discussion_id:
+              description: "The ID of the discussion this comment belongs to."
               type: integer
             author_association:
               type: string
@@ -7667,11 +7966,14 @@ components:
             user:
               $ref: '#/components/schemas/User'
             body:
+              description: "The text of the comment."
               type: string
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
         label:
@@ -7720,6 +8022,7 @@ components:
         - discussion
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, deleted."
           type: string
           enum:
             - created
@@ -7730,20 +8033,26 @@ components:
           description: The discussion comment
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
             node_id:
+              description: "The GraphQL node ID."
               type: string
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             body:
+              description: "The text of the discussion comment."
               type: string
             user:
               $ref: '#/components/schemas/User'
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
             author_association:
@@ -7783,6 +8092,7 @@ components:
         - repository
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, deleted."
           type: string
           enum:
             - created
@@ -7836,6 +8146,7 @@ components:
         - repository
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, opened, deleted, closed."
           type: string
           enum:
             - closed
@@ -7930,6 +8241,7 @@ components:
           nullable: true
           description: The optional link added to the status
         avatar_url:
+          description: "The URL of the user's or organization's avatar image."
           type: string
           nullable: true
         commit:
@@ -7975,35 +8287,47 @@ components:
                   type: string
                   description: Message describing the purpose of the commit.
                 tree:
+                  description: "A pointer to the Git tree object for a commit."
                   type: object
                   properties:
                     sha:
+                      description: "The SHA of the Git tree object."
                       type: string
                     url:
+                      description: "The API URL of the resource."
                       type: string
                       format: uri
                 url:
+                  description: "The API URL of the resource."
                   type: string
                   format: uri
                 comment_count:
+                  description: "The number of comments on the commit."
                   type: integer
                 verification:
+                  description: "GPG/SSH commit signature verification details."
                   type: object
                   properties:
                     verified:
+                      description: "Whether the commit signature was successfully verified."
                       type: boolean
                     reason:
+                      description: "The reason for the verification state, e.g. `valid`, `unsigned`, `bad_signature`."
                       type: string
                     signature:
+                      description: "The signature that was extracted from the commit, or null if unsigned."
                       type: string
                       nullable: true
                     payload:
+                      description: "The value that was signed, or null if unsigned."
                       type: string
                       nullable: true
             url:
+              description: "The API URL of the resource."
               type: string
               format: uri
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             author:
@@ -8014,24 +8338,32 @@ components:
           type: array
           description: Array of branches containing the status SHA (max 10)
           items:
+            description: "A branch whose HEAD commit matches this status; at most 10 are included."
             type: object
             properties:
               name:
+                description: "The name of the branch."
                 type: string
               commit:
+                description: "The commit at the tip of a branch (SHA and URL only)."
                 type: object
                 properties:
                   sha:
+                    description: "The SHA of the commit."
                     type: string
                   url:
+                    description: "The API URL of the resource."
                     type: string
                     format: uri
               protected:
+                description: "Whether the branch has protection rules enabled."
                 type: boolean
         created_at:
+          description: "The date and time the resource was created, in ISO 8601 format."
           type: string
           format: date-time
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
         sender:
@@ -8083,6 +8415,7 @@ components:
         - thread
       properties:
         action:
+          description: "The action that was performed. Can be one of: resolved, unresolved."
           type: string
           enum:
             - resolved
@@ -8094,12 +8427,15 @@ components:
           description: The review thread that was resolved or unresolved
           properties:
             node_id:
+              description: "The GraphQL node ID."
               type: string
             comments:
+              description: "The review comments in this conversation thread."
               type: array
               items:
                 $ref: '#/components/schemas/PullRequestReviewComment'
         updated_at:
+          description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
           format: date-time
           nullable: true
@@ -8122,6 +8458,7 @@ components:
         - team
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, deleted, edited, added_to_repository, removed_from_repository."
           type: string
           enum:
             - added_to_repository
@@ -8185,6 +8522,7 @@ components:
         - action
       properties:
         action:
+          description: "The action that was performed. Can be one of: member_added, member_removed, member_invited, renamed, deleted."
           type: string
           enum:
             - deleted
@@ -8200,6 +8538,7 @@ components:
           nullable: true
           properties:
             url:
+              description: "The API URL of the resource."
               type: string
               format: uri
             state:
@@ -8216,6 +8555,7 @@ components:
                 - billing_manager
               description: The user's membership type in the organization.
             organization_url:
+              description: "The API URL of the organization."
               type: string
               format: uri
             user:
@@ -8234,35 +8574,46 @@ components:
             - invitation_teams_url
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
             login:
+              description: "The username of the invited user, if known."
               type: string
               nullable: true
             email:
+              description: "The email address of the invited user, if known."
               type: string
               nullable: true
             role:
+              description: "The role assigned to the invited user, e.g. admin, direct_member, or billing_manager."
               type: string
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             failed_at:
+              description: "The date and time the invitation failed, in ISO 8601 format, if applicable."
               type: string
               format: date-time
               nullable: true
             failed_reason:
+              description: "The reason the invitation failed, if applicable."
               type: string
               nullable: true
             inviter:
               $ref: '#/components/schemas/User'
             team_count:
+              description: "The number of teams the invitation grants membership to."
               type: integer
             node_id:
+              description: "The GraphQL node ID."
               type: string
             invitation_teams_url:
+              description: "The API URL listing the teams included in this invitation."
               type: string
               format: uri
             invitation_source:
+              description: "The source through which the invitation was created, e.g. member or scim."
               type: string
               nullable: true
         changes:
@@ -8313,11 +8664,14 @@ components:
           type: array
           description: The pull requests associated with the deployment
           items:
+            description: "A pull request associated with the deployment (number, URL, head and base refs)."
             type: object
             properties:
               number:
+                description: "The pull request number."
                 type: integer
               url:
+                description: "The API URL of the resource."
                 type: string
                 format: uri
               head:
@@ -8345,6 +8699,7 @@ components:
         - comment
       properties:
         action:
+          description: "The action that was performed. Can be one of: created."
           type: string
           enum:
             - created
@@ -8356,16 +8711,21 @@ components:
             - body
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
             node_id:
+              description: "The GraphQL node ID."
               type: string
             url:
+              description: "The API URL of the resource."
               type: string
               format: uri
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             body:
+              description: "The contents of the comment."
               type: string
             path:
               type: string
@@ -8380,13 +8740,16 @@ components:
               nullable: true
               description: The line of the blob the comment refers to
             commit_id:
+              description: "The SHA of the commit the comment was made on."
               type: string
             user:
               $ref: '#/components/schemas/User'
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
             author_association:
@@ -8411,6 +8774,7 @@ components:
         - alert
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, dismissed, reopened, reintroduced, fixed, auto_dismissed, auto_reopened, assignees_changed."
           type: string
           enum:
             - assignees_changed
@@ -8456,18 +8820,24 @@ components:
                   description: The execution scope of the vulnerable dependency.
               description: Details for the vulnerable dependency.
             security_advisory:
+              description: "Details for the GitHub Security Advisory linked to the alert."
               type: object
               properties:
                 ghsa_id:
+                  description: "The GitHub Security Advisory ID."
                   type: string
                 cve_id:
+                  description: "The CVE ID associated with the advisory, if any."
                   type: string
                   nullable: true
                 summary:
+                  description: "A short summary of the security advisory."
                   type: string
                 description:
+                  description: "A detailed description of the security advisory."
                   type: string
                 severity:
+                  description: "The severity of the advisory, e.g. low, medium, high, or critical."
                   type: string
                   enum:
                     - low
@@ -8475,6 +8845,7 @@ components:
                     - high
                     - critical
                 vulnerabilities:
+                  description: "The list of package versions affected by this advisory."
                   type: array
                   items:
                     $ref: '#/components/schemas/SecurityVulnerability'
@@ -8550,6 +8921,7 @@ components:
           type: array
           description: The pages that were updated
           items:
+            description: "A wiki page that was created or updated."
             type: object
             required:
               - page_name
@@ -8569,6 +8941,7 @@ components:
                 nullable: true
                 description: A summary of the changes
               action:
+                description: "The action performed on the page, either created or edited."
                 type: string
                 enum:
                   - created
@@ -8577,6 +8950,7 @@ components:
                 type: string
                 description: The latest commit SHA of the page
               html_url:
+                description: "The URL of the resource on GitHub.com."
                 type: string
                 format: uri
         sender:
@@ -8598,6 +8972,7 @@ components:
         - installation
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, deleted, suspend, unsuspend, new_permissions_accepted."
           type: string
           enum:
             - created
@@ -8611,17 +8986,23 @@ components:
           type: array
           description: An array of repositories the installation can access
           items:
+            description: "A minimal repository reference included in installation events."
             type: object
             properties:
               id:
+                description: "The unique identifier of the resource."
                 type: integer
               node_id:
+                description: "The GraphQL node ID."
                 type: string
               name:
+                description: "The name of the repository."
                 type: string
               full_name:
+                description: "The full name of the repository, in the form `owner/repo`."
                 type: string
               private:
+                description: "Whether the repository is private."
                 type: boolean
         requester:
           $ref: '#/components/schemas/User'
@@ -8644,6 +9025,7 @@ components:
         - requester
       properties:
         action:
+          description: "The action that was performed. Can be one of: added, removed."
           type: string
           enum:
             - added
@@ -8652,33 +9034,45 @@ components:
           type: array
           description: Repositories added to the installation
           items:
+            description: "A repository added to a GitHub App installation."
             type: object
             properties:
               id:
+                description: "The unique identifier of the resource."
                 type: integer
               node_id:
+                description: "The GraphQL node ID."
                 type: string
               name:
+                description: "The name of the repository."
                 type: string
               full_name:
+                description: "The full name of the repository, in owner/repo format."
                 type: string
               private:
+                description: "Whether the repository is private."
                 type: boolean
         repositories_removed:
           type: array
           description: Repositories removed from the installation
           items:
+            description: "A repository removed from a GitHub App installation."
             type: object
             properties:
               id:
+                description: "The unique identifier of the resource."
                 type: integer
               node_id:
+                description: "The GraphQL node ID."
                 type: string
               name:
+                description: "The name of the repository."
                 type: string
               full_name:
+                description: "The full name of the repository, in owner/repo format."
                 type: string
               private:
+                description: "Whether the repository is private."
                 type: boolean
         repository_selection:
           type: string
@@ -8708,6 +9102,7 @@ components:
         - team
       properties:
         action:
+          description: "The action that was performed. Can be one of: added, removed."
           type: string
           enum:
             - added
@@ -8739,6 +9134,7 @@ components:
         - merge_group
       properties:
         action:
+          description: "The action that was performed. Can be one of: checks_requested, destroyed."
           type: string
           enum:
             - checks_requested
@@ -8847,6 +9243,7 @@ components:
         - alert
       properties:
         action:
+          description: "The action that was performed. Can be one of: assigned, reopened, unassigned, created, publicly_leaked, validated, resolved."
           type: string
           enum:
             - assigned
@@ -8888,6 +9285,7 @@ components:
               format: uri
               description: The REST API URL of the code locations for this alert.
             state:
+              description: "The state of the secret scanning alert. Can be open or resolved."
               type: string
               enum:
                 - open
@@ -8974,6 +9372,7 @@ components:
         - rule
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, deleted."
           type: string
           enum:
             - created
@@ -9246,6 +9645,7 @@ components:
         - ref
       properties:
         action:
+          description: "The action that was performed. Can be one of: appeared_in_branch, closed_by_user, created, fixed, reopened, reopened_by_user, updated_assignment."
           type: string
           enum:
             - appeared_in_branch
@@ -9317,53 +9717,72 @@ components:
               nullable: true
               description: The dismissal comment associated with the dismissal of the alert.
             rule:
+              description: "The rule that triggered the code scanning alert."
               type: object
               properties:
                 id:
+                  description: "The unique identifier of the resource."
                   type: string
                 severity:
+                  description: "The severity of the alert, e.g. note, warning, or error."
                   type: string
                   enum: [error, warning, note, none]
                 security_severity_level:
+                  description: "The security severity level of the alert, e.g. low, medium, high, or critical."
                   type: string
                   nullable: true
                   enum: [critical, high, medium, low, "null"]
                 description:
+                  description: "A short description of the rule."
                   type: string
                 name:
+                  description: "The name of the rule."
                   type: string
                 full_description:
+                  description: "The full description of the rule."
                   type: string
                 tags:
+                  description: "Tags associated with the rule."
                   type: array
                   items:
                     type: string
                 help:
+                  description: "Help text describing how to fix the issue."
                   type: string
                   nullable: true
             tool:
+              description: "The tool that generated the code scanning alert."
               type: object
               properties:
                 name:
+                  description: "The name of the tool."
                   type: string
                 guid:
+                  description: "The GUID of the tool."
                   type: string
                   nullable: true
                 version:
+                  description: "The version of the tool."
                   type: string
                   nullable: true
             most_recent_instance:
+              description: "The most recent instance of the code scanning alert."
               type: object
               properties:
                 ref:
+                  description: "The full Git reference, formatted as `refs/heads/<branch name>`."
                   type: string
                 analysis_key:
+                  description: "Identifies the configuration under which the analysis was executed, e.g. workflow and job name."
                   type: string
                 environment:
+                  description: "Identifies the variable values of the environment the analysis was performed in, e.g. the language analyzed."
                   type: string
                 state:
+                  description: "The state of the alert instance. Can be one of: open, dismissed, fixed."
                   type: string
                 commit_sha:
+                  description: "The SHA of the commit this alert instance was found in."
                   type: string
                 location:
                   type: object
@@ -9373,14 +9792,19 @@ components:
                     this spec (that one identifies a commit/path, this one a line/column range).
                   properties:
                     path:
+                      description: "The file path where the flagged code is located."
                       type: string
                     start_line:
+                      description: "The line number where the flagged code range begins."
                       type: integer
                     end_line:
+                      description: "The line number where the flagged code range ends."
                       type: integer
                     start_column:
+                      description: "The column number where the flagged code range begins."
                       type: integer
                     end_column:
+                      description: "The column number where the flagged code range ends."
                       type: integer
         commit_oid:
           type: string
@@ -9411,6 +9835,7 @@ components:
         - key
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, deleted."
           type: string
           enum:
             - created
@@ -9423,26 +9848,34 @@ components:
             - key
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
             key:
               type: string
               description: The public key
             url:
+              description: "The API URL of the resource."
               type: string
               format: uri
             title:
+              description: "The user-supplied label for the deploy key."
               type: string
             verified:
+              description: "Whether GitHub has verified the deploy key."
               type: boolean
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             read_only:
+              description: "Whether the deploy key has read-only (not read-write) access."
               type: boolean
             added_by:
+              description: "The username of the user who added the deploy key, if known."
               type: string
               nullable: true
             last_used:
+              description: "The date and time the deploy key was last used, in ISO 8601 format."
               type: string
               format: date-time
               nullable: true
@@ -9501,6 +9934,7 @@ components:
             - active
           properties:
             type:
+              description: "The type of resource the webhook is attached to, e.g. Repository, Organization, App, Business."
               type: string
               enum:
                 - Repository
@@ -9523,23 +9957,29 @@ components:
                 type: string
               description: "Determines what events the hook is triggered for. Default: ['push']."
             config:
+              description: "The webhook's delivery configuration (URL, content type, SSL verification)."
               type: object
               properties:
                 content_type:
+                  description: "The media type used to serialize the payloads, e.g. `json` or `form`."
                   type: string
                   enum: [json, form]
                 insecure_ssl:
+                  description: "Whether SSL certificate verification is skipped when delivering payloads."
                   type: string
                 url:
+                  description: "The URL to which the payloads will be delivered."
                   type: string
                   format: uri
                 secret:
                   type: string
                   description: Omitted from payloads for security
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
         sender:
@@ -9561,6 +10001,7 @@ components:
         - blocked_user
       properties:
         action:
+          description: "The action that was performed. Can be one of: blocked, unblocked."
           type: string
           enum:
             - blocked
@@ -9585,6 +10026,7 @@ components:
         - package
       properties:
         action:
+          description: "The action that was performed. Can be one of: published, updated."
           type: string
           enum:
             - published
@@ -9603,11 +10045,14 @@ components:
               type: string
               description: The name of the package.
             namespace:
+              description: "The namespace of the package, e.g. npm scope or repository owner."
               type: string
             description:
+              description: "A short description of the package."
               type: string
               nullable: true
             ecosystem:
+              description: "The package ecosystem (e.g. npm, docker, maven, nuget, rubygems)."
               type: string
             package_type:
               type: string
@@ -9618,38 +10063,49 @@ components:
                 - npm
                 - nuget
                 - rubygems
-              description: The type of supported package. Packages in GitHub's Gradle registry have the type `maven`. Docker images pushed to GitHub's Container registry (`ghcr.io`) have the type `container`. You can use the type `docker` to find images that were pushed to GitHub's Docker registry (`docker.pkg.github.com`), even if these have now been migrated to the Container registry.
+              description: "The package registry type, e.g. maven, container, docker, npm, nuget, or rubygems."
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
             owner:
               $ref: '#/components/schemas/User'
             package_version:
+              description: "The published version of a package, including registry-specific metadata."
               type: object
               nullable: true
               properties:
                 id:
+                  description: "The unique identifier of the resource."
                   type: integer
                 version:
+                  description: "The version string of this package version."
                   type: string
                 summary:
+                  description: "A short summary of this package version."
                   type: string
                   nullable: true
                 name:
+                  description: "The name of the package this version belongs to."
                   type: string
                 description:
+                  description: "The description of this package version."
                   type: string
                   nullable: true
                 body:
+                  description: "The release notes body for this package version, in Markdown."
                   type: string
                   nullable: true
                 body_html:
+                  description: "The release notes body for this package version, rendered as HTML."
                   type: string
                   nullable: true
                 release:
@@ -9661,12 +10117,15 @@ components:
                     must not $ref Release.
                   properties:
                     url:
+                      description: "The API URL of the resource."
                       type: string
                       format: uri
                     html_url:
+                      description: "The URL of the resource on GitHub.com."
                       type: string
                       format: uri
                     id:
+                      description: "The unique identifier of the resource."
                       type: integer
                     tag_name:
                       type: string
@@ -9675,6 +10134,7 @@ components:
                       type: string
                       description: Specifies the commitish value that determines where the Git tag is created from.
                     name:
+                      description: "The name of the release."
                       type: string
                       nullable: true
                     draft:
@@ -9686,33 +10146,44 @@ components:
                       type: boolean
                       description: Whether the release is identified as a prerelease or a full release.
                     created_at:
+                      description: "The date and time the resource was created, in ISO 8601 format."
                       type: string
                       format: date-time
                     published_at:
+                      description: "The date and time the release was published, in ISO 8601 format."
                       type: string
                       format: date-time
                       nullable: true
                 manifest:
+                  description: "The raw package manifest file content for this version."
                   type: string
                   nullable: true
                 html_url:
+                  description: "The URL of the resource on GitHub.com."
                   type: string
                   format: uri
                 tag_name:
+                  description: "The name of the Git tag associated with this package version."
                   type: string
                   nullable: true
                 target_commitish:
+                  description: "The branch or commit the associated Git tag targets."
                   type: string
                 target_oid:
+                  description: "The resolved Git commit SHA that the associated tag targets."
                   type: string
                 draft:
+                  description: "Whether this package version is a draft."
                   type: boolean
                 prerelease:
+                  description: "Whether this package version is a prerelease."
                   type: boolean
                 created_at:
+                  description: "The date and time the resource was created, in ISO 8601 format."
                   type: string
                   format: date-time
                 updated_at:
+                  description: "The date and time the resource was last updated, in ISO 8601 format."
                   type: string
                   format: date-time
                 metadata:
@@ -9730,11 +10201,14 @@ components:
                   description: Metadata for a container (Docker) package version
                   properties:
                     tag:
+                      description: "The digest and name of a container image tag."
                       type: object
                       properties:
                         digest:
+                          description: "The digest of the container image tag."
                           type: string
                         name:
+                          description: "The name of the container image tag."
                           type: string
                     labels:
                       type: object
@@ -9747,125 +10221,166 @@ components:
                       description: Untyped even in GitHub's own webhook schema - genuinely open, not incomplete.
                       additionalProperties: true
                 npm_metadata:
+                  description: "Metadata for an npm package version."
                   type: object
                   nullable: true
                   properties:
                     name:
+                      description: "The name of the npm package."
                       type: string
                     version:
+                      description: "The version of the npm package."
                       type: string
                     npm_user:
+                      description: "The npm username of the publisher."
                       type: string
                     author:
+                      description: "The author of the npm package, as recorded in package.json."
                       type: object
                       nullable: true
                       additionalProperties: true
                     bugs:
+                      description: "The bug tracker information from package.json."
                       type: object
                       nullable: true
                       additionalProperties: true
                     dependencies:
+                      description: "The package's runtime dependencies, as recorded in package.json."
                       type: object
                       additionalProperties: true
                     dev_dependencies:
+                      description: "The development dependencies declared in the package's package.json."
                       type: object
                       additionalProperties: true
                     peer_dependencies:
+                      description: "The peer dependencies declared in the package's package.json."
                       type: object
                       additionalProperties: true
                     optional_dependencies:
+                      description: "The optional dependencies declared in the package's package.json."
                       type: object
                       additionalProperties: true
                     description:
+                      description: "The description declared in the package's package.json."
                       type: string
                     dist:
+                      description: "The npm registry distribution metadata for this version (e.g. tarball URL, checksum)."
                       type: object
                       nullable: true
                       additionalProperties: true
                     git_head:
+                      description: "The Git commit SHA the package was published from, if recorded."
                       type: string
                     homepage:
+                      description: "The homepage URL declared in the package's package.json."
                       type: string
                     license:
+                      description: "The license identifier declared in the package's package.json."
                       type: string
                     main:
+                      description: "The path to the package's main entry file, as declared in package.json."
                       type: string
                     repository:
+                      description: "The source repository declared in the package's package.json."
                       type: object
                       nullable: true
                       additionalProperties: true
                     scripts:
+                      description: "The npm scripts declared in the package's package.json."
                       type: object
                       additionalProperties: true
                     id:
+                      description: "The unique identifier of the resource."
                       type: string
                     node_version:
+                      description: "The Node.js version used to publish this package version."
                       type: string
                     npm_version:
+                      description: "The npm client version used to publish this package version."
                       type: string
                     has_shrinkwrap:
+                      description: "Whether the package version includes an npm-shrinkwrap.json file."
                       type: boolean
                     maintainers:
+                      description: "The list of maintainers declared for this package on the npm registry."
                       type: array
                       items:
                         type: object
                         additionalProperties: true
                     contributors:
+                      description: "The list of contributors declared in the package's package.json."
                       type: array
                       items:
                         type: object
                         additionalProperties: true
                     engines:
+                      description: "The Node.js/npm version constraints declared in the package's package.json."
                       type: object
                       additionalProperties: true
                     keywords:
+                      description: "The keywords declared in the package's package.json."
                       type: array
                       items:
                         type: string
                     files:
+                      description: "The file patterns to include when publishing, as declared in package.json."
                       type: array
                       items:
                         type: string
                     bin:
+                      description: "The executable scripts declared in the package's package.json."
                       type: object
                       additionalProperties: true
                     man:
+                      description: "The man page files declared in the package's package.json."
                       type: object
                       additionalProperties: true
                     directories:
+                      description: "The directory layout hints declared in the package's package.json."
                       type: object
                       nullable: true
                       additionalProperties: true
                     os:
+                      description: "The operating systems this package version supports, as declared in package.json."
                       type: array
                       items:
                         type: string
                     cpu:
+                      description: "The CPU architectures this package version supports, as declared in package.json."
                       type: array
                       items:
                         type: string
                     readme:
+                      description: "The contents of the package's README file."
                       type: string
                     installation_command:
+                      description: "The command used to install this package version."
                       type: string
                     release_id:
+                      description: "The identifier of the GitHub release associated with this package version."
                       type: integer
                     commit_oid:
+                      description: "The Git commit SHA associated with this package version."
                       type: string
                     published_via_actions:
+                      description: "Whether this package version was published via a GitHub Actions workflow."
                       type: boolean
                     deleted_by_id:
+                      description: "The identifier of the user who deleted this package version, if applicable."
                       type: integer
                 nuget_metadata:
+                  description: "NuGet-specific metadata for this package version."
                   type: array
                   nullable: true
                   items:
+                    description: "A single metadata entry for a NuGet package version."
                     type: object
                     properties:
                       id:
                         type: string
                         description: Real payloads may send this as either an integer or a string
                       name:
+                        description: "The name of this metadata attribute, as defined in the package's .nuspec file."
                         type: string
                       value:
                         type: string
@@ -9875,97 +10390,131 @@ components:
                           schemas have no first-class "any of these primitive types" construct;
                           the object variant's fields are lost by this simplification.
                 rubygems_metadata:
+                  description: "RubyGems-specific metadata for this package version."
                   type: array
                   nullable: true
                   items:
+                    description: "Metadata for a RubyGems package version."
                     type: object
                     properties:
                       name:
+                        description: "The name of this RubyGems package."
                         type: string
                       description:
+                        description: "The description of this RubyGems package."
                         type: string
                       readme:
+                        description: "The contents of this RubyGems package's README file."
                         type: string
                       homepage:
+                        description: "The homepage URL of this RubyGems package."
                         type: string
                       version_info:
+                        description: "Version information for a RubyGems package."
                         type: object
                         properties:
                           version:
+                            description: "The version string of this RubyGems package."
                             type: string
                       platform:
+                        description: "The target platform of this RubyGems package (e.g. ruby, java)."
                         type: string
                       metadata:
+                        description: "Additional key-value metadata declared in the package's gemspec."
                         type: object
                         additionalProperties:
                           type: string
                       repo:
+                        description: "The source repository URL of this RubyGems package."
                         type: string
                       dependencies:
+                        description: "The runtime dependencies declared in the package's gemspec."
                         type: array
                         items:
                           type: object
                           additionalProperties:
                             type: string
                       commit_oid:
+                        description: "The Git commit SHA associated with this package version."
                         type: string
                 package_files:
+                  description: "The downloadable files included in this package version."
                   type: array
                   items:
                     type: object
                     description: A single downloadable file within a published package version
                     properties:
                       download_url:
+                        description: "The URL to download this package file."
                         type: string
                         format: uri
                       id:
+                        description: "The unique identifier of the resource."
                         type: integer
                       name:
+                        description: "The file name of this package file."
                         type: string
                       sha256:
+                        description: "The SHA-256 checksum of this package file."
                         type: string
                       sha1:
+                        description: "The SHA-1 checksum of this package file."
                         type: string
                       md5:
+                        description: "The MD5 checksum of this package file."
                         type: string
                       content_type:
+                        description: "The MIME type of this package file."
                         type: string
                       state:
+                        description: "The upload state of this package file (e.g. uploaded)."
                         type: string
                       size:
+                        description: "The size of this package file, in bytes."
                         type: integer
                       created_at:
+                        description: "The date and time the resource was created, in ISO 8601 format."
                         type: string
                         format: date-time
                       updated_at:
+                        description: "The date and time the resource was last updated, in ISO 8601 format."
                         type: string
                         format: date-time
                 package_url:
+                  description: "The URL to view this package version."
                   type: string
                   nullable: true
                 author:
                   $ref: '#/components/schemas/User'
                 source_url:
+                  description: "The URL of the source repository for this package version."
                   type: string
                   nullable: true
                 installation_command:
+                  description: "The command used to install this package version."
                   type: string
                   nullable: true
             registry:
+              description: "The package registry a package version was published to."
               type: object
               nullable: true
               properties:
                 about_url:
+                  description: "The URL with more information about this registry."
                   type: string
                   format: uri
                 name:
+                  description: "The name of the registry."
                   type: string
                 type:
+                  description: "The type of the registry."
                   type: string
                 url:
+                  description: "The API URL of the resource."
                   type: string
                   format: uri
                 vendor:
+                  description: "The vendor that operates this registry."
                   type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -9986,6 +10535,7 @@ components:
         - projects_v2
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, closed, reopened, deleted."
           type: string
           enum:
             - closed
@@ -10051,6 +10601,7 @@ components:
               nullable: true
               description: A concise summary of the project.
             status:
+              description: "The project's status; undocumented field, exact semantics unconfirmed."
               type: string
               nullable: true
         sender:
@@ -10068,6 +10619,7 @@ components:
         - repository_advisory
       properties:
         action:
+          description: "The action that was performed. Can be one of: reported, published."
           type: string
           enum:
             - published
@@ -10119,14 +10671,18 @@ components:
               $ref: '#/components/schemas/User'
               nullable: true
             identifiers:
+              description: "The CVE and/or GHSA identifiers for the advisory."
               type: array
               items:
+                description: "A CVE or GHSA identifier for the advisory."
                 type: object
                 properties:
                   type:
+                    description: "The type of identifier, e.g. CVE or GHSA."
                     type: string
                     enum: [CVE, GHSA]
                   value:
+                    description: "The identifier value."
                     type: string
             state:
               type: string
@@ -10166,54 +10722,71 @@ components:
               type: array
               description: The products affected by the vulnerability detailed in the advisory.
               items:
+                description: "One package version range affected by the advisory."
                 type: object
                 properties:
                   package:
+                    description: "The package affected by the vulnerability."
                     type: object
                     properties:
                       ecosystem:
+                        description: "The package ecosystem the affected package belongs to, e.g. npm."
                         type: string
                       name:
+                        description: "The name of the affected package."
                         type: string
                   vulnerable_version_range:
+                    description: "The range of versions affected by the vulnerability."
                     type: string
                     nullable: true
                   patched_versions:
+                    description: "The versions that contain a patch for the vulnerability."
                     type: string
                     nullable: true
                   vulnerable_functions:
+                    description: "The functions affected by the vulnerability."
                     type: array
                     items:
                       type: string
             cvss:
+              description: "The CVSS score and vector for the advisory."
               type: object
               nullable: true
               properties:
                 vector_string:
+                  description: "The CVSS vector string describing the vulnerability's characteristics."
                   type: string
                   nullable: true
                 score:
+                  description: "The CVSS score of the vulnerability."
                   type: number
                   nullable: true
             cwes:
+              description: "The CWE classifications for the advisory."
               type: array
               nullable: true
               items:
+                description: "A CWE (Common Weakness Enumeration) classification for the advisory."
                 type: object
                 properties:
                   cwe_id:
+                    description: "The CWE identifier, e.g. CWE-79."
                     type: string
                   name:
+                    description: "The name of the CWE weakness."
                     type: string
             credits:
+              description: "The users credited for reporting or fixing the advisory."
               type: array
               nullable: true
               items:
+                description: "A user credited for reporting or fixing the advisory."
                 type: object
                 properties:
                   user:
                     $ref: '#/components/schemas/User'
                   type:
+                    description: "The type of credit given to the user, e.g. reporter."
                     type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -10234,6 +10807,7 @@ components:
         - security_advisory
       properties:
         action:
+          description: "The action that was performed. Can be one of: withdrawn, published, updated."
           type: string
           enum:
             - published
@@ -10250,6 +10824,7 @@ components:
             - severity
           properties:
             schema_version:
+              description: "The schema version of the security advisory payload, when present."
               type: string
             ghsa_id:
               type: string
@@ -10282,21 +10857,28 @@ components:
                 - unknown
               description: The severity of the advisory.
             identifiers:
+              description: "The advisory's CVE and GHSA identifiers."
               type: array
               items:
+                description: "An identifier (CVE or GHSA) for the security advisory."
                 type: object
                 properties:
                   value:
+                    description: "The identifier value."
                     type: string
                   type:
+                    description: "The type of identifier. Can be one of: CVE, GHSA."
                     type: string
                     enum: [CVE, GHSA]
             references:
+              description: "URLs with more information about the security advisory."
               type: array
               items:
+                description: "A URL providing more information about the security advisory."
                 type: object
                 properties:
                   url:
+                    description: "A URL with more information about the security advisory."
                     type: string
                     format: uri
             published_at:
@@ -10314,45 +10896,59 @@ components:
               description: The date and time of when the advisory was withdrawn, in ISO 8601 format.
             vulnerabilities:
               type: array
-              description: The products affected by the vulnerability detailed in the advisory.
               items:
+                description: "A package and version range affected by the advisory."
                 type: object
                 properties:
                   package:
+                    description: "The vulnerable package affected by the advisory."
                     type: object
                     properties:
                       ecosystem:
+                        description: "The package's language or package management ecosystem."
                         type: string
                       name:
+                        description: "The unique package name within its ecosystem."
                         type: string
                   severity:
+                    description: "The severity of the vulnerability, e.g. `low`, `moderate`, `high`, `critical`."
                     type: string
                     enum: [critical, high, medium, low, unknown]
                   vulnerable_version_range:
+                    description: "The range of the package versions affected by the vulnerability."
                     type: string
                   first_patched_version:
+                    description: "The first package version containing a fix for the vulnerability."
                     type: object
                     nullable: true
                     properties:
                       identifier:
+                        description: "The package version that resolves the vulnerability."
                         type: string
               description: The products and respective version ranges affected by the advisory.
             cvss:
+              description: "The CVSS score and vector string of the security advisory."
               type: object
               properties:
                 vector_string:
+                  description: "The CVSS vector string, or null if not scored."
                   type: string
                   nullable: true
                 score:
+                  description: "The CVSS score of the vulnerability."
                   type: number
             cwes:
+              description: "The CWE weaknesses associated with the advisory."
               type: array
               items:
+                description: "A CWE weakness classification associated with the advisory."
                 type: object
                 properties:
                   cwe_id:
+                    description: "The Common Weakness Enumeration (CWE) identifier."
                     type: string
                   name:
+                    description: "The name of the CWE weakness."
                     type: string
         installation:
           $ref: '#/components/schemas/Installation'
@@ -10392,6 +10988,7 @@ components:
         - definition
       properties:
         action:
+          description: "The action that was performed. Can be one of: updated, deleted, promote_to_enterprise, created."
           type: string
           enum:
             - created
@@ -10456,6 +11053,7 @@ components:
         - old_property_values
       properties:
         action:
+          description: "The action that was performed. Always updated."
           type: string
           enum:
             - updated
@@ -10463,11 +11061,13 @@ components:
           type: array
           description: The new custom property values for the repository
           items:
+            description: "The new value of a custom property on the repository."
             type: object
             required:
               - property_name
             properties:
               property_name:
+                description: "The name of the custom property."
                 type: string
               value:
                 nullable: true
@@ -10476,11 +11076,13 @@ components:
           type: array
           description: The old custom property values for the repository
           items:
+            description: "The previous value of a custom property on the repository."
             type: object
             required:
               - property_name
             properties:
               property_name:
+                description: "The name of the custom property."
                 type: string
               value:
                 nullable: true
@@ -10505,6 +11107,7 @@ components:
         - changes
       properties:
         action:
+          description: "The action that was performed. Can be one of: edited, created, archived, deleted, restored, reordered, converted."
           type: string
           enum:
             - archived
@@ -10587,6 +11190,7 @@ components:
         - projects_v2_status_update
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, deleted."
           type: string
           enum:
             - created
@@ -10658,6 +11262,7 @@ components:
         - registry_package
       properties:
         action:
+          description: "The action that was performed. Can be one of: published, updated."
           type: string
           enum:
             - published
@@ -10677,11 +11282,14 @@ components:
               type: string
               description: The name of the package.
             namespace:
+              description: "The namespace of the package, e.g. npm scope or repository owner."
               type: string
             description:
+              description: "A short description of the package."
               type: string
               nullable: true
             ecosystem:
+              description: "The package ecosystem (e.g. npm, docker, maven, nuget, rubygems)."
               type: string
             package_type:
               type: string
@@ -10692,89 +11300,120 @@ components:
                 - NPM
                 - NUGET
                 - RUBYGEMS
-              description: The type of supported package. Packages in GitHub's Gradle registry have the type `maven`. Docker images pushed to GitHub's Container registry (`ghcr.io`) have the type `container`. You can use the type `docker` to find images that were pushed to GitHub's Docker registry (`docker.pkg.github.com`), even if these have now been migrated to the Container registry.
+              description: "The package registry type, e.g. maven, container, docker, npm, nuget, or rubygems."
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
             owner:
               $ref: '#/components/schemas/User'
             package_version:
+              description: "A specific published version of a package."
               type: object
               nullable: true
               properties:
                 id:
+                  description: "The unique identifier of the resource."
                   type: integer
                 version:
+                  description: "The version string of the package."
                   type: string
                 summary:
+                  description: "A short summary describing the package version."
                   type: string
                 html_url:
+                  description: "The URL of the resource on GitHub.com."
                   type: string
                   format: uri
                 target_commitish:
+                  description: "The branch or commit associated with this package version."
                   type: string
                 target_oid:
+                  description: "The SHA of the commit associated with this package version."
                   type: string
                 draft:
+                  description: "Whether this package version is a draft."
                   type: boolean
                 prerelease:
+                  description: "Whether this package version is a prerelease."
                   type: boolean
                 created_at:
+                  description: "The date and time the resource was created, in ISO 8601 format."
                   type: string
                   format: date-time
                 updated_at:
+                  description: "The date and time the resource was last updated, in ISO 8601 format."
                   type: string
                   format: date-time
                 package_files:
+                  description: "The list of downloadable files for this package version."
                   type: array
                   items:
+                    description: "A single downloadable file within a package version."
                     type: object
                     properties:
                       download_url:
+                        description: "The URL to download this package file."
                         type: string
                         format: uri
                       id:
+                        description: "The unique identifier of the resource."
                         type: integer
                       name:
+                        description: "The file name of the package file."
                         type: string
                       sha256:
+                        description: "The SHA-256 checksum of the package file."
                         type: string
                       content_type:
+                        description: "The MIME content type of the package file."
                         type: string
                       size:
+                        description: "The size of the package file, in bytes."
                         type: integer
                       created_at:
+                        description: "The date and time the resource was created, in ISO 8601 format."
                         type: string
                         format: date-time
                       updated_at:
+                        description: "The date and time the resource was last updated, in ISO 8601 format."
                         type: string
                         format: date-time
                 author:
                   $ref: '#/components/schemas/User'
                 installation_command:
+                  description: "The command used to install this package version."
                   type: string
                   nullable: true
             registry:
+              description: "The package registry a package version was published to."
               type: object
               nullable: true
               properties:
                 about_url:
+                  description: "The URL with more information about the registry."
                   type: string
                   format: uri
                 name:
+                  description: "The name of the package registry."
                   type: string
                 type:
+                  description: "The type of the package registry, e.g. npm or docker."
                   type: string
                 url:
+                  description: "The API URL of the resource."
                   type: string
                   format: uri
                 vendor:
+                  description: "The vendor of the package registry."
                   type: string
         sender:
           $ref: '#/components/schemas/User'
@@ -10795,6 +11434,7 @@ components:
         - repository_ruleset
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, deleted."
           type: string
           enum:
             - created
@@ -10866,6 +11506,7 @@ components:
                 source powering docs.github.com and every GitHub SDK), not guessed from field
                 names or a third-party summary.
               items:
+                description: "One rule in a ruleset; shape depends on its `type` discriminator."
                 oneOf:
                   - type: object
                     description: Only allow users with bypass permission to create matching refs.
@@ -11216,12 +11857,15 @@ components:
             bypass_actors:
               type: array
               items:
+                description: "An actor permitted to bypass this ruleset's rules."
                 type: object
                 properties:
                   actor_id:
+                    description: "The ID of the actor that can bypass this ruleset."
                     type: integer
                     nullable: true
                   actor_type:
+                    description: "The type of actor that can bypass this ruleset, e.g. Team or OrganizationAdmin."
                     type: string
                     enum:
                       - DeployKey
@@ -11230,15 +11874,18 @@ components:
                       - RepositoryRole
                       - Team
                   bypass_mode:
+                    description: "When the actor can bypass this ruleset, e.g. always or pull_request."
                     type: string
                     enum:
                       - always
                       - pull_request
               description: The actors that can bypass the rules in this ruleset.
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
         changes:
@@ -11272,21 +11919,67 @@ components:
                   type: array
                   items:
                     type: object
+                    properties:
+                      ref_name:
+                        type: object
+                        properties:
+                          include:
+                            type: array
+                            items:
+                              type: string
+                            description: Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+                          exclude:
+                            type: array
+                            items:
+                              type: string
+                            description: Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
+                        description: Parameters for a repository ruleset ref name condition.
                   description: Conditions newly added to the ruleset.
                 deleted:
                   type: array
                   items:
                     type: object
+                    properties:
+                      ref_name:
+                        type: object
+                        properties:
+                          include:
+                            type: array
+                            items:
+                              type: string
+                            description: Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+                          exclude:
+                            type: array
+                            items:
+                              type: string
+                            description: Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
+                        description: Parameters for a repository ruleset ref name condition.
                   description: Conditions removed from the ruleset.
                 updated:
                   type: array
                   description: Conditions whose own fields changed on the ruleset.
                   items:
+                    description: "A ruleset condition whose fields changed in this edit, with its current state and the diff."
                     type: object
                     properties:
                       condition:
                         type: object
                         description: The current state of the updated condition.
+                        properties:
+                          ref_name:
+                            type: object
+                            properties:
+                              include:
+                                type: array
+                                items:
+                                  type: string
+                                description: Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+                              exclude:
+                                type: array
+                                items:
+                                  type: string
+                                description: Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
+                            description: Parameters for a repository ruleset ref name condition.
                       changes:
                         type: object
                         description: The fields of the condition that changed.
@@ -11331,6 +12024,7 @@ components:
                   type: array
                   description: Rules newly added to the ruleset.
                   items:
+                    description: "A rule added to the ruleset by this edit."
                     type: object
                     properties:
                       type:
@@ -11339,10 +12033,159 @@ components:
                       parameters:
                         type: object
                         description: The parameters of the rule that was added.
+                        oneOf:
+                          - type: object
+                            description: Parameters for the `update` rule.
+                            properties:
+                              update_allows_fetch_and_merge:
+                                type: boolean
+                                description: Branch can pull changes from its upstream repository
+                          - type: object
+                            description: Parameters for the `merge_queue` rule.
+                            properties:
+                              check_response_timeout_minutes:
+                                type: integer
+                                description: Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
+                              grouping_strategy:
+                                type: string
+                                description: When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
+                              max_entries_to_build:
+                                type: integer
+                                description: Limit the number of queued pull requests requesting checks and workflow runs at the same time.
+                              max_entries_to_merge:
+                                type: integer
+                                description: The maximum number of PRs that will be merged together in a group.
+                              merge_method:
+                                type: string
+                                description: Method to use when merging changes from queued pull requests.
+                              min_entries_to_merge:
+                                type: integer
+                                description: The minimum number of PRs that will be merged together in a group.
+                              min_entries_to_merge_wait_minutes:
+                                type: integer
+                                description: The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
+                          - type: object
+                            description: Parameters for the `required_deployments` rule.
+                            properties:
+                              required_deployment_environments:
+                                type: array
+                                items:
+                                  type: string
+                                description: Environments that must be successfully deployed to before branches can be merged.
+                          - type: object
+                            description: Parameters for the `pull_request` rule.
+                            properties:
+                              allowed_merge_methods:
+                                type: array
+                                items:
+                                  type: string
+                                description: Array of allowed merge methods. At least one option must be enabled.
+                              dismiss_stale_reviews_on_push:
+                                type: boolean
+                                description: New, reviewable commits pushed will dismiss previous pull request review approvals.
+                              dismissal_restriction:
+                                $ref: '#/components/schemas/RuleDismissalRestriction'
+                              require_code_owner_review:
+                                type: boolean
+                                description: Require an approving review in pull requests that modify files that have a designated code owner.
+                              require_last_push_approval:
+                                type: boolean
+                                description: Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
+                              required_approving_review_count:
+                                type: integer
+                                description: The number of approving reviews that are required before a pull request can be merged.
+                              required_review_thread_resolution:
+                                type: boolean
+                                description: All conversations on code must be resolved before a pull request can be merged.
+                              required_reviewers:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/RuleRequiredReviewerConfiguration'
+                                description: A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
+                          - type: object
+                            description: Parameters for the `required_status_checks` rule.
+                            properties:
+                              do_not_enforce_on_create:
+                                type: boolean
+                                description: Allow repositories and branches to be created if a check would otherwise prohibit it.
+                              required_status_checks:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/RuleStatusCheckConfiguration'
+                                description: Status checks that are required.
+                              strict_required_status_checks_policy:
+                                type: boolean
+                                description: Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
+                          - type: object
+                            description: |
+                              Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+                              commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+                              tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
+                            properties:
+                              name:
+                                type: string
+                                description: How this rule appears when configuring it.
+                              negate:
+                                type: boolean
+                                description: If true, the rule will fail if the pattern matches.
+                              operator:
+                                type: string
+                                description: The operator to use for matching.
+                              pattern:
+                                type: string
+                                description: The pattern to match with.
+                          - type: object
+                            description: Parameters for the `file_path_restriction` rule.
+                            properties:
+                              restricted_file_paths:
+                                type: array
+                                items:
+                                  type: string
+                                description: File paths that are restricted from being pushed to the commit graph.
+                          - type: object
+                            description: Parameters for the `max_file_path_length` rule.
+                            properties:
+                              max_file_path_length:
+                                type: integer
+                                description: The maximum amount of characters allowed in file paths.
+                          - type: object
+                            description: Parameters for the `file_extension_restriction` rule.
+                            properties:
+                              restricted_file_extensions:
+                                type: array
+                                items:
+                                  type: string
+                                description: File extensions that are restricted from being pushed to the commit graph.
+                          - type: object
+                            description: Parameters for the `max_file_size` rule.
+                            properties:
+                              max_file_size:
+                                type: integer
+                                description: The maximum file size allowed in megabytes.
+                          - type: object
+                            description: Parameters for the `workflows` rule.
+                            properties:
+                              do_not_enforce_on_create:
+                                type: boolean
+                                description: Allow repositories and branches to be created if a check would otherwise prohibit it.
+                              workflows:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/RuleWorkflowFileReference'
+                                description: Workflows that must pass for this rule to pass.
+                          - type: object
+                            description: Parameters for the `code_scanning` rule.
+                            properties:
+                              code_scanning_tools:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/RuleCodeScanningTool'
+                                description: Tools that must provide code scanning results for this rule to pass.
                 deleted:
                   type: array
                   description: Rules removed from the ruleset.
                   items:
+                    description: "A rule removed from the ruleset by this edit."
                     type: object
                     properties:
                       type:
@@ -11351,10 +12194,159 @@ components:
                       parameters:
                         type: object
                         description: The parameters of the rule that was removed.
+                        oneOf:
+                          - type: object
+                            description: Parameters for the `update` rule.
+                            properties:
+                              update_allows_fetch_and_merge:
+                                type: boolean
+                                description: Branch can pull changes from its upstream repository
+                          - type: object
+                            description: Parameters for the `merge_queue` rule.
+                            properties:
+                              check_response_timeout_minutes:
+                                type: integer
+                                description: Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
+                              grouping_strategy:
+                                type: string
+                                description: When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
+                              max_entries_to_build:
+                                type: integer
+                                description: Limit the number of queued pull requests requesting checks and workflow runs at the same time.
+                              max_entries_to_merge:
+                                type: integer
+                                description: The maximum number of PRs that will be merged together in a group.
+                              merge_method:
+                                type: string
+                                description: Method to use when merging changes from queued pull requests.
+                              min_entries_to_merge:
+                                type: integer
+                                description: The minimum number of PRs that will be merged together in a group.
+                              min_entries_to_merge_wait_minutes:
+                                type: integer
+                                description: The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
+                          - type: object
+                            description: Parameters for the `required_deployments` rule.
+                            properties:
+                              required_deployment_environments:
+                                type: array
+                                items:
+                                  type: string
+                                description: Environments that must be successfully deployed to before branches can be merged.
+                          - type: object
+                            description: Parameters for the `pull_request` rule.
+                            properties:
+                              allowed_merge_methods:
+                                type: array
+                                items:
+                                  type: string
+                                description: Array of allowed merge methods. At least one option must be enabled.
+                              dismiss_stale_reviews_on_push:
+                                type: boolean
+                                description: New, reviewable commits pushed will dismiss previous pull request review approvals.
+                              dismissal_restriction:
+                                $ref: '#/components/schemas/RuleDismissalRestriction'
+                              require_code_owner_review:
+                                type: boolean
+                                description: Require an approving review in pull requests that modify files that have a designated code owner.
+                              require_last_push_approval:
+                                type: boolean
+                                description: Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
+                              required_approving_review_count:
+                                type: integer
+                                description: The number of approving reviews that are required before a pull request can be merged.
+                              required_review_thread_resolution:
+                                type: boolean
+                                description: All conversations on code must be resolved before a pull request can be merged.
+                              required_reviewers:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/RuleRequiredReviewerConfiguration'
+                                description: A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
+                          - type: object
+                            description: Parameters for the `required_status_checks` rule.
+                            properties:
+                              do_not_enforce_on_create:
+                                type: boolean
+                                description: Allow repositories and branches to be created if a check would otherwise prohibit it.
+                              required_status_checks:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/RuleStatusCheckConfiguration'
+                                description: Status checks that are required.
+                              strict_required_status_checks_policy:
+                                type: boolean
+                                description: Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
+                          - type: object
+                            description: |
+                              Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+                              commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+                              tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
+                            properties:
+                              name:
+                                type: string
+                                description: How this rule appears when configuring it.
+                              negate:
+                                type: boolean
+                                description: If true, the rule will fail if the pattern matches.
+                              operator:
+                                type: string
+                                description: The operator to use for matching.
+                              pattern:
+                                type: string
+                                description: The pattern to match with.
+                          - type: object
+                            description: Parameters for the `file_path_restriction` rule.
+                            properties:
+                              restricted_file_paths:
+                                type: array
+                                items:
+                                  type: string
+                                description: File paths that are restricted from being pushed to the commit graph.
+                          - type: object
+                            description: Parameters for the `max_file_path_length` rule.
+                            properties:
+                              max_file_path_length:
+                                type: integer
+                                description: The maximum amount of characters allowed in file paths.
+                          - type: object
+                            description: Parameters for the `file_extension_restriction` rule.
+                            properties:
+                              restricted_file_extensions:
+                                type: array
+                                items:
+                                  type: string
+                                description: File extensions that are restricted from being pushed to the commit graph.
+                          - type: object
+                            description: Parameters for the `max_file_size` rule.
+                            properties:
+                              max_file_size:
+                                type: integer
+                                description: The maximum file size allowed in megabytes.
+                          - type: object
+                            description: Parameters for the `workflows` rule.
+                            properties:
+                              do_not_enforce_on_create:
+                                type: boolean
+                                description: Allow repositories and branches to be created if a check would otherwise prohibit it.
+                              workflows:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/RuleWorkflowFileReference'
+                                description: Workflows that must pass for this rule to pass.
+                          - type: object
+                            description: Parameters for the `code_scanning` rule.
+                            properties:
+                              code_scanning_tools:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/RuleCodeScanningTool'
+                                description: Tools that must provide code scanning results for this rule to pass.
                 updated:
                   type: array
                   description: Rules whose own fields changed on the ruleset.
                   items:
+                    description: "A ruleset rule whose fields changed in this edit, with its current state and the diff."
                     type: object
                     properties:
                       rule:
@@ -11367,6 +12359,154 @@ components:
                           parameters:
                             type: object
                             description: The parameters of the updated rule.
+                            oneOf:
+                              - type: object
+                                description: Parameters for the `update` rule.
+                                properties:
+                                  update_allows_fetch_and_merge:
+                                    type: boolean
+                                    description: Branch can pull changes from its upstream repository
+                              - type: object
+                                description: Parameters for the `merge_queue` rule.
+                                properties:
+                                  check_response_timeout_minutes:
+                                    type: integer
+                                    description: Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
+                                  grouping_strategy:
+                                    type: string
+                                    description: When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
+                                  max_entries_to_build:
+                                    type: integer
+                                    description: Limit the number of queued pull requests requesting checks and workflow runs at the same time.
+                                  max_entries_to_merge:
+                                    type: integer
+                                    description: The maximum number of PRs that will be merged together in a group.
+                                  merge_method:
+                                    type: string
+                                    description: Method to use when merging changes from queued pull requests.
+                                  min_entries_to_merge:
+                                    type: integer
+                                    description: The minimum number of PRs that will be merged together in a group.
+                                  min_entries_to_merge_wait_minutes:
+                                    type: integer
+                                    description: The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
+                              - type: object
+                                description: Parameters for the `required_deployments` rule.
+                                properties:
+                                  required_deployment_environments:
+                                    type: array
+                                    items:
+                                      type: string
+                                    description: Environments that must be successfully deployed to before branches can be merged.
+                              - type: object
+                                description: Parameters for the `pull_request` rule.
+                                properties:
+                                  allowed_merge_methods:
+                                    type: array
+                                    items:
+                                      type: string
+                                    description: Array of allowed merge methods. At least one option must be enabled.
+                                  dismiss_stale_reviews_on_push:
+                                    type: boolean
+                                    description: New, reviewable commits pushed will dismiss previous pull request review approvals.
+                                  dismissal_restriction:
+                                    $ref: '#/components/schemas/RuleDismissalRestriction'
+                                  require_code_owner_review:
+                                    type: boolean
+                                    description: Require an approving review in pull requests that modify files that have a designated code owner.
+                                  require_last_push_approval:
+                                    type: boolean
+                                    description: Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
+                                  required_approving_review_count:
+                                    type: integer
+                                    description: The number of approving reviews that are required before a pull request can be merged.
+                                  required_review_thread_resolution:
+                                    type: boolean
+                                    description: All conversations on code must be resolved before a pull request can be merged.
+                                  required_reviewers:
+                                    type: array
+                                    items:
+                                      $ref: '#/components/schemas/RuleRequiredReviewerConfiguration'
+                                    description: A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
+                              - type: object
+                                description: Parameters for the `required_status_checks` rule.
+                                properties:
+                                  do_not_enforce_on_create:
+                                    type: boolean
+                                    description: Allow repositories and branches to be created if a check would otherwise prohibit it.
+                                  required_status_checks:
+                                    type: array
+                                    items:
+                                      $ref: '#/components/schemas/RuleStatusCheckConfiguration'
+                                    description: Status checks that are required.
+                                  strict_required_status_checks_policy:
+                                    type: boolean
+                                    description: Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
+                              - type: object
+                                description: |
+                                  Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+                                  commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+                                  tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
+                                properties:
+                                  name:
+                                    type: string
+                                    description: How this rule appears when configuring it.
+                                  negate:
+                                    type: boolean
+                                    description: If true, the rule will fail if the pattern matches.
+                                  operator:
+                                    type: string
+                                    description: The operator to use for matching.
+                                  pattern:
+                                    type: string
+                                    description: The pattern to match with.
+                              - type: object
+                                description: Parameters for the `file_path_restriction` rule.
+                                properties:
+                                  restricted_file_paths:
+                                    type: array
+                                    items:
+                                      type: string
+                                    description: File paths that are restricted from being pushed to the commit graph.
+                              - type: object
+                                description: Parameters for the `max_file_path_length` rule.
+                                properties:
+                                  max_file_path_length:
+                                    type: integer
+                                    description: The maximum amount of characters allowed in file paths.
+                              - type: object
+                                description: Parameters for the `file_extension_restriction` rule.
+                                properties:
+                                  restricted_file_extensions:
+                                    type: array
+                                    items:
+                                      type: string
+                                    description: File extensions that are restricted from being pushed to the commit graph.
+                              - type: object
+                                description: Parameters for the `max_file_size` rule.
+                                properties:
+                                  max_file_size:
+                                    type: integer
+                                    description: The maximum file size allowed in megabytes.
+                              - type: object
+                                description: Parameters for the `workflows` rule.
+                                properties:
+                                  do_not_enforce_on_create:
+                                    type: boolean
+                                    description: Allow repositories and branches to be created if a check would otherwise prohibit it.
+                                  workflows:
+                                    type: array
+                                    items:
+                                      $ref: '#/components/schemas/RuleWorkflowFileReference'
+                                    description: Workflows that must pass for this rule to pass.
+                              - type: object
+                                description: Parameters for the `code_scanning` rule.
+                                properties:
+                                  code_scanning_tools:
+                                    type: array
+                                    items:
+                                      $ref: '#/components/schemas/RuleCodeScanningTool'
+                                    description: Tools that must provide code scanning results for this rule to pass.
                       changes:
                         type: object
                         description: The fields of the rule that changed.
@@ -11411,6 +12551,7 @@ components:
         - alert
       properties:
         action:
+          description: "The action that was performed. Can be one of: create, dismiss, reopen, resolve."
           type: string
           enum:
             - create
@@ -11427,15 +12568,20 @@ components:
             - severity
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
             affected_package_name:
+              description: "The name of the package affected by the vulnerability."
               type: string
             affected_range:
+              description: "The range of package versions affected by the vulnerability."
               type: string
             fixed_in:
+              description: "The package version that resolves the vulnerability."
               type: string
               nullable: true
             severity:
+              description: "The severity of the vulnerability."
               type: string
               enum:
                 - low
@@ -11443,24 +12589,31 @@ components:
                 - high
                 - critical
             ghsa_id:
+              description: "The GitHub Security Advisory identifier for the vulnerability."
               type: string
             external_identifier:
+              description: "The vulnerability's identifier in an external database, e.g. a CVE ID."
               type: string
             external_reference:
+              description: "A URL to the vulnerability's external reference source."
               type: string
               format: uri
               nullable: true
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             auto_dismissed_at:
+              description: "The date and time the alert was automatically dismissed, in ISO 8601 format."
               type: string
               format: date-time
               nullable: true
             dismiss_reason:
+              description: "The reason the alert was dismissed."
               type: string
               nullable: true
             dismissed_at:
+              description: "The date and time the alert was dismissed, in ISO 8601 format."
               type: string
               format: date-time
               nullable: true
@@ -11468,6 +12621,7 @@ components:
               $ref: '#/components/schemas/User'
               nullable: true
             number:
+              description: "The alert number, unique within the repository."
               type: integer
         sender:
           $ref: '#/components/schemas/User'
@@ -11654,6 +12808,7 @@ components:
             - updated_at
           properties:
             url:
+              description: "The API URL of the resource."
               type: string
               format: uri
             status:
@@ -11671,6 +12826,7 @@ components:
                 - message
               properties:
                 message:
+                  description: "The error message describing why the Pages build failed."
                   type: string
                   nullable: true
             pusher:
@@ -11682,9 +12838,11 @@ components:
               type: integer
               description: Duration of the build in milliseconds
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
         sender:
@@ -11719,18 +12877,21 @@ components:
               type: integer
               description: Unique identifier of the team.
             node_id:
+              description: "The GraphQL node ID."
               type: string
             url:
               type: string
               format: uri
               description: URL for the team.
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             name:
               type: string
               description: Name of the team.
             slug:
+              description: "The URL-friendly identifier of the resource."
               type: string
             description:
               type: string
@@ -11758,8 +12919,10 @@ components:
                 - triage
               description: Permission that the team will have for its repositories.
             members_url:
+              description: "The API URL listing the members of this team."
               type: string
             repositories_url:
+              description: "The API URL listing the repositories associated with this resource."
               type: string
               format: uri
             parent:
@@ -11771,11 +12934,13 @@ components:
                   type: integer
                   description: Unique identifier of the team.
                 node_id:
+                  description: "The GraphQL node ID."
                   type: string
                 name:
                   type: string
                   description: Name of the team.
                 slug:
+                  description: "The URL-friendly identifier of the resource."
                   type: string
                 description:
                   type: string
@@ -11788,11 +12953,14 @@ components:
                   type: string
                   description: Permission that the team will have for its repositories.
                 members_url:
+                  description: "The API URL listing the members of this team."
                   type: string
                 repositories_url:
+                  description: "The API URL listing the repositories associated with this resource."
                   type: string
                   format: uri
                 html_url:
+                  description: "The URL of the resource on GitHub.com."
                   type: string
                   format: uri
         sender:
@@ -11814,6 +12982,7 @@ components:
         - sponsorship
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, cancelled, edited, tier_changed, pending_cancellation, pending_tier_change."
           type: string
           enum:
             - cancelled
@@ -11834,11 +13003,14 @@ components:
             - sponsorable
           properties:
             node_id:
+              description: "The GraphQL node ID."
               type: string
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             privacy_level:
+              description: "Whether the sponsorship is publicly visible (public or private)."
               type: string
               enum:
                 - public
@@ -11904,6 +13076,7 @@ components:
                     - enabled
                     - disabled
                 to:
+                  description: "The new value, after this change."
                   type: string
                   enum:
                     - enabled
@@ -11919,6 +13092,7 @@ components:
                     - enabled
                     - disabled
                 to:
+                  description: "The new value, after this change."
                   type: string
                   enum:
                     - enabled
@@ -11934,6 +13108,7 @@ components:
                     - enabled
                     - disabled
                 to:
+                  description: "The new value, after this change."
                   type: string
                   enum:
                     - enabled
@@ -11949,6 +13124,7 @@ components:
                     - enabled
                     - disabled
                 to:
+                  description: "The new value, after this change."
                   type: string
                   enum:
                     - enabled
@@ -11964,6 +13140,7 @@ components:
                     - enabled
                     - disabled
                 to:
+                  description: "The new value, after this change."
                   type: string
                   enum:
                     - enabled
@@ -11979,6 +13156,7 @@ components:
                     - enabled
                     - disabled
                 to:
+                  description: "The new value, after this change."
                   type: string
                   enum:
                     - enabled
@@ -12008,6 +13186,7 @@ components:
         - since
       properties:
         action:
+          description: "The action that was performed. Can be one of: requested, approved, rejected."
           type: string
           enum:
             - approved
@@ -12029,9 +13208,11 @@ components:
           type: array
           description: The reviewers who were requested or who reviewed
           items:
+            description: "A user or team requested as, or acting as, a deployment reviewer."
             type: object
             properties:
               type:
+                description: "The type of the reviewer, either User or Team."
                 type: string
                 enum:
                   - Team
@@ -12130,6 +13311,7 @@ components:
         - changes
       properties:
         action:
+          description: "The action that was performed. Always: renamed."
           type: string
           enum:
             - renamed
@@ -12142,25 +13324,33 @@ components:
             - type
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
             node_id:
+              description: "The GraphQL node ID."
               type: string
             login:
+              description: "The username or organization login of the account."
               type: string
             type:
+              description: "The account type. Can be one of: Bot, User, Organization."
               type: string
               enum:
                 - User
                 - Organization
             avatar_url:
+              description: "The URL of the user's or organization's avatar image."
               type: string
               format: uri
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             site_admin:
+              description: "Whether the user is a GitHub site administrator."
               type: boolean
         target_type:
+          description: "The type of account the app is installed on: user or organization."
           type: string
           enum:
             - User
@@ -12193,6 +13383,7 @@ components:
         - action
       properties:
         action:
+          description: "The action that was performed. Can be one of: blocking_removed, blocked_by_removed, blocking_added, blocked_by_added."
           type: string
           enum:
             - blocked_by_added
@@ -12232,6 +13423,7 @@ components:
         - effective_date
       properties:
         action:
+          description: "The action that was performed. Can be one of: purchased, cancelled, pending_change, pending_change_cancelled, changed."
           type: string
           enum:
             - cancelled
@@ -12262,6 +13454,7 @@ components:
         - personal_access_token_request
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, approved, denied, cancelled."
           type: string
           enum:
             - approved
@@ -12288,16 +13481,19 @@ components:
                 reference to the Organization/Repository entity schemas despite the field names.
               properties:
                 organization:
+                  description: "Organization-level permissions requested, mapped from permission name to access level."
                   type: object
                   nullable: true
                   additionalProperties:
                     type: string
                 repository:
+                  description: "Repository-level permissions requested, mapped from permission name to access level."
                   type: object
                   nullable: true
                   additionalProperties:
                     type: string
                 other:
+                  description: "Other account-level permissions requested, mapped from permission name to access level."
                   type: object
                   nullable: true
                   additionalProperties:
@@ -12309,16 +13505,19 @@ components:
                 map shape as permissions_added, not an entity reference.
               properties:
                 organization:
+                  description: "Organization-level permissions being upgraded, mapped from permission name to access level."
                   type: object
                   nullable: true
                   additionalProperties:
                     type: string
                 repository:
+                  description: "Repository-level permissions being upgraded, mapped from permission name to access level."
                   type: object
                   nullable: true
                   additionalProperties:
                     type: string
                 other:
+                  description: "Other account-level permissions being upgraded, mapped from permission name to access level."
                   type: object
                   nullable: true
                   additionalProperties:
@@ -12330,16 +13529,19 @@ components:
                 access-level map shape as permissions_added, not an entity reference.
               properties:
                 organization:
+                  description: "The resulting organization-level permissions if the request is approved, mapped from permission name to access level."
                   type: object
                   nullable: true
                   additionalProperties:
                     type: string
                 repository:
+                  description: "The resulting repository-level permissions if the request is approved, mapped from permission name to access level."
                   type: object
                   nullable: true
                   additionalProperties:
                     type: string
                 other:
+                  description: "The resulting other account-level permissions if the request is approved, mapped from permission name to access level."
                   type: object
                   nullable: true
                   additionalProperties:
@@ -12352,6 +13554,7 @@ components:
                 - subset
               description: Type of repository selection requested.
             repositories_url:
+              description: "The API URL listing the repositories associated with this resource."
               type: string
               format: uri
               nullable: true
@@ -12397,6 +13600,7 @@ components:
         - project
       properties:
         action:
+          description: "The action that was performed. Can be one of: deleted, created, closed, reopened, edited."
           type: string
           enum:
             - closed
@@ -12415,16 +13619,21 @@ components:
             - state
           properties:
             id:
+              description: "The unique identifier of the resource."
               type: integer
             node_id:
+              description: "The GraphQL node ID."
               type: string
             url:
+              description: "The API URL of the resource."
               type: string
               format: uri
             html_url:
+              description: "The URL of the resource on GitHub.com."
               type: string
               format: uri
             columns_url:
+              description: "The API URL listing the project's columns."
               type: string
               format: uri
             name:
@@ -12435,6 +13644,7 @@ components:
               nullable: true
               description: Body of the project.
             number:
+              description: "The project's number, unique within its owner."
               type: integer
             state:
               type: string
@@ -12445,9 +13655,11 @@ components:
             creator:
               $ref: '#/components/schemas/User'
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
         changes:
@@ -12491,6 +13703,7 @@ components:
         - project_card
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, moved, converted, deleted."
           type: string
           enum:
             - converted
@@ -12510,19 +13723,25 @@ components:
               type: integer
               description: The project card's ID.
             node_id:
+              description: "The GraphQL node ID."
               type: string
             url:
+              description: "The API URL of the resource."
               type: string
               format: uri
             column_id:
+              description: "The ID of the project column the card belongs to."
               type: integer
             column_url:
+              description: "The API URL of the project column the card belongs to."
               type: string
               format: uri
             project_url:
+              description: "The API URL of the classic project the card belongs to."
               type: string
               format: uri
             note:
+              description: "The card's note text; null when the card links to an issue or pull request."
               type: string
               nullable: true
             content_url:
@@ -12537,9 +13756,11 @@ components:
             creator:
               $ref: '#/components/schemas/User'
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
         changes:
@@ -12583,6 +13804,7 @@ components:
         - project_column
       properties:
         action:
+          description: "The action that was performed. Can be one of: created, edited, moved, deleted."
           type: string
           enum:
             - created
@@ -12601,14 +13823,18 @@ components:
               type: integer
               description: The unique identifier of the project column.
             node_id:
+              description: "The GraphQL node ID."
               type: string
             url:
+              description: "The API URL of the resource."
               type: string
               format: uri
             project_url:
+              description: "The API URL of the project this column belongs to."
               type: string
               format: uri
             cards_url:
+              description: "The API URL listing the cards in this column."
               type: string
               format: uri
             name:
@@ -12619,9 +13845,11 @@ components:
               nullable: true
               description: The ID of the column this column was moved after
             created_at:
+              description: "The date and time the resource was created, in ISO 8601 format."
               type: string
               format: date-time
             updated_at:
+              description: "The date and time the resource was last updated, in ISO 8601 format."
               type: string
               format: date-time
         changes:
@@ -12683,6 +13911,7 @@ components:
         - sub_issue
       properties:
         action:
+          description: "The action that was performed. Can be one of: sub_issue_added, sub_issue_removed, parent_issue_added, parent_issue_removed."
           type: string
           enum:
             - parent_issue_added

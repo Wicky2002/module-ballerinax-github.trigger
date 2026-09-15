@@ -18,7 +18,7 @@ import ballerina/http;
 
 # Configuration for the webhook listener, including the secret used to verify incoming requests.
 public type ListenerConfig record {
-    # Webhook Secret
+    # The secret used to verify incoming webhook signatures.
     string webhookSecret?;
 };
 
@@ -26,15 +26,21 @@ public type ListenerConfig record {
 public type App record {
     # Unique identifier of the GitHub app.
     int id;
+    # The GraphQL node ID.
     string node_id;
     # A GitHub user
     User owner?;
     # The name of the GitHub app.
     string name;
+    # The description of the GitHub App.
     string? description?;
+    # The URL of the GitHub App's external website.
     string external_url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # The set of permissions for the GitHub app.
     map<json> permissions?;
@@ -60,6 +66,7 @@ public type ForkPayload record {
 
 # Payload for workflow_run events
 public type WorkflowRunPayload record {
+    # The action that was performed. Can be one of: in_progress, completed, requested.
     string action;
     # A GitHub Actions workflow run
     WorkflowRun workflow_run;
@@ -93,6 +100,7 @@ public type GollumPayload record {
     Enterprise enterprise?;
 };
 
+# A wiki page that was created or updated.
 public type PagesItem record {
     # The name of the page
     string page_name;
@@ -100,9 +108,11 @@ public type PagesItem record {
     string title;
     # A summary of the changes
     string? summary?;
+    # The action performed on the page, either created or edited.
     string action;
     # The latest commit SHA of the page
     string sha;
+    # The URL of the resource on GitHub.com.
     string html_url;
 };
 
@@ -146,6 +156,7 @@ public type TagName record {
 
 # Whether this release was explicitly edited to be the latest
 public type MakeLatest record {
+    # Whether the release became the latest release (best-effort; not documented by GitHub).
     boolean to?;
 };
 
@@ -163,32 +174,55 @@ public type Changes record {
 
 # The GitHub Marketplace purchase
 public type MarketplacePurchase record {
+    # The GitHub account (user or organization) that made the Marketplace purchase.
     Account account;
+    # The billing cycle of the plan, e.g. monthly or yearly.
     string billing_cycle;
+    # The number of units purchased on the plan.
     int unit_count;
+    # Whether the account is currently on a free trial.
     boolean on_free_trial?;
+    # The date the free trial ends, in ISO 8601 format.
     string? free_trial_ends_on?;
+    # The date of the next billing charge, in ISO 8601 format.
     string? next_billing_date?;
+    # The Marketplace plan associated with the purchase.
     Plan plan;
 };
 
+# The GitHub account (user or organization) that made the Marketplace purchase.
 public type Account record {
+    # The type of account, either User or Organization.
     string 'type;
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id?;
+    # The username or organization login of the account.
     string login;
+    # The organization's billing email address, if applicable.
     string? organization_billing_email?;
 };
 
+# The Marketplace plan associated with the purchase.
 public type Plan record {
+    # The unique identifier of the resource.
     int id;
+    # The name of the Marketplace plan.
     string name;
+    # The description of the Marketplace plan.
     string description;
+    # The monthly price of the plan, in cents.
     int monthly_price_in_cents;
+    # The yearly price of the plan, in cents.
     int yearly_price_in_cents;
+    # The pricing model of the plan, e.g. FLAT_RATE or PER_UNIT.
     string price_model;
+    # Whether the plan offers a free trial.
     boolean has_free_trial?;
+    # The name of the unit used to calculate pricing, e.g. seat.
     string? unit_name?;
+    # The list of feature bullet points describing the plan.
     string[] bullets?;
 };
 
@@ -250,6 +284,7 @@ public type Location record {
 
 # Payload for deployment_review events
 public type DeploymentReviewPayload record {
+    # The action that was performed. Can be one of: requested, approved, rejected.
     string action;
     # The name of the environment that was approved or rejected
     string environment;
@@ -296,7 +331,9 @@ public type 'ReviewerBranch1 record {
 # A User or Team object depending on type
 public type Reviewer anydata|'ReviewerBranch1;
 
+# A user or team requested as, or acting as, a deployment reviewer.
 public type ReviewersItem record {
+    # The type of the reviewer, either User or Team.
     string 'type?;
     # A User or Team object depending on type
     Reviewer reviewer?;
@@ -326,25 +363,35 @@ public type DeploymentReviewPayloadWorkflowRun record {
 
 # A pull request
 public type PullRequest record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id?;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The URL to the pull request's diff in unified diff format.
     string diff_url?;
+    # The URL to the pull request's patch file.
     string patch_url?;
     # Number uniquely identifying the pull request within its repository.
     int number;
     # State of this Pull Request. Either `open` or `closed`.
     string state;
+    # Whether the pull request's conversation is locked.
     boolean locked?;
     # The title of the pull request.
     string title;
+    # The pull request's description text.
     string? body?;
     # A GitHub user
     User user?;
+    # The labels attached to the pull request.
     Label[] labels?;
     # A GitHub user
     User? assignee?;
+    # The users assigned to the pull request.
     User[] assignees?;
     # A milestone on an issue or pull request
     Milestone milestone?;
@@ -354,20 +401,35 @@ public type PullRequest record {
     PullRequestRef base?;
     # Indicates whether or not the pull request is a draft.
     boolean draft?;
+    # Whether the pull request has been merged.
     boolean? merged?;
+    # Whether the pull request can be merged into its base branch.
     boolean? mergeable?;
+    # Whether the pull request can be rebased against its base branch.
     boolean? rebaseable?;
+    # The mergeability state of the pull request, e.g. clean or dirty.
     string mergeable_state?;
+    # The SHA of the merge commit, or the last commit if not yet merged.
     string? merge_commit_sha?;
+    # The number of issue comments on the pull request.
     int comments?;
+    # The number of review comments on the pull request.
     int review_comments?;
+    # The number of commits in the pull request.
     int commits?;
+    # The number of lines added across the pull request's commits.
     int additions?;
+    # The number of lines deleted across the pull request's commits.
     int deletions?;
+    # The number of files changed in the pull request.
     int changed_files?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # The date and time the pull request was closed, in ISO 8601 format.
     string? closed_at?;
+    # The date and time the pull request was merged, in ISO 8601 format.
     string? merged_at?;
     # A GitHub user
     User? merged_by?;
@@ -419,6 +481,7 @@ public type SecretScanningScanPayload record {
 
 # Payload for issue_comment events
 public type IssueCommentPayload record {
+    # The action that was performed. Can be one of: created, edited, deleted, pinned, unpinned.
     string action;
     # An issue on GitHub
     Issue issue;
@@ -452,6 +515,7 @@ public type IssueCommentPayloadChanges record {
 
 # Payload for deployment_status events
 public type DeploymentStatusPayload record {
+    # The action that was performed. Always created.
     string action;
     # A deployment request for a specific ref
     Deployment deployment;
@@ -477,6 +541,7 @@ public type DeploymentStatusPayload record {
 
 # Payload for organization events
 public type OrganizationPayload record {
+    # The action that was performed. Can be one of: member_added, member_removed, member_invited, renamed, deleted.
     string action;
     # The membership between the user and the organization.
     # Not present when the action is member_invited.
@@ -498,11 +563,13 @@ public type OrganizationPayload record {
 # The membership between the user and the organization.
 # Not present when the action is member_invited.
 public type Membership record {
+    # The API URL of the resource.
     string url?;
     # The state of the member in the organization. The `pending` state indicates the user has not yet accepted an invitation.
     string state?;
     # The user's membership type in the organization.
     string role?;
+    # The API URL of the organization.
     string organization_url?;
     # A GitHub user
     User user?;
@@ -510,18 +577,29 @@ public type Membership record {
 
 # Present when action is member_invited
 public type Invitation record {
+    # The unique identifier of the resource.
     int id;
+    # The username of the invited user, if known.
     string? login?;
+    # The email address of the invited user, if known.
     string? email?;
+    # The role assigned to the invited user, e.g. admin, direct_member, or billing_manager.
     string role;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at;
+    # The date and time the invitation failed, in ISO 8601 format, if applicable.
     string? failed_at?;
+    # The reason the invitation failed, if applicable.
     string? failed_reason?;
     # A GitHub user
     User inviter;
+    # The number of teams the invitation grants membership to.
     int team_count;
+    # The GraphQL node ID.
     string node_id;
+    # The API URL listing the teams included in this invitation.
     string invitation_teams_url;
+    # The source through which the invitation was created, e.g. member or scim.
     string? invitation_source?;
 };
 
@@ -537,6 +615,7 @@ public type OrganizationPayloadChanges record {
     Login login?;
 };
 
+# HTTP headers sent with every GitHub webhook delivery.
 public type WebhookHeaders record {
     # The name of the event that triggered the delivery
     @http:Header {name: "X-GitHub-Event"}
@@ -589,6 +668,7 @@ public type RepositoryDispatchPayload record {
 
 # Payload for merge_group events
 public type MergeGroupPayload record {
+    # The action that was performed. Can be one of: checks_requested, destroyed.
     string action;
     # A group of pull requests grouped together by the merge queue
     MergeGroup merge_group;
@@ -622,6 +702,7 @@ public type MergeGroup record {
 
 # Payload for workflow_job events
 public type WorkflowJobPayload record {
+    # The action that was performed. Can be one of: queued, waiting, completed, in_progress.
     string action;
     # A job in a GitHub Actions workflow run
     WorkflowJob workflow_job;
@@ -641,6 +722,7 @@ public type WorkflowJobPayload record {
 
 # Payload for org_block events
 public type OrgBlockPayload record {
+    # The action that was performed. Can be one of: blocked, unblocked.
     string action;
     # A GitHub user
     User? blocked_user;
@@ -656,18 +738,27 @@ public type OrgBlockPayload record {
 
 # A GitHub Sponsors tier
 public type Tier record {
+    # The GraphQL node ID.
     string node_id;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # A description of the sponsorship tier.
     string description?;
+    # The monthly price of the tier, in cents.
     int monthly_price_in_cents;
+    # The monthly price of the tier, in dollars.
     int monthly_price_in_dollars;
+    # The name of the sponsorship tier.
     string name;
+    # Whether this is a one-time, non-recurring sponsorship tier.
     boolean is_one_time?;
+    # Whether the sponsor can choose a custom amount for this tier.
     boolean is_custom_amount?;
 };
 
 # Payload for dependabot_alert events
 public type DependabotAlertPayload record {
+    # The action that was performed. Can be one of: created, dismissed, reopened, reintroduced, fixed, auto_dismissed, auto_reopened, assignees_changed.
     string action;
     # A Dependabot alert
     DependabotAlertPayloadAlert alert;
@@ -693,12 +784,19 @@ public type Dependency record {
     string? scope?;
 };
 
+# Details for the GitHub Security Advisory linked to the alert.
 public type SecurityAdvisory record {
+    # The GitHub Security Advisory ID.
     string ghsa_id?;
+    # The CVE ID associated with the advisory, if any.
     string? cve_id?;
+    # A short summary of the security advisory.
     string summary?;
+    # A detailed description of the security advisory.
     string description?;
+    # The severity of the advisory, e.g. low, medium, high, or critical.
     string severity?;
+    # The list of package versions affected by this advisory.
     SecurityVulnerability[] vulnerabilities?;
 };
 
@@ -710,6 +808,7 @@ public type DependabotAlertPayloadAlert record {
     string state;
     # Details for the vulnerable dependency.
     Dependency dependency?;
+    # Details for the GitHub Security Advisory linked to the alert.
     SecurityAdvisory security_advisory?;
     # A vulnerable version range affecting a package, and the version it was patched in
     SecurityVulnerability security_vulnerability?;
@@ -739,15 +838,25 @@ public type DependabotAlertPayloadAlert record {
 
 # A GitHub Actions workflow
 public type Workflow record {
+    # The unique identifier of the resource.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
+    # The name of the workflow.
     string name?;
+    # The path of the workflow file relative to the repository root.
     string path?;
+    # The state of the workflow, e.g. active or disabled_manually.
     string state?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The URL of the workflow's status badge image.
     string badge_url?;
 };
 
@@ -761,6 +870,7 @@ public type RuleActor record {
 
 # Payload for custom_property_values events
 public type CustomPropertyValuesPayload record {
+    # The action that was performed. Always updated.
     string action;
     # The new custom property values for the repository
     NewPropertyValuesItem[] new_property_values;
@@ -778,13 +888,17 @@ public type CustomPropertyValuesPayload record {
     Enterprise enterprise?;
 };
 
+# The new value of a custom property on the repository.
 public type NewPropertyValuesItem record {
+    # The name of the custom property.
     string property_name;
     # String or array of strings
     anydata? value?;
 };
 
+# The previous value of a custom property on the repository.
 public type OldPropertyValuesItem record {
+    # The name of the custom property.
     string property_name;
     # String or array of strings
     anydata? value?;
@@ -792,6 +906,7 @@ public type OldPropertyValuesItem record {
 
 # Payload for secret_scanning_alert events
 public type SecretScanningAlertPayload record {
+    # The action that was performed. Can be one of: assigned, reopened, unassigned, created, publicly_leaked, validated, resolved.
     string action;
     # The secret scanning alert
     SecretScanningAlertPayloadAlert alert;
@@ -823,6 +938,7 @@ public type SecretScanningAlertPayloadAlert record {
     string html_url?;
     # The REST API URL of the code locations for this alert.
     string locations_url?;
+    # The state of the secret scanning alert. Can be open or resolved.
     string state;
     # The reason for resolving the alert.
     string? resolution?;
@@ -852,11 +968,13 @@ public type SecretScanningAlertPayloadAlert record {
 
 # Payload for pull_request_review_thread events
 public type PullRequestReviewThreadPayload record {
+    # The action that was performed. Can be one of: resolved, unresolved.
     string action;
     # A pull request
     PullRequest pull_request;
     # The review thread that was resolved or unresolved
     PullRequestReviewThreadPayloadThread thread;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string? updated_at?;
     # A GitHub user
     User sender?;
@@ -872,7 +990,9 @@ public type PullRequestReviewThreadPayload record {
 
 # The review thread that was resolved or unresolved
 public type PullRequestReviewThreadPayloadThread record {
+    # The GraphQL node ID.
     string node_id?;
+    # The review comments in this conversation thread.
     PullRequestReviewComment[] comments?;
 };
 
@@ -900,15 +1020,19 @@ public type RuleDismissalRestriction record {
 public type IssueComment record {
     # Unique identifier of the issue comment.
     int id;
+    # The GraphQL node ID.
     string node_id?;
     # URL for the issue comment.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
     # Contents of the issue comment.
     string body;
     # A GitHub user
     User user?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # How the author is associated with the repository.
     string author_association?;
@@ -930,6 +1054,7 @@ public type RulePatternParameters record {
 
 # Payload for registry_package events (legacy GitHub Packages event)
 public type RegistryPackagePayload record {
+    # The action that was performed. Can be one of: published, updated.
     string action;
     # The registry package object
     RegistryPackage registry_package;
@@ -945,39 +1070,67 @@ public type RegistryPackagePayload record {
     Enterprise enterprise?;
 };
 
+# A single downloadable file within a package version.
 public type PackageFilesItem record {
+    # The URL to download this package file.
     string download_url?;
+    # The unique identifier of the resource.
     int id?;
+    # The file name of the package file.
     string name?;
+    # The SHA-256 checksum of the package file.
     string 'sha256?;
+    # The MIME content type of the package file.
     string content_type?;
+    # The size of the package file, in bytes.
     int size?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
+# A specific published version of a package.
 public type PackageVersion record {
+    # The unique identifier of the resource.
     int id?;
+    # The version string of the package.
     string 'version?;
+    # A short summary describing the package version.
     string summary?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The branch or commit associated with this package version.
     string target_commitish?;
+    # The SHA of the commit associated with this package version.
     string target_oid?;
+    # Whether this package version is a draft.
     boolean draft?;
+    # Whether this package version is a prerelease.
     boolean prerelease?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # The list of downloadable files for this package version.
     PackageFilesItem[] package_files?;
     # A GitHub user
     User author?;
+    # The command used to install this package version.
     string? installation_command?;
 };
 
+# The package registry a package version was published to.
 public type Registry record {
+    # The URL with more information about the registry.
     string about_url?;
+    # The name of the package registry.
     string name?;
+    # The type of the package registry, e.g. npm or docker.
     string 'type?;
+    # The API URL of the resource.
     string url?;
+    # The vendor of the package registry.
     string vendor?;
 };
 
@@ -987,17 +1140,25 @@ public type RegistryPackage record {
     int id;
     # The name of the package.
     string name;
+    # The namespace of the package, e.g. npm scope or repository owner.
     string namespace?;
+    # A short description of the package.
     string? description?;
+    # The package ecosystem (e.g. npm, docker, maven, nuget, rubygems).
     string ecosystem?;
-    # The type of supported package. Packages in GitHub's Gradle registry have the type `maven`. Docker images pushed to GitHub's Container registry (`ghcr.io`) have the type `container`. You can use the type `docker` to find images that were pushed to GitHub's Docker registry (`docker.pkg.github.com`), even if these have now been migrated to the Container registry.
+    # The package registry type, e.g. maven, container, docker, npm, nuget, or rubygems.
     string package_type;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # A GitHub user
     User owner?;
+    # A specific published version of a package.
     PackageVersion? package_version?;
+    # The package registry a package version was published to.
     Registry? registry?;
 };
 
@@ -1011,6 +1172,7 @@ public type Package record {
 
 # Payload for check_suite events
 public type CheckSuitePayload record {
+    # The action that was performed. Can be one of: completed, requested, rerequested.
     string action;
     # A check suite
     CheckSuite check_suite;
@@ -1028,6 +1190,7 @@ public type CheckSuitePayload record {
 
 # Payload for discussion_comment events
 public type DiscussionCommentPayload record {
+    # The action that was performed. Can be one of: created, edited, deleted.
     string action;
     # The discussion comment
     Comment comment;
@@ -1049,13 +1212,19 @@ public type DiscussionCommentPayload record {
 
 # The discussion comment
 public type Comment record {
+    # The unique identifier of the resource.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The text of the discussion comment.
     string body?;
     # A GitHub user
     User user?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # How the author is associated with the repository.
     string author_association?;
@@ -1075,13 +1244,21 @@ public type DiscussionCommentPayloadChanges record {
 
 # A GitHub organization
 public type Organization record {
+    # The organization's login name.
     string login?;
+    # The unique identifier of the resource.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The API URL listing the organization's repositories.
     string repos_url?;
+    # The URL of the user's or organization's avatar image.
     string avatar_url?;
+    # A short description of the organization.
     string? description?;
 };
 
@@ -1102,6 +1279,7 @@ public type RepositoryImportPayload record {
 
 # Payload for repository events
 public type RepositoryPayload record {
+    # The action that was performed. Can be one of: created, deleted, archived, unarchived, edited, renamed, transferred, publicized, privatized.
     string action;
     # For edited/renamed/transferred events, the changes that occurred
     RepositoryPayloadChanges changes?;
@@ -1141,6 +1319,7 @@ public type DefaultBranch record {
     string 'from?;
 };
 
+# The repository's previous name, before this rename.
 public type RepositoryPayloadName record {
     # The previous value, before this change.
     string 'from?;
@@ -1148,6 +1327,7 @@ public type RepositoryPayloadName record {
 
 # Present for a renamed event
 public type RepositoryPayloadRepository record {
+    # The repository's previous name, before this rename.
     RepositoryPayloadName name?;
 };
 
@@ -1183,6 +1363,7 @@ public type RepositoryPayloadChanges record {
 
 # Payload for star events
 public type StarPayload record {
+    # The action that was performed. Can be one of: created, deleted.
     string action;
     # The time the star was created (ISO 8601). Null for the deleted action.
     string? starred_at;
@@ -1218,6 +1399,7 @@ public type FirstPatchedVersion record {
 
 # Payload for watch events (someone started watching the repository)
 public type WatchPayload record {
+    # The action that was performed. Always started.
     string action;
     # A GitHub user
     User sender;
@@ -1233,6 +1415,7 @@ public type WatchPayload record {
 
 # Payload for package events (GitHub Packages)
 public type PackagePayload record {
+    # The action that was performed. Can be one of: published, updated.
     string action;
     # Information about the package
     PackagePayloadPackage package;
@@ -1252,13 +1435,17 @@ public type PackagePayload record {
 # Release resource (missing node_id, assets_url, upload_url, body, assets) -
 # must not $ref Release.
 public type PackagePayloadRelease record {
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The unique identifier of the resource.
     int id?;
     # The name of the tag.
     string tag_name?;
     # Specifies the commitish value that determines where the Git tag is created from.
     string target_commitish?;
+    # The name of the release.
     string? name?;
     # Whether the release is a draft or published.
     boolean draft?;
@@ -1266,17 +1453,23 @@ public type PackagePayloadRelease record {
     User author?;
     # Whether the release is identified as a prerelease or a full release.
     boolean prerelease?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the release was published, in ISO 8601 format.
     string? published_at?;
 };
 
+# The digest and name of a container image tag.
 public type Tag record {
+    # The digest of the container image tag.
     string digest?;
+    # The name of the container image tag.
     string name?;
 };
 
 # Metadata for a container (Docker) package version
 public type ContainerMetadata record {
+    # The digest and name of a container image tag.
     Tag tag?;
     # Untyped even in GitHub's own webhook schema - genuinely open, not incomplete.
     map<json>? labels?;
@@ -1284,49 +1477,89 @@ public type ContainerMetadata record {
     map<json>? manifest?;
 };
 
+# Metadata for an npm package version.
 public type NpmMetadata record {
+    # The name of the npm package.
     string name?;
+    # The version of the npm package.
     string 'version?;
+    # The npm username of the publisher.
     string npm_user?;
+    # The author of the npm package, as recorded in package.json.
     map<json>? author?;
+    # The bug tracker information from package.json.
     map<json>? bugs?;
+    # The package's runtime dependencies, as recorded in package.json.
     map<json> dependencies?;
+    # The development dependencies declared in the package's package.json.
     map<json> dev_dependencies?;
+    # The peer dependencies declared in the package's package.json.
     map<json> peer_dependencies?;
+    # The optional dependencies declared in the package's package.json.
     map<json> optional_dependencies?;
+    # The description declared in the package's package.json.
     string description?;
+    # The npm registry distribution metadata for this version (e.g. tarball URL, checksum).
     map<json>? dist?;
+    # The Git commit SHA the package was published from, if recorded.
     string git_head?;
+    # The homepage URL declared in the package's package.json.
     string homepage?;
+    # The license identifier declared in the package's package.json.
     string license?;
+    # The path to the package's main entry file, as declared in package.json.
     string main?;
+    # The source repository declared in the package's package.json.
     map<json>? repository?;
+    # The npm scripts declared in the package's package.json.
     map<json> scripts?;
+    # The unique identifier of the resource.
     string id?;
+    # The Node.js version used to publish this package version.
     string node_version?;
+    # The npm client version used to publish this package version.
     string npm_version?;
+    # Whether the package version includes an npm-shrinkwrap.json file.
     boolean has_shrinkwrap?;
+    # The list of maintainers declared for this package on the npm registry.
     map<json>[] maintainers?;
+    # The list of contributors declared in the package's package.json.
     map<json>[] contributors?;
+    # The Node.js/npm version constraints declared in the package's package.json.
     map<json> engines?;
+    # The keywords declared in the package's package.json.
     string[] keywords?;
+    # The file patterns to include when publishing, as declared in package.json.
     string[] files?;
+    # The executable scripts declared in the package's package.json.
     map<json> bin?;
+    # The man page files declared in the package's package.json.
     map<json> man?;
+    # The directory layout hints declared in the package's package.json.
     map<json>? directories?;
+    # The operating systems this package version supports, as declared in package.json.
     string[] os?;
+    # The CPU architectures this package version supports, as declared in package.json.
     string[] cpu?;
+    # The contents of the package's README file.
     string readme?;
+    # The command used to install this package version.
     string installation_command?;
+    # The identifier of the GitHub release associated with this package version.
     int release_id?;
+    # The Git commit SHA associated with this package version.
     string commit_oid?;
+    # Whether this package version was published via a GitHub Actions workflow.
     boolean published_via_actions?;
+    # The identifier of the user who deleted this package version, if applicable.
     int deleted_by_id?;
 };
 
+# A single metadata entry for a NuGet package version.
 public type NugetMetadataItem record {
     # Real payloads may send this as either an integer or a string
     string id?;
+    # The name of this metadata attribute, as defined in the package's .nuspec file.
     string name?;
     # Real payloads may send this as a boolean, string, integer, or an object
     # with url/branch/commit/type fields - kept as string here since AsyncAPI
@@ -1335,58 +1568,99 @@ public type NugetMetadataItem record {
     string value?;
 };
 
+# Version information for a RubyGems package.
 public type VersionInfo record {
+    # The version string of this RubyGems package.
     string 'version?;
 };
 
+# Metadata for a RubyGems package version.
 public type RubygemsMetadataItem record {
+    # The name of this RubyGems package.
     string name?;
+    # The description of this RubyGems package.
     string description?;
+    # The contents of this RubyGems package's README file.
     string readme?;
+    # The homepage URL of this RubyGems package.
     string homepage?;
+    # Version information for a RubyGems package.
     VersionInfo version_info?;
+    # The target platform of this RubyGems package (e.g. ruby, java).
     string platform?;
+    # Additional key-value metadata declared in the package's gemspec.
     map<json> metadata?;
+    # The source repository URL of this RubyGems package.
     string repo?;
+    # The runtime dependencies declared in the package's gemspec.
     map<json>[] dependencies?;
+    # The Git commit SHA associated with this package version.
     string commit_oid?;
 };
 
 # A single downloadable file within a published package version
 public type PackagePayloadPackageFilesItem record {
+    # The URL to download this package file.
     string download_url?;
+    # The unique identifier of the resource.
     int id?;
+    # The file name of this package file.
     string name?;
+    # The SHA-256 checksum of this package file.
     string 'sha256?;
+    # The SHA-1 checksum of this package file.
     string 'sha1?;
+    # The MD5 checksum of this package file.
     string 'md5?;
+    # The MIME type of this package file.
     string content_type?;
+    # The upload state of this package file (e.g. uploaded).
     string state?;
+    # The size of this package file, in bytes.
     int size?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
+# The published version of a package, including registry-specific metadata.
 public type PackagePayloadPackageVersion record {
+    # The unique identifier of the resource.
     int id?;
+    # The version string of this package version.
     string 'version?;
+    # A short summary of this package version.
     string? summary?;
+    # The name of the package this version belongs to.
     string name?;
+    # The description of this package version.
     string? description?;
+    # The release notes body for this package version, in Markdown.
     string? body?;
+    # The release notes body for this package version, rendered as HTML.
     string? body_html?;
     # A reduced Release shape as delivered on a package version, not the full
     # Release resource (missing node_id, assets_url, upload_url, body, assets) -
     # must not $ref Release.
     PackagePayloadRelease? release?;
+    # The raw package manifest file content for this version.
     string? manifest?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The name of the Git tag associated with this package version.
     string? tag_name?;
+    # The branch or commit the associated Git tag targets.
     string target_commitish?;
+    # The resolved Git commit SHA that the associated tag targets.
     string target_oid?;
+    # Whether this package version is a draft.
     boolean draft?;
+    # Whether this package version is a prerelease.
     boolean prerelease?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # Genuinely arbitrary per GitHub's own webhook schema - each entry declares no
     # fixed shape (additionalProperties: true, no properties), confirmed via
@@ -1394,22 +1668,35 @@ public type PackagePayloadPackageVersion record {
     map<json>[] metadata?;
     # Metadata for a container (Docker) package version
     ContainerMetadata? container_metadata?;
+    # Metadata for an npm package version.
     NpmMetadata? npm_metadata?;
+    # NuGet-specific metadata for this package version.
     NugetMetadataItem[]? nuget_metadata?;
+    # RubyGems-specific metadata for this package version.
     RubygemsMetadataItem[]? rubygems_metadata?;
+    # The downloadable files included in this package version.
     PackagePayloadPackageFilesItem[] package_files?;
+    # The URL to view this package version.
     string? package_url?;
     # A GitHub user
     User author?;
+    # The URL of the source repository for this package version.
     string? source_url?;
+    # The command used to install this package version.
     string? installation_command?;
 };
 
+# The package registry a package version was published to.
 public type PackagePayloadRegistry record {
+    # The URL with more information about this registry.
     string about_url?;
+    # The name of the registry.
     string name?;
+    # The type of the registry.
     string 'type?;
+    # The API URL of the resource.
     string url?;
+    # The vendor that operates this registry.
     string vendor?;
 };
 
@@ -1419,17 +1706,25 @@ public type PackagePayloadPackage record {
     int id;
     # The name of the package.
     string name;
+    # The namespace of the package, e.g. npm scope or repository owner.
     string namespace?;
+    # A short description of the package.
     string? description?;
+    # The package ecosystem (e.g. npm, docker, maven, nuget, rubygems).
     string ecosystem?;
-    # The type of supported package. Packages in GitHub's Gradle registry have the type `maven`. Docker images pushed to GitHub's Container registry (`ghcr.io`) have the type `container`. You can use the type `docker` to find images that were pushed to GitHub's Docker registry (`docker.pkg.github.com`), even if these have now been migrated to the Container registry.
+    # The package registry type, e.g. maven, container, docker, npm, nuget, or rubygems.
     string package_type?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # A GitHub user
     User owner?;
+    # The published version of a package, including registry-specific metadata.
     PackagePayloadPackageVersion? package_version?;
+    # The package registry a package version was published to.
     PackagePayloadRegistry? registry?;
 };
 
@@ -1465,6 +1760,7 @@ public type RuleCodeScanningTool record {
 
 # Payload for sponsorship events
 public type SponsorshipPayload record {
+    # The action that was performed. Can be one of: created, cancelled, edited, tier_changed, pending_cancellation, pending_tier_change.
     string action;
     # The sponsorship object
     Sponsorship sponsorship;
@@ -1483,8 +1779,11 @@ public type SponsorshipPayload record {
 
 # The sponsorship object
 public type Sponsorship record {
+    # The GraphQL node ID.
     string node_id;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at;
+    # Whether the sponsorship is publicly visible (public or private).
     string privacy_level;
     # A GitHub Sponsors tier
     Tier tier;
@@ -1516,6 +1815,7 @@ public type SponsorshipPayloadChanges record {
 
 # Payload for sub_issues events
 public type SubIssuesPayload record {
+    # The action that was performed. Can be one of: sub_issue_added, sub_issue_removed, parent_issue_added, parent_issue_removed.
     string action;
     # The ID of the parent issue.
     int parent_issue_id;
@@ -1542,6 +1842,7 @@ public type SubIssuesPayload record {
 # Payload for project_column events (classic project columns).
 # Note: classic Projects are deprecated; use projects_v2 instead.
 public type ProjectColumnPayload record {
+    # The action that was performed. Can be one of: created, edited, moved, deleted.
     string action;
     # A column in a classic project board
     ProjectColumn project_column;
@@ -1563,15 +1864,21 @@ public type ProjectColumnPayload record {
 public type ProjectColumn record {
     # The unique identifier of the project column.
     int id;
+    # The GraphQL node ID.
     string node_id;
+    # The API URL of the resource.
     string url?;
+    # The API URL of the project this column belongs to.
     string project_url?;
+    # The API URL listing the cards in this column.
     string cards_url?;
     # Name of the project column.
     string name;
     # The ID of the column this column was moved after
     int? after_id?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
@@ -1591,12 +1898,15 @@ public type ProjectColumnPayloadChanges record {
 public type Team record {
     # Unique identifier of the team.
     int id;
+    # The GraphQL node ID.
     string node_id?;
     # Name of the team.
     string name;
+    # The URL-friendly identifier of the resource.
     string slug;
     # Description of the team.
     string? description?;
+    # The level of privacy this team has (e.g. closed, secret).
     string privacy?;
     # Whether team members will receive notifications when their team is @mentioned.
     string notification_setting?;
@@ -1604,8 +1914,11 @@ public type Team record {
     string permission?;
     # URL for the team.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The API URL listing the members of this team.
     string members_url?;
+    # The API URL listing the repositories associated with this resource.
     string repositories_url?;
     # A reduced "team-simple" shape, not a full Team - no nested parent (a team's parent
     # is never itself nested further, avoiding unbounded recursion).
@@ -1617,9 +1930,11 @@ public type Team record {
 public type Parent record {
     # Unique identifier of the team.
     int id;
+    # The GraphQL node ID.
     string node_id;
     # URL for the team.
     string url?;
+    # The API URL listing the members of this team.
     string members_url?;
     # Name of the team.
     string name;
@@ -1631,8 +1946,11 @@ public type Parent record {
     string privacy?;
     # The notification setting the team has set.
     string notification_setting?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The API URL listing the repositories associated with this resource.
     string repositories_url?;
+    # The URL-friendly identifier of the resource.
     string slug;
     # The ownership type of the team.
     string 'type;
@@ -1644,6 +1962,7 @@ public type Parent record {
 
 # Payload for marketplace_purchase events
 public type MarketplacePurchasePayload record {
+    # The action that was performed. Can be one of: purchased, cancelled, pending_change, pending_change_cancelled, changed.
     string action;
     # The GitHub Marketplace purchase
     MarketplacePurchase marketplace_purchase;
@@ -1697,11 +2016,13 @@ public type PushPayload record {
 public type Installation record {
     # The ID of the installation.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
 };
 
 # Payload for branch_protection_rule events
 public type BranchProtectionRulePayload record {
+    # The action that was performed. Can be one of: created, edited, deleted.
     string action;
     # The branch protection rule. Includes name and all branch protection
     # settings applied to matching branches. Binary settings are boolean;
@@ -1945,6 +2266,7 @@ public type BranchProtectionRulePayloadChanges record {
 
 # Payload for pull_request_review_comment events
 public type PullRequestReviewCommentPayload record {
+    # The action that was performed. Can be one of: created, deleted, edited.
     string action;
     # A comment on a pull request diff
     PullRequestReviewComment comment;
@@ -1978,8 +2300,11 @@ public type PullRequestReviewCommentPayloadChanges record {
 
 # A pull request head or base ref
 public type PullRequestRef record {
+    # The ref's label in owner:branch form, e.g. octocat:main.
     string label?;
+    # The name of the branch or tag.
     string ref?;
+    # The SHA of the commit at the tip of the ref.
     string sha?;
     # A GitHub user
     User user?;
@@ -1989,6 +2314,7 @@ public type PullRequestRef record {
 
 # Payload for projects_v2_item events
 public type 'ProjectsV2ItemPayload record {
+    # The action that was performed. Can be one of: edited, created, archived, deleted, restored, reordered, converted.
     string action;
     # An item belonging to a Projects v2 project
     'projectsV2Item 'projects_v2_item;
@@ -2066,6 +2392,7 @@ public type Config record {
 
 # The webhook that is being pinged
 public type Hook record {
+    # The kind of target the webhook is attached to. Can be one of: Repository, Organization, App.
     string 'type?;
     # Unique identifier of the webhook.
     int id?;
@@ -2077,8 +2404,11 @@ public type Hook record {
     string[] events?;
     # Configuration object of the webhook.
     Config config?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The API URL of the resource.
     string url?;
 };
 
@@ -2128,16 +2458,23 @@ public type Repository record {
     boolean 'fork?;
     # The URL to get more information about the repository from the GitHub API.
     string url?;
+    # The repository's homepage URL, if set.
     string? homepage?;
+    # The repository's primary programming language.
     string? language?;
+    # The number of forks of the repository.
     int forks_count?;
+    # The number of users who have starred the repository.
     int stargazers_count?;
+    # The number of users watching the repository.
     int watchers_count?;
     # The size of the repository, in kilobytes. Size is calculated hourly. When a repository is initially created, the size is 0.
     int size?;
     # The default branch of the repository.
     string default_branch?;
+    # The number of open issues and pull requests in the repository.
     int open_issues_count?;
+    # The list of topics associated with the repository.
     string[] topics?;
     # Whether issues are enabled.
     boolean has_issues?;
@@ -2145,6 +2482,7 @@ public type Repository record {
     boolean has_projects?;
     # Whether the wiki is enabled.
     boolean has_wiki?;
+    # Whether GitHub Pages is enabled for the repository.
     boolean has_pages?;
     # Whether downloads are enabled.
     boolean has_downloads?;
@@ -2154,16 +2492,25 @@ public type Repository record {
     boolean disabled?;
     # The repository visibility: public, private, or internal.
     string visibility?;
+    # The date and time the repository was last pushed to.
     string? pushed_at?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # A repository's software license.
     License? license?;
 };
 
+# A repository's software license.
 public type License record {
+    # The SPDX license key identifier, e.g. mit.
     string 'key?;
+    # The full name of the license.
     string name?;
+    # The SPDX identifier of the license.
     string spdx_id?;
+    # The API URL of the resource.
     string? url?;
 };
 
@@ -2195,7 +2542,9 @@ public type PullRequestReviewComment record {
     string original_commit_id?;
     # A GitHub user
     User user?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # How the author is associated with the repository.
     string author_association?;
@@ -2207,6 +2556,7 @@ public type PullRequestReviewComment record {
 
 # Payload for team events
 public type TeamPayload record {
+    # The action that was performed. Can be one of: created, deleted, edited, added_to_repository, removed_from_repository.
     string action;
     # A GitHub organization team
     Team team;
@@ -2270,20 +2620,26 @@ public type Enterprise record {
     string slug?;
     # The name of the enterprise.
     string name?;
+    # The GraphQL node ID.
     string node_id?;
+    # The URL of the user's or organization's avatar image.
     string avatar_url?;
     # A short description of the enterprise.
     string? description?;
     # The enterprise's website URL.
     string? website_url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
 # Payload for project events (classic project boards).
 # Note: classic Projects are deprecated; use projects_v2 instead.
 public type ProjectPayload record {
+    # The action that was performed. Can be one of: deleted, created, closed, reopened, edited.
     string action;
     # A classic project board
     Project project;
@@ -2303,21 +2659,29 @@ public type ProjectPayload record {
 
 # A classic project board
 public type Project record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The API URL listing the project's columns.
     string columns_url?;
     # Name of the project.
     string name;
     # Body of the project.
     string? body?;
+    # The project's number, unique within its owner.
     int number;
     # State of the project; either 'open' or 'closed'.
     string state;
     # A GitHub user
     User creator?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
@@ -2343,9 +2707,11 @@ public type ProjectPayloadChanges record {
 
 # Payload for installation_target events (GitHub App installation account renamed)
 public type InstallationTargetPayload record {
+    # The action that was performed. Always: renamed.
     string action;
     # The account (user or organization) where the app is installed
     InstallationTargetPayloadAccount account;
+    # The type of account the app is installed on: user or organization.
     string target_type;
     # The changes made to the account
     InstallationTargetPayloadChanges changes;
@@ -2355,12 +2721,19 @@ public type InstallationTargetPayload record {
 
 # The account (user or organization) where the app is installed
 public type InstallationTargetPayloadAccount record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id?;
+    # The username or organization login of the account.
     string login;
+    # The account type. Can be one of: Bot, User, Organization.
     string 'type;
+    # The URL of the user's or organization's avatar image.
     string avatar_url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # Whether the user is a GitHub site administrator.
     boolean site_admin?;
 };
 
@@ -2386,7 +2759,9 @@ public type InstallationTargetPayloadChanges record {
 
 # A deployment status
 public type DeploymentStatus record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id?;
     # The new state. Can be `pending`, `success`, `failure`, or `error`.
     string state;
@@ -2402,9 +2777,13 @@ public type DeploymentStatus record {
     string? log_url?;
     # The optional link added to the status.
     string? target_url?;
+    # The API URL of the deployment this status belongs to.
     string deployment_url?;
+    # The API URL of the repository the deployment belongs to.
     string repository_url?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # A GitHub App
     App? performed_via_github_app?;
@@ -2412,6 +2791,7 @@ public type DeploymentStatus record {
 
 # Payload for installation_repositories events
 public type InstallationRepositoriesPayload record {
+    # The action that was performed. Can be one of: added, removed.
     string action;
     # Repositories added to the installation
     RepositoriesAddedItem[] repositories_added;
@@ -2431,28 +2811,43 @@ public type InstallationRepositoriesPayload record {
     Enterprise enterprise?;
 };
 
+# A repository added to a GitHub App installation.
 public type RepositoriesAddedItem record {
+    # The unique identifier of the resource.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
+    # The name of the repository.
     string name?;
+    # The full name of the repository, in owner/repo format.
     string full_name?;
+    # Whether the repository is private.
     boolean 'private?;
 };
 
+# A repository removed from a GitHub App installation.
 public type RepositoriesRemovedItem record {
+    # The unique identifier of the resource.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
+    # The name of the repository.
     string name?;
+    # The full name of the repository, in owner/repo format.
     string full_name?;
+    # Whether the repository is private.
     boolean 'private?;
 };
 
 # An issue on GitHub
 public type Issue record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id?;
     # URL for the issue.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
     # Number uniquely identifying the issue within its repository.
     int number;
@@ -2462,21 +2857,29 @@ public type Issue record {
     string? body?;
     # State of the issue; either `open` or `closed`.
     string state;
+    # Whether the issue's conversation has been locked.
     boolean locked?;
     # A GitHub user
     User user?;
+    # Labels attached to the issue.
     Label[] labels?;
     # A GitHub user
     User? assignee?;
+    # The users assigned to the issue.
     User[] assignees?;
     # A milestone on an issue or pull request
     Milestone milestone?;
+    # The number of comments on the issue.
     int comments?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # The date and time the issue was closed, if closed.
     string? closed_at?;
     # How the author is associated with the repository.
     string author_association?;
+    # The reason the issue's conversation was locked, if locked.
     string? active_lock_reason?;
 };
 
@@ -2484,6 +2887,7 @@ public type Issue record {
 public type Label record {
     # Unique identifier for the label.
     int id;
+    # The GraphQL node ID.
     string node_id?;
     # URL for the label.
     string url?;
@@ -2501,7 +2905,9 @@ public type Label record {
 public type Deployment record {
     # Unique identifier of the deployment.
     int id;
+    # The GraphQL node ID.
     string node_id?;
+    # The SHA of the commit that was deployed.
     string sha;
     # The ref to deploy. This can be a branch, tag, or sha.
     string ref;
@@ -2509,15 +2915,21 @@ public type Deployment record {
     string task;
     # JSON payload with extra information about the deployment
     map<json> payload?;
+    # The environment name originally requested, before normalization to `environment`.
     string original_environment?;
     # Name of the target deployment environment.
     string environment;
+    # A short description of the deployment.
     string? description?;
     # A GitHub user
     User creator?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # The API URL listing the deployment's statuses.
     string statuses_url?;
+    # The API URL of the repository the deployment belongs to.
     string repository_url?;
     # Specifies if the given environment will no longer exist at some point in the future. Default: false.
     boolean transient_environment?;
@@ -2545,6 +2957,7 @@ public type BranchProtectionConfigurationPayload record {
 
 # Payload for repository_ruleset events
 public type RepositoryRulesetPayload record {
+    # The action that was performed. Can be one of: created, edited, deleted.
     string action;
     # A set of rules to apply when specified conditions are met
     RepositoryRuleset repository_ruleset;
@@ -2845,11 +3258,16 @@ public type RulesItemCodeScanning record {
     RulesItemCodeScanningParameters parameters?;
 };
 
+# One rule in a ruleset; shape depends on its `type` discriminator.
 public type RulesItem RulesItemCreation|RulesItemUpdate|RulesItemDeletion|RulesItemRequiredLinearHistory|RulesItemMergeQueue|RulesItemRequiredDeployments|RulesItemRequiredSignatures|RulesItemPullRequest|RulesItemRequiredStatusChecks|RulesItemNonFastForward|RulesItemCommitMessagePattern|RulesItemCommitAuthorEmailPattern|RulesItemCommitterEmailPattern|RulesItemBranchNamePattern|RulesItemTagNamePattern|RulesItemFilePathRestriction|RulesItemMaxFilePathLength|RulesItemFileExtensionRestriction|RulesItemMaxFileSize|RulesItemWorkflows|RulesItemCodeScanning;
 
+# An actor permitted to bypass this ruleset's rules.
 public type BypassActorsItem record {
+    # The ID of the actor that can bypass this ruleset.
     int? actor_id?;
+    # The type of actor that can bypass this ruleset, e.g. Team or OrganizationAdmin.
     string actor_type?;
+    # When the actor can bypass this ruleset, e.g. always or pull_request.
     string bypass_mode?;
 };
 
@@ -2876,7 +3294,9 @@ public type RepositoryRuleset record {
     RulesItem[] rules?;
     # The actors that can bypass the rules in this ruleset.
     BypassActorsItem[] bypass_actors?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
@@ -2890,6 +3310,46 @@ public type RepositoryRulesetPayloadName record {
 public type Enforcement record {
     # The previous value, before this change.
     string 'from?;
+};
+
+# Parameters for a repository ruleset ref name condition.
+public type RepositoryRulesetPayloadRefName record {
+    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+    string[] include?;
+    # Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
+    string[] exclude?;
+};
+
+public type AddedItem record {
+    # Parameters for a repository ruleset ref name condition.
+    RepositoryRulesetPayloadRefName ref_name?;
+};
+
+# Parameters for a repository ruleset ref name condition.
+public type RepositoryRulesetPayloadRefName2 record {
+    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+    string[] include?;
+    # Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
+    string[] exclude?;
+};
+
+public type DeletedItem record {
+    # Parameters for a repository ruleset ref name condition.
+    RepositoryRulesetPayloadRefName2 ref_name?;
+};
+
+# Parameters for a repository ruleset ref name condition.
+public type RepositoryRulesetPayloadRefName3 record {
+    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+    string[] include?;
+    # Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
+    string[] exclude?;
+};
+
+# The current state of the updated condition.
+public type Condition record {
+    # Parameters for a repository ruleset ref name condition.
+    RepositoryRulesetPayloadRefName3 ref_name?;
 };
 
 # The condition's previous type, before this edit.
@@ -2928,9 +3388,10 @@ public type RepositoryRulesetPayloadChanges2 record {
     Exclude exclude?;
 };
 
+# A ruleset condition whose fields changed in this edit, with its current state and the diff.
 public type UpdatedItem record {
     # The current state of the updated condition.
-    record {} condition?;
+    Condition condition?;
     # The fields of the condition that changed.
     RepositoryRulesetPayloadChanges2 changes?;
 };
@@ -2938,33 +3399,380 @@ public type UpdatedItem record {
 # The ref-targeting conditions added, deleted, or updated on the ruleset.
 public type RepositoryRulesetPayloadConditions record {
     # Conditions newly added to the ruleset.
-    record {}[] added?;
+    AddedItem[] added?;
     # Conditions removed from the ruleset.
-    record {}[] deleted?;
+    DeletedItem[] deleted?;
     # Conditions whose own fields changed on the ruleset.
     UpdatedItem[] updated?;
 };
 
-public type AddedItem record {
+# Parameters for the `update` rule.
+public type 'ParametersBranch0 record {
+    # Branch can pull changes from its upstream repository
+    boolean update_allows_fetch_and_merge?;
+};
+
+# Parameters for the `merge_queue` rule.
+public type 'ParametersBranch1 record {
+    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
+    int check_response_timeout_minutes?;
+    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
+    string grouping_strategy?;
+    # Limit the number of queued pull requests requesting checks and workflow runs at the same time.
+    int max_entries_to_build?;
+    # The maximum number of PRs that will be merged together in a group.
+    int max_entries_to_merge?;
+    # Method to use when merging changes from queued pull requests.
+    string merge_method?;
+    # The minimum number of PRs that will be merged together in a group.
+    int min_entries_to_merge?;
+    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
+    int min_entries_to_merge_wait_minutes?;
+};
+
+# Parameters for the `required_deployments` rule.
+public type 'ParametersBranch2 record {
+    # Environments that must be successfully deployed to before branches can be merged.
+    string[] required_deployment_environments?;
+};
+
+# Parameters for the `pull_request` rule.
+public type 'ParametersBranch3 record {
+    # Array of allowed merge methods. At least one option must be enabled.
+    string[] allowed_merge_methods?;
+    # New, reviewable commits pushed will dismiss previous pull request review approvals.
+    boolean dismiss_stale_reviews_on_push?;
+    # Specify people, teams, or apps allowed to dismiss pull request reviews.
+    RuleDismissalRestriction dismissal_restriction?;
+    # Require an approving review in pull requests that modify files that have a designated code owner.
+    boolean require_code_owner_review?;
+    # Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
+    boolean require_last_push_approval?;
+    # The number of approving reviews that are required before a pull request can be merged.
+    int required_approving_review_count?;
+    # All conversations on code must be resolved before a pull request can be merged.
+    boolean required_review_thread_resolution?;
+    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
+    RuleRequiredReviewerConfiguration[] required_reviewers?;
+};
+
+# Parameters for the `required_status_checks` rule.
+public type 'ParametersBranch4 record {
+    # Allow repositories and branches to be created if a check would otherwise prohibit it.
+    boolean do_not_enforce_on_create?;
+    # Status checks that are required.
+    RuleStatusCheckConfiguration[] required_status_checks?;
+    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
+    boolean strict_required_status_checks_policy?;
+};
+
+# Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+# commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+# tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
+public type 'ParametersBranch5 record {
+    # How this rule appears when configuring it.
+    string name?;
+    # If true, the rule will fail if the pattern matches.
+    boolean negate?;
+    # The operator to use for matching.
+    string operator?;
+    # The pattern to match with.
+    string pattern?;
+};
+
+# Parameters for the `file_path_restriction` rule.
+public type 'ParametersBranch6 record {
+    # File paths that are restricted from being pushed to the commit graph.
+    string[] restricted_file_paths?;
+};
+
+# Parameters for the `max_file_path_length` rule.
+public type 'ParametersBranch7 record {
+    # The maximum amount of characters allowed in file paths.
+    int max_file_path_length?;
+};
+
+# Parameters for the `file_extension_restriction` rule.
+public type 'ParametersBranch8 record {
+    # File extensions that are restricted from being pushed to the commit graph.
+    string[] restricted_file_extensions?;
+};
+
+# Parameters for the `max_file_size` rule.
+public type 'ParametersBranch9 record {
+    # The maximum file size allowed in megabytes.
+    int max_file_size?;
+};
+
+# Parameters for the `workflows` rule.
+public type 'ParametersBranch10 record {
+    # Allow repositories and branches to be created if a check would otherwise prohibit it.
+    boolean do_not_enforce_on_create?;
+    # Workflows that must pass for this rule to pass.
+    RuleWorkflowFileReference[] workflows?;
+};
+
+# Parameters for the `code_scanning` rule.
+public type 'ParametersBranch11 record {
+    # Tools that must provide code scanning results for this rule to pass.
+    RuleCodeScanningTool[] code_scanning_tools?;
+};
+
+# The parameters of the rule that was added.
+public type Parameters 'ParametersBranch0|'ParametersBranch1|'ParametersBranch2|'ParametersBranch3|'ParametersBranch4|'ParametersBranch5|'ParametersBranch6|'ParametersBranch7|'ParametersBranch8|'ParametersBranch9|'ParametersBranch10|'ParametersBranch11;
+
+# A rule added to the ruleset by this edit.
+public type RepositoryRulesetPayloadAddedItem record {
     # The type of rule that was added.
     string 'type?;
     # The parameters of the rule that was added.
-    record {} parameters?;
+    Parameters parameters?;
 };
 
-public type DeletedItem record {
+# Parameters for the `update` rule.
+public type 'RepositoryRulesetPayloadParametersBranch0 record {
+    # Branch can pull changes from its upstream repository
+    boolean update_allows_fetch_and_merge?;
+};
+
+# Parameters for the `merge_queue` rule.
+public type 'RepositoryRulesetPayloadParametersBranch1 record {
+    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
+    int check_response_timeout_minutes?;
+    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
+    string grouping_strategy?;
+    # Limit the number of queued pull requests requesting checks and workflow runs at the same time.
+    int max_entries_to_build?;
+    # The maximum number of PRs that will be merged together in a group.
+    int max_entries_to_merge?;
+    # Method to use when merging changes from queued pull requests.
+    string merge_method?;
+    # The minimum number of PRs that will be merged together in a group.
+    int min_entries_to_merge?;
+    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
+    int min_entries_to_merge_wait_minutes?;
+};
+
+# Parameters for the `required_deployments` rule.
+public type 'RepositoryRulesetPayloadParametersBranch2 record {
+    # Environments that must be successfully deployed to before branches can be merged.
+    string[] required_deployment_environments?;
+};
+
+# Parameters for the `pull_request` rule.
+public type 'RepositoryRulesetPayloadParametersBranch3 record {
+    # Array of allowed merge methods. At least one option must be enabled.
+    string[] allowed_merge_methods?;
+    # New, reviewable commits pushed will dismiss previous pull request review approvals.
+    boolean dismiss_stale_reviews_on_push?;
+    # Specify people, teams, or apps allowed to dismiss pull request reviews.
+    RuleDismissalRestriction dismissal_restriction?;
+    # Require an approving review in pull requests that modify files that have a designated code owner.
+    boolean require_code_owner_review?;
+    # Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
+    boolean require_last_push_approval?;
+    # The number of approving reviews that are required before a pull request can be merged.
+    int required_approving_review_count?;
+    # All conversations on code must be resolved before a pull request can be merged.
+    boolean required_review_thread_resolution?;
+    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
+    RuleRequiredReviewerConfiguration[] required_reviewers?;
+};
+
+# Parameters for the `required_status_checks` rule.
+public type 'RepositoryRulesetPayloadParametersBranch4 record {
+    # Allow repositories and branches to be created if a check would otherwise prohibit it.
+    boolean do_not_enforce_on_create?;
+    # Status checks that are required.
+    RuleStatusCheckConfiguration[] required_status_checks?;
+    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
+    boolean strict_required_status_checks_policy?;
+};
+
+# Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+# commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+# tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
+public type 'RepositoryRulesetPayloadParametersBranch5 record {
+    # How this rule appears when configuring it.
+    string name?;
+    # If true, the rule will fail if the pattern matches.
+    boolean negate?;
+    # The operator to use for matching.
+    string operator?;
+    # The pattern to match with.
+    string pattern?;
+};
+
+# Parameters for the `file_path_restriction` rule.
+public type 'RepositoryRulesetPayloadParametersBranch6 record {
+    # File paths that are restricted from being pushed to the commit graph.
+    string[] restricted_file_paths?;
+};
+
+# Parameters for the `max_file_path_length` rule.
+public type 'RepositoryRulesetPayloadParametersBranch7 record {
+    # The maximum amount of characters allowed in file paths.
+    int max_file_path_length?;
+};
+
+# Parameters for the `file_extension_restriction` rule.
+public type 'RepositoryRulesetPayloadParametersBranch8 record {
+    # File extensions that are restricted from being pushed to the commit graph.
+    string[] restricted_file_extensions?;
+};
+
+# Parameters for the `max_file_size` rule.
+public type 'RepositoryRulesetPayloadParametersBranch9 record {
+    # The maximum file size allowed in megabytes.
+    int max_file_size?;
+};
+
+# Parameters for the `workflows` rule.
+public type 'RepositoryRulesetPayloadParametersBranch10 record {
+    # Allow repositories and branches to be created if a check would otherwise prohibit it.
+    boolean do_not_enforce_on_create?;
+    # Workflows that must pass for this rule to pass.
+    RuleWorkflowFileReference[] workflows?;
+};
+
+# Parameters for the `code_scanning` rule.
+public type 'RepositoryRulesetPayloadParametersBranch11 record {
+    # Tools that must provide code scanning results for this rule to pass.
+    RuleCodeScanningTool[] code_scanning_tools?;
+};
+
+# The parameters of the rule that was removed.
+public type RepositoryRulesetPayloadParameters 'RepositoryRulesetPayloadParametersBranch0|'RepositoryRulesetPayloadParametersBranch1|'RepositoryRulesetPayloadParametersBranch2|'RepositoryRulesetPayloadParametersBranch3|'RepositoryRulesetPayloadParametersBranch4|'RepositoryRulesetPayloadParametersBranch5|'RepositoryRulesetPayloadParametersBranch6|'RepositoryRulesetPayloadParametersBranch7|'RepositoryRulesetPayloadParametersBranch8|'RepositoryRulesetPayloadParametersBranch9|'RepositoryRulesetPayloadParametersBranch10|'RepositoryRulesetPayloadParametersBranch11;
+
+# A rule removed from the ruleset by this edit.
+public type RepositoryRulesetPayloadDeletedItem record {
     # The type of rule that was removed.
     string 'type?;
     # The parameters of the rule that was removed.
-    record {} parameters?;
+    RepositoryRulesetPayloadParameters parameters?;
 };
+
+# Parameters for the `update` rule.
+public type 'RepositoryRulesetPayloadParametersBranch02 record {
+    # Branch can pull changes from its upstream repository
+    boolean update_allows_fetch_and_merge?;
+};
+
+# Parameters for the `merge_queue` rule.
+public type 'RepositoryRulesetPayloadParametersBranch12 record {
+    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
+    int check_response_timeout_minutes?;
+    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
+    string grouping_strategy?;
+    # Limit the number of queued pull requests requesting checks and workflow runs at the same time.
+    int max_entries_to_build?;
+    # The maximum number of PRs that will be merged together in a group.
+    int max_entries_to_merge?;
+    # Method to use when merging changes from queued pull requests.
+    string merge_method?;
+    # The minimum number of PRs that will be merged together in a group.
+    int min_entries_to_merge?;
+    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
+    int min_entries_to_merge_wait_minutes?;
+};
+
+# Parameters for the `required_deployments` rule.
+public type 'RepositoryRulesetPayloadParametersBranch22 record {
+    # Environments that must be successfully deployed to before branches can be merged.
+    string[] required_deployment_environments?;
+};
+
+# Parameters for the `pull_request` rule.
+public type 'RepositoryRulesetPayloadParametersBranch32 record {
+    # Array of allowed merge methods. At least one option must be enabled.
+    string[] allowed_merge_methods?;
+    # New, reviewable commits pushed will dismiss previous pull request review approvals.
+    boolean dismiss_stale_reviews_on_push?;
+    # Specify people, teams, or apps allowed to dismiss pull request reviews.
+    RuleDismissalRestriction dismissal_restriction?;
+    # Require an approving review in pull requests that modify files that have a designated code owner.
+    boolean require_code_owner_review?;
+    # Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
+    boolean require_last_push_approval?;
+    # The number of approving reviews that are required before a pull request can be merged.
+    int required_approving_review_count?;
+    # All conversations on code must be resolved before a pull request can be merged.
+    boolean required_review_thread_resolution?;
+    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
+    RuleRequiredReviewerConfiguration[] required_reviewers?;
+};
+
+# Parameters for the `required_status_checks` rule.
+public type 'RepositoryRulesetPayloadParametersBranch42 record {
+    # Allow repositories and branches to be created if a check would otherwise prohibit it.
+    boolean do_not_enforce_on_create?;
+    # Status checks that are required.
+    RuleStatusCheckConfiguration[] required_status_checks?;
+    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
+    boolean strict_required_status_checks_policy?;
+};
+
+# Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
+# commit_author_email_pattern, committer_email_pattern, branch_name_pattern,
+# tag_name_pattern) - identical parameters shape for all five per GitHub's own schema.
+public type 'RepositoryRulesetPayloadParametersBranch52 record {
+    # How this rule appears when configuring it.
+    string name?;
+    # If true, the rule will fail if the pattern matches.
+    boolean negate?;
+    # The operator to use for matching.
+    string operator?;
+    # The pattern to match with.
+    string pattern?;
+};
+
+# Parameters for the `file_path_restriction` rule.
+public type 'RepositoryRulesetPayloadParametersBranch62 record {
+    # File paths that are restricted from being pushed to the commit graph.
+    string[] restricted_file_paths?;
+};
+
+# Parameters for the `max_file_path_length` rule.
+public type 'RepositoryRulesetPayloadParametersBranch72 record {
+    # The maximum amount of characters allowed in file paths.
+    int max_file_path_length?;
+};
+
+# Parameters for the `file_extension_restriction` rule.
+public type 'RepositoryRulesetPayloadParametersBranch82 record {
+    # File extensions that are restricted from being pushed to the commit graph.
+    string[] restricted_file_extensions?;
+};
+
+# Parameters for the `max_file_size` rule.
+public type 'RepositoryRulesetPayloadParametersBranch92 record {
+    # The maximum file size allowed in megabytes.
+    int max_file_size?;
+};
+
+# Parameters for the `workflows` rule.
+public type 'RepositoryRulesetPayloadParametersBranch102 record {
+    # Allow repositories and branches to be created if a check would otherwise prohibit it.
+    boolean do_not_enforce_on_create?;
+    # Workflows that must pass for this rule to pass.
+    RuleWorkflowFileReference[] workflows?;
+};
+
+# Parameters for the `code_scanning` rule.
+public type 'RepositoryRulesetPayloadParametersBranch112 record {
+    # Tools that must provide code scanning results for this rule to pass.
+    RuleCodeScanningTool[] code_scanning_tools?;
+};
+
+# The parameters of the updated rule.
+public type RepositoryRulesetPayloadParameters2 'RepositoryRulesetPayloadParametersBranch02|'RepositoryRulesetPayloadParametersBranch12|'RepositoryRulesetPayloadParametersBranch22|'RepositoryRulesetPayloadParametersBranch32|'RepositoryRulesetPayloadParametersBranch42|'RepositoryRulesetPayloadParametersBranch52|'RepositoryRulesetPayloadParametersBranch62|'RepositoryRulesetPayloadParametersBranch72|'RepositoryRulesetPayloadParametersBranch82|'RepositoryRulesetPayloadParametersBranch92|'RepositoryRulesetPayloadParametersBranch102|'RepositoryRulesetPayloadParametersBranch112;
 
 # The current state of the updated rule.
 public type RepositoryRulesetPayloadRule record {
     # The type of the updated rule.
     string 'type?;
     # The parameters of the updated rule.
-    record {} parameters?;
+    RepositoryRulesetPayloadParameters2 parameters?;
 };
 
 # The rule's previous configuration, before this edit.
@@ -2995,6 +3803,7 @@ public type RepositoryRulesetPayloadChanges3 record {
     Pattern pattern?;
 };
 
+# A ruleset rule whose fields changed in this edit, with its current state and the diff.
 public type RepositoryRulesetPayloadUpdatedItem record {
     # The current state of the updated rule.
     RepositoryRulesetPayloadRule rule?;
@@ -3005,9 +3814,9 @@ public type RepositoryRulesetPayloadUpdatedItem record {
 # The rules added, deleted, or updated on the ruleset.
 public type Rules record {
     # Rules newly added to the ruleset.
-    AddedItem[] added?;
+    RepositoryRulesetPayloadAddedItem[] added?;
     # Rules removed from the ruleset.
-    DeletedItem[] deleted?;
+    RepositoryRulesetPayloadDeletedItem[] deleted?;
     # Rules whose own fields changed on the ruleset.
     RepositoryRulesetPayloadUpdatedItem[] updated?;
 };
@@ -3048,6 +3857,7 @@ public type SecurityAndAnalysisPayload record {
 public type AdvancedSecurity record {
     # The previous value, before this change.
     string 'from?;
+    # The new value, after this change.
     string to?;
 };
 
@@ -3055,6 +3865,7 @@ public type AdvancedSecurity record {
 public type DependabotAlerts record {
     # The previous value, before this change.
     string 'from?;
+    # The new value, after this change.
     string to?;
 };
 
@@ -3062,6 +3873,7 @@ public type DependabotAlerts record {
 public type DependabotSecurityUpdates record {
     # The previous value, before this change.
     string 'from?;
+    # The new value, after this change.
     string to?;
 };
 
@@ -3069,6 +3881,7 @@ public type DependabotSecurityUpdates record {
 public type SecretScanning record {
     # The previous value, before this change.
     string 'from?;
+    # The new value, after this change.
     string to?;
 };
 
@@ -3076,6 +3889,7 @@ public type SecretScanning record {
 public type SecretScanningPushProtection record {
     # The previous value, before this change.
     string 'from?;
+    # The new value, after this change.
     string to?;
 };
 
@@ -3083,6 +3897,7 @@ public type SecretScanningPushProtection record {
 public type SecretScanningNonProviderPatterns record {
     # The previous value, before this change.
     string 'from?;
+    # The new value, after this change.
     string to?;
 };
 
@@ -3108,11 +3923,13 @@ public type CommitAuthor record {
     string name?;
     # The git author's email address.
     string email?;
+    # The git author's GitHub username, if their email matched a GitHub account.
     string username?;
 };
 
 # Payload for deploy_key events
 public type DeployKeyPayload record {
+    # The action that was performed. Can be one of: created, deleted.
     string action;
     # The deploy key resource
     'key 'key;
@@ -3130,20 +3947,29 @@ public type DeployKeyPayload record {
 
 # The deploy key resource
 public type 'key record {
+    # The unique identifier of the resource.
     int id;
     # The public key
     string 'key;
+    # The API URL of the resource.
     string url?;
+    # The user-supplied label for the deploy key.
     string title?;
+    # Whether GitHub has verified the deploy key.
     boolean verified?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # Whether the deploy key has read-only (not read-write) access.
     boolean read_only?;
+    # The username of the user who added the deploy key, if known.
     string? added_by?;
+    # The date and time the deploy key was last used, in ISO 8601 format.
     string? last_used?;
 };
 
 # Payload for issue_dependencies events
 public type IssueDependenciesPayload record {
+    # The action that was performed. Can be one of: blocking_removed, blocked_by_removed, blocking_added, blocked_by_added.
     string action;
     # The ID of the blocked issue.
     int blocked_issue_id?;
@@ -3169,6 +3995,7 @@ public type IssueDependenciesPayload record {
 
 # Payload for repository_advisory events
 public type RepositoryAdvisoryPayload record {
+    # The action that was performed. Can be one of: reported, published.
     string action;
     # A repository security advisory
     RepositoryAdvisory repository_advisory;
@@ -3184,8 +4011,11 @@ public type RepositoryAdvisoryPayload record {
     Enterprise enterprise?;
 };
 
+# A CVE or GHSA identifier for the advisory.
 public type IdentifiersItem record {
+    # The type of identifier, e.g. CVE or GHSA.
     string 'type?;
+    # The identifier value.
     string value?;
 };
 
@@ -3195,31 +4025,47 @@ public type Submission record {
     boolean accepted?;
 };
 
+# The package affected by the vulnerability.
 public type RepositoryAdvisoryPayloadPackage record {
+    # The package ecosystem the affected package belongs to, e.g. npm.
     string ecosystem?;
+    # The name of the affected package.
     string name?;
 };
 
+# One package version range affected by the advisory.
 public type VulnerabilitiesItem record {
+    # The package affected by the vulnerability.
     RepositoryAdvisoryPayloadPackage package?;
+    # The range of versions affected by the vulnerability.
     string? vulnerable_version_range?;
+    # The versions that contain a patch for the vulnerability.
     string? patched_versions?;
+    # The functions affected by the vulnerability.
     string[] vulnerable_functions?;
 };
 
+# The CVSS score and vector for the advisory.
 public type Cvss record {
+    # The CVSS vector string describing the vulnerability's characteristics.
     string? vector_string?;
+    # The CVSS score of the vulnerability.
     decimal? score?;
 };
 
+# A CWE (Common Weakness Enumeration) classification for the advisory.
 public type CwesItem record {
+    # The CWE identifier, e.g. CWE-79.
     string cwe_id?;
+    # The name of the CWE weakness.
     string name?;
 };
 
+# A user credited for reporting or fixing the advisory.
 public type CreditsItem record {
     # A GitHub user
     User user?;
+    # The type of credit given to the user, e.g. reporter.
     string 'type?;
 };
 
@@ -3243,6 +4089,7 @@ public type RepositoryAdvisory record {
     User author?;
     # A GitHub user
     User? publisher?;
+    # The CVE and/or GHSA identifiers for the advisory.
     IdentifiersItem[] identifiers?;
     # The state of the advisory.
     string state;
@@ -3258,13 +4105,17 @@ public type RepositoryAdvisory record {
     Submission? submission?;
     # The products affected by the vulnerability detailed in the advisory.
     VulnerabilitiesItem[] vulnerabilities?;
+    # The CVSS score and vector for the advisory.
     Cvss? cvss?;
+    # The CWE classifications for the advisory.
     CwesItem[]? cwes?;
+    # The users credited for reporting or fixing the advisory.
     CreditsItem[]? credits?;
 };
 
 # Payload for repository_vulnerability_alert events (closing down — use dependabot_alert)
 public type RepositoryVulnerabilityAlertPayload record {
+    # The action that was performed. Can be one of: create, dismiss, reopen, resolve.
     string action;
     # The security alert of the vulnerable dependency
     RepositoryVulnerabilityAlertPayloadAlert alert;
@@ -3280,39 +4131,61 @@ public type RepositoryVulnerabilityAlertPayload record {
 
 # The security alert of the vulnerable dependency
 public type RepositoryVulnerabilityAlertPayloadAlert record {
+    # The unique identifier of the resource.
     int id;
+    # The name of the package affected by the vulnerability.
     string affected_package_name;
+    # The range of package versions affected by the vulnerability.
     string affected_range;
+    # The package version that resolves the vulnerability.
     string? fixed_in?;
+    # The severity of the vulnerability.
     string severity;
+    # The GitHub Security Advisory identifier for the vulnerability.
     string ghsa_id?;
+    # The vulnerability's identifier in an external database, e.g. a CVE ID.
     string external_identifier?;
+    # A URL to the vulnerability's external reference source.
     string? external_reference?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the alert was automatically dismissed, in ISO 8601 format.
     string? auto_dismissed_at?;
+    # The reason the alert was dismissed.
     string? dismiss_reason?;
+    # The date and time the alert was dismissed, in ISO 8601 format.
     string? dismissed_at?;
     # A GitHub user
     User? dismissed_by?;
+    # The alert number, unique within the repository.
     int number?;
 };
 
 # A milestone on an issue or pull request
 public type Milestone record {
+    # The unique identifier of the resource.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
     # The number of the milestone.
     int number?;
     # The title of the milestone.
     string title?;
+    # A description of the milestone.
     string? description?;
     # The state of the milestone.
     string state?;
+    # The number of open issues associated with the milestone.
     int open_issues?;
+    # The number of closed issues associated with the milestone.
     int closed_issues?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # The date the milestone is due, in ISO 8601 format.
     string? due_on?;
+    # The date and time the milestone was closed, in ISO 8601 format.
     string? closed_at?;
     # A GitHub user
     User creator?;
@@ -3366,6 +4239,7 @@ public type IssuesPayloadChanges record {
 
 # Payload for code_scanning_alert events
 public type CodeScanningAlertPayload record {
+    # The action that was performed. Can be one of: appeared_in_branch, closed_by_user, created, fixed, reopened, reopened_by_user, updated_assignment.
     string action;
     # The code scanning alert involved in the event
     CodeScanningAlertPayloadAlert alert;
@@ -3387,20 +4261,33 @@ public type CodeScanningAlertPayload record {
     Enterprise enterprise?;
 };
 
+# The rule that triggered the code scanning alert.
 public type CodeScanningAlertPayloadRule record {
+    # The unique identifier of the resource.
     string id?;
+    # The severity of the alert, e.g. note, warning, or error.
     string severity?;
+    # The security severity level of the alert, e.g. low, medium, high, or critical.
     string? security_severity_level?;
+    # A short description of the rule.
     string description?;
+    # The name of the rule.
     string name?;
+    # The full description of the rule.
     string full_description?;
+    # Tags associated with the rule.
     string[] tags?;
+    # Help text describing how to fix the issue.
     string? help?;
 };
 
+# The tool that generated the code scanning alert.
 public type Tool record {
+    # The name of the tool.
     string name?;
+    # The GUID of the tool.
     string? guid?;
+    # The version of the tool.
     string? 'version?;
 };
 
@@ -3408,18 +4295,29 @@ public type Tool record {
 # different shape from, secret_scanning's own "location" field elsewhere in
 # this spec (that one identifies a commit/path, this one a line/column range).
 public type CodeScanningAlertPayloadLocation record {
+    # The file path where the flagged code is located.
     string path?;
+    # The line number where the flagged code range begins.
     int start_line?;
+    # The line number where the flagged code range ends.
     int end_line?;
+    # The column number where the flagged code range begins.
     int start_column?;
+    # The column number where the flagged code range ends.
     int end_column?;
 };
 
+# The most recent instance of the code scanning alert.
 public type MostRecentInstance record {
+    # The full Git reference, formatted as `refs/heads/<branch name>`.
     string ref?;
+    # Identifies the configuration under which the analysis was executed, e.g. workflow and job name.
     string analysis_key?;
+    # Identifies the variable values of the environment the analysis was performed in, e.g. the language analyzed.
     string environment?;
+    # The state of the alert instance. Can be one of: open, dismissed, fixed.
     string state?;
+    # The SHA of the commit this alert instance was found in.
     string commit_sha?;
     # Where in the code this alert instance was found - unrelated to, and a
     # different shape from, secret_scanning's own "location" field elsewhere in
@@ -3451,13 +4349,17 @@ public type CodeScanningAlertPayloadAlert record {
     string? dismissed_reason?;
     # The dismissal comment associated with the dismissal of the alert.
     string? dismissed_comment?;
+    # The rule that triggered the code scanning alert.
     CodeScanningAlertPayloadRule rule?;
+    # The tool that generated the code scanning alert.
     Tool tool?;
+    # The most recent instance of the code scanning alert.
     MostRecentInstance most_recent_instance?;
 };
 
 # Payload for pull_request_review events
 public type PullRequestReviewPayload record {
+    # The action that was performed. Can be one of: submitted, edited, dismissed.
     string action;
     # A pull request review
     PullRequestReview review;
@@ -3491,6 +4393,7 @@ public type PullRequestReviewPayloadChanges record {
 
 # Payload for projects_v2 events (organization-level Projects)
 public type 'ProjectsV2Payload record {
+    # The action that was performed. Can be one of: created, edited, closed, reopened, deleted.
     string action;
     # A Projects v2 project
     'projectsV2 'projects_v2;
@@ -3532,11 +4435,13 @@ public type 'projectsV2 record {
     int number?;
     # A concise summary of the project.
     string? short_description?;
+    # The project's status; undocumented field, exact semantics unconfirmed.
     string? status?;
 };
 
 # Payload for personal_access_token_request events
 public type PersonalAccessTokenRequestPayload record {
+    # The action that was performed. Can be one of: created, approved, denied, cancelled.
     string action;
     # A fine-grained personal access token request
     PersonalAccessTokenRequest personal_access_token_request;
@@ -3554,24 +4459,33 @@ public type PersonalAccessTokenRequestPayload record {
 # map of permission name to access level (e.g. "contents": "read"), NOT a
 # reference to the Organization/Repository entity schemas despite the field names.
 public type PermissionsAdded record {
+    # Organization-level permissions requested, mapped from permission name to access level.
     map<json>? organization?;
+    # Repository-level permissions requested, mapped from permission name to access level.
     map<json>? repository?;
+    # Other account-level permissions requested, mapped from permission name to access level.
     map<json>? other?;
 };
 
 # Permissions upgraded from existing token - same permission-name-to-access-level
 # map shape as permissions_added, not an entity reference.
 public type PermissionsUpgraded record {
+    # Organization-level permissions being upgraded, mapped from permission name to access level.
     map<json>? organization?;
+    # Repository-level permissions being upgraded, mapped from permission name to access level.
     map<json>? repository?;
+    # Other account-level permissions being upgraded, mapped from permission name to access level.
     map<json>? other?;
 };
 
 # The resulting full set of permissions if approved - same permission-name-to-
 # access-level map shape as permissions_added, not an entity reference.
 public type PermissionsResult record {
+    # The resulting organization-level permissions if the request is approved, mapped from permission name to access level.
     map<json>? organization?;
+    # The resulting repository-level permissions if the request is approved, mapped from permission name to access level.
     map<json>? repository?;
+    # The resulting other account-level permissions if the request is approved, mapped from permission name to access level.
     map<json>? other?;
 };
 
@@ -3593,6 +4507,7 @@ public type PersonalAccessTokenRequest record {
     PermissionsResult permissions_result?;
     # Type of repository selection requested.
     string repository_selection?;
+    # The API URL listing the repositories associated with this resource.
     string? repositories_url?;
     # An array of repository objects the token is requesting access to. This field is only populated when `repository_selection` is `subset`.
     Repository[]? repositories?;
@@ -3608,6 +4523,7 @@ public type PersonalAccessTokenRequest record {
 
 # Payload for installation events
 public type InstallationPayload record {
+    # The action that was performed. Can be one of: created, deleted, suspend, unsuspend, new_permissions_accepted.
     string action;
     # A GitHub App installation
     Installation installation;
@@ -3623,11 +4539,17 @@ public type InstallationPayload record {
     Enterprise enterprise?;
 };
 
+# A minimal repository reference included in installation events.
 public type RepositoriesItem record {
+    # The unique identifier of the resource.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
+    # The name of the repository.
     string name?;
+    # The full name of the repository, in the form `owner/repo`.
     string full_name?;
+    # Whether the repository is private.
     boolean 'private?;
 };
 
@@ -3637,27 +4559,35 @@ public type WorkflowRun record {
     int id;
     # The name of the workflow run.
     string name;
+    # The GraphQL node ID.
     string node_id?;
     # The ID of the associated check suite.
     int check_suite_id?;
     # The node ID of the associated check suite.
     string check_suite_node_id?;
+    # The name of the branch the workflow run is on.
     string? head_branch?;
     # The SHA of the head commit that points to the version of the workflow being run.
     string head_sha?;
     # The auto incrementing run number for the workflow run.
     int run_number?;
+    # The event that triggered the workflow run, e.g. push, pull_request.
     string event?;
+    # The status of the workflow run, e.g. queued, in_progress, completed.
     string status;
+    # The result of the completed workflow run, e.g. success, failure, cancelled.
     string? conclusion?;
     # The ID of the parent workflow.
     int workflow_id?;
     # The URL to the workflow run.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
     # Pull requests that are open with a `head_sha` or `head_branch` that matches the workflow run. The returned pull requests do not necessarily indicate pull requests that triggered the run.
     PullRequestMinimal[] pull_requests?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # Attempt number of the run, 1 for first attempt and higher if the workflow was re-run.
     int run_attempt?;
@@ -3689,6 +4619,7 @@ public type WorkflowRun record {
 
 # Payload for discussion events
 public type DiscussionPayload record {
+    # The action that was performed. Can be one of: created, edited, deleted, pinned, unpinned, locked, unlocked, transferred, category_changed, answered, unanswered, labeled, unlabeled, closed, reopened.
     string action;
     # A GitHub Discussion in a repository
     Discussion discussion;
@@ -3718,19 +4649,29 @@ public type DiscussionPayload record {
 # repository_url, discussion_id in addition to Comment's fields), so this is its
 # own shape rather than a $ref to Comment.
 public type Answer record {
+    # The unique identifier of the resource.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The ID of the parent comment, if this is a reply; otherwise null.
     int? parent_id?;
+    # The number of replies to this comment.
     int child_comment_count?;
+    # The API URL of the repository this comment belongs to.
     string repository_url?;
+    # The ID of the discussion this comment belongs to.
     int discussion_id?;
     # How the author is associated with the repository.
     string author_association?;
     # A GitHub user
     User user?;
+    # The text of the comment.
     string body?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
@@ -3764,7 +4705,9 @@ public type DiscussionPayloadChanges record {
 
 # A check suite
 public type CheckSuite record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id?;
     # The head branch name the changes are on.
     string? head_branch?;
@@ -3776,13 +4719,17 @@ public type CheckSuite record {
     string? conclusion?;
     # URL that points to the check suite API resource.
     string url?;
+    # The SHA of the most recent commit on the branch before the push that triggered this check suite.
     string? before?;
+    # The SHA of the most recent commit on the branch after this check suite's push.
     string? after?;
     # An array of pull requests that match this check suite. A pull request matches a check suite if they have the same `head_sha` and `head_branch`. When the check suite's `head_branch` is in a forked repository it will be `null` and the `pull_requests` array will be empty.
     PullRequestMinimal[] pull_requests?;
     # A GitHub App
     App app?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
@@ -3803,12 +4750,15 @@ public type StatusPayload record {
     string? description?;
     # The optional link added to the status
     string? target_url?;
+    # The URL of the user's or organization's avatar image.
     string? avatar_url?;
     # The commit the status is associated with
     'commit 'commit;
     # Array of branches containing the status SHA (max 10)
     BranchesItem[] branches;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at;
     # A GitHub user
     User sender;
@@ -3842,15 +4792,23 @@ public type Committer record {
     string date?;
 };
 
+# A pointer to the Git tree object for a commit.
 public type Tree record {
+    # The SHA of the Git tree object.
     string sha?;
+    # The API URL of the resource.
     string url?;
 };
 
+# GPG/SSH commit signature verification details.
 public type Verification record {
+    # Whether the commit signature was successfully verified.
     boolean verified?;
+    # The reason for the verification state, e.g. `valid`, `unsigned`, `bad_signature`.
     string reason?;
+    # The signature that was extracted from the commit, or null if unsigned.
     string? signature?;
+    # The value that was signed, or null if unsigned.
     string? payload?;
 };
 
@@ -3862,9 +4820,13 @@ public type StatusPayloadCommit record {
     Committer committer?;
     # Message describing the purpose of the commit.
     string message?;
+    # A pointer to the Git tree object for a commit.
     Tree tree?;
+    # The API URL of the resource.
     string url?;
+    # The number of comments on the commit.
     int comment_count?;
+    # GPG/SSH commit signature verification details.
     Verification verification?;
 };
 
@@ -3874,7 +4836,9 @@ public type 'commit record {
     string sha?;
     # The raw git commit data (distinct from the GitHub account in the sibling author/committer fields)
     StatusPayloadCommit 'commit?;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
     # A GitHub user
     User author?;
@@ -3882,19 +4846,27 @@ public type 'commit record {
     User committer?;
 };
 
+# The commit at the tip of a branch (SHA and URL only).
 public type StatusPayloadCommit2 record {
+    # The SHA of the commit.
     string sha?;
+    # The API URL of the resource.
     string url?;
 };
 
+# A branch whose HEAD commit matches this status; at most 10 are included.
 public type BranchesItem record {
+    # The name of the branch.
     string name?;
+    # The commit at the tip of a branch (SHA and URL only).
     StatusPayloadCommit2 'commit?;
+    # Whether the branch has protection rules enabled.
     boolean protected?;
 };
 
 # Payload for projects_v2_status_update events
 public type 'ProjectsV2StatusUpdatePayload record {
+    # The action that was performed. Can be one of: created, edited, deleted.
     string action;
     # A status update belonging to a Projects v2 project
     'projectsV2StatusUpdate 'projects_v2_status_update;
@@ -3930,6 +4902,7 @@ public type 'projectsV2StatusUpdate record {
     User creator?;
 };
 
+# Shared sender/repository/organization/installation/enterprise fields; not referenced elsewhere in this module.
 public type CommonPayload record {
     # A GitHub user
     User sender?;
@@ -3947,41 +4920,65 @@ public type CommonPayload record {
 # check_run/deployment_review's pull_requests[] - NOT the full pull request resource (no
 # title, state, user, etc.), so this must not $ref PullRequest or PullRequestRef.
 public type PullRequestMinimal record {
+    # The pull request's unique identifier.
     int id;
+    # The pull request number.
     int number;
+    # The API URL of the resource.
     string url;
+    # The head (source) branch, SHA, and repository of a minimal pull request reference.
     Head head;
+    # The base (target) branch, SHA, and repository of a minimal pull request reference.
     Base base;
 };
 
+# A minimal repository reference (id, URL, name) used within a pull request's head ref.
 public type Repo record {
+    # The unique identifier of the resource.
     int id?;
+    # The API URL of the resource.
     string url?;
+    # The name of the repository.
     string name?;
 };
 
+# The head (source) branch, SHA, and repository of a minimal pull request reference.
 public type Head record {
+    # The name of the branch.
     string ref?;
+    # The SHA of the commit at the head of this branch.
     string sha?;
+    # A minimal repository reference (id, URL, name) used within a pull request's head ref.
     Repo repo?;
 };
 
+# A minimal repository reference (id, URL, name) used within a pull request's base ref.
 public type PullRequestMinimalRepo record {
+    # The unique identifier of the resource.
     int id?;
+    # The API URL of the resource.
     string url?;
+    # The name of the repository.
     string name?;
 };
 
+# The base (target) branch, SHA, and repository of a minimal pull request reference.
 public type Base record {
+    # The name of the branch.
     string ref?;
+    # The SHA of the commit at the base of this branch.
     string sha?;
+    # A minimal repository reference (id, URL, name) used within a pull request's base ref.
     PullRequestMinimalRepo repo?;
 };
 
 # A GitHub Discussion in a repository
 public type Discussion record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id?;
+    # The discussion's number within the repository.
     int number;
     # The discussion post's title.
     string title;
@@ -3993,17 +4990,25 @@ public type Discussion record {
     Category category?;
     # A GitHub user
     User user?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The number of comments on the discussion.
     int comments?;
     # Color-coded labels categorizing the discussion.
     Label[] labels?;
+    # Whether the discussion is locked.
     boolean locked?;
+    # The reason the discussion was locked, if applicable.
     string? active_lock_reason?;
+    # The URL of the comment marked as the answer, if any.
     string? answer_html_url?;
+    # The date and time an answer was chosen, in ISO 8601 format.
     string? answer_chosen_at?;
     # A GitHub user
     User? answer_chosen_by?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
@@ -4013,12 +5018,19 @@ public type User record {
     string login;
     # The user's unique numeric identifier
     int id;
+    # The GraphQL node ID.
     string node_id?;
+    # The URL of the user's or organization's avatar image.
     string avatar_url?;
+    # The user's Gravatar ID (legacy field, typically empty).
     string? gravatar_id?;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The account type: User, Organization, or Bot.
     string 'type?;
+    # Whether the user is a GitHub site administrator.
     boolean site_admin?;
 };
 
@@ -4026,14 +5038,19 @@ public type User record {
 public type PullRequestReview record {
     # Unique identifier of the review.
     int id;
+    # The GraphQL node ID.
     string node_id?;
     # A GitHub user
     User user?;
     # The text of the review.
     string? body?;
+    # The review state, e.g. approved, changes_requested, commented, dismissed.
     string state;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The API URL of the reviewed pull request.
     string pull_request_url?;
+    # The date and time the review was submitted, in ISO 8601 format.
     string submitted_at?;
     # A commit SHA for the review. If the commit object was garbage collected or forcibly deleted, then it no longer exists in Git and this value will be `null`.
     string commit_id?;
@@ -4043,15 +5060,25 @@ public type PullRequestReview record {
 
 # A discussion category
 public type Category record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id;
+    # The ID of the repository this discussion category belongs to.
     int repository_id;
+    # The emoji associated with the discussion category.
     string emoji?;
+    # The name of the discussion category.
     string name;
+    # The description of the discussion category.
     string description?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # The URL-friendly identifier of the resource.
     string slug;
+    # Whether discussions in this category can be marked as answered.
     boolean is_answerable?;
 };
 
@@ -4096,9 +5123,13 @@ public type MetaPayload record {
     Enterprise enterprise?;
 };
 
+# The webhook's delivery configuration (URL, content type, SSL verification).
 public type MetaPayloadConfig record {
+    # The media type used to serialize the payloads, e.g. `json` or `form`.
     string content_type?;
+    # Whether SSL certificate verification is skipped when delivering payloads.
     string insecure_ssl?;
+    # The URL to which the payloads will be delivered.
     string url?;
     # Omitted from payloads for security
     string secret?;
@@ -4107,6 +5138,7 @@ public type MetaPayloadConfig record {
 # The deleted webhook. Fields vary by webhook type (repository,
 # organization, business, app, or GitHub Marketplace).
 public type MetaPayloadHook record {
+    # The type of resource the webhook is attached to, e.g. Repository, Organization, App, Business.
     string 'type;
     # Unique identifier of the webhook.
     int id;
@@ -4116,13 +5148,17 @@ public type MetaPayloadHook record {
     boolean active;
     # Determines what events the hook is triggered for. Default: ['push'].
     string[] events?;
+    # The webhook's delivery configuration (URL, content type, SSL verification).
     MetaPayloadConfig config?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
 };
 
 # Payload for deployment events
 public type DeploymentPayload record {
+    # The action that was performed. Always created.
     string action;
     # A deployment request for a specific ref
     Deployment deployment;
@@ -4168,8 +5204,11 @@ public type DeploymentProtectionRulePayload record {
     Organization organization?;
 };
 
+# A pull request associated with the deployment (number, URL, head and base refs).
 public type PullRequestsItem record {
+    # The pull request number.
     int number?;
+    # The API URL of the resource.
     string url?;
     # A pull request head or base ref
     PullRequestRef head?;
@@ -4187,6 +5226,7 @@ public type RuleStatusCheckConfiguration record {
 
 # Payload for label events
 public type LabelPayload record {
+    # The action that was performed. Can be one of: created, edited, deleted.
     string action;
     # A label on an issue or pull request
     Label label;
@@ -4262,11 +5302,13 @@ public type PageBuildPayload record {
 
 # Error information if the build failed
 public type PageBuildPayloadError record {
+    # The error message describing why the Pages build failed.
     string? message;
 };
 
 # The GitHub Pages build object
 public type Build record {
+    # The API URL of the resource.
     string url;
     # Current build status
     string status;
@@ -4278,13 +5320,16 @@ public type Build record {
     string 'commit;
     # Duration of the build in milliseconds
     int duration;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at;
 };
 
 # Payload for project_card events (classic project cards).
 # Note: classic Projects are deprecated; use projects_v2_item instead.
 public type ProjectCardPayload record {
+    # The action that was performed. Can be one of: created, edited, moved, converted, deleted.
     string action;
     # A card on a classic project board
     ProjectCard project_card;
@@ -4306,11 +5351,17 @@ public type ProjectCardPayload record {
 public type ProjectCard record {
     # The project card's ID.
     int id;
+    # The GraphQL node ID.
     string node_id;
+    # The API URL of the resource.
     string url?;
+    # The ID of the project column the card belongs to.
     int column_id;
+    # The API URL of the project column the card belongs to.
     string column_url?;
+    # The API URL of the classic project the card belongs to.
     string project_url?;
+    # The card's note text; null when the card links to an issue or pull request.
     string? note?;
     # Link to the issue or PR if the card is content-based
     string? content_url?;
@@ -4318,7 +5369,9 @@ public type ProjectCard record {
     int? after_id?;
     # A GitHub user
     User creator?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
 };
 
@@ -4384,11 +5437,13 @@ public type PullRequestPayloadBody record {
     string 'from?;
 };
 
+# The pull request's previous base branch ref, before this edit.
 public type Ref record {
     # The previous value, before this change.
     string 'from?;
 };
 
+# The pull request's previous base branch SHA, before this edit.
 public type Sha record {
     # The previous value, before this change.
     string 'from?;
@@ -4396,7 +5451,9 @@ public type Sha record {
 
 # The pull request's previous base branch, before this edit.
 public type PullRequestPayloadBase record {
+    # The pull request's previous base branch ref, before this edit.
     Ref ref?;
+    # The pull request's previous base branch SHA, before this edit.
     Sha sha?;
 };
 
@@ -4431,9 +5488,11 @@ public type TeamAddPayload record {
 public type TeamAddPayloadParent record {
     # Unique identifier of the team.
     int id?;
+    # The GraphQL node ID.
     string node_id?;
     # Name of the team.
     string name?;
+    # The URL-friendly identifier of the resource.
     string slug?;
     # Description of the team.
     string? description?;
@@ -4441,8 +5500,11 @@ public type TeamAddPayloadParent record {
     string privacy?;
     # Permission that the team will have for its repositories.
     string permission?;
+    # The API URL listing the members of this team.
     string members_url?;
+    # The API URL listing the repositories associated with this resource.
     string repositories_url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
 };
 
@@ -4450,12 +5512,15 @@ public type TeamAddPayloadParent record {
 public type TeamAddPayloadTeam record {
     # Unique identifier of the team.
     int id;
+    # The GraphQL node ID.
     string node_id;
     # URL for the team.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
     # Name of the team.
     string name;
+    # The URL-friendly identifier of the resource.
     string slug;
     # Description of the team.
     string? description?;
@@ -4465,7 +5530,9 @@ public type TeamAddPayloadTeam record {
     string notification_setting?;
     # Permission that the team will have for its repositories.
     string permission?;
+    # The API URL listing the members of this team.
     string members_url?;
+    # The API URL listing the repositories associated with this resource.
     string repositories_url?;
     # The parent team, if this is a child team
     TeamAddPayloadParent? parent?;
@@ -4477,13 +5544,17 @@ public type WorkflowJob record {
     int id;
     # The id of the associated workflow run.
     int run_id?;
+    # The API URL of the associated workflow run.
     string run_url?;
     # Attempt number of the associated workflow run, 1 for first attempt and higher if the workflow was re-run.
     int run_attempt?;
+    # The GraphQL node ID.
     string node_id?;
     # The SHA of the commit that is being run.
     string head_sha?;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
     # The phase of the lifecycle that the job is currently in.
     string status;
@@ -4499,6 +5570,7 @@ public type WorkflowJob record {
     string name;
     # Steps in this job.
     StepsItem[] steps?;
+    # The API URL of the associated check run.
     string check_run_url?;
     # Labels for the workflow job. Specified by the "runs_on" attribute in the action's workflow file.
     string[] labels?;
@@ -4516,26 +5588,41 @@ public type WorkflowJob record {
     string? head_branch?;
 };
 
+# A single step within a GitHub Actions job.
 public type StepsItem record {
+    # The name of the step.
     string name?;
+    # The phase of the lifecycle that the step is currently in.
     string status?;
+    # The result of the completed step, or null if not yet completed.
     string? conclusion?;
+    # The step's position within the job.
     int number?;
+    # The time the step began, or null if not yet started.
     string? started_at?;
+    # The time the step completed, or null if not yet completed.
     string? completed_at?;
 };
 
 # A GitHub release
 public type Release record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id?;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The API URL listing the release's assets.
     string assets_url?;
+    # The URI template for uploading assets to this release.
     string upload_url?;
     # The name of the tag.
     string tag_name;
+    # The name of the release.
     string? name;
+    # Text describing the contents of the tag.
     string? body?;
     # Whether the release is a draft or published.
     boolean draft?;
@@ -4545,27 +5632,41 @@ public type Release record {
     string target_commitish?;
     # A GitHub user
     User author?;
+    # The release's downloadable file attachments.
     AssetsItem[] assets?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the release was published, in ISO 8601 format.
     string? published_at?;
 };
 
 # A file attached to a release
 public type AssetsItem record {
+    # The API URL of the resource.
     string url;
+    # The direct download URL for the asset file.
     string browser_download_url;
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id;
     # The file name of the asset.
     string name;
+    # The user-facing display label for the asset, if set.
     string? label?;
     # State of the release asset.
     string state;
+    # The MIME type of the asset file.
     string content_type;
+    # The size of the asset file, in bytes.
     int size;
+    # The checksum digest of the asset file, when available.
     string? digest?;
+    # The number of times the asset has been downloaded.
     int download_count;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at;
     # A GitHub user
     User uploader?;
@@ -4573,6 +5674,7 @@ public type AssetsItem record {
 
 # Payload for custom_property events
 public type CustomPropertyPayload record {
+    # The action that was performed. Can be one of: updated, deleted, promote_to_enterprise, created.
     string action;
     # Custom property defined on an organization
     Definition definition;
@@ -4619,6 +5721,7 @@ public type PublicPayload record {
 
 # Payload for member events (repository collaborator activity)
 public type MemberPayload record {
+    # The action that was performed. Can be one of: edited, added, removed.
     string action;
     # A GitHub user
     User? member;
@@ -4660,6 +5763,7 @@ public type MemberPayloadChanges record {
 
 # Payload for milestone events
 public type MilestonePayload record {
+    # The action that was performed. Can be one of: created, edited, opened, deleted, closed.
     string action;
     # A milestone on an issue or pull request
     Milestone milestone;
@@ -4707,6 +5811,7 @@ public type MilestonePayloadChanges record {
 
 # Payload for security_advisory events (GitHub-reviewed global advisories)
 public type SecurityAdvisoryPayload record {
+    # The action that was performed. Can be one of: withdrawn, published, updated.
     string action;
     # The details of the global security advisory, including summary,
     # description, severity, and affected packages.
@@ -4715,44 +5820,66 @@ public type SecurityAdvisoryPayload record {
     Installation installation?;
 };
 
+# An identifier (CVE or GHSA) for the security advisory.
 public type SecurityAdvisoryPayloadIdentifiersItem record {
+    # The identifier value.
     string value?;
+    # The type of identifier. Can be one of: CVE, GHSA.
     string 'type?;
 };
 
+# A URL providing more information about the security advisory.
 public type ReferencesItem record {
+    # A URL with more information about the security advisory.
     string url?;
 };
 
+# The vulnerable package affected by the advisory.
 public type SecurityAdvisoryPayloadPackage record {
+    # The package's language or package management ecosystem.
     string ecosystem?;
+    # The unique package name within its ecosystem.
     string name?;
 };
 
+# The first package version containing a fix for the vulnerability.
 public type SecurityAdvisoryPayloadFirstPatchedVersion record {
+    # The package version that resolves the vulnerability.
     string identifier?;
 };
 
+# A package and version range affected by the advisory.
 public type SecurityAdvisoryPayloadVulnerabilitiesItem record {
+    # The vulnerable package affected by the advisory.
     SecurityAdvisoryPayloadPackage package?;
+    # The severity of the vulnerability, e.g. `low`, `moderate`, `high`, `critical`.
     string severity?;
+    # The range of the package versions affected by the vulnerability.
     string vulnerable_version_range?;
+    # The first package version containing a fix for the vulnerability.
     SecurityAdvisoryPayloadFirstPatchedVersion? first_patched_version?;
 };
 
+# The CVSS score and vector string of the security advisory.
 public type SecurityAdvisoryPayloadCvss record {
+    # The CVSS vector string, or null if not scored.
     string? vector_string?;
+    # The CVSS score of the vulnerability.
     decimal score?;
 };
 
+# A CWE weakness classification associated with the advisory.
 public type SecurityAdvisoryPayloadCwesItem record {
+    # The Common Weakness Enumeration (CWE) identifier.
     string cwe_id?;
+    # The name of the CWE weakness.
     string name?;
 };
 
 # The details of the global security advisory, including summary,
 # description, severity, and affected packages.
 public type SecurityAdvisoryPayloadSecurityAdvisory record {
+    # The schema version of the security advisory payload, when present.
     string schema_version?;
     # The GitHub Security Advisory ID.
     string ghsa_id;
@@ -4768,7 +5895,9 @@ public type SecurityAdvisoryPayloadSecurityAdvisory record {
     string description?;
     # The severity of the advisory.
     string severity;
+    # The advisory's CVE and GHSA identifiers.
     SecurityAdvisoryPayloadIdentifiersItem[] identifiers?;
+    # URLs with more information about the security advisory.
     ReferencesItem[] references?;
     # The date and time of when the advisory was published, in ISO 8601 format.
     string published_at?;
@@ -4778,12 +5907,15 @@ public type SecurityAdvisoryPayloadSecurityAdvisory record {
     string? withdrawn_at?;
     # The products and respective version ranges affected by the advisory.
     SecurityAdvisoryPayloadVulnerabilitiesItem[] vulnerabilities?;
+    # The CVSS score and vector string of the security advisory.
     SecurityAdvisoryPayloadCvss cvss?;
+    # The CWE weaknesses associated with the advisory.
     SecurityAdvisoryPayloadCwesItem[] cwes?;
 };
 
 # Payload for check_run events
 public type CheckRunPayload record {
+    # The action that was performed. Can be one of: created, completed, requested_action, rerequested.
     string action;
     # A check performed on the code of a given code change
     CheckRun check_run;
@@ -4809,6 +5941,7 @@ public type RequestedAction record {
 
 # Payload for commit_comment events
 public type CommitCommentPayload record {
+    # The action that was performed. Can be one of: created.
     string action;
     # The commit comment resource
     CommitCommentPayloadComment comment;
@@ -4826,10 +5959,15 @@ public type CommitCommentPayload record {
 
 # The commit comment resource
 public type CommitCommentPayloadComment record {
+    # The unique identifier of the resource.
     int id;
+    # The GraphQL node ID.
     string node_id?;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The contents of the comment.
     string body;
     # The relative path of the file being commented on
     string? path?;
@@ -4837,10 +5975,13 @@ public type CommitCommentPayloadComment record {
     int? position?;
     # The line of the blob the comment refers to
     int? line?;
+    # The SHA of the commit the comment was made on.
     string commit_id?;
     # A GitHub user
     User user?;
+    # The date and time the resource was created, in ISO 8601 format.
     string created_at?;
+    # The date and time the resource was last updated, in ISO 8601 format.
     string updated_at?;
     # How the author is associated with the repository.
     string author_association?;
@@ -4868,6 +6009,7 @@ public type RuleRequiredReviewerConfiguration record {
 public type Commit record {
     # The commit SHA
     string id;
+    # The SHA of the Git tree associated with this commit.
     string tree_id?;
     # Whether this commit is distinct from any that have been pushed before
     boolean 'distinct?;
@@ -4895,12 +6037,17 @@ public type CheckRun record {
     int id;
     # The name of the check run.
     string name;
+    # The GraphQL node ID.
     string node_id?;
     # The SHA of the commit that is being checked.
     string head_sha?;
+    # A reference for the check run on the integrator's system.
     string? external_id?;
+    # The API URL of the resource.
     string url?;
+    # The URL of the resource on GitHub.com.
     string html_url?;
+    # The URL of the integrator's site with the full details of the check.
     string? details_url?;
     # The phase of the lifecycle that the check is currently in. Statuses of waiting, requested, and pending are reserved for GitHub Actions check runs.
     string status?;
@@ -4910,7 +6057,9 @@ public type CheckRun record {
     string? started_at?;
     # The time the check completed.
     string? completed_at?;
+    # The check run's title, summary, and detailed output text.
     Output output?;
+    # The check suite this check run belongs to.
     CheckRunCheckSuite check_suite?;
     # A GitHub App
     App app?;
@@ -4918,20 +6067,29 @@ public type CheckRun record {
     PullRequestMinimal[] pull_requests?;
 };
 
+# The check run's title, summary, and detailed output text.
 public type Output record {
+    # The title of the check run output, or null if not set.
     string? title?;
+    # The summary of the check run output, or null if not set.
     string? summary?;
+    # The detailed text of the check run output, or null if not set.
     string? text?;
+    # The number of annotations included in the output.
     int annotations_count?;
+    # The API URL listing the annotations for this check run.
     string annotations_url?;
 };
 
+# The check suite this check run belongs to.
 public type CheckRunCheckSuite record {
+    # The unique identifier of the resource.
     int id?;
 };
 
 # Payload for membership events (team member added/removed)
 public type MembershipPayload record {
+    # The action that was performed. Can be one of: added, removed.
     string action;
     # A GitHub user
     User? member;
