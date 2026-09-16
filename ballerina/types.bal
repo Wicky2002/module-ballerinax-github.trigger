@@ -329,7 +329,7 @@ public type 'ReviewerBranch1 record {
 };
 
 # A User or Team object depending on type
-public type Reviewer anydata|'ReviewerBranch1;
+public type Reviewer User|'ReviewerBranch1;
 
 # A user or team requested as, or acting as, a deployment reviewer.
 public type ReviewersItem record {
