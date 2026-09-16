@@ -5404,7 +5404,7 @@ public type PullRequestPayload record {
     # A pull request
     PullRequest pull_request;
     # A GitHub user
-    User? assignee;
+    User assignee?;
     # For edited events, the changes to the pull request
     PullRequestPayloadChanges changes?;
     # A GitHub user

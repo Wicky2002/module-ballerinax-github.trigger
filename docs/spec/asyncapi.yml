@@ -6847,7 +6847,6 @@ components:
         - action
         - number
         - pull_request
-        - assignee
         - sender
         - repository
       properties:
@@ -6883,7 +6882,6 @@ components:
           $ref: '#/components/schemas/PullRequest'
         assignee:
           $ref: '#/components/schemas/User'
-          nullable: true
         changes:
           type: object
           description: For edited events, the changes to the pull request
