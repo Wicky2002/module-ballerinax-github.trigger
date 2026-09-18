@@ -8,3 +8,4 @@ authors = ["Ballerina"]
 keywords = ["Area/Developer Tools", "Vendor/GitHub", "Cost/Freemium", "Type/Trigger"]
 icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-github.trigger"
+include = ["metadata/**"]
