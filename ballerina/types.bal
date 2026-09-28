@@ -14,6 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/data.jsondata;
 import ballerina/http;
 
 # Configuration for the webhook listener, including the secret used to verify incoming requests.
@@ -25,26 +26,32 @@ public type ListenerConfig record {
 # A GitHub App
 public type App record {
     # Unique identifier of the GitHub app.
-    int id;
+    int id?;
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # A GitHub user
     User owner?;
     # The name of the GitHub app.
-    string name;
+    string name?;
     # The description of the GitHub App.
     string? description?;
     # The URL of the GitHub App's external website.
-    string external_url?;
+    @jsondata:Name {value: "external_url"}
+    string externalUrl?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The set of permissions for the GitHub app.
     map<json> permissions?;
-    # The list of events for the GitHub app. Note that the `installation_target`, `security_advisory`, and `meta` events are not included because they are global events and not specific to an installation.
+    # The list of events for the GitHub app. Note that the `installation_target`, `security_advisory`, and `meta` events
+    # are not included because they are global events and not specific to an installation.
     string[] events?;
 };
 
@@ -69,7 +76,8 @@ public type WorkflowRunPayload record {
     # The action that was performed. Can be one of: in_progress, completed, requested.
     string action;
     # A GitHub Actions workflow run
-    WorkflowRun workflow_run;
+    @jsondata:Name {value: "workflow_run"}
+    WorkflowRun workflowRun;
     # The workflow that is being run
     Workflow? workflow;
     # A GitHub user
@@ -103,7 +111,8 @@ public type GollumPayload record {
 # A wiki page that was created or updated.
 public type PagesItem record {
     # The name of the page
-    string page_name;
+    @jsondata:Name {value: "page_name"}
+    string pageName;
     # The current page title
     string title;
     # A summary of the changes
@@ -113,7 +122,8 @@ public type PagesItem record {
     # The latest commit SHA of the page
     string sha;
     # The URL of the resource on GitHub.com.
-    string html_url;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl;
 };
 
 # Payload for release events
@@ -167,27 +177,34 @@ public type Changes record {
     # The release's previous name, before this edit.
     Name name?;
     # The release's previous tag name, before this edit.
-    TagName tag_name?;
+    @jsondata:Name {value: "tag_name"}
+    TagName tagName?;
     # Whether this release was explicitly edited to be the latest
-    MakeLatest make_latest?;
+    @jsondata:Name {value: "make_latest"}
+    MakeLatest makeLatest?;
 };
 
 # The GitHub Marketplace purchase
 public type MarketplacePurchase record {
     # The GitHub account (user or organization) that made the Marketplace purchase.
-    Account account;
+    Account account?;
     # The billing cycle of the plan, e.g. monthly or yearly.
-    string billing_cycle;
+    @jsondata:Name {value: "billing_cycle"}
+    string billingCycle?;
     # The number of units purchased on the plan.
-    int unit_count;
+    @jsondata:Name {value: "unit_count"}
+    int unitCount?;
     # Whether the account is currently on a free trial.
-    boolean on_free_trial?;
+    @jsondata:Name {value: "on_free_trial"}
+    boolean onFreeTrial?;
     # The date the free trial ends, in ISO 8601 format.
-    string? free_trial_ends_on?;
+    @jsondata:Name {value: "free_trial_ends_on"}
+    string? freeTrialEndsOn?;
     # The date of the next billing charge, in ISO 8601 format.
-    string? next_billing_date?;
+    @jsondata:Name {value: "next_billing_date"}
+    string? nextBillingDate?;
     # The Marketplace plan associated with the purchase.
-    Plan plan;
+    Plan plan?;
 };
 
 # The GitHub account (user or organization) that made the Marketplace purchase.
@@ -197,11 +214,13 @@ public type Account record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The username or organization login of the account.
     string login;
     # The organization's billing email address, if applicable.
-    string? organization_billing_email?;
+    @jsondata:Name {value: "organization_billing_email"}
+    string? organizationBillingEmail?;
 };
 
 # The Marketplace plan associated with the purchase.
@@ -213,15 +232,20 @@ public type Plan record {
     # The description of the Marketplace plan.
     string description;
     # The monthly price of the plan, in cents.
-    int monthly_price_in_cents;
+    @jsondata:Name {value: "monthly_price_in_cents"}
+    int monthlyPriceInCents;
     # The yearly price of the plan, in cents.
-    int yearly_price_in_cents;
+    @jsondata:Name {value: "yearly_price_in_cents"}
+    int yearlyPriceInCents;
     # The pricing model of the plan, e.g. FLAT_RATE or PER_UNIT.
-    string price_model;
+    @jsondata:Name {value: "price_model"}
+    string priceModel;
     # Whether the plan offers a free trial.
-    boolean has_free_trial?;
+    @jsondata:Name {value: "has_free_trial"}
+    boolean hasFreeTrial?;
     # The name of the unit used to calculate pricing, e.g. seat.
-    string? unit_name?;
+    @jsondata:Name {value: "unit_name"}
+    string? unitName?;
     # The list of feature bullet points describing the plan.
     string[] bullets?;
 };
@@ -249,7 +273,8 @@ public type Alert record {
     # The security alert number.
     int number;
     # The type of secret that secret scanning detected.
-    string secret_type;
+    @jsondata:Name {value: "secret_type"}
+    string secretType;
 };
 
 # Location details; shape varies by type
@@ -257,26 +282,35 @@ public type Details record {
     # The file path in the repository.
     string path?;
     # Line number at which the secret starts in the file.
-    int start_line?;
+    @jsondata:Name {value: "start_line"}
+    int startLine?;
     # Line number at which the secret ends in the file.
-    int end_line?;
+    @jsondata:Name {value: "end_line"}
+    int endLine?;
     # The column at which the secret starts within the start line when the file is interpreted as 8BIT ASCII.
-    int start_column?;
+    @jsondata:Name {value: "start_column"}
+    int startColumn?;
     # The column at which the secret ends within the end line when the file is interpreted as 8BIT ASCII.
-    int end_column?;
+    @jsondata:Name {value: "end_column"}
+    int endColumn?;
     # SHA-1 hash ID of the associated blob.
-    string blob_sha?;
+    @jsondata:Name {value: "blob_sha"}
+    string blobSha?;
     # The API URL to get the associated blob resource.
-    string blob_url?;
+    @jsondata:Name {value: "blob_url"}
+    string blobUrl?;
     # SHA-1 hash ID of the associated commit.
-    string commit_sha?;
+    @jsondata:Name {value: "commit_sha"}
+    string commitSha?;
     # The API URL to get the associated commit resource.
-    string commit_url?;
+    @jsondata:Name {value: "commit_url"}
+    string commitUrl?;
 };
 
 # The location where the secret was found
 public type Location record {
-    # The location type. Because secrets may be found in different types of resources (ie. code, comments, issues, pull requests, discussions), this field identifies the type of resource where the secret was found.
+    # The location type. Because secrets may be found in different types of resources (ie. code, comments, issues, pull
+    # requests, discussions), this field identifies the type of resource where the secret was found.
     string 'type;
     # Location details; shape varies by type
     Details details?;
@@ -295,7 +329,8 @@ public type DeploymentReviewPayload record {
     # The reviewers who were requested or who reviewed
     ReviewersItem[] reviewers?;
     # The workflow run associated with the deployment
-    DeploymentReviewPayloadWorkflowRun workflow_run;
+    @jsondata:Name {value: "workflow_run"}
+    DeploymentReviewPayloadWorkflowRun workflowRun;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -313,7 +348,8 @@ public type 'ReviewerBranch1 record {
     # Unique identifier of the team.
     int id?;
     # The node ID of the team.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # Name of the team.
     string name?;
     # The URL-friendly slug of the team's name.
@@ -325,7 +361,8 @@ public type 'ReviewerBranch1 record {
     # Permission that the team will have for its repositories.
     string permission?;
     # URL for the team.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
 };
 
 # A User or Team object depending on type
@@ -346,19 +383,25 @@ public type DeploymentReviewPayloadWorkflowRun record {
     # The name of the workflow run.
     string? name;
     # The SHA of the head commit that points to the version of the workflow being run.
-    string head_sha?;
+    @jsondata:Name {value: "head_sha"}
+    string headSha?;
     # The branch that triggered the workflow run.
-    string? head_branch?;
+    @jsondata:Name {value: "head_branch"}
+    string? headBranch?;
     # The auto incrementing run number for the workflow run.
-    int run_number?;
+    @jsondata:Name {value: "run_number"}
+    int runNumber?;
     # The status of the workflow run.
     string status?;
     # The result of the completed workflow run.
     string? conclusion?;
     # The URL to view the workflow run on GitHub.
-    string html_url?;
-    # Pull requests that are open with a `head_sha` or `head_branch` that matches the workflow run. The returned pull requests do not necessarily indicate pull requests that triggered the run.
-    PullRequestMinimal[] pull_requests?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
+    # Pull requests that are open with a `head_sha` or `head_branch` that matches the workflow run. The returned pull
+    # requests do not necessarily indicate pull requests that triggered the run.
+    @jsondata:Name {value: "pull_requests"}
+    PullRequestMinimal[] pullRequests?;
 };
 
 # A pull request
@@ -366,15 +409,19 @@ public type PullRequest record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The URL to the pull request's diff in unified diff format.
-    string diff_url?;
+    @jsondata:Name {value: "diff_url"}
+    string diffUrl?;
     # The URL to the pull request's patch file.
-    string patch_url?;
+    @jsondata:Name {value: "patch_url"}
+    string patchUrl?;
     # Number uniquely identifying the pull request within its repository.
     int number;
     # State of this Pull Request. Either `open` or `closed`.
@@ -408,13 +455,16 @@ public type PullRequest record {
     # Whether the pull request can be rebased against its base branch.
     boolean? rebaseable?;
     # The mergeability state of the pull request, e.g. clean or dirty.
-    string mergeable_state?;
+    @jsondata:Name {value: "mergeable_state"}
+    string mergeableState?;
     # The SHA of the merge commit, or the last commit if not yet merged.
-    string? merge_commit_sha?;
+    @jsondata:Name {value: "merge_commit_sha"}
+    string? mergeCommitSha?;
     # The number of issue comments on the pull request.
     int comments?;
     # The number of review comments on the pull request.
-    int review_comments?;
+    @jsondata:Name {value: "review_comments"}
+    int reviewComments?;
     # The number of commits in the pull request.
     int commits?;
     # The number of lines added across the pull request's commits.
@@ -422,33 +472,45 @@ public type PullRequest record {
     # The number of lines deleted across the pull request's commits.
     int deletions?;
     # The number of files changed in the pull request.
-    int changed_files?;
+    @jsondata:Name {value: "changed_files"}
+    int changedFiles?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The date and time the pull request was closed, in ISO 8601 format.
-    string? closed_at?;
+    @jsondata:Name {value: "closed_at"}
+    string? closedAt?;
     # The date and time the pull request was merged, in ISO 8601 format.
-    string? merged_at?;
+    @jsondata:Name {value: "merged_at"}
+    string? mergedAt?;
     # A GitHub user
-    User? merged_by?;
+    @jsondata:Name {value: "merged_by"}
+    User? mergedBy?;
     # How the author is associated with the repository.
-    string author_association?;
+    @jsondata:Name {value: "author_association"}
+    string authorAssociation?;
     # Details of an auto-merge request, if one is enabled on this pull request
-    AutoMerge? auto_merge?;
+    @jsondata:Name {value: "auto_merge"}
+    AutoMerge? autoMerge?;
 };
 
 # Details of an auto-merge request, if one is enabled on this pull request
 public type AutoMerge record {
     # A GitHub user
-    User enabled_by?;
+    @jsondata:Name {value: "enabled_by"}
+    User enabledBy?;
     # The merge method to use.
-    string merge_method?;
+    @jsondata:Name {value: "merge_method"}
+    string mergeMethod?;
     # Title for the merge commit message.
-    string commit_title?;
+    @jsondata:Name {value: "commit_title"}
+    string commitTitle?;
     # Commit message for the merge commit.
-    string commit_message?;
+    @jsondata:Name {value: "commit_message"}
+    string commitMessage?;
 };
 
 # Payload for secret_scanning_scan events. No action field.
@@ -458,15 +520,20 @@ public type SecretScanningScanPayload record {
     # What type of content was scanned
     string 'source;
     # ISO 8601 timestamp when the scan started
-    string started_at;
+    @jsondata:Name {value: "started_at"}
+    string startedAt;
     # ISO 8601 timestamp when the scan completed
-    string completed_at;
+    @jsondata:Name {value: "completed_at"}
+    string completedAt;
     # Patterns updated. Empty for normal backfill or custom pattern scans.
-    string[]? secret_types?;
+    @jsondata:Name {value: "secret_types"}
+    string[]? secretTypes?;
     # If triggered by a custom pattern update, the name of that pattern
-    string? custom_pattern_name?;
+    @jsondata:Name {value: "custom_pattern_name"}
+    string? customPatternName?;
     # If triggered by a custom pattern update, the scope of that pattern
-    string? custom_pattern_scope?;
+    @jsondata:Name {value: "custom_pattern_scope"}
+    string? customPatternScope?;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -520,13 +587,16 @@ public type DeploymentStatusPayload record {
     # A deployment request for a specific ref
     Deployment deployment;
     # A deployment status
-    DeploymentStatus deployment_status;
+    @jsondata:Name {value: "deployment_status"}
+    DeploymentStatus deploymentStatus;
     # A check performed on the code of a given code change
-    CheckRun? check_run?;
+    @jsondata:Name {value: "check_run"}
+    CheckRun? checkRun?;
     # A GitHub Actions workflow
     Workflow? workflow?;
     # A GitHub Actions workflow run
-    WorkflowRun? workflow_run?;
+    @jsondata:Name {value: "workflow_run"}
+    WorkflowRun? workflowRun?;
     # A GitHub user
     User sender;
     # A repository on GitHub
@@ -565,12 +635,14 @@ public type OrganizationPayload record {
 public type Membership record {
     # The API URL of the resource.
     string url?;
-    # The state of the member in the organization. The `pending` state indicates the user has not yet accepted an invitation.
+    # The state of the member in the organization. The `pending` state indicates the user has not yet accepted an
+    # invitation.
     string state?;
     # The user's membership type in the organization.
     string role?;
     # The API URL of the organization.
-    string organization_url?;
+    @jsondata:Name {value: "organization_url"}
+    string organizationUrl?;
     # A GitHub user
     User user?;
 };
@@ -578,29 +650,36 @@ public type Membership record {
 # Present when action is member_invited
 public type Invitation record {
     # The unique identifier of the resource.
-    int id;
+    int id?;
     # The username of the invited user, if known.
     string? login?;
     # The email address of the invited user, if known.
     string? email?;
     # The role assigned to the invited user, e.g. admin, direct_member, or billing_manager.
-    string role;
+    string role?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the invitation failed, in ISO 8601 format, if applicable.
-    string? failed_at?;
+    @jsondata:Name {value: "failed_at"}
+    string? failedAt?;
     # The reason the invitation failed, if applicable.
-    string? failed_reason?;
+    @jsondata:Name {value: "failed_reason"}
+    string? failedReason?;
     # A GitHub user
-    User inviter;
+    User inviter?;
     # The number of teams the invitation grants membership to.
-    int team_count;
+    @jsondata:Name {value: "team_count"}
+    int teamCount?;
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The API URL listing the teams included in this invitation.
-    string invitation_teams_url;
+    @jsondata:Name {value: "invitation_teams_url"}
+    string invitationTeamsUrl?;
     # The source through which the invitation was created, e.g. member or scim.
-    string? invitation_source?;
+    @jsondata:Name {value: "invitation_source"}
+    string? invitationSource?;
 };
 
 # The organization's previous login (name), before this rename.
@@ -653,7 +732,8 @@ public type RepositoryDispatchPayload record {
     # The branch from which the dispatch was triggered
     string branch;
     # The client_payload from the dispatch request body
-    map<json>? client_payload;
+    @jsondata:Name {value: "client_payload"}
+    map<json>? clientPayload;
     # A GitHub App installation
     Installation installation?;
     # A GitHub user
@@ -671,7 +751,8 @@ public type MergeGroupPayload record {
     # The action that was performed. Can be one of: checks_requested, destroyed.
     string action;
     # A group of pull requests grouped together by the merge queue
-    MergeGroup merge_group;
+    @jsondata:Name {value: "merge_group"}
+    MergeGroup mergeGroup;
     # For destroyed action, the reason the merge group was destroyed
     string? reason?;
     # A GitHub user
@@ -689,15 +770,20 @@ public type MergeGroupPayload record {
 # A group of pull requests grouped together by the merge queue
 public type MergeGroup record {
     # The SHA of the merge group's head commit
-    string head_sha;
+    @jsondata:Name {value: "head_sha"}
+    string headSha;
     # The full ref of the merge group targeting branch
-    string head_ref;
+    @jsondata:Name {value: "head_ref"}
+    string headRef;
     # The SHA of the merge group's base branch
-    string base_sha;
+    @jsondata:Name {value: "base_sha"}
+    string baseSha;
     # The full ref of the branch being merged into
-    string base_ref;
+    @jsondata:Name {value: "base_ref"}
+    string baseRef;
     # A Git commit
-    Commit head_commit?;
+    @jsondata:Name {value: "head_commit"}
+    Commit headCommit?;
 };
 
 # Payload for workflow_job events
@@ -705,7 +791,8 @@ public type WorkflowJobPayload record {
     # The action that was performed. Can be one of: queued, waiting, completed, in_progress.
     string action;
     # A job in a GitHub Actions workflow run
-    WorkflowJob workflow_job;
+    @jsondata:Name {value: "workflow_job"}
+    WorkflowJob workflowJob;
     # The deployment associated with the workflow job (if applicable)
     Deployment deployment?;
     # A GitHub user
@@ -725,7 +812,8 @@ public type OrgBlockPayload record {
     # The action that was performed. Can be one of: blocked, unblocked.
     string action;
     # A GitHub user
-    User? blocked_user;
+    @jsondata:Name {value: "blocked_user"}
+    User? blockedUser;
     # A GitHub user
     User sender?;
     # A GitHub organization
@@ -739,26 +827,33 @@ public type OrgBlockPayload record {
 # A GitHub Sponsors tier
 public type Tier record {
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # A description of the sponsorship tier.
     string description?;
     # The monthly price of the tier, in cents.
-    int monthly_price_in_cents;
+    @jsondata:Name {value: "monthly_price_in_cents"}
+    int monthlyPriceInCents;
     # The monthly price of the tier, in dollars.
-    int monthly_price_in_dollars;
+    @jsondata:Name {value: "monthly_price_in_dollars"}
+    int monthlyPriceInDollars;
     # The name of the sponsorship tier.
     string name;
     # Whether this is a one-time, non-recurring sponsorship tier.
-    boolean is_one_time?;
+    @jsondata:Name {value: "is_one_time"}
+    boolean isOneTime?;
     # Whether the sponsor can choose a custom amount for this tier.
-    boolean is_custom_amount?;
+    @jsondata:Name {value: "is_custom_amount"}
+    boolean isCustomAmount?;
 };
 
 # Payload for dependabot_alert events
 public type DependabotAlertPayload record {
-    # The action that was performed. Can be one of: created, dismissed, reopened, reintroduced, fixed, auto_dismissed, auto_reopened, assignees_changed.
+    # The action that was performed. Can be one of: created, dismissed, reopened, reintroduced, fixed, auto_dismissed,
+    # auto_reopened, assignees_changed.
     string action;
     # A Dependabot alert
     DependabotAlertPayloadAlert alert;
@@ -779,7 +874,8 @@ public type Dependency record {
     # The ecosystem and name identifying a Dependabot-tracked package
     Package package?;
     # The full path to the dependency manifest file, relative to the root of the repository.
-    string manifest_path?;
+    @jsondata:Name {value: "manifest_path"}
+    string manifestPath?;
     # The execution scope of the vulnerable dependency.
     string? scope?;
 };
@@ -787,9 +883,11 @@ public type Dependency record {
 # Details for the GitHub Security Advisory linked to the alert.
 public type SecurityAdvisory record {
     # The GitHub Security Advisory ID.
-    string ghsa_id?;
+    @jsondata:Name {value: "ghsa_id"}
+    string ghsaId?;
     # The CVE ID associated with the advisory, if any.
-    string? cve_id?;
+    @jsondata:Name {value: "cve_id"}
+    string? cveId?;
     # A short summary of the security advisory.
     string summary?;
     # A detailed description of the security advisory.
@@ -809,29 +907,41 @@ public type DependabotAlertPayloadAlert record {
     # Details for the vulnerable dependency.
     Dependency dependency?;
     # Details for the GitHub Security Advisory linked to the alert.
-    SecurityAdvisory security_advisory?;
+    @jsondata:Name {value: "security_advisory"}
+    SecurityAdvisory securityAdvisory?;
     # A vulnerable version range affecting a package, and the version it was patched in
-    SecurityVulnerability security_vulnerability?;
+    @jsondata:Name {value: "security_vulnerability"}
+    SecurityVulnerability securityVulnerability?;
     # The REST API URL of the alert resource.
     string url?;
     # The GitHub URL of the alert resource.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The time that the alert was last updated in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The time that the alert was dismissed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string? dismissed_at?;
+    @jsondata:Name {value: "dismissed_at"}
+    string? dismissedAt?;
     # A GitHub user
-    User? dismissed_by?;
+    @jsondata:Name {value: "dismissed_by"}
+    User? dismissedBy?;
     # The reason that the alert was dismissed.
-    string? dismissed_reason?;
+    @jsondata:Name {value: "dismissed_reason"}
+    string? dismissedReason?;
     # An optional comment associated with the alert's dismissal.
-    string? dismissed_comment?;
-    # The time that the alert was no longer detected and was considered fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string? fixed_at?;
+    @jsondata:Name {value: "dismissed_comment"}
+    string? dismissedComment?;
+    # The time that the alert was no longer detected and was considered fixed in ISO 8601 format:
+    # `YYYY-MM-DDTHH:MM:SSZ`.
+    @jsondata:Name {value: "fixed_at"}
+    string? fixedAt?;
     # The time that the alert was auto-dismissed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string? auto_dismissed_at?;
+    @jsondata:Name {value: "auto_dismissed_at"}
+    string? autoDismissedAt?;
     # The users assigned to this alert.
     User[] assignees?;
 };
@@ -841,7 +951,8 @@ public type Workflow record {
     # The unique identifier of the resource.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The name of the workflow.
     string name?;
     # The path of the workflow file relative to the repository root.
@@ -849,15 +960,19 @@ public type Workflow record {
     # The state of the workflow, e.g. active or disabled_manually.
     string state?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The URL of the workflow's status badge image.
-    string badge_url?;
+    @jsondata:Name {value: "badge_url"}
+    string badgeUrl?;
 };
 
 # An actor allowed to dismiss pull request reviews
@@ -873,9 +988,11 @@ public type CustomPropertyValuesPayload record {
     # The action that was performed. Always updated.
     string action;
     # The new custom property values for the repository
-    NewPropertyValuesItem[] new_property_values;
+    @jsondata:Name {value: "new_property_values"}
+    NewPropertyValuesItem[] newPropertyValues;
     # The old custom property values for the repository
-    OldPropertyValuesItem[] old_property_values;
+    @jsondata:Name {value: "old_property_values"}
+    OldPropertyValuesItem[] oldPropertyValues;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -891,7 +1008,8 @@ public type CustomPropertyValuesPayload record {
 # The new value of a custom property on the repository.
 public type NewPropertyValuesItem record {
     # The name of the custom property.
-    string property_name;
+    @jsondata:Name {value: "property_name"}
+    string propertyName;
     # String or array of strings
     anydata? value?;
 };
@@ -899,14 +1017,16 @@ public type NewPropertyValuesItem record {
 # The previous value of a custom property on the repository.
 public type OldPropertyValuesItem record {
     # The name of the custom property.
-    string property_name;
+    @jsondata:Name {value: "property_name"}
+    string propertyName;
     # String or array of strings
     anydata? value?;
 };
 
 # Payload for secret_scanning_alert events
 public type SecretScanningAlertPayload record {
-    # The action that was performed. Can be one of: assigned, reopened, unassigned, created, publicly_leaked, validated, resolved.
+    # The action that was performed. Can be one of: assigned, reopened, unassigned, created, publicly_leaked, validated,
+    # resolved.
     string action;
     # The secret scanning alert
     SecretScanningAlertPayloadAlert alert;
@@ -929,41 +1049,55 @@ public type SecretScanningAlertPayloadAlert record {
     # The security alert number.
     int number;
     # The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The time that the alert was last updated in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string? updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string? updatedAt?;
     # The REST API URL of the alert resource.
     string url?;
     # The GitHub URL of the alert resource.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The REST API URL of the code locations for this alert.
-    string locations_url?;
+    @jsondata:Name {value: "locations_url"}
+    string locationsUrl?;
     # The state of the secret scanning alert. Can be open or resolved.
     string state;
     # The reason for resolving the alert.
     string? resolution?;
     # The time that the alert was resolved in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string? resolved_at?;
+    @jsondata:Name {value: "resolved_at"}
+    string? resolvedAt?;
     # A GitHub user
-    User? resolved_by?;
+    @jsondata:Name {value: "resolved_by"}
+    User? resolvedBy?;
     # An optional comment to resolve an alert.
-    string? resolution_comment?;
+    @jsondata:Name {value: "resolution_comment"}
+    string? resolutionComment?;
     # The type of secret that was detected
-    string secret_type?;
+    @jsondata:Name {value: "secret_type"}
+    string secretType?;
     # User-friendly name for the detected secret, matching the `secret_type`.
-    string secret_type_display_name?;
+    @jsondata:Name {value: "secret_type_display_name"}
+    string secretTypeDisplayName?;
     # The token status as of the latest validity check.
     string validity?;
     # Whether the detected secret was publicly leaked.
-    boolean publicly_leaked?;
+    @jsondata:Name {value: "publicly_leaked"}
+    boolean publiclyLeaked?;
     # Whether the detected secret was found in multiple repositories under the same organization or enterprise.
-    boolean multi_repo?;
+    @jsondata:Name {value: "multi_repo"}
+    boolean multiRepo?;
     # Whether push protection was bypassed for the detected secret.
-    boolean? push_protection_bypassed?;
+    @jsondata:Name {value: "push_protection_bypassed"}
+    boolean? pushProtectionBypassed?;
     # A GitHub user
-    User? push_protection_bypassed_by?;
+    @jsondata:Name {value: "push_protection_bypassed_by"}
+    User? pushProtectionBypassedBy?;
     # The time that push protection was bypassed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string? push_protection_bypassed_at?;
+    @jsondata:Name {value: "push_protection_bypassed_at"}
+    string? pushProtectionBypassedAt?;
 };
 
 # Payload for pull_request_review_thread events
@@ -971,11 +1105,13 @@ public type PullRequestReviewThreadPayload record {
     # The action that was performed. Can be one of: resolved, unresolved.
     string action;
     # A pull request
-    PullRequest pull_request;
+    @jsondata:Name {value: "pull_request"}
+    PullRequest pullRequest;
     # The review thread that was resolved or unresolved
     PullRequestReviewThreadPayloadThread thread;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string? updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string? updatedAt?;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -991,7 +1127,8 @@ public type PullRequestReviewThreadPayload record {
 # The review thread that was resolved or unresolved
 public type PullRequestReviewThreadPayloadThread record {
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The review comments in this conversation thread.
     PullRequestReviewComment[] comments?;
 };
@@ -1003,7 +1140,8 @@ public type RuleWorkflowFileReference record {
     # The ref (branch or tag) of the workflow file to use.
     string ref?;
     # The ID of the repository where the workflow is defined.
-    int repository_id;
+    @jsondata:Name {value: "repository_id"}
+    int repositoryId;
     # The commit SHA of the workflow file to use.
     string sha?;
 };
@@ -1011,7 +1149,8 @@ public type RuleWorkflowFileReference record {
 # Specify people, teams, or apps allowed to dismiss pull request reviews.
 public type RuleDismissalRestriction record {
     # Specify people, teams, or apps allowed to dismiss pull request reviews.
-    RuleActor[] allowed_actors?;
+    @jsondata:Name {value: "allowed_actors"}
+    RuleActor[] allowedActors?;
     # Whether to restrict review dismissal to specific actors.
     boolean enabled;
 };
@@ -1021,21 +1160,26 @@ public type IssueComment record {
     # Unique identifier of the issue comment.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # URL for the issue comment.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # Contents of the issue comment.
     string body;
     # A GitHub user
     User user?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # How the author is associated with the repository.
-    string author_association?;
+    @jsondata:Name {value: "author_association"}
+    string authorAssociation?;
 };
 
 # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
@@ -1057,7 +1201,8 @@ public type RegistryPackagePayload record {
     # The action that was performed. Can be one of: published, updated.
     string action;
     # The registry package object
-    RegistryPackage registry_package;
+    @jsondata:Name {value: "registry_package"}
+    RegistryPackage registryPackage;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -1073,7 +1218,8 @@ public type RegistryPackagePayload record {
 # A single downloadable file within a package version.
 public type PackageFilesItem record {
     # The URL to download this package file.
-    string download_url?;
+    @jsondata:Name {value: "download_url"}
+    string downloadUrl?;
     # The unique identifier of the resource.
     int id?;
     # The file name of the package file.
@@ -1081,13 +1227,16 @@ public type PackageFilesItem record {
     # The SHA-256 checksum of the package file.
     string 'sha256?;
     # The MIME content type of the package file.
-    string content_type?;
+    @jsondata:Name {value: "content_type"}
+    string contentType?;
     # The size of the package file, in bytes.
     int size?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # A specific published version of a package.
@@ -1099,31 +1248,39 @@ public type PackageVersion record {
     # A short summary describing the package version.
     string summary?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The branch or commit associated with this package version.
-    string target_commitish?;
+    @jsondata:Name {value: "target_commitish"}
+    string targetCommitish?;
     # The SHA of the commit associated with this package version.
-    string target_oid?;
+    @jsondata:Name {value: "target_oid"}
+    string targetOid?;
     # Whether this package version is a draft.
     boolean draft?;
     # Whether this package version is a prerelease.
     boolean prerelease?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The list of downloadable files for this package version.
-    PackageFilesItem[] package_files?;
+    @jsondata:Name {value: "package_files"}
+    PackageFilesItem[] packageFiles?;
     # A GitHub user
     User author?;
     # The command used to install this package version.
-    string? installation_command?;
+    @jsondata:Name {value: "installation_command"}
+    string? installationCommand?;
 };
 
 # The package registry a package version was published to.
 public type Registry record {
     # The URL with more information about the registry.
-    string about_url?;
+    @jsondata:Name {value: "about_url"}
+    string aboutUrl?;
     # The name of the package registry.
     string name?;
     # The type of the package registry, e.g. npm or docker.
@@ -1147,17 +1304,22 @@ public type RegistryPackage record {
     # The package ecosystem (e.g. npm, docker, maven, nuget, rubygems).
     string ecosystem?;
     # The package registry type, e.g. maven, container, docker, npm, nuget, or rubygems.
-    string package_type;
+    @jsondata:Name {value: "package_type"}
+    string packageType;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # A GitHub user
     User owner?;
     # A specific published version of a package.
-    PackageVersion? package_version?;
+    @jsondata:Name {value: "package_version"}
+    PackageVersion? packageVersion?;
     # The package registry a package version was published to.
     Registry? registry?;
 };
@@ -1175,7 +1337,8 @@ public type CheckSuitePayload record {
     # The action that was performed. Can be one of: completed, requested, rerequested.
     string action;
     # A check suite
-    CheckSuite check_suite;
+    @jsondata:Name {value: "check_suite"}
+    CheckSuite checkSuite;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -1215,19 +1378,24 @@ public type Comment record {
     # The unique identifier of the resource.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The text of the discussion comment.
     string body?;
     # A GitHub user
     User user?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # How the author is associated with the repository.
-    string author_association?;
+    @jsondata:Name {value: "author_association"}
+    string authorAssociation?;
 };
 
 # The comment's previous body text, before this edit.
@@ -1249,15 +1417,19 @@ public type Organization record {
     # The unique identifier of the resource.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The API URL listing the organization's repositories.
-    string repos_url?;
+    @jsondata:Name {value: "repos_url"}
+    string reposUrl?;
     # The URL of the user's or organization's avatar image.
-    string avatar_url?;
+    @jsondata:Name {value: "avatar_url"}
+    string avatarUrl?;
     # A short description of the organization.
     string? description?;
 };
@@ -1279,7 +1451,8 @@ public type RepositoryImportPayload record {
 
 # Payload for repository events
 public type RepositoryPayload record {
-    # The action that was performed. Can be one of: created, deleted, archived, unarchived, edited, renamed, transferred, publicized, privatized.
+    # The action that was performed. Can be one of: created, deleted, archived, unarchived, edited, renamed,
+    # transferred, publicized, privatized.
     string action;
     # For edited/renamed/transferred events, the changes that occurred
     RepositoryPayloadChanges changes?;
@@ -1354,7 +1527,8 @@ public type RepositoryPayloadChanges record {
     # The repository's previous topics, before this edit.
     Topics topics?;
     # The repository's previous default branch, before this edit.
-    DefaultBranch default_branch?;
+    @jsondata:Name {value: "default_branch"}
+    DefaultBranch defaultBranch?;
     # Present for a renamed event
     RepositoryPayloadRepository repository?;
     # Present for a transferred event
@@ -1366,7 +1540,8 @@ public type StarPayload record {
     # The action that was performed. Can be one of: created, deleted.
     string action;
     # The time the star was created (ISO 8601). Null for the deleted action.
-    string? starred_at;
+    @jsondata:Name {value: "starred_at"}
+    string? starredAt;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -1386,9 +1561,11 @@ public type SecurityVulnerability record {
     # The severity of the vulnerability.
     string severity?;
     # Conditions that identify vulnerable versions of this vulnerability's package.
-    string vulnerable_version_range?;
+    @jsondata:Name {value: "vulnerable_version_range"}
+    string vulnerableVersionRange?;
     # Details pertaining to the package version that patches this vulnerability.
-    FirstPatchedVersion? first_patched_version?;
+    @jsondata:Name {value: "first_patched_version"}
+    FirstPatchedVersion? firstPatchedVersion?;
 };
 
 # Details pertaining to the package version that patches this vulnerability.
@@ -1438,13 +1615,16 @@ public type PackagePayloadRelease record {
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The unique identifier of the resource.
     int id?;
     # The name of the tag.
-    string tag_name?;
+    @jsondata:Name {value: "tag_name"}
+    string tagName?;
     # Specifies the commitish value that determines where the Git tag is created from.
-    string target_commitish?;
+    @jsondata:Name {value: "target_commitish"}
+    string targetCommitish?;
     # The name of the release.
     string? name?;
     # Whether the release is a draft or published.
@@ -1454,9 +1634,11 @@ public type PackagePayloadRelease record {
     # Whether the release is identified as a prerelease or a full release.
     boolean prerelease?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the release was published, in ISO 8601 format.
-    string? published_at?;
+    @jsondata:Name {value: "published_at"}
+    string? publishedAt?;
 };
 
 # The digest and name of a container image tag.
@@ -1484,7 +1666,8 @@ public type NpmMetadata record {
     # The version of the npm package.
     string 'version?;
     # The npm username of the publisher.
-    string npm_user?;
+    @jsondata:Name {value: "npm_user"}
+    string npmUser?;
     # The author of the npm package, as recorded in package.json.
     map<json>? author?;
     # The bug tracker information from package.json.
@@ -1492,17 +1675,21 @@ public type NpmMetadata record {
     # The package's runtime dependencies, as recorded in package.json.
     map<json> dependencies?;
     # The development dependencies declared in the package's package.json.
-    map<json> dev_dependencies?;
+    @jsondata:Name {value: "dev_dependencies"}
+    map<json> devDependencies?;
     # The peer dependencies declared in the package's package.json.
-    map<json> peer_dependencies?;
+    @jsondata:Name {value: "peer_dependencies"}
+    map<json> peerDependencies?;
     # The optional dependencies declared in the package's package.json.
-    map<json> optional_dependencies?;
+    @jsondata:Name {value: "optional_dependencies"}
+    map<json> optionalDependencies?;
     # The description declared in the package's package.json.
     string description?;
     # The npm registry distribution metadata for this version (e.g. tarball URL, checksum).
     map<json>? dist?;
     # The Git commit SHA the package was published from, if recorded.
-    string git_head?;
+    @jsondata:Name {value: "git_head"}
+    string gitHead?;
     # The homepage URL declared in the package's package.json.
     string homepage?;
     # The license identifier declared in the package's package.json.
@@ -1516,11 +1703,14 @@ public type NpmMetadata record {
     # The unique identifier of the resource.
     string id?;
     # The Node.js version used to publish this package version.
-    string node_version?;
+    @jsondata:Name {value: "node_version"}
+    string nodeVersion?;
     # The npm client version used to publish this package version.
-    string npm_version?;
+    @jsondata:Name {value: "npm_version"}
+    string npmVersion?;
     # Whether the package version includes an npm-shrinkwrap.json file.
-    boolean has_shrinkwrap?;
+    @jsondata:Name {value: "has_shrinkwrap"}
+    boolean hasShrinkwrap?;
     # The list of maintainers declared for this package on the npm registry.
     map<json>[] maintainers?;
     # The list of contributors declared in the package's package.json.
@@ -1544,15 +1734,20 @@ public type NpmMetadata record {
     # The contents of the package's README file.
     string readme?;
     # The command used to install this package version.
-    string installation_command?;
+    @jsondata:Name {value: "installation_command"}
+    string installationCommand?;
     # The identifier of the GitHub release associated with this package version.
-    int release_id?;
+    @jsondata:Name {value: "release_id"}
+    int releaseId?;
     # The Git commit SHA associated with this package version.
-    string commit_oid?;
+    @jsondata:Name {value: "commit_oid"}
+    string commitOid?;
     # Whether this package version was published via a GitHub Actions workflow.
-    boolean published_via_actions?;
+    @jsondata:Name {value: "published_via_actions"}
+    boolean publishedViaActions?;
     # The identifier of the user who deleted this package version, if applicable.
-    int deleted_by_id?;
+    @jsondata:Name {value: "deleted_by_id"}
+    int deletedById?;
 };
 
 # A single metadata entry for a NuGet package version.
@@ -1585,7 +1780,8 @@ public type RubygemsMetadataItem record {
     # The homepage URL of this RubyGems package.
     string homepage?;
     # Version information for a RubyGems package.
-    VersionInfo version_info?;
+    @jsondata:Name {value: "version_info"}
+    VersionInfo versionInfo?;
     # The target platform of this RubyGems package (e.g. ruby, java).
     string platform?;
     # Additional key-value metadata declared in the package's gemspec.
@@ -1595,13 +1791,15 @@ public type RubygemsMetadataItem record {
     # The runtime dependencies declared in the package's gemspec.
     map<json>[] dependencies?;
     # The Git commit SHA associated with this package version.
-    string commit_oid?;
+    @jsondata:Name {value: "commit_oid"}
+    string commitOid?;
 };
 
 # A single downloadable file within a published package version
 public type PackagePayloadPackageFilesItem record {
     # The URL to download this package file.
-    string download_url?;
+    @jsondata:Name {value: "download_url"}
+    string downloadUrl?;
     # The unique identifier of the resource.
     int id?;
     # The file name of this package file.
@@ -1613,15 +1811,18 @@ public type PackagePayloadPackageFilesItem record {
     # The MD5 checksum of this package file.
     string 'md5?;
     # The MIME type of this package file.
-    string content_type?;
+    @jsondata:Name {value: "content_type"}
+    string contentType?;
     # The upload state of this package file (e.g. uploaded).
     string state?;
     # The size of this package file, in bytes.
     int size?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # The published version of a package, including registry-specific metadata.
@@ -1639,7 +1840,8 @@ public type PackagePayloadPackageVersion record {
     # The release notes body for this package version, in Markdown.
     string? body?;
     # The release notes body for this package version, rendered as HTML.
-    string? body_html?;
+    @jsondata:Name {value: "body_html"}
+    string? bodyHtml?;
     # A reduced Release shape as delivered on a package version, not the full
     # Release resource (missing node_id, assets_url, upload_url, body, assets) -
     # must not $ref Release.
@@ -1647,49 +1849,64 @@ public type PackagePayloadPackageVersion record {
     # The raw package manifest file content for this version.
     string? manifest?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The name of the Git tag associated with this package version.
-    string? tag_name?;
+    @jsondata:Name {value: "tag_name"}
+    string? tagName?;
     # The branch or commit the associated Git tag targets.
-    string target_commitish?;
+    @jsondata:Name {value: "target_commitish"}
+    string targetCommitish?;
     # The resolved Git commit SHA that the associated tag targets.
-    string target_oid?;
+    @jsondata:Name {value: "target_oid"}
+    string targetOid?;
     # Whether this package version is a draft.
     boolean draft?;
     # Whether this package version is a prerelease.
     boolean prerelease?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # Genuinely arbitrary per GitHub's own webhook schema - each entry declares no
     # fixed shape (additionalProperties: true, no properties), confirmed via
     # github/rest-api-description's webhook-package-published schema.
     map<json>[] metadata?;
     # Metadata for a container (Docker) package version
-    ContainerMetadata? container_metadata?;
+    @jsondata:Name {value: "container_metadata"}
+    ContainerMetadata? containerMetadata?;
     # Metadata for an npm package version.
-    NpmMetadata? npm_metadata?;
+    @jsondata:Name {value: "npm_metadata"}
+    NpmMetadata? npmMetadata?;
     # NuGet-specific metadata for this package version.
-    NugetMetadataItem[]? nuget_metadata?;
+    @jsondata:Name {value: "nuget_metadata"}
+    NugetMetadataItem[]? nugetMetadata?;
     # RubyGems-specific metadata for this package version.
-    RubygemsMetadataItem[]? rubygems_metadata?;
+    @jsondata:Name {value: "rubygems_metadata"}
+    RubygemsMetadataItem[]? rubygemsMetadata?;
     # The downloadable files included in this package version.
-    PackagePayloadPackageFilesItem[] package_files?;
+    @jsondata:Name {value: "package_files"}
+    PackagePayloadPackageFilesItem[] packageFiles?;
     # The URL to view this package version.
-    string? package_url?;
+    @jsondata:Name {value: "package_url"}
+    string? packageUrl?;
     # A GitHub user
     User author?;
     # The URL of the source repository for this package version.
-    string? source_url?;
+    @jsondata:Name {value: "source_url"}
+    string? sourceUrl?;
     # The command used to install this package version.
-    string? installation_command?;
+    @jsondata:Name {value: "installation_command"}
+    string? installationCommand?;
 };
 
 # The package registry a package version was published to.
 public type PackagePayloadRegistry record {
     # The URL with more information about this registry.
-    string about_url?;
+    @jsondata:Name {value: "about_url"}
+    string aboutUrl?;
     # The name of the registry.
     string name?;
     # The type of the registry.
@@ -1713,17 +1930,22 @@ public type PackagePayloadPackage record {
     # The package ecosystem (e.g. npm, docker, maven, nuget, rubygems).
     string ecosystem?;
     # The package registry type, e.g. maven, container, docker, npm, nuget, or rubygems.
-    string package_type?;
+    @jsondata:Name {value: "package_type"}
+    string packageType?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # A GitHub user
     User owner?;
     # The published version of a package, including registry-specific metadata.
-    PackagePayloadPackageVersion? package_version?;
+    @jsondata:Name {value: "package_version"}
+    PackagePayloadPackageVersion? packageVersion?;
     # The package registry a package version was published to.
     PackagePayloadRegistry? registry?;
 };
@@ -1751,16 +1973,19 @@ public type WorkflowDispatchPayload record {
 # A tool that must provide code scanning results for this rule to pass.
 public type RuleCodeScanningTool record {
     # The severity level at which code scanning results that raise alerts block a reference update.
-    string alerts_threshold;
+    @jsondata:Name {value: "alerts_threshold"}
+    string alertsThreshold;
     # The severity level at which code scanning results that raise security alerts block a reference update.
-    string security_alerts_threshold;
+    @jsondata:Name {value: "security_alerts_threshold"}
+    string securityAlertsThreshold;
     # The name of a code scanning tool.
     string tool;
 };
 
 # Payload for sponsorship events
 public type SponsorshipPayload record {
-    # The action that was performed. Can be one of: created, cancelled, edited, tier_changed, pending_cancellation, pending_tier_change.
+    # The action that was performed. Can be one of: created, cancelled, edited, tier_changed, pending_cancellation,
+    # pending_tier_change.
     string action;
     # The sponsorship object
     Sponsorship sponsorship;
@@ -1768,7 +1993,8 @@ public type SponsorshipPayload record {
     SponsorshipPayloadChanges? changes?;
     # For pending_cancellation and pending_tier_change, the date the
     # change takes effect (ISO 8601 date).
-    string? effective_date?;
+    @jsondata:Name {value: "effective_date"}
+    string? effectiveDate?;
     # A GitHub user
     User sender?;
     # A GitHub organization
@@ -1780,11 +2006,14 @@ public type SponsorshipPayload record {
 # The sponsorship object
 public type Sponsorship record {
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at;
+    @jsondata:Name {value: "created_at"}
+    string createdAt;
     # Whether the sponsorship is publicly visible (public or private).
-    string privacy_level;
+    @jsondata:Name {value: "privacy_level"}
+    string privacyLevel;
     # A GitHub Sponsors tier
     Tier tier;
     # A GitHub user
@@ -1810,23 +2039,30 @@ public type SponsorshipPayloadChanges record {
     # The sponsorship's previous tier, before this change.
     SponsorshipPayloadTier tier?;
     # The sponsorship's previous privacy level, before this change.
-    PrivacyLevel privacy_level?;
+    @jsondata:Name {value: "privacy_level"}
+    PrivacyLevel privacyLevel?;
 };
 
 # Payload for sub_issues events
 public type SubIssuesPayload record {
-    # The action that was performed. Can be one of: sub_issue_added, sub_issue_removed, parent_issue_added, parent_issue_removed.
+    # The action that was performed. Can be one of: sub_issue_added, sub_issue_removed, parent_issue_added,
+    # parent_issue_removed.
     string action;
     # The ID of the parent issue.
-    int parent_issue_id;
+    @jsondata:Name {value: "parent_issue_id"}
+    int parentIssueId;
     # The parent issue.
-    Issue parent_issue;
+    @jsondata:Name {value: "parent_issue"}
+    Issue parentIssue;
     # The repository of the parent issue.
-    Repository parent_issue_repo;
+    @jsondata:Name {value: "parent_issue_repo"}
+    Repository parentIssueRepo;
     # The ID of the sub-issue.
-    int sub_issue_id;
+    @jsondata:Name {value: "sub_issue_id"}
+    int subIssueId;
     # The sub-issue.
-    Issue sub_issue;
+    @jsondata:Name {value: "sub_issue"}
+    Issue subIssue;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -1845,7 +2081,8 @@ public type ProjectColumnPayload record {
     # The action that was performed. Can be one of: created, edited, moved, deleted.
     string action;
     # A column in a classic project board
-    ProjectColumn project_column;
+    @jsondata:Name {value: "project_column"}
+    ProjectColumn projectColumn;
     # For edited events, the changes made to the column
     ProjectColumnPayloadChanges? changes?;
     # A GitHub user
@@ -1865,21 +2102,27 @@ public type ProjectColumn record {
     # The unique identifier of the project column.
     int id;
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # The API URL of the resource.
     string url?;
     # The API URL of the project this column belongs to.
-    string project_url?;
+    @jsondata:Name {value: "project_url"}
+    string projectUrl?;
     # The API URL listing the cards in this column.
-    string cards_url?;
+    @jsondata:Name {value: "cards_url"}
+    string cardsUrl?;
     # Name of the project column.
     string name;
     # The ID of the column this column was moved after
-    int? after_id?;
+    @jsondata:Name {value: "after_id"}
+    int? afterId?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # The column's previous name, before this edit.
@@ -1899,7 +2142,8 @@ public type Team record {
     # Unique identifier of the team.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # Name of the team.
     string name;
     # The URL-friendly identifier of the resource.
@@ -1909,17 +2153,21 @@ public type Team record {
     # The level of privacy this team has (e.g. closed, secret).
     string privacy?;
     # Whether team members will receive notifications when their team is @mentioned.
-    string notification_setting?;
+    @jsondata:Name {value: "notification_setting"}
+    string notificationSetting?;
     # Permission that the team will have for its repositories.
     string permission?;
     # URL for the team.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The API URL listing the members of this team.
-    string members_url?;
+    @jsondata:Name {value: "members_url"}
+    string membersUrl?;
     # The API URL listing the repositories associated with this resource.
-    string repositories_url?;
+    @jsondata:Name {value: "repositories_url"}
+    string repositoriesUrl?;
     # A reduced "team-simple" shape, not a full Team - no nested parent (a team's parent
     # is never itself nested further, avoiding unbounded recursion).
     Parent? parent?;
@@ -1931,11 +2179,13 @@ public type Parent record {
     # Unique identifier of the team.
     int id;
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # URL for the team.
     string url?;
     # The API URL listing the members of this team.
-    string members_url?;
+    @jsondata:Name {value: "members_url"}
+    string membersUrl?;
     # Name of the team.
     string name;
     # Description of the team.
@@ -1945,31 +2195,40 @@ public type Parent record {
     # The level of privacy this team should have.
     string privacy?;
     # The notification setting the team has set.
-    string notification_setting?;
+    @jsondata:Name {value: "notification_setting"}
+    string notificationSetting?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The API URL listing the repositories associated with this resource.
-    string repositories_url?;
+    @jsondata:Name {value: "repositories_url"}
+    string repositoriesUrl?;
     # The URL-friendly identifier of the resource.
     string slug;
     # The ownership type of the team.
     string 'type;
     # Unique identifier of the organization to which this team belongs.
-    int organization_id?;
+    @jsondata:Name {value: "organization_id"}
+    int organizationId?;
     # Unique identifier of the enterprise to which this team belongs.
-    int enterprise_id?;
+    @jsondata:Name {value: "enterprise_id"}
+    int enterpriseId?;
 };
 
 # Payload for marketplace_purchase events
 public type MarketplacePurchasePayload record {
-    # The action that was performed. Can be one of: purchased, cancelled, pending_change, pending_change_cancelled, changed.
+    # The action that was performed. Can be one of: purchased, cancelled, pending_change, pending_change_cancelled,
+    # changed.
     string action;
     # The GitHub Marketplace purchase
-    MarketplacePurchase marketplace_purchase;
+    @jsondata:Name {value: "marketplace_purchase"}
+    MarketplacePurchase marketplacePurchase;
     # The previous purchase state (for changed/pending_change events)
-    MarketplacePurchase? previous_marketplace_purchase?;
+    @jsondata:Name {value: "previous_marketplace_purchase"}
+    MarketplacePurchase? previousMarketplacePurchase?;
     # ISO 8601 date when the change takes effect
-    string effective_date;
+    @jsondata:Name {value: "effective_date"}
+    string effectiveDate;
     # A GitHub user
     User sender;
     # A GitHub App installation
@@ -1985,7 +2244,8 @@ public type PushPayload record {
     # The SHA of the most recent commit on ref after the push
     string after;
     # The base ref for the push (if applicable)
-    string? base_ref?;
+    @jsondata:Name {value: "base_ref"}
+    string? baseRef?;
     # Whether this push created the ref
     boolean created;
     # Whether this push deleted the ref
@@ -1997,7 +2257,8 @@ public type PushPayload record {
     # Array of commit objects (maximum 2048)
     Commit[] commits;
     # A Git commit
-    Commit? head_commit?;
+    @jsondata:Name {value: "head_commit"}
+    Commit? headCommit?;
     # Metaproperties for the Git author/committer
     CommitAuthor pusher;
     # A GitHub user
@@ -2017,7 +2278,8 @@ public type Installation record {
     # The ID of the installation.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
 };
 
 # Payload for branch_protection_rule events
@@ -2051,53 +2313,77 @@ public type Rule record {
     # The branch protection rule's database ID.
     int id?;
     # The ID of the repository the rule applies to.
-    int repository_id?;
+    @jsondata:Name {value: "repository_id"}
+    int repositoryId?;
     # The name of the branch, or branch name pattern, the rule applies to.
     string name?;
     # The time the branch protection rule was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The time the branch protection rule was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # Enforcement level for requiring an approving pull request review before merging.
-    string pull_request_reviews_enforcement_level?;
+    @jsondata:Name {value: "pull_request_reviews_enforcement_level"}
+    string pullRequestReviewsEnforcementLevel?;
     # The number of approving reviews required on a pull request before merging.
-    int required_approving_review_count?;
+    @jsondata:Name {value: "required_approving_review_count"}
+    int requiredApprovingReviewCount?;
     # Whether approving reviews are automatically dismissed when someone pushes a new commit.
-    boolean dismiss_stale_reviews_on_push?;
+    @jsondata:Name {value: "dismiss_stale_reviews_on_push"}
+    boolean dismissStaleReviewsOnPush?;
     # Whether pull requests are blocked from merging until code owners review them.
-    boolean require_code_owner_review?;
+    @jsondata:Name {value: "require_code_owner_review"}
+    boolean requireCodeOwnerReview?;
     # Whether only specific users, teams, or apps can dismiss pull request reviews.
-    boolean authorized_dismissal_actors_only?;
-    # Whether approvals from contributors who have also pushed to the branch are ignored when counting required approvals.
-    boolean ignore_approvals_from_contributors?;
+    @jsondata:Name {value: "authorized_dismissal_actors_only"}
+    boolean authorizedDismissalActorsOnly?;
+    # Whether approvals from contributors who have also pushed to the branch are ignored when counting required
+    # approvals.
+    @jsondata:Name {value: "ignore_approvals_from_contributors"}
+    boolean ignoreApprovalsFromContributors?;
     # Whether the most recent push to the pull request must be approved by someone other than whoever pushed it.
-    boolean require_last_push_approval?;
+    @jsondata:Name {value: "require_last_push_approval"}
+    boolean requireLastPushApproval?;
     # The list of status checks that must pass before merging into the branch.
-    string[] required_status_checks?;
+    @jsondata:Name {value: "required_status_checks"}
+    string[] requiredStatusChecks?;
     # Enforcement level for required status checks.
-    string required_status_checks_enforcement_level?;
+    @jsondata:Name {value: "required_status_checks_enforcement_level"}
+    string requiredStatusChecksEnforcementLevel?;
     # Whether branches must be up to date with the base branch before merging.
-    boolean strict_required_status_checks_policy?;
+    @jsondata:Name {value: "strict_required_status_checks_policy"}
+    boolean strictRequiredStatusChecksPolicy?;
     # Enforcement level for requiring signed commits.
-    string signature_requirement_enforcement_level?;
+    @jsondata:Name {value: "signature_requirement_enforcement_level"}
+    string signatureRequirementEnforcementLevel?;
     # Enforcement level for requiring a linear commit history.
-    string linear_history_requirement_enforcement_level?;
+    @jsondata:Name {value: "linear_history_requirement_enforcement_level"}
+    string linearHistoryRequirementEnforcementLevel?;
     # Whether the branch protection rule's restrictions are also enforced for repository administrators.
-    boolean admin_enforced?;
+    @jsondata:Name {value: "admin_enforced"}
+    boolean adminEnforced?;
     # Enforcement level for permitting force pushes to matching branches.
-    string allow_force_pushes_enforcement_level?;
+    @jsondata:Name {value: "allow_force_pushes_enforcement_level"}
+    string allowForcePushesEnforcementLevel?;
     # Enforcement level for permitting deletion of matching branches.
-    string allow_deletions_enforcement_level?;
+    @jsondata:Name {value: "allow_deletions_enforcement_level"}
+    string allowDeletionsEnforcementLevel?;
     # Enforcement level for requiring merges to go through a merge queue.
-    string merge_queue_enforcement_level?;
+    @jsondata:Name {value: "merge_queue_enforcement_level"}
+    string mergeQueueEnforcementLevel?;
     # Enforcement level for requiring successful deployments to specific environments before merging.
-    string required_deployments_enforcement_level?;
+    @jsondata:Name {value: "required_deployments_enforcement_level"}
+    string requiredDeploymentsEnforcementLevel?;
     # Enforcement level for requiring all pull request conversations to be resolved before merging.
-    string required_conversation_resolution_level?;
+    @jsondata:Name {value: "required_conversation_resolution_level"}
+    string requiredConversationResolutionLevel?;
     # Whether only specific users, teams, or apps can push to the branch.
-    boolean authorized_actors_only?;
+    @jsondata:Name {value: "authorized_actors_only"}
+    boolean authorizedActorsOnly?;
     # The names of the users, teams, or apps authorized to push to the branch.
-    string[] authorized_actor_names?;
+    @jsondata:Name {value: "authorized_actor_names"}
+    string[] authorizedActorNames?;
 };
 
 # The rule's previous pull request review enforcement level, before this edit.
@@ -2223,45 +2509,65 @@ public type AuthorizedActorNames record {
 # For edited events, the changes to the rule - one entry per changed setting, each wrapped in "from"
 public type BranchProtectionRulePayloadChanges record {
     # The rule's previous pull request review enforcement level, before this edit.
-    PullRequestReviewsEnforcementLevel pull_request_reviews_enforcement_level?;
+    @jsondata:Name {value: "pull_request_reviews_enforcement_level"}
+    PullRequestReviewsEnforcementLevel pullRequestReviewsEnforcementLevel?;
     # The rule's previous required approving review count, before this edit.
-    RequiredApprovingReviewCount required_approving_review_count?;
+    @jsondata:Name {value: "required_approving_review_count"}
+    RequiredApprovingReviewCount requiredApprovingReviewCount?;
     # The rule's previous dismiss-stale-reviews-on-push setting, before this edit.
-    DismissStaleReviewsOnPush dismiss_stale_reviews_on_push?;
+    @jsondata:Name {value: "dismiss_stale_reviews_on_push"}
+    DismissStaleReviewsOnPush dismissStaleReviewsOnPush?;
     # The rule's previous require-code-owner-review setting, before this edit.
-    RequireCodeOwnerReview require_code_owner_review?;
+    @jsondata:Name {value: "require_code_owner_review"}
+    RequireCodeOwnerReview requireCodeOwnerReview?;
     # The rule's previous authorized-dismissal-actors-only setting, before this edit.
-    AuthorizedDismissalActorsOnly authorized_dismissal_actors_only?;
+    @jsondata:Name {value: "authorized_dismissal_actors_only"}
+    AuthorizedDismissalActorsOnly authorizedDismissalActorsOnly?;
     # The rule's previous ignore-approvals-from-contributors setting, before this edit.
-    IgnoreApprovalsFromContributors ignore_approvals_from_contributors?;
+    @jsondata:Name {value: "ignore_approvals_from_contributors"}
+    IgnoreApprovalsFromContributors ignoreApprovalsFromContributors?;
     # The rule's previous require-last-push-approval setting, before this edit.
-    RequireLastPushApproval require_last_push_approval?;
+    @jsondata:Name {value: "require_last_push_approval"}
+    RequireLastPushApproval requireLastPushApproval?;
     # The rule's previous list of required status checks, before this edit.
-    RequiredStatusChecks required_status_checks?;
+    @jsondata:Name {value: "required_status_checks"}
+    RequiredStatusChecks requiredStatusChecks?;
     # The rule's previous required status checks enforcement level, before this edit.
-    RequiredStatusChecksEnforcementLevel required_status_checks_enforcement_level?;
+    @jsondata:Name {value: "required_status_checks_enforcement_level"}
+    RequiredStatusChecksEnforcementLevel requiredStatusChecksEnforcementLevel?;
     # The rule's previous strict required status checks policy setting, before this edit.
-    StrictRequiredStatusChecksPolicy strict_required_status_checks_policy?;
+    @jsondata:Name {value: "strict_required_status_checks_policy"}
+    StrictRequiredStatusChecksPolicy strictRequiredStatusChecksPolicy?;
     # The rule's previous signature requirement enforcement level, before this edit.
-    SignatureRequirementEnforcementLevel signature_requirement_enforcement_level?;
+    @jsondata:Name {value: "signature_requirement_enforcement_level"}
+    SignatureRequirementEnforcementLevel signatureRequirementEnforcementLevel?;
     # The rule's previous linear history requirement enforcement level, before this edit.
-    LinearHistoryRequirementEnforcementLevel linear_history_requirement_enforcement_level?;
+    @jsondata:Name {value: "linear_history_requirement_enforcement_level"}
+    LinearHistoryRequirementEnforcementLevel linearHistoryRequirementEnforcementLevel?;
     # The rule's previous admin-enforced setting, before this edit.
-    AdminEnforced admin_enforced?;
+    @jsondata:Name {value: "admin_enforced"}
+    AdminEnforced adminEnforced?;
     # The rule's previous allow-force-pushes enforcement level, before this edit.
-    AllowForcePushesEnforcementLevel allow_force_pushes_enforcement_level?;
+    @jsondata:Name {value: "allow_force_pushes_enforcement_level"}
+    AllowForcePushesEnforcementLevel allowForcePushesEnforcementLevel?;
     # The rule's previous allow-deletions enforcement level, before this edit.
-    AllowDeletionsEnforcementLevel allow_deletions_enforcement_level?;
+    @jsondata:Name {value: "allow_deletions_enforcement_level"}
+    AllowDeletionsEnforcementLevel allowDeletionsEnforcementLevel?;
     # The rule's previous merge queue enforcement level, before this edit.
-    MergeQueueEnforcementLevel merge_queue_enforcement_level?;
+    @jsondata:Name {value: "merge_queue_enforcement_level"}
+    MergeQueueEnforcementLevel mergeQueueEnforcementLevel?;
     # The rule's previous required deployments enforcement level, before this edit.
-    RequiredDeploymentsEnforcementLevel required_deployments_enforcement_level?;
+    @jsondata:Name {value: "required_deployments_enforcement_level"}
+    RequiredDeploymentsEnforcementLevel requiredDeploymentsEnforcementLevel?;
     # The rule's previous required conversation resolution enforcement level, before this edit.
-    RequiredConversationResolutionLevel required_conversation_resolution_level?;
+    @jsondata:Name {value: "required_conversation_resolution_level"}
+    RequiredConversationResolutionLevel requiredConversationResolutionLevel?;
     # The rule's previous authorized-actors-only setting, before this edit.
-    AuthorizedActorsOnly authorized_actors_only?;
+    @jsondata:Name {value: "authorized_actors_only"}
+    AuthorizedActorsOnly authorizedActorsOnly?;
     # The rule's previous list of authorized actor names, before this edit.
-    AuthorizedActorNames authorized_actor_names?;
+    @jsondata:Name {value: "authorized_actor_names"}
+    AuthorizedActorNames authorizedActorNames?;
 };
 
 # Payload for pull_request_review_comment events
@@ -2271,7 +2577,8 @@ public type PullRequestReviewCommentPayload record {
     # A comment on a pull request diff
     PullRequestReviewComment comment;
     # A pull request
-    PullRequest pull_request;
+    @jsondata:Name {value: "pull_request"}
+    PullRequest pullRequest;
     # For edited events, the changes to the comment
     PullRequestReviewCommentPayloadChanges changes?;
     # A GitHub user
@@ -2317,9 +2624,10 @@ public type 'ProjectsV2ItemPayload record {
     # The action that was performed. Can be one of: edited, created, archived, deleted, restored, reordered, converted.
     string action;
     # An item belonging to a Projects v2 project
-    'projectsV2Item 'projects_v2_item;
+    @jsondata:Name {value: "projects_v2_item"}
+    'projectsV2Item projectsV2Item;
     # The changes made to the item (for edited events)
-    'ProjectsV2ItemPayloadChanges changes;
+    'ProjectsV2ItemPayloadChanges changes?;
     # A GitHub user
     User sender?;
     # A GitHub organization
@@ -2333,19 +2641,26 @@ public type 'projectsV2Item record {
     # The unique identifier of the project item.
     int id;
     # The node ID of the project item.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # The node ID of the project that contains this item.
-    string project_node_id;
+    @jsondata:Name {value: "project_node_id"}
+    string projectNodeId;
     # The node ID of the content represented by this item.
-    string content_node_id;
+    @jsondata:Name {value: "content_node_id"}
+    string contentNodeId;
     # The type of content tracked in the project item.
-    string content_type;
+    @jsondata:Name {value: "content_type"}
+    string contentType;
     # The time when the item was created.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The time when the item was last updated.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The time when the item was archived.
-    string? archived_at?;
+    @jsondata:Name {value: "archived_at"}
+    string? archivedAt?;
     # A GitHub user
     User creator?;
 };
@@ -2353,15 +2668,18 @@ public type 'projectsV2Item record {
 # Which project field's value changed on this item.
 public type FieldValue record {
     # The node ID of the field whose value changed.
-    string field_node_id?;
+    @jsondata:Name {value: "field_node_id"}
+    string fieldNodeId?;
     # The type of the field whose value changed.
-    string field_type?;
+    @jsondata:Name {value: "field_type"}
+    string fieldType?;
 };
 
 # The changes made to the item (for edited events)
 public type 'ProjectsV2ItemPayloadChanges record {
     # Which project field's value changed on this item.
-    FieldValue field_value?;
+    @jsondata:Name {value: "field_value"}
+    FieldValue fieldValue?;
 };
 
 # Payload for the ping event
@@ -2369,7 +2687,8 @@ public type PingPayload record {
     # Random string of GitHub zen
     string zen?;
     # The ID of the webhook that triggered the ping
-    int hook_id?;
+    @jsondata:Name {value: "hook_id"}
+    int hookId?;
     # The webhook that is being pinged
     Hook hook?;
     # A GitHub user
@@ -2383,9 +2702,12 @@ public type PingPayload record {
 # Configuration object of the webhook.
 public type Config record {
     # The media type used to serialize the payloads. The default is `form`.
-    string content_type?;
-    # Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`.
-    string insecure_ssl?;
+    @jsondata:Name {value: "content_type"}
+    string contentType?;
+    # Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported
+    # values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`.
+    @jsondata:Name {value: "insecure_ssl"}
+    string insecureSsl?;
     # The URL to which the payloads will be delivered.
     string url?;
 };
@@ -2405,9 +2727,11 @@ public type Hook record {
     # Configuration object of the webhook.
     Config config?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The API URL of the resource.
     string url?;
 };
@@ -2417,13 +2741,16 @@ public type CreatePayload record {
     # The git ref resource (branch or tag name)
     string ref;
     # The type of Git ref object created
-    string ref_type;
+    @jsondata:Name {value: "ref_type"}
+    string refType;
     # The name of the repository's default branch (usually main)
-    string master_branch;
+    @jsondata:Name {value: "master_branch"}
+    string masterBranch;
     # The repository's current description
     string? description?;
     # The pusher type; either user or a deploy key
-    string pusher_type;
+    @jsondata:Name {value: "pusher_type"}
+    string pusherType;
     # A GitHub user
     User sender;
     # A repository on GitHub
@@ -2441,17 +2768,20 @@ public type Repository record {
     # Unique identifier of the repository.
     int id;
     # The GraphQL identifier of the repository.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The repository name
     string name;
     # The full repository name including owner (e.g. octocat/Hello-World)
-    string full_name;
+    @jsondata:Name {value: "full_name"}
+    string fullName;
     # A GitHub user
     User owner;
     # Whether the repository is private
     boolean 'private;
     # The URL to view the repository on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The repository description.
     string? description?;
     # Whether the repository is a fork.
@@ -2463,44 +2793,66 @@ public type Repository record {
     # The repository's primary programming language.
     string? language?;
     # The number of forks of the repository.
-    int forks_count?;
+    @jsondata:Name {value: "forks_count"}
+    int forksCount?;
     # The number of users who have starred the repository.
-    int stargazers_count?;
+    @jsondata:Name {value: "stargazers_count"}
+    int stargazersCount?;
     # The number of users watching the repository.
-    int watchers_count?;
-    # The size of the repository, in kilobytes. Size is calculated hourly. When a repository is initially created, the size is 0.
+    @jsondata:Name {value: "watchers_count"}
+    int watchersCount?;
+    # The size of the repository, in kilobytes. Size is calculated hourly. When a repository is initially created, the
+    # size is 0.
     int size?;
     # The default branch of the repository.
-    string default_branch?;
+    @jsondata:Name {value: "default_branch"}
+    string defaultBranch?;
     # The number of open issues and pull requests in the repository.
-    int open_issues_count?;
+    @jsondata:Name {value: "open_issues_count"}
+    int openIssuesCount?;
     # The list of topics associated with the repository.
     string[] topics?;
     # Whether issues are enabled.
-    boolean has_issues?;
+    @jsondata:Name {value: "has_issues"}
+    boolean hasIssues?;
     # Whether projects are enabled.
-    boolean has_projects?;
+    @jsondata:Name {value: "has_projects"}
+    boolean hasProjects?;
     # Whether the wiki is enabled.
-    boolean has_wiki?;
+    @jsondata:Name {value: "has_wiki"}
+    boolean hasWiki?;
     # Whether GitHub Pages is enabled for the repository.
-    boolean has_pages?;
+    @jsondata:Name {value: "has_pages"}
+    boolean hasPages?;
     # Whether downloads are enabled.
-    boolean has_downloads?;
+    @jsondata:Name {value: "has_downloads"}
+    boolean hasDownloads?;
     # Whether the repository is archived.
     boolean archived?;
     # Returns whether or not this repository is disabled.
     boolean disabled?;
     # The repository visibility: public, private, or internal.
     string visibility?;
-    # The date and time the repository was last pushed to.
-    string? pushed_at?;
-    # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    # When the repository was last pushed to. Sent as an ISO 8601 string on most events, but as a Unix timestamp
+    # (integer) on push events.
+    @jsondata:Name {value: "pushed_at"}
+    PushedAt? pushedAt?;
+    # When the repository was created. Sent as an ISO 8601 string on most events, but as a Unix timestamp (integer) on
+    # push events.
+    @jsondata:Name {value: "created_at"}
+    CreatedAt createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # A repository's software license.
     License? license?;
 };
+
+# When the repository was last pushed to. Sent as an ISO 8601 string on most events, but as a Unix timestamp (integer) on push events.
+public type PushedAt string|int;
+
+# When the repository was created. Sent as an ISO 8601 string on most events, but as a Unix timestamp (integer) on push events.
+public type CreatedAt string|int;
 
 # A repository's software license.
 public type License record {
@@ -2509,7 +2861,8 @@ public type License record {
     # The full name of the license.
     string name?;
     # The SPDX identifier of the license.
-    string spdx_id?;
+    @jsondata:Name {value: "spdx_id"}
+    string spdxId?;
     # The API URL of the resource.
     string? url?;
 };
@@ -2519,44 +2872,58 @@ public type PullRequestReviewComment record {
     # The ID of the pull request review comment.
     int id;
     # The node ID of the pull request review comment.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The ID of the pull request review to which the comment belongs.
-    int? pull_request_review_id?;
+    @jsondata:Name {value: "pull_request_review_id"}
+    int? pullRequestReviewId?;
     # URL for the pull request review comment.
     string url?;
     # HTML URL for the pull request review comment.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The text of the comment.
     string body;
     # The diff of the line that the comment refers to.
-    string diff_hunk?;
+    @jsondata:Name {value: "diff_hunk"}
+    string diffHunk?;
     # The relative path of the file to which the comment applies.
     string path?;
     # The line index in the diff to which the comment applies. This field is closing down; use `line` instead.
     int? position?;
-    # The index of the original line in the diff to which the comment applies. This field is closing down; use `original_line` instead.
-    int original_position?;
+    # The index of the original line in the diff to which the comment applies. This field is closing down; use
+    # `original_line` instead.
+    @jsondata:Name {value: "original_position"}
+    int originalPosition?;
     # The SHA of the commit to which the comment applies.
-    string commit_id?;
+    @jsondata:Name {value: "commit_id"}
+    string commitId?;
     # The SHA of the original commit to which the comment applies.
-    string original_commit_id?;
+    @jsondata:Name {value: "original_commit_id"}
+    string originalCommitId?;
     # A GitHub user
     User user?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # How the author is associated with the repository.
-    string author_association?;
-    # The side of the diff to which the comment applies. The side of the last line of the range for a multi-line comment.
+    @jsondata:Name {value: "author_association"}
+    string authorAssociation?;
+    # The side of the diff to which the comment applies. The side of the last line of the range for a multi-line
+    # comment.
     string side?;
     # The side of the first line of the range for a multi-line comment.
-    string? start_side?;
+    @jsondata:Name {value: "start_side"}
+    string? startSide?;
 };
 
 # Payload for team events
 public type TeamPayload record {
-    # The action that was performed. Can be one of: created, deleted, edited, added_to_repository, removed_from_repository.
+    # The action that was performed. Can be one of: created, deleted, edited, added_to_repository,
+    # removed_from_repository.
     string action;
     # A GitHub organization team
     Team team;
@@ -2607,7 +2974,8 @@ public type TeamPayloadChanges record {
     # The team's previous privacy level, before this edit.
     Privacy privacy?;
     # The team's previous notification setting, before this edit.
-    NotificationSetting notification_setting?;
+    @jsondata:Name {value: "notification_setting"}
+    NotificationSetting notificationSetting?;
     # For added_to_repository/removed_from_repository events
     Repository repository?;
 };
@@ -2621,19 +2989,25 @@ public type Enterprise record {
     # The name of the enterprise.
     string name?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The URL of the user's or organization's avatar image.
-    string avatar_url?;
+    @jsondata:Name {value: "avatar_url"}
+    string avatarUrl?;
     # A short description of the enterprise.
     string? description?;
     # The enterprise's website URL.
-    string? website_url?;
+    @jsondata:Name {value: "website_url"}
+    string? websiteUrl?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # Payload for project events (classic project boards).
@@ -2662,13 +3036,16 @@ public type Project record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The API URL listing the project's columns.
-    string columns_url?;
+    @jsondata:Name {value: "columns_url"}
+    string columnsUrl?;
     # Name of the project.
     string name;
     # Body of the project.
@@ -2680,9 +3057,11 @@ public type Project record {
     # A GitHub user
     User creator?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # The project's previous name, before this edit.
@@ -2712,7 +3091,8 @@ public type InstallationTargetPayload record {
     # The account (user or organization) where the app is installed
     InstallationTargetPayloadAccount account;
     # The type of account the app is installed on: user or organization.
-    string target_type;
+    @jsondata:Name {value: "target_type"}
+    string targetType;
     # The changes made to the account
     InstallationTargetPayloadChanges changes;
     # A GitHub App installation
@@ -2724,17 +3104,21 @@ public type InstallationTargetPayloadAccount record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The username or organization login of the account.
     string login;
     # The account type. Can be one of: Bot, User, Organization.
     string 'type;
     # The URL of the user's or organization's avatar image.
-    string avatar_url?;
+    @jsondata:Name {value: "avatar_url"}
+    string avatarUrl?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # Whether the user is a GitHub site administrator.
-    boolean site_admin?;
+    @jsondata:Name {value: "site_admin"}
+    boolean siteAdmin?;
 };
 
 # The account's previous login, before this rename.
@@ -2762,7 +3146,8 @@ public type DeploymentStatus record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The new state. Can be `pending`, `success`, `failure`, or `error`.
     string state;
     # A GitHub user
@@ -2772,21 +3157,29 @@ public type DeploymentStatus record {
     # The environment of the deployment that the status is for.
     string environment?;
     # The URL for accessing your environment.
-    string? environment_url?;
+    @jsondata:Name {value: "environment_url"}
+    string? environmentUrl?;
     # The URL to associate with this status.
-    string? log_url?;
+    @jsondata:Name {value: "log_url"}
+    string? logUrl?;
     # The optional link added to the status.
-    string? target_url?;
+    @jsondata:Name {value: "target_url"}
+    string? targetUrl?;
     # The API URL of the deployment this status belongs to.
-    string deployment_url?;
+    @jsondata:Name {value: "deployment_url"}
+    string deploymentUrl?;
     # The API URL of the repository the deployment belongs to.
-    string repository_url?;
+    @jsondata:Name {value: "repository_url"}
+    string repositoryUrl?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # A GitHub App
-    App? performed_via_github_app?;
+    @jsondata:Name {value: "performed_via_github_app"}
+    App? performedViaGithubApp?;
 };
 
 # Payload for installation_repositories events
@@ -2794,11 +3187,14 @@ public type InstallationRepositoriesPayload record {
     # The action that was performed. Can be one of: added, removed.
     string action;
     # Repositories added to the installation
-    RepositoriesAddedItem[] repositories_added;
+    @jsondata:Name {value: "repositories_added"}
+    RepositoriesAddedItem[] repositoriesAdded;
     # Repositories removed from the installation
-    RepositoriesRemovedItem[] repositories_removed;
+    @jsondata:Name {value: "repositories_removed"}
+    RepositoriesRemovedItem[] repositoriesRemoved;
     # Whether all repositories or a selection are accessible
-    string repository_selection;
+    @jsondata:Name {value: "repository_selection"}
+    string repositorySelection;
     # A GitHub user
     User? requester;
     # A GitHub App installation
@@ -2816,11 +3212,13 @@ public type RepositoriesAddedItem record {
     # The unique identifier of the resource.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The name of the repository.
     string name?;
     # The full name of the repository, in owner/repo format.
-    string full_name?;
+    @jsondata:Name {value: "full_name"}
+    string fullName?;
     # Whether the repository is private.
     boolean 'private?;
 };
@@ -2830,11 +3228,13 @@ public type RepositoriesRemovedItem record {
     # The unique identifier of the resource.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The name of the repository.
     string name?;
     # The full name of the repository, in owner/repo format.
-    string full_name?;
+    @jsondata:Name {value: "full_name"}
+    string fullName?;
     # Whether the repository is private.
     boolean 'private?;
 };
@@ -2844,11 +3244,13 @@ public type Issue record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # URL for the issue.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # Number uniquely identifying the issue within its repository.
     int number;
     # Title of the issue.
@@ -2872,15 +3274,20 @@ public type Issue record {
     # The number of comments on the issue.
     int comments?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The date and time the issue was closed, if closed.
-    string? closed_at?;
+    @jsondata:Name {value: "closed_at"}
+    string? closedAt?;
     # How the author is associated with the repository.
-    string author_association?;
+    @jsondata:Name {value: "author_association"}
+    string authorAssociation?;
     # The reason the issue's conversation was locked, if locked.
-    string? active_lock_reason?;
+    @jsondata:Name {value: "active_lock_reason"}
+    string? activeLockReason?;
 };
 
 # A label on an issue or pull request
@@ -2888,7 +3295,8 @@ public type Label record {
     # Unique identifier for the label.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # URL for the label.
     string url?;
     # The name of the label.
@@ -2906,7 +3314,8 @@ public type Deployment record {
     # Unique identifier of the deployment.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The SHA of the commit that was deployed.
     string sha;
     # The ref to deploy. This can be a branch, tag, or sha.
@@ -2916,7 +3325,8 @@ public type Deployment record {
     # JSON payload with extra information about the deployment
     map<json> payload?;
     # The environment name originally requested, before normalization to `environment`.
-    string original_environment?;
+    @jsondata:Name {value: "original_environment"}
+    string originalEnvironment?;
     # Name of the target deployment environment.
     string environment;
     # A short description of the deployment.
@@ -2924,19 +3334,26 @@ public type Deployment record {
     # A GitHub user
     User creator?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The API URL listing the deployment's statuses.
-    string statuses_url?;
+    @jsondata:Name {value: "statuses_url"}
+    string statusesUrl?;
     # The API URL of the repository the deployment belongs to.
-    string repository_url?;
+    @jsondata:Name {value: "repository_url"}
+    string repositoryUrl?;
     # Specifies if the given environment will no longer exist at some point in the future. Default: false.
-    boolean transient_environment?;
+    @jsondata:Name {value: "transient_environment"}
+    boolean transientEnvironment?;
     # Specifies if the given environment is one that end-users directly interact with. Default: false.
-    boolean production_environment?;
+    @jsondata:Name {value: "production_environment"}
+    boolean productionEnvironment?;
     # A GitHub App
-    App? performed_via_github_app?;
+    @jsondata:Name {value: "performed_via_github_app"}
+    App? performedViaGithubApp?;
 };
 
 # Payload for branch_protection_configuration events
@@ -2960,7 +3377,8 @@ public type RepositoryRulesetPayload record {
     # The action that was performed. Can be one of: created, edited, deleted.
     string action;
     # A set of rules to apply when specified conditions are met
-    RepositoryRuleset repository_ruleset;
+    @jsondata:Name {value: "repository_ruleset"}
+    RepositoryRuleset repositoryRuleset;
     # For edited events, the changes made to the ruleset. conditions/rules are each a
     # genuine added/deleted/updated diff (entries added or removed wholesale, or an
     # existing entry's own fields changed), not a flat "field changed from X" map like
@@ -2980,7 +3398,8 @@ public type RepositoryRulesetPayload record {
 
 # Parameters for a repository ruleset ref name condition.
 public type RefName record {
-    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also
+    # accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
     string[] include?;
     # Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
     string[] exclude?;
@@ -2989,7 +3408,8 @@ public type RefName record {
 # Which refs this ruleset applies to
 public type Conditions record {
     # Parameters for a repository ruleset ref name condition.
-    RefName ref_name?;
+    @jsondata:Name {value: "ref_name"}
+    RefName refName?;
 };
 
 # Only allow users with bypass permission to create matching refs.
@@ -3001,7 +3421,8 @@ public type RulesItemCreation record {
 # Parameters for the `update` rule.
 public type RulesItemUpdateParameters record {
     # Branch can pull changes from its upstream repository
-    boolean update_allows_fetch_and_merge;
+    @jsondata:Name {value: "update_allows_fetch_and_merge"}
+    boolean updateAllowsFetchAndMerge;
 };
 
 # Only allow users with bypass permission to update matching refs.
@@ -3026,20 +3447,31 @@ public type RulesItemRequiredLinearHistory record {
 
 # Parameters for the `merge_queue` rule.
 public type RulesItemMergeQueueParameters record {
-    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
-    int check_response_timeout_minutes;
-    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
-    string grouping_strategy;
+    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed,
+    # checks that have not reported a conclusion will be assumed to have failed.
+    @jsondata:Name {value: "check_response_timeout_minutes"}
+    int checkResponseTimeoutMinutes;
+    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required
+    # checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required
+    # checks to merge.
+    @jsondata:Name {value: "grouping_strategy"}
+    string groupingStrategy;
     # Limit the number of queued pull requests requesting checks and workflow runs at the same time.
-    int max_entries_to_build;
+    @jsondata:Name {value: "max_entries_to_build"}
+    int maxEntriesToBuild;
     # The maximum number of PRs that will be merged together in a group.
-    int max_entries_to_merge;
+    @jsondata:Name {value: "max_entries_to_merge"}
+    int maxEntriesToMerge;
     # Method to use when merging changes from queued pull requests.
-    string merge_method;
+    @jsondata:Name {value: "merge_method"}
+    string mergeMethod;
     # The minimum number of PRs that will be merged together in a group.
-    int min_entries_to_merge;
-    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
-    int min_entries_to_merge_wait_minutes;
+    @jsondata:Name {value: "min_entries_to_merge"}
+    int minEntriesToMerge;
+    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met,
+    # before merging a smaller group.
+    @jsondata:Name {value: "min_entries_to_merge_wait_minutes"}
+    int minEntriesToMergeWaitMinutes;
 };
 
 # Merges must be performed via a merge queue.
@@ -3053,7 +3485,8 @@ public type RulesItemMergeQueue record {
 # Parameters for the `required_deployments` rule.
 public type RulesItemRequiredDeploymentsParameters record {
     # Environments that must be successfully deployed to before branches can be merged.
-    string[] required_deployment_environments;
+    @jsondata:Name {value: "required_deployment_environments"}
+    string[] requiredDeploymentEnvironments;
 };
 
 # Choose which environments must be successfully deployed to before refs can be pushed.
@@ -3073,21 +3506,30 @@ public type RulesItemRequiredSignatures record {
 # Parameters for the `pull_request` rule.
 public type RulesItemPullRequestParameters record {
     # Array of allowed merge methods. At least one option must be enabled.
-    string[] allowed_merge_methods?;
+    @jsondata:Name {value: "allowed_merge_methods"}
+    string[] allowedMergeMethods?;
     # New, reviewable commits pushed will dismiss previous pull request review approvals.
-    boolean dismiss_stale_reviews_on_push;
+    @jsondata:Name {value: "dismiss_stale_reviews_on_push"}
+    boolean dismissStaleReviewsOnPush;
     # Specify people, teams, or apps allowed to dismiss pull request reviews.
-    RuleDismissalRestriction dismissal_restriction?;
+    @jsondata:Name {value: "dismissal_restriction"}
+    RuleDismissalRestriction dismissalRestriction?;
     # Require an approving review in pull requests that modify files that have a designated code owner.
-    boolean require_code_owner_review;
+    @jsondata:Name {value: "require_code_owner_review"}
+    boolean requireCodeOwnerReview;
     # Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
-    boolean require_last_push_approval;
+    @jsondata:Name {value: "require_last_push_approval"}
+    boolean requireLastPushApproval;
     # The number of approving reviews that are required before a pull request can be merged.
-    int required_approving_review_count;
+    @jsondata:Name {value: "required_approving_review_count"}
+    int requiredApprovingReviewCount;
     # All conversations on code must be resolved before a pull request can be merged.
-    boolean required_review_thread_resolution;
-    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
-    RuleRequiredReviewerConfiguration[] required_reviewers?;
+    @jsondata:Name {value: "required_review_thread_resolution"}
+    boolean requiredReviewThreadResolution;
+    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine
+    # the files that reviewer is required to review.
+    @jsondata:Name {value: "required_reviewers"}
+    RuleRequiredReviewerConfiguration[] requiredReviewers?;
 };
 
 # Require commits be submitted via a pull request before they can be merged.
@@ -3101,11 +3543,15 @@ public type RulesItemPullRequest record {
 # Parameters for the `required_status_checks` rule.
 public type RulesItemRequiredStatusChecksParameters record {
     # Allow repositories and branches to be created if a check would otherwise prohibit it.
-    boolean do_not_enforce_on_create?;
+    @jsondata:Name {value: "do_not_enforce_on_create"}
+    boolean doNotEnforceOnCreate?;
     # Status checks that are required.
-    RuleStatusCheckConfiguration[] required_status_checks;
-    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
-    boolean strict_required_status_checks_policy;
+    @jsondata:Name {value: "required_status_checks"}
+    RuleStatusCheckConfiguration[] requiredStatusChecks;
+    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at
+    # least one status check is enabled.
+    @jsondata:Name {value: "strict_required_status_checks_policy"}
+    boolean strictRequiredStatusChecksPolicy;
 };
 
 # Choose which status checks must pass before the ref is updated.
@@ -3175,7 +3621,8 @@ public type RulesItemTagNamePattern record {
 # Parameters for the `file_path_restriction` rule.
 public type RulesItemFilePathRestrictionParameters record {
     # File paths that are restricted from being pushed to the commit graph.
-    string[] restricted_file_paths;
+    @jsondata:Name {value: "restricted_file_paths"}
+    string[] restrictedFilePaths;
 };
 
 # Restrict file and folder paths from being pushed.
@@ -3189,7 +3636,8 @@ public type RulesItemFilePathRestriction record {
 # Parameters for the `max_file_path_length` rule.
 public type RulesItemMaxFilePathLengthParameters record {
     # The maximum amount of characters allowed in file paths.
-    int max_file_path_length;
+    @jsondata:Name {value: "max_file_path_length"}
+    int maxFilePathLength;
 };
 
 # Restrict file paths exceeding a character limit.
@@ -3203,7 +3651,8 @@ public type RulesItemMaxFilePathLength record {
 # Parameters for the `file_extension_restriction` rule.
 public type RulesItemFileExtensionRestrictionParameters record {
     # File extensions that are restricted from being pushed to the commit graph.
-    string[] restricted_file_extensions;
+    @jsondata:Name {value: "restricted_file_extensions"}
+    string[] restrictedFileExtensions;
 };
 
 # Restrict files with specified file extensions.
@@ -3217,7 +3666,8 @@ public type RulesItemFileExtensionRestriction record {
 # Parameters for the `max_file_size` rule.
 public type RulesItemMaxFileSizeParameters record {
     # The maximum file size allowed in megabytes.
-    int max_file_size;
+    @jsondata:Name {value: "max_file_size"}
+    int maxFileSize;
 };
 
 # Restrict individual files exceeding a size limit (MB).
@@ -3231,7 +3681,8 @@ public type RulesItemMaxFileSize record {
 # Parameters for the `workflows` rule.
 public type RulesItemWorkflowsParameters record {
     # Allow repositories and branches to be created if a check would otherwise prohibit it.
-    boolean do_not_enforce_on_create?;
+    @jsondata:Name {value: "do_not_enforce_on_create"}
+    boolean doNotEnforceOnCreate?;
     # Workflows that must pass for this rule to pass.
     RuleWorkflowFileReference[] workflows;
 };
@@ -3247,7 +3698,8 @@ public type RulesItemWorkflows record {
 # Parameters for the `code_scanning` rule.
 public type RulesItemCodeScanningParameters record {
     # Tools that must provide code scanning results for this rule to pass.
-    RuleCodeScanningTool[] code_scanning_tools;
+    @jsondata:Name {value: "code_scanning_tools"}
+    RuleCodeScanningTool[] codeScanningTools;
 };
 
 # Choose which code scanning tools must provide results before the reference is updated.
@@ -3264,11 +3716,14 @@ public type RulesItem RulesItemCreation|RulesItemUpdate|RulesItemDeletion|RulesI
 # An actor permitted to bypass this ruleset's rules.
 public type BypassActorsItem record {
     # The ID of the actor that can bypass this ruleset.
-    int? actor_id?;
+    @jsondata:Name {value: "actor_id"}
+    int? actorId?;
     # The type of actor that can bypass this ruleset, e.g. Team or OrganizationAdmin.
-    string actor_type?;
+    @jsondata:Name {value: "actor_type"}
+    string actorType?;
     # When the actor can bypass this ruleset, e.g. always or pull_request.
-    string bypass_mode?;
+    @jsondata:Name {value: "bypass_mode"}
+    string bypassMode?;
 };
 
 # A set of rules to apply when specified conditions are met
@@ -3280,10 +3735,12 @@ public type RepositoryRuleset record {
     # The target of the ruleset.
     string? target?;
     # The type of the source of the ruleset.
-    string? source_type?;
+    @jsondata:Name {value: "source_type"}
+    string? sourceType?;
     # The name of the source.
     string 'source?;
-    # The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them and view insights on the Rule Insights page (Enterprise only).
+    # The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them and view
+    # insights on the Rule Insights page (Enterprise only).
     string enforcement;
     # Which refs this ruleset applies to
     Conditions? conditions?;
@@ -3293,11 +3750,14 @@ public type RepositoryRuleset record {
     # names or a third-party summary.
     RulesItem[] rules?;
     # The actors that can bypass the rules in this ruleset.
-    BypassActorsItem[] bypass_actors?;
+    @jsondata:Name {value: "bypass_actors"}
+    BypassActorsItem[] bypassActors?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # The ruleset's previous name, before this edit.
@@ -3314,7 +3774,8 @@ public type Enforcement record {
 
 # Parameters for a repository ruleset ref name condition.
 public type RepositoryRulesetPayloadRefName record {
-    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also
+    # accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
     string[] include?;
     # Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
     string[] exclude?;
@@ -3322,12 +3783,14 @@ public type RepositoryRulesetPayloadRefName record {
 
 public type AddedItem record {
     # Parameters for a repository ruleset ref name condition.
-    RepositoryRulesetPayloadRefName ref_name?;
+    @jsondata:Name {value: "ref_name"}
+    RepositoryRulesetPayloadRefName refName?;
 };
 
 # Parameters for a repository ruleset ref name condition.
 public type RepositoryRulesetPayloadRefName2 record {
-    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also
+    # accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
     string[] include?;
     # Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
     string[] exclude?;
@@ -3335,12 +3798,14 @@ public type RepositoryRulesetPayloadRefName2 record {
 
 public type DeletedItem record {
     # Parameters for a repository ruleset ref name condition.
-    RepositoryRulesetPayloadRefName2 ref_name?;
+    @jsondata:Name {value: "ref_name"}
+    RepositoryRulesetPayloadRefName2 refName?;
 };
 
 # Parameters for a repository ruleset ref name condition.
 public type RepositoryRulesetPayloadRefName3 record {
-    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
+    # Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also
+    # accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
     string[] include?;
     # Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
     string[] exclude?;
@@ -3349,7 +3814,8 @@ public type RepositoryRulesetPayloadRefName3 record {
 # The current state of the updated condition.
 public type Condition record {
     # Parameters for a repository ruleset ref name condition.
-    RepositoryRulesetPayloadRefName3 ref_name?;
+    @jsondata:Name {value: "ref_name"}
+    RepositoryRulesetPayloadRefName3 refName?;
 };
 
 # The condition's previous type, before this edit.
@@ -3379,7 +3845,8 @@ public type Exclude record {
 # The fields of the condition that changed.
 public type RepositoryRulesetPayloadChanges2 record {
     # The condition's previous type, before this edit.
-    ConditionType condition_type?;
+    @jsondata:Name {value: "condition_type"}
+    ConditionType conditionType?;
     # The condition's previous target, before this edit.
     Target target?;
     # The condition's previous list of included ref patterns, before this edit.
@@ -3409,61 +3876,87 @@ public type RepositoryRulesetPayloadConditions record {
 # Parameters for the `update` rule.
 public type 'ParametersBranch0 record {
     # Branch can pull changes from its upstream repository
-    boolean update_allows_fetch_and_merge?;
+    @jsondata:Name {value: "update_allows_fetch_and_merge"}
+    boolean updateAllowsFetchAndMerge?;
 };
 
 # Parameters for the `merge_queue` rule.
 public type 'ParametersBranch1 record {
-    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
-    int check_response_timeout_minutes?;
-    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
-    string grouping_strategy?;
+    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed,
+    # checks that have not reported a conclusion will be assumed to have failed.
+    @jsondata:Name {value: "check_response_timeout_minutes"}
+    int checkResponseTimeoutMinutes?;
+    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required
+    # checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required
+    # checks to merge.
+    @jsondata:Name {value: "grouping_strategy"}
+    string groupingStrategy?;
     # Limit the number of queued pull requests requesting checks and workflow runs at the same time.
-    int max_entries_to_build?;
+    @jsondata:Name {value: "max_entries_to_build"}
+    int maxEntriesToBuild?;
     # The maximum number of PRs that will be merged together in a group.
-    int max_entries_to_merge?;
+    @jsondata:Name {value: "max_entries_to_merge"}
+    int maxEntriesToMerge?;
     # Method to use when merging changes from queued pull requests.
-    string merge_method?;
+    @jsondata:Name {value: "merge_method"}
+    string mergeMethod?;
     # The minimum number of PRs that will be merged together in a group.
-    int min_entries_to_merge?;
-    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
-    int min_entries_to_merge_wait_minutes?;
+    @jsondata:Name {value: "min_entries_to_merge"}
+    int minEntriesToMerge?;
+    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met,
+    # before merging a smaller group.
+    @jsondata:Name {value: "min_entries_to_merge_wait_minutes"}
+    int minEntriesToMergeWaitMinutes?;
 };
 
 # Parameters for the `required_deployments` rule.
 public type 'ParametersBranch2 record {
     # Environments that must be successfully deployed to before branches can be merged.
-    string[] required_deployment_environments?;
+    @jsondata:Name {value: "required_deployment_environments"}
+    string[] requiredDeploymentEnvironments?;
 };
 
 # Parameters for the `pull_request` rule.
 public type 'ParametersBranch3 record {
     # Array of allowed merge methods. At least one option must be enabled.
-    string[] allowed_merge_methods?;
+    @jsondata:Name {value: "allowed_merge_methods"}
+    string[] allowedMergeMethods?;
     # New, reviewable commits pushed will dismiss previous pull request review approvals.
-    boolean dismiss_stale_reviews_on_push?;
+    @jsondata:Name {value: "dismiss_stale_reviews_on_push"}
+    boolean dismissStaleReviewsOnPush?;
     # Specify people, teams, or apps allowed to dismiss pull request reviews.
-    RuleDismissalRestriction dismissal_restriction?;
+    @jsondata:Name {value: "dismissal_restriction"}
+    RuleDismissalRestriction dismissalRestriction?;
     # Require an approving review in pull requests that modify files that have a designated code owner.
-    boolean require_code_owner_review?;
+    @jsondata:Name {value: "require_code_owner_review"}
+    boolean requireCodeOwnerReview?;
     # Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
-    boolean require_last_push_approval?;
+    @jsondata:Name {value: "require_last_push_approval"}
+    boolean requireLastPushApproval?;
     # The number of approving reviews that are required before a pull request can be merged.
-    int required_approving_review_count?;
+    @jsondata:Name {value: "required_approving_review_count"}
+    int requiredApprovingReviewCount?;
     # All conversations on code must be resolved before a pull request can be merged.
-    boolean required_review_thread_resolution?;
-    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
-    RuleRequiredReviewerConfiguration[] required_reviewers?;
+    @jsondata:Name {value: "required_review_thread_resolution"}
+    boolean requiredReviewThreadResolution?;
+    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine
+    # the files that reviewer is required to review.
+    @jsondata:Name {value: "required_reviewers"}
+    RuleRequiredReviewerConfiguration[] requiredReviewers?;
 };
 
 # Parameters for the `required_status_checks` rule.
 public type 'ParametersBranch4 record {
     # Allow repositories and branches to be created if a check would otherwise prohibit it.
-    boolean do_not_enforce_on_create?;
+    @jsondata:Name {value: "do_not_enforce_on_create"}
+    boolean doNotEnforceOnCreate?;
     # Status checks that are required.
-    RuleStatusCheckConfiguration[] required_status_checks?;
-    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
-    boolean strict_required_status_checks_policy?;
+    @jsondata:Name {value: "required_status_checks"}
+    RuleStatusCheckConfiguration[] requiredStatusChecks?;
+    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at
+    # least one status check is enabled.
+    @jsondata:Name {value: "strict_required_status_checks_policy"}
+    boolean strictRequiredStatusChecksPolicy?;
 };
 
 # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
@@ -3483,31 +3976,36 @@ public type 'ParametersBranch5 record {
 # Parameters for the `file_path_restriction` rule.
 public type 'ParametersBranch6 record {
     # File paths that are restricted from being pushed to the commit graph.
-    string[] restricted_file_paths?;
+    @jsondata:Name {value: "restricted_file_paths"}
+    string[] restrictedFilePaths?;
 };
 
 # Parameters for the `max_file_path_length` rule.
 public type 'ParametersBranch7 record {
     # The maximum amount of characters allowed in file paths.
-    int max_file_path_length?;
+    @jsondata:Name {value: "max_file_path_length"}
+    int maxFilePathLength?;
 };
 
 # Parameters for the `file_extension_restriction` rule.
 public type 'ParametersBranch8 record {
     # File extensions that are restricted from being pushed to the commit graph.
-    string[] restricted_file_extensions?;
+    @jsondata:Name {value: "restricted_file_extensions"}
+    string[] restrictedFileExtensions?;
 };
 
 # Parameters for the `max_file_size` rule.
 public type 'ParametersBranch9 record {
     # The maximum file size allowed in megabytes.
-    int max_file_size?;
+    @jsondata:Name {value: "max_file_size"}
+    int maxFileSize?;
 };
 
 # Parameters for the `workflows` rule.
 public type 'ParametersBranch10 record {
     # Allow repositories and branches to be created if a check would otherwise prohibit it.
-    boolean do_not_enforce_on_create?;
+    @jsondata:Name {value: "do_not_enforce_on_create"}
+    boolean doNotEnforceOnCreate?;
     # Workflows that must pass for this rule to pass.
     RuleWorkflowFileReference[] workflows?;
 };
@@ -3515,7 +4013,8 @@ public type 'ParametersBranch10 record {
 # Parameters for the `code_scanning` rule.
 public type 'ParametersBranch11 record {
     # Tools that must provide code scanning results for this rule to pass.
-    RuleCodeScanningTool[] code_scanning_tools?;
+    @jsondata:Name {value: "code_scanning_tools"}
+    RuleCodeScanningTool[] codeScanningTools?;
 };
 
 # The parameters of the rule that was added.
@@ -3532,61 +4031,87 @@ public type RepositoryRulesetPayloadAddedItem record {
 # Parameters for the `update` rule.
 public type 'RepositoryRulesetPayloadParametersBranch0 record {
     # Branch can pull changes from its upstream repository
-    boolean update_allows_fetch_and_merge?;
+    @jsondata:Name {value: "update_allows_fetch_and_merge"}
+    boolean updateAllowsFetchAndMerge?;
 };
 
 # Parameters for the `merge_queue` rule.
 public type 'RepositoryRulesetPayloadParametersBranch1 record {
-    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
-    int check_response_timeout_minutes?;
-    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
-    string grouping_strategy?;
+    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed,
+    # checks that have not reported a conclusion will be assumed to have failed.
+    @jsondata:Name {value: "check_response_timeout_minutes"}
+    int checkResponseTimeoutMinutes?;
+    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required
+    # checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required
+    # checks to merge.
+    @jsondata:Name {value: "grouping_strategy"}
+    string groupingStrategy?;
     # Limit the number of queued pull requests requesting checks and workflow runs at the same time.
-    int max_entries_to_build?;
+    @jsondata:Name {value: "max_entries_to_build"}
+    int maxEntriesToBuild?;
     # The maximum number of PRs that will be merged together in a group.
-    int max_entries_to_merge?;
+    @jsondata:Name {value: "max_entries_to_merge"}
+    int maxEntriesToMerge?;
     # Method to use when merging changes from queued pull requests.
-    string merge_method?;
+    @jsondata:Name {value: "merge_method"}
+    string mergeMethod?;
     # The minimum number of PRs that will be merged together in a group.
-    int min_entries_to_merge?;
-    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
-    int min_entries_to_merge_wait_minutes?;
+    @jsondata:Name {value: "min_entries_to_merge"}
+    int minEntriesToMerge?;
+    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met,
+    # before merging a smaller group.
+    @jsondata:Name {value: "min_entries_to_merge_wait_minutes"}
+    int minEntriesToMergeWaitMinutes?;
 };
 
 # Parameters for the `required_deployments` rule.
 public type 'RepositoryRulesetPayloadParametersBranch2 record {
     # Environments that must be successfully deployed to before branches can be merged.
-    string[] required_deployment_environments?;
+    @jsondata:Name {value: "required_deployment_environments"}
+    string[] requiredDeploymentEnvironments?;
 };
 
 # Parameters for the `pull_request` rule.
 public type 'RepositoryRulesetPayloadParametersBranch3 record {
     # Array of allowed merge methods. At least one option must be enabled.
-    string[] allowed_merge_methods?;
+    @jsondata:Name {value: "allowed_merge_methods"}
+    string[] allowedMergeMethods?;
     # New, reviewable commits pushed will dismiss previous pull request review approvals.
-    boolean dismiss_stale_reviews_on_push?;
+    @jsondata:Name {value: "dismiss_stale_reviews_on_push"}
+    boolean dismissStaleReviewsOnPush?;
     # Specify people, teams, or apps allowed to dismiss pull request reviews.
-    RuleDismissalRestriction dismissal_restriction?;
+    @jsondata:Name {value: "dismissal_restriction"}
+    RuleDismissalRestriction dismissalRestriction?;
     # Require an approving review in pull requests that modify files that have a designated code owner.
-    boolean require_code_owner_review?;
+    @jsondata:Name {value: "require_code_owner_review"}
+    boolean requireCodeOwnerReview?;
     # Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
-    boolean require_last_push_approval?;
+    @jsondata:Name {value: "require_last_push_approval"}
+    boolean requireLastPushApproval?;
     # The number of approving reviews that are required before a pull request can be merged.
-    int required_approving_review_count?;
+    @jsondata:Name {value: "required_approving_review_count"}
+    int requiredApprovingReviewCount?;
     # All conversations on code must be resolved before a pull request can be merged.
-    boolean required_review_thread_resolution?;
-    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
-    RuleRequiredReviewerConfiguration[] required_reviewers?;
+    @jsondata:Name {value: "required_review_thread_resolution"}
+    boolean requiredReviewThreadResolution?;
+    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine
+    # the files that reviewer is required to review.
+    @jsondata:Name {value: "required_reviewers"}
+    RuleRequiredReviewerConfiguration[] requiredReviewers?;
 };
 
 # Parameters for the `required_status_checks` rule.
 public type 'RepositoryRulesetPayloadParametersBranch4 record {
     # Allow repositories and branches to be created if a check would otherwise prohibit it.
-    boolean do_not_enforce_on_create?;
+    @jsondata:Name {value: "do_not_enforce_on_create"}
+    boolean doNotEnforceOnCreate?;
     # Status checks that are required.
-    RuleStatusCheckConfiguration[] required_status_checks?;
-    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
-    boolean strict_required_status_checks_policy?;
+    @jsondata:Name {value: "required_status_checks"}
+    RuleStatusCheckConfiguration[] requiredStatusChecks?;
+    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at
+    # least one status check is enabled.
+    @jsondata:Name {value: "strict_required_status_checks_policy"}
+    boolean strictRequiredStatusChecksPolicy?;
 };
 
 # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
@@ -3606,31 +4131,36 @@ public type 'RepositoryRulesetPayloadParametersBranch5 record {
 # Parameters for the `file_path_restriction` rule.
 public type 'RepositoryRulesetPayloadParametersBranch6 record {
     # File paths that are restricted from being pushed to the commit graph.
-    string[] restricted_file_paths?;
+    @jsondata:Name {value: "restricted_file_paths"}
+    string[] restrictedFilePaths?;
 };
 
 # Parameters for the `max_file_path_length` rule.
 public type 'RepositoryRulesetPayloadParametersBranch7 record {
     # The maximum amount of characters allowed in file paths.
-    int max_file_path_length?;
+    @jsondata:Name {value: "max_file_path_length"}
+    int maxFilePathLength?;
 };
 
 # Parameters for the `file_extension_restriction` rule.
 public type 'RepositoryRulesetPayloadParametersBranch8 record {
     # File extensions that are restricted from being pushed to the commit graph.
-    string[] restricted_file_extensions?;
+    @jsondata:Name {value: "restricted_file_extensions"}
+    string[] restrictedFileExtensions?;
 };
 
 # Parameters for the `max_file_size` rule.
 public type 'RepositoryRulesetPayloadParametersBranch9 record {
     # The maximum file size allowed in megabytes.
-    int max_file_size?;
+    @jsondata:Name {value: "max_file_size"}
+    int maxFileSize?;
 };
 
 # Parameters for the `workflows` rule.
 public type 'RepositoryRulesetPayloadParametersBranch10 record {
     # Allow repositories and branches to be created if a check would otherwise prohibit it.
-    boolean do_not_enforce_on_create?;
+    @jsondata:Name {value: "do_not_enforce_on_create"}
+    boolean doNotEnforceOnCreate?;
     # Workflows that must pass for this rule to pass.
     RuleWorkflowFileReference[] workflows?;
 };
@@ -3638,7 +4168,8 @@ public type 'RepositoryRulesetPayloadParametersBranch10 record {
 # Parameters for the `code_scanning` rule.
 public type 'RepositoryRulesetPayloadParametersBranch11 record {
     # Tools that must provide code scanning results for this rule to pass.
-    RuleCodeScanningTool[] code_scanning_tools?;
+    @jsondata:Name {value: "code_scanning_tools"}
+    RuleCodeScanningTool[] codeScanningTools?;
 };
 
 # The parameters of the rule that was removed.
@@ -3655,61 +4186,87 @@ public type RepositoryRulesetPayloadDeletedItem record {
 # Parameters for the `update` rule.
 public type 'RepositoryRulesetPayloadParametersBranch02 record {
     # Branch can pull changes from its upstream repository
-    boolean update_allows_fetch_and_merge?;
+    @jsondata:Name {value: "update_allows_fetch_and_merge"}
+    boolean updateAllowsFetchAndMerge?;
 };
 
 # Parameters for the `merge_queue` rule.
 public type 'RepositoryRulesetPayloadParametersBranch12 record {
-    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed.
-    int check_response_timeout_minutes?;
-    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required checks to merge.
-    string grouping_strategy?;
+    # Maximum time (minutes) for a required status check to report a conclusion. After this much time has elapsed,
+    # checks that have not reported a conclusion will be assumed to have failed.
+    @jsondata:Name {value: "check_response_timeout_minutes"}
+    int checkResponseTimeoutMinutes?;
+    # When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required
+    # checks to merge. When set to HEADGREEN, only the commit at the head of the merge group must pass its required
+    # checks to merge.
+    @jsondata:Name {value: "grouping_strategy"}
+    string groupingStrategy?;
     # Limit the number of queued pull requests requesting checks and workflow runs at the same time.
-    int max_entries_to_build?;
+    @jsondata:Name {value: "max_entries_to_build"}
+    int maxEntriesToBuild?;
     # The maximum number of PRs that will be merged together in a group.
-    int max_entries_to_merge?;
+    @jsondata:Name {value: "max_entries_to_merge"}
+    int maxEntriesToMerge?;
     # Method to use when merging changes from queued pull requests.
-    string merge_method?;
+    @jsondata:Name {value: "merge_method"}
+    string mergeMethod?;
     # The minimum number of PRs that will be merged together in a group.
-    int min_entries_to_merge?;
-    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met, before merging a smaller group.
-    int min_entries_to_merge_wait_minutes?;
+    @jsondata:Name {value: "min_entries_to_merge"}
+    int minEntriesToMerge?;
+    # The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met,
+    # before merging a smaller group.
+    @jsondata:Name {value: "min_entries_to_merge_wait_minutes"}
+    int minEntriesToMergeWaitMinutes?;
 };
 
 # Parameters for the `required_deployments` rule.
 public type 'RepositoryRulesetPayloadParametersBranch22 record {
     # Environments that must be successfully deployed to before branches can be merged.
-    string[] required_deployment_environments?;
+    @jsondata:Name {value: "required_deployment_environments"}
+    string[] requiredDeploymentEnvironments?;
 };
 
 # Parameters for the `pull_request` rule.
 public type 'RepositoryRulesetPayloadParametersBranch32 record {
     # Array of allowed merge methods. At least one option must be enabled.
-    string[] allowed_merge_methods?;
+    @jsondata:Name {value: "allowed_merge_methods"}
+    string[] allowedMergeMethods?;
     # New, reviewable commits pushed will dismiss previous pull request review approvals.
-    boolean dismiss_stale_reviews_on_push?;
+    @jsondata:Name {value: "dismiss_stale_reviews_on_push"}
+    boolean dismissStaleReviewsOnPush?;
     # Specify people, teams, or apps allowed to dismiss pull request reviews.
-    RuleDismissalRestriction dismissal_restriction?;
+    @jsondata:Name {value: "dismissal_restriction"}
+    RuleDismissalRestriction dismissalRestriction?;
     # Require an approving review in pull requests that modify files that have a designated code owner.
-    boolean require_code_owner_review?;
+    @jsondata:Name {value: "require_code_owner_review"}
+    boolean requireCodeOwnerReview?;
     # Whether the most recent reviewable push must be approved by someone other than the person who pushed it.
-    boolean require_last_push_approval?;
+    @jsondata:Name {value: "require_last_push_approval"}
+    boolean requireLastPushApproval?;
     # The number of approving reviews that are required before a pull request can be merged.
-    int required_approving_review_count?;
+    @jsondata:Name {value: "required_approving_review_count"}
+    int requiredApprovingReviewCount?;
     # All conversations on code must be resolved before a pull request can be merged.
-    boolean required_review_thread_resolution?;
-    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
-    RuleRequiredReviewerConfiguration[] required_reviewers?;
+    @jsondata:Name {value: "required_review_thread_resolution"}
+    boolean requiredReviewThreadResolution?;
+    # A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine
+    # the files that reviewer is required to review.
+    @jsondata:Name {value: "required_reviewers"}
+    RuleRequiredReviewerConfiguration[] requiredReviewers?;
 };
 
 # Parameters for the `required_status_checks` rule.
 public type 'RepositoryRulesetPayloadParametersBranch42 record {
     # Allow repositories and branches to be created if a check would otherwise prohibit it.
-    boolean do_not_enforce_on_create?;
+    @jsondata:Name {value: "do_not_enforce_on_create"}
+    boolean doNotEnforceOnCreate?;
     # Status checks that are required.
-    RuleStatusCheckConfiguration[] required_status_checks?;
-    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at least one status check is enabled.
-    boolean strict_required_status_checks_policy?;
+    @jsondata:Name {value: "required_status_checks"}
+    RuleStatusCheckConfiguration[] requiredStatusChecks?;
+    # Whether pull requests targeting a matching branch must be tested with the latest code. Has no effect unless at
+    # least one status check is enabled.
+    @jsondata:Name {value: "strict_required_status_checks_policy"}
+    boolean strictRequiredStatusChecksPolicy?;
 };
 
 # Shared by the 5 pattern-matching ruleset rules (commit_message_pattern,
@@ -3729,31 +4286,36 @@ public type 'RepositoryRulesetPayloadParametersBranch52 record {
 # Parameters for the `file_path_restriction` rule.
 public type 'RepositoryRulesetPayloadParametersBranch62 record {
     # File paths that are restricted from being pushed to the commit graph.
-    string[] restricted_file_paths?;
+    @jsondata:Name {value: "restricted_file_paths"}
+    string[] restrictedFilePaths?;
 };
 
 # Parameters for the `max_file_path_length` rule.
 public type 'RepositoryRulesetPayloadParametersBranch72 record {
     # The maximum amount of characters allowed in file paths.
-    int max_file_path_length?;
+    @jsondata:Name {value: "max_file_path_length"}
+    int maxFilePathLength?;
 };
 
 # Parameters for the `file_extension_restriction` rule.
 public type 'RepositoryRulesetPayloadParametersBranch82 record {
     # File extensions that are restricted from being pushed to the commit graph.
-    string[] restricted_file_extensions?;
+    @jsondata:Name {value: "restricted_file_extensions"}
+    string[] restrictedFileExtensions?;
 };
 
 # Parameters for the `max_file_size` rule.
 public type 'RepositoryRulesetPayloadParametersBranch92 record {
     # The maximum file size allowed in megabytes.
-    int max_file_size?;
+    @jsondata:Name {value: "max_file_size"}
+    int maxFileSize?;
 };
 
 # Parameters for the `workflows` rule.
 public type 'RepositoryRulesetPayloadParametersBranch102 record {
     # Allow repositories and branches to be created if a check would otherwise prohibit it.
-    boolean do_not_enforce_on_create?;
+    @jsondata:Name {value: "do_not_enforce_on_create"}
+    boolean doNotEnforceOnCreate?;
     # Workflows that must pass for this rule to pass.
     RuleWorkflowFileReference[] workflows?;
 };
@@ -3761,7 +4323,8 @@ public type 'RepositoryRulesetPayloadParametersBranch102 record {
 # Parameters for the `code_scanning` rule.
 public type 'RepositoryRulesetPayloadParametersBranch112 record {
     # Tools that must provide code scanning results for this rule to pass.
-    RuleCodeScanningTool[] code_scanning_tools?;
+    @jsondata:Name {value: "code_scanning_tools"}
+    RuleCodeScanningTool[] codeScanningTools?;
 };
 
 # The parameters of the updated rule.
@@ -3798,7 +4361,8 @@ public type RepositoryRulesetPayloadChanges3 record {
     # The rule's previous configuration, before this edit.
     Configuration configuration?;
     # The rule's previous type, before this edit.
-    RuleType rule_type?;
+    @jsondata:Name {value: "rule_type"}
+    RuleType ruleType?;
     # The rule's previous pattern, before this edit.
     Pattern pattern?;
 };
@@ -3904,17 +4468,23 @@ public type SecretScanningNonProviderPatterns record {
 # The security and analysis settings that changed
 public type SecurityAndAnalysisPayloadChanges record {
     # Change to GitHub Advanced Security enablement
-    AdvancedSecurity advanced_security?;
+    @jsondata:Name {value: "advanced_security"}
+    AdvancedSecurity advancedSecurity?;
     # Change to Dependabot alerts enablement
-    DependabotAlerts dependabot_alerts?;
+    @jsondata:Name {value: "dependabot_alerts"}
+    DependabotAlerts dependabotAlerts?;
     # Change to Dependabot security updates enablement
-    DependabotSecurityUpdates dependabot_security_updates?;
+    @jsondata:Name {value: "dependabot_security_updates"}
+    DependabotSecurityUpdates dependabotSecurityUpdates?;
     # Change to secret scanning enablement
-    SecretScanning secret_scanning?;
+    @jsondata:Name {value: "secret_scanning"}
+    SecretScanning secretScanning?;
     # Change to secret scanning push protection enablement
-    SecretScanningPushProtection secret_scanning_push_protection?;
+    @jsondata:Name {value: "secret_scanning_push_protection"}
+    SecretScanningPushProtection secretScanningPushProtection?;
     # Change to non-provider pattern scanning enablement
-    SecretScanningNonProviderPatterns secret_scanning_non_provider_patterns?;
+    @jsondata:Name {value: "secret_scanning_non_provider_patterns"}
+    SecretScanningNonProviderPatterns secretScanningNonProviderPatterns?;
 };
 
 # Git author/committer metadata
@@ -3958,29 +4528,39 @@ public type 'key record {
     # Whether GitHub has verified the deploy key.
     boolean verified?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # Whether the deploy key has read-only (not read-write) access.
-    boolean read_only?;
+    @jsondata:Name {value: "read_only"}
+    boolean readOnly?;
     # The username of the user who added the deploy key, if known.
-    string? added_by?;
+    @jsondata:Name {value: "added_by"}
+    string? addedBy?;
     # The date and time the deploy key was last used, in ISO 8601 format.
-    string? last_used?;
+    @jsondata:Name {value: "last_used"}
+    string? lastUsed?;
 };
 
 # Payload for issue_dependencies events
 public type IssueDependenciesPayload record {
-    # The action that was performed. Can be one of: blocking_removed, blocked_by_removed, blocking_added, blocked_by_added.
+    # The action that was performed. Can be one of: blocking_removed, blocked_by_removed, blocking_added,
+    # blocked_by_added.
     string action;
     # The ID of the blocked issue.
-    int blocked_issue_id?;
+    @jsondata:Name {value: "blocked_issue_id"}
+    int blockedIssueId?;
     # An issue on GitHub
-    Issue blocked_issue?;
+    @jsondata:Name {value: "blocked_issue"}
+    Issue blockedIssue?;
     # The ID of the blocking issue.
-    int blocking_issue_id?;
+    @jsondata:Name {value: "blocking_issue_id"}
+    int blockingIssueId?;
     # An issue on GitHub
-    Issue blocking_issue?;
+    @jsondata:Name {value: "blocking_issue"}
+    Issue blockingIssue?;
     # A repository on GitHub
-    Repository blocking_issue_repo?;
+    @jsondata:Name {value: "blocking_issue_repo"}
+    Repository blockingIssueRepo?;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -3998,7 +4578,8 @@ public type RepositoryAdvisoryPayload record {
     # The action that was performed. Can be one of: reported, published.
     string action;
     # A repository security advisory
-    RepositoryAdvisory repository_advisory;
+    @jsondata:Name {value: "repository_advisory"}
+    RepositoryAdvisory repositoryAdvisory;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -4038,17 +4619,21 @@ public type VulnerabilitiesItem record {
     # The package affected by the vulnerability.
     RepositoryAdvisoryPayloadPackage package?;
     # The range of versions affected by the vulnerability.
-    string? vulnerable_version_range?;
+    @jsondata:Name {value: "vulnerable_version_range"}
+    string? vulnerableVersionRange?;
     # The versions that contain a patch for the vulnerability.
-    string? patched_versions?;
+    @jsondata:Name {value: "patched_versions"}
+    string? patchedVersions?;
     # The functions affected by the vulnerability.
-    string[] vulnerable_functions?;
+    @jsondata:Name {value: "vulnerable_functions"}
+    string[] vulnerableFunctions?;
 };
 
 # The CVSS score and vector for the advisory.
 public type Cvss record {
     # The CVSS vector string describing the vulnerability's characteristics.
-    string? vector_string?;
+    @jsondata:Name {value: "vector_string"}
+    string? vectorString?;
     # The CVSS score of the vulnerability.
     decimal? score?;
 };
@@ -4056,7 +4641,8 @@ public type Cvss record {
 # A CWE (Common Weakness Enumeration) classification for the advisory.
 public type CwesItem record {
     # The CWE identifier, e.g. CWE-79.
-    string cwe_id?;
+    @jsondata:Name {value: "cwe_id"}
+    string cweId?;
     # The name of the CWE weakness.
     string name?;
 };
@@ -4072,13 +4658,16 @@ public type CreditsItem record {
 # A repository security advisory
 public type RepositoryAdvisory record {
     # The GitHub Security Advisory identifier
-    string ghsa_id;
+    @jsondata:Name {value: "ghsa_id"}
+    string ghsaId;
     # The Common Vulnerabilities and Exposures (CVE) ID.
-    string? cve_id;
+    @jsondata:Name {value: "cve_id"}
+    string? cveId;
     # The API URL for the advisory.
     string url?;
     # The URL for the advisory.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # A short summary of the advisory.
     string summary;
     # A detailed description of what the advisory entails.
@@ -4094,13 +4683,17 @@ public type RepositoryAdvisory record {
     # The state of the advisory.
     string state;
     # The date and time of when the advisory was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time of when the advisory was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The date and time of when the advisory was published, in ISO 8601 format.
-    string? published_at?;
+    @jsondata:Name {value: "published_at"}
+    string? publishedAt?;
     # The date and time of when the advisory was withdrawn, in ISO 8601 format.
-    string? withdrawn_at?;
+    @jsondata:Name {value: "withdrawn_at"}
+    string? withdrawnAt?;
     # The accept/reject decision on a repository security advisory publish request
     Submission? submission?;
     # The products affected by the vulnerability detailed in the advisory.
@@ -4134,29 +4727,40 @@ public type RepositoryVulnerabilityAlertPayloadAlert record {
     # The unique identifier of the resource.
     int id;
     # The name of the package affected by the vulnerability.
-    string affected_package_name;
+    @jsondata:Name {value: "affected_package_name"}
+    string affectedPackageName;
     # The range of package versions affected by the vulnerability.
-    string affected_range;
+    @jsondata:Name {value: "affected_range"}
+    string affectedRange;
     # The package version that resolves the vulnerability.
-    string? fixed_in?;
+    @jsondata:Name {value: "fixed_in"}
+    string? fixedIn?;
     # The severity of the vulnerability.
     string severity;
     # The GitHub Security Advisory identifier for the vulnerability.
-    string ghsa_id?;
+    @jsondata:Name {value: "ghsa_id"}
+    string ghsaId?;
     # The vulnerability's identifier in an external database, e.g. a CVE ID.
-    string external_identifier?;
+    @jsondata:Name {value: "external_identifier"}
+    string externalIdentifier?;
     # A URL to the vulnerability's external reference source.
-    string? external_reference?;
+    @jsondata:Name {value: "external_reference"}
+    string? externalReference?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the alert was automatically dismissed, in ISO 8601 format.
-    string? auto_dismissed_at?;
+    @jsondata:Name {value: "auto_dismissed_at"}
+    string? autoDismissedAt?;
     # The reason the alert was dismissed.
-    string? dismiss_reason?;
+    @jsondata:Name {value: "dismiss_reason"}
+    string? dismissReason?;
     # The date and time the alert was dismissed, in ISO 8601 format.
-    string? dismissed_at?;
+    @jsondata:Name {value: "dismissed_at"}
+    string? dismissedAt?;
     # A GitHub user
-    User? dismissed_by?;
+    @jsondata:Name {value: "dismissed_by"}
+    User? dismissedBy?;
     # The alert number, unique within the repository.
     int number?;
 };
@@ -4166,7 +4770,8 @@ public type Milestone record {
     # The unique identifier of the resource.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The number of the milestone.
     int number?;
     # The title of the milestone.
@@ -4176,17 +4781,23 @@ public type Milestone record {
     # The state of the milestone.
     string state?;
     # The number of open issues associated with the milestone.
-    int open_issues?;
+    @jsondata:Name {value: "open_issues"}
+    int openIssues?;
     # The number of closed issues associated with the milestone.
-    int closed_issues?;
+    @jsondata:Name {value: "closed_issues"}
+    int closedIssues?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The date the milestone is due, in ISO 8601 format.
-    string? due_on?;
+    @jsondata:Name {value: "due_on"}
+    string? dueOn?;
     # The date and time the milestone was closed, in ISO 8601 format.
-    string? closed_at?;
+    @jsondata:Name {value: "closed_at"}
+    string? closedAt?;
     # A GitHub user
     User creator?;
 };
@@ -4239,13 +4850,15 @@ public type IssuesPayloadChanges record {
 
 # Payload for code_scanning_alert events
 public type CodeScanningAlertPayload record {
-    # The action that was performed. Can be one of: appeared_in_branch, closed_by_user, created, fixed, reopened, reopened_by_user, updated_assignment.
+    # The action that was performed. Can be one of: appeared_in_branch, closed_by_user, created, fixed, reopened,
+    # reopened_by_user, updated_assignment.
     string action;
     # The code scanning alert involved in the event
     CodeScanningAlertPayloadAlert alert;
     # The commit SHA of the alert. Empty when action is reopened_by_user
     # or closed_by_user.
-    string commit_oid;
+    @jsondata:Name {value: "commit_oid"}
+    string commitOid;
     # The git ref of the alert. Empty when action is reopened_by_user
     # or closed_by_user.
     string ref;
@@ -4268,13 +4881,15 @@ public type CodeScanningAlertPayloadRule record {
     # The severity of the alert, e.g. note, warning, or error.
     string severity?;
     # The security severity level of the alert, e.g. low, medium, high, or critical.
-    string? security_severity_level?;
+    @jsondata:Name {value: "security_severity_level"}
+    string? securitySeverityLevel?;
     # A short description of the rule.
     string description?;
     # The name of the rule.
     string name?;
     # The full description of the rule.
-    string full_description?;
+    @jsondata:Name {value: "full_description"}
+    string fullDescription?;
     # Tags associated with the rule.
     string[] tags?;
     # Help text describing how to fix the issue.
@@ -4298,13 +4913,17 @@ public type CodeScanningAlertPayloadLocation record {
     # The file path where the flagged code is located.
     string path?;
     # The line number where the flagged code range begins.
-    int start_line?;
+    @jsondata:Name {value: "start_line"}
+    int startLine?;
     # The line number where the flagged code range ends.
-    int end_line?;
+    @jsondata:Name {value: "end_line"}
+    int endLine?;
     # The column number where the flagged code range begins.
-    int start_column?;
+    @jsondata:Name {value: "start_column"}
+    int startColumn?;
     # The column number where the flagged code range ends.
-    int end_column?;
+    @jsondata:Name {value: "end_column"}
+    int endColumn?;
 };
 
 # The most recent instance of the code scanning alert.
@@ -4312,13 +4931,15 @@ public type MostRecentInstance record {
     # The full Git reference, formatted as `refs/heads/<branch name>`.
     string ref?;
     # Identifies the configuration under which the analysis was executed, e.g. workflow and job name.
-    string analysis_key?;
+    @jsondata:Name {value: "analysis_key"}
+    string analysisKey?;
     # Identifies the variable values of the environment the analysis was performed in, e.g. the language analyzed.
     string environment?;
     # The state of the alert instance. Can be one of: open, dismissed, fixed.
     string state?;
     # The SHA of the commit this alert instance was found in.
-    string commit_sha?;
+    @jsondata:Name {value: "commit_sha"}
+    string commitSha?;
     # Where in the code this alert instance was found - unrelated to, and a
     # different shape from, secret_scanning's own "location" field elsewhere in
     # this spec (that one identifies a commit/path, this one a line/column range).
@@ -4330,31 +4951,41 @@ public type CodeScanningAlertPayloadAlert record {
     # The security alert number.
     int number;
     # The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The time that the alert was last updated in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string? updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string? updatedAt?;
     # The REST API URL of the alert resource.
     string url?;
     # The GitHub URL of the alert resource.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # State of a code scanning alert.
     string state;
-    # The time that the alert was no longer detected and was considered fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string? fixed_at?;
+    # The time that the alert was no longer detected and was considered fixed in ISO 8601 format:
+    # `YYYY-MM-DDTHH:MM:SSZ`.
+    @jsondata:Name {value: "fixed_at"}
+    string? fixedAt?;
     # A GitHub user
-    User? dismissed_by?;
+    @jsondata:Name {value: "dismissed_by"}
+    User? dismissedBy?;
     # The time that the alert was dismissed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
-    string? dismissed_at?;
+    @jsondata:Name {value: "dismissed_at"}
+    string? dismissedAt?;
     # The reason for dismissing or closing the alert.
-    string? dismissed_reason?;
+    @jsondata:Name {value: "dismissed_reason"}
+    string? dismissedReason?;
     # The dismissal comment associated with the dismissal of the alert.
-    string? dismissed_comment?;
+    @jsondata:Name {value: "dismissed_comment"}
+    string? dismissedComment?;
     # The rule that triggered the code scanning alert.
     CodeScanningAlertPayloadRule rule?;
     # The tool that generated the code scanning alert.
     Tool tool?;
     # The most recent instance of the code scanning alert.
-    MostRecentInstance most_recent_instance?;
+    @jsondata:Name {value: "most_recent_instance"}
+    MostRecentInstance mostRecentInstance?;
 };
 
 # Payload for pull_request_review events
@@ -4364,7 +4995,8 @@ public type PullRequestReviewPayload record {
     # A pull request review
     PullRequestReview review;
     # A pull request
-    PullRequest pull_request;
+    @jsondata:Name {value: "pull_request"}
+    PullRequest pullRequest;
     # For edited events, the changes to the review
     PullRequestReviewPayloadChanges changes?;
     # A GitHub user
@@ -4396,7 +5028,8 @@ public type 'ProjectsV2Payload record {
     # The action that was performed. Can be one of: created, edited, closed, reopened, deleted.
     string action;
     # A Projects v2 project
-    'projectsV2 'projects_v2;
+    @jsondata:Name {value: "projects_v2"}
+    'projectsV2 projectsV2;
     # A GitHub user
     User sender?;
     # A GitHub organization
@@ -4410,7 +5043,8 @@ public type 'projectsV2 record {
     # The unique identifier of the project.
     int id;
     # The node ID of the project.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # A GitHub user
     User owner;
     # A GitHub user
@@ -4422,19 +5056,25 @@ public type 'projectsV2 record {
     # Whether the project is visible to anyone with access to the owner.
     boolean 'public?;
     # The time when the project was closed.
-    string? closed_at?;
+    @jsondata:Name {value: "closed_at"}
+    string? closedAt?;
     # The time when the project was created.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The time when the project was last updated.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The time when the project was deleted.
-    string? deleted_at?;
+    @jsondata:Name {value: "deleted_at"}
+    string? deletedAt?;
     # A GitHub user
-    User? deleted_by?;
+    @jsondata:Name {value: "deleted_by"}
+    User? deletedBy?;
     # The project number.
     int number?;
     # A concise summary of the project.
-    string? short_description?;
+    @jsondata:Name {value: "short_description"}
+    string? shortDescription?;
     # The project's status; undocumented field, exact semantics unconfirmed.
     string? status?;
 };
@@ -4444,7 +5084,8 @@ public type PersonalAccessTokenRequestPayload record {
     # The action that was performed. Can be one of: created, approved, denied, cancelled.
     string action;
     # A fine-grained personal access token request
-    PersonalAccessTokenRequest personal_access_token_request;
+    @jsondata:Name {value: "personal_access_token_request"}
+    PersonalAccessTokenRequest personalAccessTokenRequest;
     # A GitHub user
     User sender?;
     # A GitHub organization
@@ -4481,44 +5122,58 @@ public type PermissionsUpgraded record {
 # The resulting full set of permissions if approved - same permission-name-to-
 # access-level map shape as permissions_added, not an entity reference.
 public type PermissionsResult record {
-    # The resulting organization-level permissions if the request is approved, mapped from permission name to access level.
+    # The resulting organization-level permissions if the request is approved, mapped from permission name to access
+    # level.
     map<json>? organization?;
-    # The resulting repository-level permissions if the request is approved, mapped from permission name to access level.
+    # The resulting repository-level permissions if the request is approved, mapped from permission name to access
+    # level.
     map<json>? repository?;
-    # The resulting other account-level permissions if the request is approved, mapped from permission name to access level.
+    # The resulting other account-level permissions if the request is approved, mapped from permission name to access
+    # level.
     map<json>? other?;
 };
 
 # A fine-grained personal access token request
 public type PersonalAccessTokenRequest record {
-    # Unique identifier of the request for access via fine-grained personal access token. Used as the `pat_request_id` parameter in the list and review API calls.
+    # Unique identifier of the request for access via fine-grained personal access token. Used as the `pat_request_id`
+    # parameter in the list and review API calls.
     int id;
     # A GitHub user
     User owner;
     # Permissions added by the request - each of organization/repository/other is a
     # map of permission name to access level (e.g. "contents": "read"), NOT a
     # reference to the Organization/Repository entity schemas despite the field names.
-    PermissionsAdded permissions_added?;
+    @jsondata:Name {value: "permissions_added"}
+    PermissionsAdded permissionsAdded?;
     # Permissions upgraded from existing token - same permission-name-to-access-level
     # map shape as permissions_added, not an entity reference.
-    PermissionsUpgraded permissions_upgraded?;
+    @jsondata:Name {value: "permissions_upgraded"}
+    PermissionsUpgraded permissionsUpgraded?;
     # The resulting full set of permissions if approved - same permission-name-to-
     # access-level map shape as permissions_added, not an entity reference.
-    PermissionsResult permissions_result?;
+    @jsondata:Name {value: "permissions_result"}
+    PermissionsResult permissionsResult?;
     # Type of repository selection requested.
-    string repository_selection?;
+    @jsondata:Name {value: "repository_selection"}
+    string repositorySelection?;
     # The API URL listing the repositories associated with this resource.
-    string? repositories_url?;
-    # An array of repository objects the token is requesting access to. This field is only populated when `repository_selection` is `subset`.
+    @jsondata:Name {value: "repositories_url"}
+    string? repositoriesUrl?;
+    # An array of repository objects the token is requesting access to. This field is only populated when
+    # `repository_selection` is `subset`.
     Repository[]? repositories?;
     # Whether the associated fine-grained personal access token has expired.
-    boolean token_expired?;
+    @jsondata:Name {value: "token_expired"}
+    boolean tokenExpired?;
     # Date and time when the associated fine-grained personal access token expires.
-    string? token_expires_at?;
+    @jsondata:Name {value: "token_expires_at"}
+    string? tokenExpiresAt?;
     # Date and time when the associated fine-grained personal access token was last used for authentication.
-    string? token_last_used_at?;
+    @jsondata:Name {value: "token_last_used_at"}
+    string? tokenLastUsedAt?;
     # Date and time when the request for access was created.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
 };
 
 # Payload for installation events
@@ -4544,11 +5199,13 @@ public type RepositoriesItem record {
     # The unique identifier of the resource.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The name of the repository.
     string name?;
     # The full name of the repository, in the form `owner/repo`.
-    string full_name?;
+    @jsondata:Name {value: "full_name"}
+    string fullName?;
     # Whether the repository is private.
     boolean 'private?;
 };
@@ -4556,70 +5213,94 @@ public type RepositoriesItem record {
 # A GitHub Actions workflow run
 public type WorkflowRun record {
     # The ID of the workflow run.
-    int id;
+    int id?;
     # The name of the workflow run.
-    string name;
+    string name?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The ID of the associated check suite.
-    int check_suite_id?;
+    @jsondata:Name {value: "check_suite_id"}
+    int checkSuiteId?;
     # The node ID of the associated check suite.
-    string check_suite_node_id?;
+    @jsondata:Name {value: "check_suite_node_id"}
+    string checkSuiteNodeId?;
     # The name of the branch the workflow run is on.
-    string? head_branch?;
+    @jsondata:Name {value: "head_branch"}
+    string? headBranch?;
     # The SHA of the head commit that points to the version of the workflow being run.
-    string head_sha?;
+    @jsondata:Name {value: "head_sha"}
+    string headSha?;
     # The auto incrementing run number for the workflow run.
-    int run_number?;
+    @jsondata:Name {value: "run_number"}
+    int runNumber?;
     # The event that triggered the workflow run, e.g. push, pull_request.
     string event?;
     # The status of the workflow run, e.g. queued, in_progress, completed.
-    string status;
+    string status?;
     # The result of the completed workflow run, e.g. success, failure, cancelled.
     string? conclusion?;
     # The ID of the parent workflow.
-    int workflow_id?;
+    @jsondata:Name {value: "workflow_id"}
+    int workflowId?;
     # The URL to the workflow run.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
-    # Pull requests that are open with a `head_sha` or `head_branch` that matches the workflow run. The returned pull requests do not necessarily indicate pull requests that triggered the run.
-    PullRequestMinimal[] pull_requests?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
+    # Pull requests that are open with a `head_sha` or `head_branch` that matches the workflow run. The returned pull
+    # requests do not necessarily indicate pull requests that triggered the run.
+    @jsondata:Name {value: "pull_requests"}
+    PullRequestMinimal[] pullRequests?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # Attempt number of the run, 1 for first attempt and higher if the workflow was re-run.
-    int run_attempt?;
+    @jsondata:Name {value: "run_attempt"}
+    int runAttempt?;
     # The start time of the latest run. Resets on re-run.
-    string run_started_at?;
+    @jsondata:Name {value: "run_started_at"}
+    string runStartedAt?;
     # A GitHub user
     User actor?;
     # A GitHub user
-    User triggering_actor?;
+    @jsondata:Name {value: "triggering_actor"}
+    User triggeringActor?;
     # The URL to the jobs for the workflow run.
-    string jobs_url?;
+    @jsondata:Name {value: "jobs_url"}
+    string jobsUrl?;
     # The URL to download the logs for the workflow run.
-    string logs_url?;
+    @jsondata:Name {value: "logs_url"}
+    string logsUrl?;
     # The URL to the associated check suite.
-    string check_suite_url?;
+    @jsondata:Name {value: "check_suite_url"}
+    string checkSuiteUrl?;
     # The URL to the artifacts for the workflow run.
-    string artifacts_url?;
+    @jsondata:Name {value: "artifacts_url"}
+    string artifactsUrl?;
     # The URL to cancel the workflow run.
-    string cancel_url?;
+    @jsondata:Name {value: "cancel_url"}
+    string cancelUrl?;
     # The URL to rerun the workflow run.
-    string rerun_url?;
+    @jsondata:Name {value: "rerun_url"}
+    string rerunUrl?;
     # The URL to the workflow.
-    string workflow_url?;
+    @jsondata:Name {value: "workflow_url"}
+    string workflowUrl?;
     # A Git commit
-    Commit head_commit?;
+    @jsondata:Name {value: "head_commit"}
+    Commit headCommit?;
     # A repository on GitHub
     Repository repository?;
 };
 
 # Payload for discussion events
 public type DiscussionPayload record {
-    # The action that was performed. Can be one of: created, edited, deleted, pinned, unpinned, locked, unlocked, transferred, category_changed, answered, unanswered, labeled, unlabeled, closed, reopened.
+    # The action that was performed. Can be one of: created, edited, deleted, pinned, unpinned, locked, unlocked,
+    # transferred, category_changed, answered, unanswered, labeled, unlabeled, closed, reopened.
     string action;
     # A GitHub Discussion in a repository
     Discussion discussion;
@@ -4652,27 +5333,36 @@ public type Answer record {
     # The unique identifier of the resource.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The ID of the parent comment, if this is a reply; otherwise null.
-    int? parent_id?;
+    @jsondata:Name {value: "parent_id"}
+    int? parentId?;
     # The number of replies to this comment.
-    int child_comment_count?;
+    @jsondata:Name {value: "child_comment_count"}
+    int childCommentCount?;
     # The API URL of the repository this comment belongs to.
-    string repository_url?;
+    @jsondata:Name {value: "repository_url"}
+    string repositoryUrl?;
     # The ID of the discussion this comment belongs to.
-    int discussion_id?;
+    @jsondata:Name {value: "discussion_id"}
+    int discussionId?;
     # How the author is associated with the repository.
-    string author_association?;
+    @jsondata:Name {value: "author_association"}
+    string authorAssociation?;
     # A GitHub user
     User user?;
     # The text of the comment.
     string body?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # The discussion's previous title, before this edit.
@@ -4708,14 +5398,19 @@ public type CheckSuite record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The head branch name the changes are on.
-    string? head_branch?;
+    @jsondata:Name {value: "head_branch"}
+    string? headBranch?;
     # The SHA of the head commit that is being checked.
-    string head_sha?;
-    # The summary status for all check runs that are part of the check suite. Can be `queued`, `requested`, `in_progress`, or `completed`.
+    @jsondata:Name {value: "head_sha"}
+    string headSha?;
+    # The summary status for all check runs that are part of the check suite. Can be `queued`, `requested`,
+    # `in_progress`, or `completed`.
     string status?;
-    # The summary conclusion for all check runs that are part of the check suite. This value will be `null` until the check suite has `completed`.
+    # The summary conclusion for all check runs that are part of the check suite. This value will be `null` until the
+    # check suite has `completed`.
     string? conclusion?;
     # URL that points to the check suite API resource.
     string url?;
@@ -4723,14 +5418,19 @@ public type CheckSuite record {
     string? before?;
     # The SHA of the most recent commit on the branch after this check suite's push.
     string? after?;
-    # An array of pull requests that match this check suite. A pull request matches a check suite if they have the same `head_sha` and `head_branch`. When the check suite's `head_branch` is in a forked repository it will be `null` and the `pull_requests` array will be empty.
-    PullRequestMinimal[] pull_requests?;
+    # An array of pull requests that match this check suite. A pull request matches a check suite if they have the same
+    # `head_sha` and `head_branch`. When the check suite's `head_branch` is in a forked repository it will be `null` and
+    # the `pull_requests` array will be empty.
+    @jsondata:Name {value: "pull_requests"}
+    PullRequestMinimal[] pullRequests?;
     # A GitHub App
     App app?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # Payload for status events. No action field — the state property carries
@@ -4749,17 +5449,21 @@ public type StatusPayload record {
     # The optional human-readable description
     string? description?;
     # The optional link added to the status
-    string? target_url?;
+    @jsondata:Name {value: "target_url"}
+    string? targetUrl?;
     # The URL of the user's or organization's avatar image.
-    string? avatar_url?;
+    @jsondata:Name {value: "avatar_url"}
+    string? avatarUrl?;
     # The commit the status is associated with
     'commit 'commit;
     # Array of branches containing the status SHA (max 10)
     BranchesItem[] branches;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at;
+    @jsondata:Name {value: "created_at"}
+    string createdAt;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt;
     # A GitHub user
     User sender;
     # A repository on GitHub
@@ -4825,7 +5529,8 @@ public type StatusPayloadCommit record {
     # The API URL of the resource.
     string url?;
     # The number of comments on the commit.
-    int comment_count?;
+    @jsondata:Name {value: "comment_count"}
+    int commentCount?;
     # GPG/SSH commit signature verification details.
     Verification verification?;
 };
@@ -4839,7 +5544,8 @@ public type 'commit record {
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # A GitHub user
     User author?;
     # A GitHub user
@@ -4869,7 +5575,8 @@ public type 'ProjectsV2StatusUpdatePayload record {
     # The action that was performed. Can be one of: created, edited, deleted.
     string action;
     # A status update belonging to a Projects v2 project
-    'projectsV2StatusUpdate 'projects_v2_status_update;
+    @jsondata:Name {value: "projects_v2_status_update"}
+    'projectsV2StatusUpdate projectsV2StatusUpdate;
     # A GitHub user
     User sender?;
     # A GitHub organization
@@ -4883,21 +5590,27 @@ public type 'projectsV2StatusUpdate record {
     # The unique identifier of the status update.
     int id;
     # The node ID of the status update.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # The node ID of the project that this status update belongs to.
-    string project_node_id;
+    @jsondata:Name {value: "project_node_id"}
+    string projectNodeId;
     # The current status.
     string? status?;
     # Body of the status update.
     string? body?;
     # The time when the status update was created.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The time when the status update was last updated.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The start date of the period covered by the update.
-    string? start_date?;
+    @jsondata:Name {value: "start_date"}
+    string? startDate?;
     # The target date associated with the update.
-    string? target_date?;
+    @jsondata:Name {value: "target_date"}
+    string? targetDate?;
     # A GitHub user
     User creator?;
 };
@@ -4977,21 +5690,24 @@ public type Discussion record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The discussion's number within the repository.
     int number;
     # The discussion post's title.
     string title;
     # The discussion post's body text.
     string? body?;
-    # The current state of the discussion. `converting` means that the discussion is being converted from an issue. `transferring` means that the discussion is being transferred from another repository.
+    # The current state of the discussion. `converting` means that the discussion is being converted from an issue.
+    # `transferring` means that the discussion is being transferred from another repository.
     string state;
     # A discussion category
     Category category?;
     # A GitHub user
     User user?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The number of comments on the discussion.
     int comments?;
     # Color-coded labels categorizing the discussion.
@@ -4999,17 +5715,23 @@ public type Discussion record {
     # Whether the discussion is locked.
     boolean locked?;
     # The reason the discussion was locked, if applicable.
-    string? active_lock_reason?;
+    @jsondata:Name {value: "active_lock_reason"}
+    string? activeLockReason?;
     # The URL of the comment marked as the answer, if any.
-    string? answer_html_url?;
+    @jsondata:Name {value: "answer_html_url"}
+    string? answerHtmlUrl?;
     # The date and time an answer was chosen, in ISO 8601 format.
-    string? answer_chosen_at?;
+    @jsondata:Name {value: "answer_chosen_at"}
+    string? answerChosenAt?;
     # A GitHub user
-    User? answer_chosen_by?;
+    @jsondata:Name {value: "answer_chosen_by"}
+    User? answerChosenBy?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # A GitHub user
@@ -5019,19 +5741,24 @@ public type User record {
     # The user's unique numeric identifier
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The URL of the user's or organization's avatar image.
-    string avatar_url?;
+    @jsondata:Name {value: "avatar_url"}
+    string avatarUrl?;
     # The user's Gravatar ID (legacy field, typically empty).
-    string? gravatar_id?;
+    @jsondata:Name {value: "gravatar_id"}
+    string? gravatarId?;
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The account type: User, Organization, or Bot.
     string 'type?;
     # Whether the user is a GitHub site administrator.
-    boolean site_admin?;
+    @jsondata:Name {value: "site_admin"}
+    boolean siteAdmin?;
 };
 
 # A pull request review
@@ -5039,7 +5766,8 @@ public type PullRequestReview record {
     # Unique identifier of the review.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # A GitHub user
     User user?;
     # The text of the review.
@@ -5047,15 +5775,21 @@ public type PullRequestReview record {
     # The review state, e.g. approved, changes_requested, commented, dismissed.
     string state;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The API URL of the reviewed pull request.
-    string pull_request_url?;
+    @jsondata:Name {value: "pull_request_url"}
+    string pullRequestUrl?;
     # The date and time the review was submitted, in ISO 8601 format.
-    string submitted_at?;
-    # A commit SHA for the review. If the commit object was garbage collected or forcibly deleted, then it no longer exists in Git and this value will be `null`.
-    string commit_id?;
+    @jsondata:Name {value: "submitted_at"}
+    string submittedAt?;
+    # A commit SHA for the review. If the commit object was garbage collected or forcibly deleted, then it no longer
+    # exists in Git and this value will be `null`.
+    @jsondata:Name {value: "commit_id"}
+    string commitId?;
     # How the author is associated with the repository.
-    string author_association?;
+    @jsondata:Name {value: "author_association"}
+    string authorAssociation?;
 };
 
 # A discussion category
@@ -5063,9 +5797,11 @@ public type Category record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # The ID of the repository this discussion category belongs to.
-    int repository_id;
+    @jsondata:Name {value: "repository_id"}
+    int repositoryId;
     # The emoji associated with the discussion category.
     string emoji?;
     # The name of the discussion category.
@@ -5073,13 +5809,16 @@ public type Category record {
     # The description of the discussion category.
     string description?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The URL-friendly identifier of the resource.
     string slug;
     # Whether discussions in this category can be marked as answered.
-    boolean is_answerable?;
+    @jsondata:Name {value: "is_answerable"}
+    boolean isAnswerable?;
 };
 
 # Payload for delete events (branch or tag deleted)
@@ -5087,9 +5826,11 @@ public type DeletePayload record {
     # The git ref resource (branch or tag name)
     string ref;
     # The type of Git ref object deleted
-    string ref_type;
+    @jsondata:Name {value: "ref_type"}
+    string refType;
     # The pusher type; either user or a deploy key
-    string pusher_type;
+    @jsondata:Name {value: "pusher_type"}
+    string pusherType;
     # A GitHub user
     User sender;
     # A repository on GitHub
@@ -5107,7 +5848,8 @@ public type MetaPayload record {
     # Always deleted — the webhook that triggered this event was deleted
     string action;
     # The id of the modified webhook
-    int hook_id;
+    @jsondata:Name {value: "hook_id"}
+    int hookId;
     # The deleted webhook. Fields vary by webhook type (repository,
     # organization, business, app, or GitHub Marketplace).
     MetaPayloadHook hook;
@@ -5126,9 +5868,11 @@ public type MetaPayload record {
 # The webhook's delivery configuration (URL, content type, SSL verification).
 public type MetaPayloadConfig record {
     # The media type used to serialize the payloads, e.g. `json` or `form`.
-    string content_type?;
+    @jsondata:Name {value: "content_type"}
+    string contentType?;
     # Whether SSL certificate verification is skipped when delivering payloads.
-    string insecure_ssl?;
+    @jsondata:Name {value: "insecure_ssl"}
+    string insecureSsl?;
     # The URL to which the payloads will be delivered.
     string url?;
     # Omitted from payloads for security
@@ -5151,9 +5895,11 @@ public type MetaPayloadHook record {
     # The webhook's delivery configuration (URL, content type, SSL verification).
     MetaPayloadConfig config?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
 };
 
 # Payload for deployment events
@@ -5165,7 +5911,8 @@ public type DeploymentPayload record {
     # The workflow that triggered the deployment (if applicable)
     Workflow? workflow;
     # The workflow run that triggered the deployment (if applicable)
-    WorkflowRun? workflow_run;
+    @jsondata:Name {value: "workflow_run"}
+    WorkflowRun? workflowRun;
     # A GitHub user
     User sender;
     # A repository on GitHub
@@ -5189,11 +5936,13 @@ public type DeploymentProtectionRulePayload record {
     # The branch or tag ref that triggered the workflow
     string ref?;
     # The URL to call to approve or reject the deployment
-    string deployment_callback_url?;
+    @jsondata:Name {value: "deployment_callback_url"}
+    string deploymentCallbackUrl?;
     # A request for a specific ref to be deployed
     Deployment deployment?;
     # The pull requests associated with the deployment
-    PullRequestsItem[] pull_requests?;
+    @jsondata:Name {value: "pull_requests"}
+    PullRequestsItem[] pullRequests?;
     # A GitHub user
     User sender?;
     # A GitHub App installation
@@ -5221,7 +5970,8 @@ public type RuleStatusCheckConfiguration record {
     # The status check context name that must pass for this rule to pass.
     string context;
     # The ID of the GitHub App that must provide this status check.
-    int integration_id?;
+    @jsondata:Name {value: "integration_id"}
+    int integrationId?;
 };
 
 # Payload for label events
@@ -5321,9 +6071,11 @@ public type Build record {
     # Duration of the build in milliseconds
     int duration;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at;
+    @jsondata:Name {value: "created_at"}
+    string createdAt;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt;
 };
 
 # Payload for project_card events (classic project cards).
@@ -5332,7 +6084,8 @@ public type ProjectCardPayload record {
     # The action that was performed. Can be one of: created, edited, moved, converted, deleted.
     string action;
     # A card on a classic project board
-    ProjectCard project_card;
+    @jsondata:Name {value: "project_card"}
+    ProjectCard projectCard;
     # For edited/moved events, the changes made
     ProjectCardPayloadChanges? changes?;
     # A GitHub user
@@ -5352,27 +6105,35 @@ public type ProjectCard record {
     # The project card's ID.
     int id;
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # The API URL of the resource.
     string url?;
     # The ID of the project column the card belongs to.
-    int column_id;
+    @jsondata:Name {value: "column_id"}
+    int columnId;
     # The API URL of the project column the card belongs to.
-    string column_url?;
+    @jsondata:Name {value: "column_url"}
+    string columnUrl?;
     # The API URL of the classic project the card belongs to.
-    string project_url?;
+    @jsondata:Name {value: "project_url"}
+    string projectUrl?;
     # The card's note text; null when the card links to an issue or pull request.
     string? note?;
     # Link to the issue or PR if the card is content-based
-    string? content_url?;
+    @jsondata:Name {value: "content_url"}
+    string? contentUrl?;
     # The ID of the card this card was moved after
-    int? after_id?;
+    @jsondata:Name {value: "after_id"}
+    int? afterId?;
     # A GitHub user
     User creator?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
 };
 
 # The card's previous note text, before this edit.
@@ -5392,7 +6153,8 @@ public type ProjectCardPayloadChanges record {
     # The card's previous note text, before this edit.
     Note note?;
     # The ID of the column the card was previously in, before this move.
-    ColumnId column_id?;
+    @jsondata:Name {value: "column_id"}
+    ColumnId columnId?;
 };
 
 # Payload for pull_request events
@@ -5402,13 +6164,15 @@ public type PullRequestPayload record {
     # The pull request number
     int number;
     # A pull request
-    PullRequest pull_request;
+    @jsondata:Name {value: "pull_request"}
+    PullRequest pullRequest;
     # A GitHub user
     User assignee?;
     # For edited events, the changes to the pull request
     PullRequestPayloadChanges changes?;
     # A GitHub user
-    User requested_reviewer?;
+    @jsondata:Name {value: "requested_reviewer"}
+    User requestedReviewer?;
     # A label on an issue or pull request
     Label label?;
     # A milestone on an issue or pull request
@@ -5489,7 +6253,8 @@ public type TeamAddPayloadParent record {
     # Unique identifier of the team.
     int id?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # Name of the team.
     string name?;
     # The URL-friendly identifier of the resource.
@@ -5501,11 +6266,14 @@ public type TeamAddPayloadParent record {
     # Permission that the team will have for its repositories.
     string permission?;
     # The API URL listing the members of this team.
-    string members_url?;
+    @jsondata:Name {value: "members_url"}
+    string membersUrl?;
     # The API URL listing the repositories associated with this resource.
-    string repositories_url?;
+    @jsondata:Name {value: "repositories_url"}
+    string repositoriesUrl?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
 };
 
 # The team that was granted access to the repository
@@ -5513,11 +6281,13 @@ public type TeamAddPayloadTeam record {
     # Unique identifier of the team.
     int id;
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # URL for the team.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # Name of the team.
     string name;
     # The URL-friendly identifier of the resource.
@@ -5527,13 +6297,16 @@ public type TeamAddPayloadTeam record {
     # The level of privacy this team should have.
     string privacy?;
     # The notification setting the team has set.
-    string notification_setting?;
+    @jsondata:Name {value: "notification_setting"}
+    string notificationSetting?;
     # Permission that the team will have for its repositories.
     string permission?;
     # The API URL listing the members of this team.
-    string members_url?;
+    @jsondata:Name {value: "members_url"}
+    string membersUrl?;
     # The API URL listing the repositories associated with this resource.
-    string repositories_url?;
+    @jsondata:Name {value: "repositories_url"}
+    string repositoriesUrl?;
     # The parent team, if this is a child team
     TeamAddPayloadParent? parent?;
 };
@@ -5543,49 +6316,69 @@ public type WorkflowJob record {
     # The id of the job.
     int id;
     # The id of the associated workflow run.
-    int run_id?;
+    @jsondata:Name {value: "run_id"}
+    int runId?;
     # The API URL of the associated workflow run.
-    string run_url?;
+    @jsondata:Name {value: "run_url"}
+    string runUrl?;
     # Attempt number of the associated workflow run, 1 for first attempt and higher if the workflow was re-run.
-    int run_attempt?;
+    @jsondata:Name {value: "run_attempt"}
+    int runAttempt?;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The SHA of the commit that is being run.
-    string head_sha?;
+    @jsondata:Name {value: "head_sha"}
+    string headSha?;
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The phase of the lifecycle that the job is currently in.
     string status;
     # The outcome of the job.
     string? conclusion?;
     # The time that the job created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The time that the job started, in ISO 8601 format.
-    string started_at?;
+    @jsondata:Name {value: "started_at"}
+    string startedAt?;
     # The time that the job finished, in ISO 8601 format.
-    string? completed_at?;
+    @jsondata:Name {value: "completed_at"}
+    string? completedAt?;
     # The name of the job.
     string name;
     # Steps in this job.
     StepsItem[] steps?;
     # The API URL of the associated check run.
-    string check_run_url?;
+    @jsondata:Name {value: "check_run_url"}
+    string checkRunUrl?;
     # Labels for the workflow job. Specified by the "runs_on" attribute in the action's workflow file.
     string[] labels?;
-    # The ID of the runner to which this job has been assigned. (If a runner hasn't yet been assigned, this will be null.)
-    int? runner_id?;
-    # The name of the runner to which this job has been assigned. (If a runner hasn't yet been assigned, this will be null.)
-    string? runner_name?;
-    # The ID of the runner group to which this job has been assigned. (If a runner hasn't yet been assigned, this will be null.)
-    int? runner_group_id?;
-    # The name of the runner group to which this job has been assigned. (If a runner hasn't yet been assigned, this will be null.)
-    string? runner_group_name?;
+    # The ID of the runner to which this job has been assigned. (If a runner hasn't yet been assigned, this will be
+    # null.)
+    @jsondata:Name {value: "runner_id"}
+    int? runnerId?;
+    # The name of the runner to which this job has been assigned. (If a runner hasn't yet been assigned, this will be
+    # null.)
+    @jsondata:Name {value: "runner_name"}
+    string? runnerName?;
+    # The ID of the runner group to which this job has been assigned. (If a runner hasn't yet been assigned, this will
+    # be null.)
+    @jsondata:Name {value: "runner_group_id"}
+    int? runnerGroupId?;
+    # The name of the runner group to which this job has been assigned. (If a runner hasn't yet been assigned, this will
+    # be null.)
+    @jsondata:Name {value: "runner_group_name"}
+    string? runnerGroupName?;
     # The name of the workflow.
-    string? workflow_name?;
+    @jsondata:Name {value: "workflow_name"}
+    string? workflowName?;
     # The name of the current branch.
-    string? head_branch?;
+    @jsondata:Name {value: "head_branch"}
+    string? headBranch?;
 };
 
 # A single step within a GitHub Actions job.
@@ -5599,9 +6392,11 @@ public type StepsItem record {
     # The step's position within the job.
     int number?;
     # The time the step began, or null if not yet started.
-    string? started_at?;
+    @jsondata:Name {value: "started_at"}
+    string? startedAt?;
     # The time the step completed, or null if not yet completed.
-    string? completed_at?;
+    @jsondata:Name {value: "completed_at"}
+    string? completedAt?;
 };
 
 # A GitHub release
@@ -5609,17 +6404,22 @@ public type Release record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The API URL listing the release's assets.
-    string assets_url?;
+    @jsondata:Name {value: "assets_url"}
+    string assetsUrl?;
     # The URI template for uploading assets to this release.
-    string upload_url?;
+    @jsondata:Name {value: "upload_url"}
+    string uploadUrl?;
     # The name of the tag.
-    string tag_name;
+    @jsondata:Name {value: "tag_name"}
+    string tagName;
     # The name of the release.
     string? name;
     # Text describing the contents of the tag.
@@ -5629,15 +6429,18 @@ public type Release record {
     # Whether the release is identified as a prerelease or a full release.
     boolean prerelease?;
     # Specifies the commitish value that determines where the Git tag is created from.
-    string target_commitish?;
+    @jsondata:Name {value: "target_commitish"}
+    string targetCommitish?;
     # A GitHub user
     User author?;
     # The release's downloadable file attachments.
     AssetsItem[] assets?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the release was published, in ISO 8601 format.
-    string? published_at?;
+    @jsondata:Name {value: "published_at"}
+    string? publishedAt?;
 };
 
 # A file attached to a release
@@ -5645,11 +6448,13 @@ public type AssetsItem record {
     # The API URL of the resource.
     string url;
     # The direct download URL for the asset file.
-    string browser_download_url;
+    @jsondata:Name {value: "browser_download_url"}
+    string browserDownloadUrl;
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id;
+    @jsondata:Name {value: "node_id"}
+    string nodeId;
     # The file name of the asset.
     string name;
     # The user-facing display label for the asset, if set.
@@ -5657,17 +6462,21 @@ public type AssetsItem record {
     # State of the release asset.
     string state;
     # The MIME type of the asset file.
-    string content_type;
+    @jsondata:Name {value: "content_type"}
+    string contentType;
     # The size of the asset file, in bytes.
     int size;
     # The checksum digest of the asset file, when available.
     string? digest?;
     # The number of times the asset has been downloaded.
-    int download_count;
+    @jsondata:Name {value: "download_count"}
+    int downloadCount;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at;
+    @jsondata:Name {value: "created_at"}
+    string createdAt;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt;
     # A GitHub user
     User uploader?;
 };
@@ -5691,17 +6500,21 @@ public type CustomPropertyPayload record {
 # Custom property defined on an organization
 public type Definition record {
     # The name of the property.
-    string property_name;
+    @jsondata:Name {value: "property_name"}
+    string propertyName;
     # The type of the value for the property.
-    string value_type;
+    @jsondata:Name {value: "value_type"}
+    string valueType;
     # Whether the property is required.
     string? required?;
     # Default value (string or array of strings)
-    anydata? default_value?;
+    @jsondata:Name {value: "default_value"}
+    anydata? defaultValue?;
     # Short description of the property.
     string? description?;
     # An ordered list of the allowed values of the property. The property can have up to 200 allowed values.
-    string[]? allowed_values?;
+    @jsondata:Name {value: "allowed_values"}
+    string[]? allowedValues?;
 };
 
 # Payload for public events. Fired when a repository visibility changes
@@ -5756,7 +6569,8 @@ public type Permission record {
 # For edited events, the changes to the member's permissions
 public type MemberPayloadChanges record {
     # The collaborator's previous permission level, before this edit.
-    OldPermission old_permission?;
+    @jsondata:Name {value: "old_permission"}
+    OldPermission oldPermission?;
     # The collaborator's permission level change.
     Permission permission?;
 };
@@ -5804,7 +6618,8 @@ public type MilestonePayloadChanges record {
     # The milestone's previous description, before this edit.
     MilestonePayloadDescription description?;
     # The milestone's previous due date, before this edit.
-    DueOn due_on?;
+    @jsondata:Name {value: "due_on"}
+    DueOn dueOn?;
     # The milestone's previous title, before this edit.
     MilestonePayloadTitle title?;
 };
@@ -5815,7 +6630,8 @@ public type SecurityAdvisoryPayload record {
     string action;
     # The details of the global security advisory, including summary,
     # description, severity, and affected packages.
-    SecurityAdvisoryPayloadSecurityAdvisory security_advisory;
+    @jsondata:Name {value: "security_advisory"}
+    SecurityAdvisoryPayloadSecurityAdvisory securityAdvisory;
     # A GitHub App installation
     Installation installation?;
 };
@@ -5855,15 +6671,18 @@ public type SecurityAdvisoryPayloadVulnerabilitiesItem record {
     # The severity of the vulnerability, e.g. `low`, `moderate`, `high`, `critical`.
     string severity?;
     # The range of the package versions affected by the vulnerability.
-    string vulnerable_version_range?;
+    @jsondata:Name {value: "vulnerable_version_range"}
+    string vulnerableVersionRange?;
     # The first package version containing a fix for the vulnerability.
-    SecurityAdvisoryPayloadFirstPatchedVersion? first_patched_version?;
+    @jsondata:Name {value: "first_patched_version"}
+    SecurityAdvisoryPayloadFirstPatchedVersion? firstPatchedVersion?;
 };
 
 # The CVSS score and vector string of the security advisory.
 public type SecurityAdvisoryPayloadCvss record {
     # The CVSS vector string, or null if not scored.
-    string? vector_string?;
+    @jsondata:Name {value: "vector_string"}
+    string? vectorString?;
     # The CVSS score of the vulnerability.
     decimal score?;
 };
@@ -5871,7 +6690,8 @@ public type SecurityAdvisoryPayloadCvss record {
 # A CWE weakness classification associated with the advisory.
 public type SecurityAdvisoryPayloadCwesItem record {
     # The Common Weakness Enumeration (CWE) identifier.
-    string cwe_id?;
+    @jsondata:Name {value: "cwe_id"}
+    string cweId?;
     # The name of the CWE weakness.
     string name?;
 };
@@ -5880,15 +6700,19 @@ public type SecurityAdvisoryPayloadCwesItem record {
 # description, severity, and affected packages.
 public type SecurityAdvisoryPayloadSecurityAdvisory record {
     # The schema version of the security advisory payload, when present.
-    string schema_version?;
+    @jsondata:Name {value: "schema_version"}
+    string schemaVersion?;
     # The GitHub Security Advisory ID.
-    string ghsa_id;
+    @jsondata:Name {value: "ghsa_id"}
+    string ghsaId;
     # The Common Vulnerabilities and Exposures (CVE) ID.
-    string? cve_id?;
+    @jsondata:Name {value: "cve_id"}
+    string? cveId?;
     # The API URL for the advisory.
     string url?;
     # The URL for the advisory.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # A short summary of the advisory.
     string summary;
     # A detailed description of what the advisory entails.
@@ -5900,11 +6724,14 @@ public type SecurityAdvisoryPayloadSecurityAdvisory record {
     # URLs with more information about the security advisory.
     ReferencesItem[] references?;
     # The date and time of when the advisory was published, in ISO 8601 format.
-    string published_at?;
+    @jsondata:Name {value: "published_at"}
+    string publishedAt?;
     # The date and time of when the advisory was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # The date and time of when the advisory was withdrawn, in ISO 8601 format.
-    string? withdrawn_at?;
+    @jsondata:Name {value: "withdrawn_at"}
+    string? withdrawnAt?;
     # The products and respective version ranges affected by the advisory.
     SecurityAdvisoryPayloadVulnerabilitiesItem[] vulnerabilities?;
     # The CVSS score and vector string of the security advisory.
@@ -5918,9 +6745,11 @@ public type CheckRunPayload record {
     # The action that was performed. Can be one of: created, completed, requested_action, rerequested.
     string action;
     # A check performed on the code of a given code change
-    CheckRun check_run;
+    @jsondata:Name {value: "check_run"}
+    CheckRun checkRun;
     # Present for requested_action events
-    RequestedAction requested_action?;
+    @jsondata:Name {value: "requested_action"}
+    RequestedAction requestedAction?;
     # A GitHub user
     User sender?;
     # A repository on GitHub
@@ -5962,11 +6791,13 @@ public type CommitCommentPayloadComment record {
     # The unique identifier of the resource.
     int id;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The contents of the comment.
     string body;
     # The relative path of the file being commented on
@@ -5976,15 +6807,19 @@ public type CommitCommentPayloadComment record {
     # The line of the blob the comment refers to
     int? line?;
     # The SHA of the commit the comment was made on.
-    string commit_id?;
+    @jsondata:Name {value: "commit_id"}
+    string commitId?;
     # A GitHub user
     User user?;
     # The date and time the resource was created, in ISO 8601 format.
-    string created_at?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
     # The date and time the resource was last updated, in ISO 8601 format.
-    string updated_at?;
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
     # How the author is associated with the repository.
-    string author_association?;
+    @jsondata:Name {value: "author_association"}
+    string authorAssociation?;
 };
 
 # A required reviewing team
@@ -5998,9 +6833,11 @@ public type RuleReviewer record {
 # A reviewing team, and file patterns describing which files they must approve changes to.
 public type RuleRequiredReviewerConfiguration record {
     # The file patterns the required reviewer must approve changes to.
-    string[] file_patterns;
+    @jsondata:Name {value: "file_patterns"}
+    string[] filePatterns;
     # The number of approvals required from the reviewing team.
-    int minimum_approvals;
+    @jsondata:Name {value: "minimum_approvals"}
+    int minimumApprovals;
     # A required reviewing team
     RuleReviewer reviewer;
 };
@@ -6010,7 +6847,8 @@ public type Commit record {
     # The commit SHA
     string id;
     # The SHA of the Git tree associated with this commit.
-    string tree_id?;
+    @jsondata:Name {value: "tree_id"}
+    string treeId?;
     # Whether this commit is distinct from any that have been pushed before
     boolean 'distinct?;
     # The commit message.
@@ -6038,33 +6876,44 @@ public type CheckRun record {
     # The name of the check run.
     string name;
     # The GraphQL node ID.
-    string node_id?;
+    @jsondata:Name {value: "node_id"}
+    string nodeId?;
     # The SHA of the commit that is being checked.
-    string head_sha?;
+    @jsondata:Name {value: "head_sha"}
+    string headSha?;
     # A reference for the check run on the integrator's system.
-    string? external_id?;
+    @jsondata:Name {value: "external_id"}
+    string? externalId?;
     # The API URL of the resource.
     string url?;
     # The URL of the resource on GitHub.com.
-    string html_url?;
+    @jsondata:Name {value: "html_url"}
+    string htmlUrl?;
     # The URL of the integrator's site with the full details of the check.
-    string? details_url?;
-    # The phase of the lifecycle that the check is currently in. Statuses of waiting, requested, and pending are reserved for GitHub Actions check runs.
+    @jsondata:Name {value: "details_url"}
+    string? detailsUrl?;
+    # The phase of the lifecycle that the check is currently in. Statuses of waiting, requested, and pending are
+    # reserved for GitHub Actions check runs.
     string status?;
     # The result of the completed check run. This value will be `null` until the check run has completed.
     string? conclusion?;
     # The time that the check run began.
-    string? started_at?;
+    @jsondata:Name {value: "started_at"}
+    string? startedAt?;
     # The time the check completed.
-    string? completed_at?;
+    @jsondata:Name {value: "completed_at"}
+    string? completedAt?;
     # The check run's title, summary, and detailed output text.
     Output output?;
     # The check suite this check run belongs to.
-    CheckRunCheckSuite check_suite?;
+    @jsondata:Name {value: "check_suite"}
+    CheckRunCheckSuite checkSuite?;
     # A GitHub App
     App app?;
-    # Pull requests that are open with a `head_sha` or `head_branch` that matches the check. The returned pull requests do not necessarily indicate pull requests that triggered the check.
-    PullRequestMinimal[] pull_requests?;
+    # Pull requests that are open with a `head_sha` or `head_branch` that matches the check. The returned pull requests
+    # do not necessarily indicate pull requests that triggered the check.
+    @jsondata:Name {value: "pull_requests"}
+    PullRequestMinimal[] pullRequests?;
 };
 
 # The check run's title, summary, and detailed output text.
@@ -6076,9 +6925,11 @@ public type Output record {
     # The detailed text of the check run output, or null if not set.
     string? text?;
     # The number of annotations included in the output.
-    int annotations_count?;
+    @jsondata:Name {value: "annotations_count"}
+    int annotationsCount?;
     # The API URL listing the annotations for this check run.
-    string annotations_url?;
+    @jsondata:Name {value: "annotations_url"}
+    string annotationsUrl?;
 };
 
 # The check suite this check run belongs to.
@@ -6108,4 +6959,4 @@ public type MembershipPayload record {
 };
 
 # The union of every possible webhook payload type this listener can receive.
-public type GenericDataType App|ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|MarketplacePurchase|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|Tier|DependabotAlertPayload|RuleActor|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|RuleWorkflowFileReference|RuleDismissalRestriction|IssueComment|RulePatternParameters|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|RuleCodeScanningTool|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|WorkflowRun|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|PullRequestMinimal|Discussion|User|PullRequestReview|Category|DeletePayload|MetaPayload|DeploymentPayload|RuleStatusCheckConfiguration|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|RuleReviewer|RuleRequiredReviewerConfiguration|Commit|CheckRun|MembershipPayload|Workflow|Package|Organization|SecurityVulnerability|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|CommonPayload|DeploymentProtectionRulePayload;
+public type GenericDataType ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|Tier|DependabotAlertPayload|RuleActor|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|RuleWorkflowFileReference|RuleDismissalRestriction|IssueComment|RulePatternParameters|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|RuleCodeScanningTool|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|PullRequestMinimal|Discussion|User|PullRequestReview|Category|DeletePayload|MetaPayload|DeploymentPayload|RuleStatusCheckConfiguration|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|RuleReviewer|RuleRequiredReviewerConfiguration|Commit|CheckRun|MembershipPayload|App|MarketplacePurchase|Workflow|Package|Organization|SecurityVulnerability|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|WorkflowRun|CommonPayload|DeploymentProtectionRulePayload;

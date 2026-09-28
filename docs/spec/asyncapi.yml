@@ -4746,14 +4746,22 @@ components:
             - internal
           description: "The repository visibility: public, private, or internal."
         pushed_at:
-          description: "The date and time the repository was last pushed to."
-          type: string
-          format: date-time
+          description: >-
+            When the repository was last pushed to. Sent as an ISO 8601 string on most events, but
+            as a Unix timestamp (integer) on push events.
           nullable: true
+          oneOf:
+            - type: string
+              format: date-time
+            - type: integer
         created_at:
-          description: "The date and time the resource was created, in ISO 8601 format."
-          type: string
-          format: date-time
+          description: >-
+            When the repository was created. Sent as an ISO 8601 string on most events, but as a
+            Unix timestamp (integer) on push events.
+          oneOf:
+            - type: string
+              format: date-time
+            - type: integer
         updated_at:
           description: "The date and time the resource was last updated, in ISO 8601 format."
           type: string
@@ -5943,10 +5951,6 @@ components:
     WorkflowRun:
       type: object
       description: A GitHub Actions workflow run
-      required:
-        - id
-        - name
-        - status
       properties:
         id:
           type: integer
@@ -6139,11 +6143,6 @@ components:
     MarketplacePurchase:
       type: object
       description: The GitHub Marketplace purchase
-      required:
-        - account
-        - billing_cycle
-        - unit_count
-        - plan
       properties:
         account:
           description: "The GitHub account (user or organization) that made the Marketplace purchase."
@@ -6517,10 +6516,6 @@ components:
     App:
       type: object
       description: A GitHub App
-      required:
-        - id
-        - node_id
-        - name
       properties:
         id:
           type: integer
@@ -8562,14 +8557,6 @@ components:
           type: object
           nullable: true
           description: Present when action is member_invited
-          required:
-            - id
-            - role
-            - created_at
-            - inviter
-            - team_count
-            - node_id
-            - invitation_teams_url
           properties:
             id:
               description: "The unique identifier of the resource."
@@ -11102,7 +11089,6 @@ components:
       required:
         - action
         - projects_v2_item
-        - changes
       properties:
         action:
           description: "The action that was performed. Can be one of: edited, created, archived, deleted, restored, reordered, converted."

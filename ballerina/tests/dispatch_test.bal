@@ -25,6 +25,7 @@ const TRIGGER_TEST_PORT = 9091;
 const TRIGGER_PAYLOAD_DIR = "tests/resources/trigger_payloads";
 
 isolated map<boolean> triggerFired = {};
+isolated map<json> boundPayloads = {};
 
 listener Listener triggerTestListener = check new ({webhookSecret: TRIGGER_TEST_SECRET}, TRIGGER_TEST_PORT);
 
@@ -35,17 +36,26 @@ service CheckSuiteService on triggerTestListener {
         lock {
             triggerFired["CheckSuiteService.onCheckSuiteCompleted"] = true;
         }
+        lock {
+            boundPayloads["CheckSuiteService.onCheckSuiteCompleted"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onCheckSuiteRequested(CheckSuitePayload payload) returns error? {
         lock {
             triggerFired["CheckSuiteService.onCheckSuiteRequested"] = true;
         }
+        lock {
+            boundPayloads["CheckSuiteService.onCheckSuiteRequested"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onCheckSuiteRerequested(CheckSuitePayload payload) returns error? {
         lock {
             triggerFired["CheckSuiteService.onCheckSuiteRerequested"] = true;
+        }
+        lock {
+            boundPayloads["CheckSuiteService.onCheckSuiteRerequested"] = payload.toJson().clone();
         }
     }
 }
@@ -99,6 +109,9 @@ service PushService on triggerTestListener {
         lock {
             triggerFired["PushService.onPush"] = true;
         }
+        lock {
+            boundPayloads["PushService.onPush"] = payload.toJson().clone();
+        }
     }
 }
 
@@ -107,11 +120,17 @@ service CodeScanningAlertService on triggerTestListener {
         lock {
             triggerFired["CodeScanningAlertService.onCodeScanningAlertAppearedInBranch"] = true;
         }
+        lock {
+            boundPayloads["CodeScanningAlertService.onCodeScanningAlertAppearedInBranch"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onCodeScanningAlertClosedByUser(CodeScanningAlertPayload payload) returns error? {
         lock {
             triggerFired["CodeScanningAlertService.onCodeScanningAlertClosedByUser"] = true;
+        }
+        lock {
+            boundPayloads["CodeScanningAlertService.onCodeScanningAlertClosedByUser"] = payload.toJson().clone();
         }
     }
 
@@ -119,11 +138,17 @@ service CodeScanningAlertService on triggerTestListener {
         lock {
             triggerFired["CodeScanningAlertService.onCodeScanningAlertCreated"] = true;
         }
+        lock {
+            boundPayloads["CodeScanningAlertService.onCodeScanningAlertCreated"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onCodeScanningAlertFixed(CodeScanningAlertPayload payload) returns error? {
         lock {
             triggerFired["CodeScanningAlertService.onCodeScanningAlertFixed"] = true;
+        }
+        lock {
+            boundPayloads["CodeScanningAlertService.onCodeScanningAlertFixed"] = payload.toJson().clone();
         }
     }
 
@@ -131,17 +156,26 @@ service CodeScanningAlertService on triggerTestListener {
         lock {
             triggerFired["CodeScanningAlertService.onCodeScanningAlertReopened"] = true;
         }
+        lock {
+            boundPayloads["CodeScanningAlertService.onCodeScanningAlertReopened"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onCodeScanningAlertReopenedByUser(CodeScanningAlertPayload payload) returns error? {
         lock {
             triggerFired["CodeScanningAlertService.onCodeScanningAlertReopenedByUser"] = true;
         }
+        lock {
+            boundPayloads["CodeScanningAlertService.onCodeScanningAlertReopenedByUser"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onCodeScanningAlertUpdatedAssignment(CodeScanningAlertPayload payload) returns error? {
         lock {
             triggerFired["CodeScanningAlertService.onCodeScanningAlertUpdatedAssignment"] = true;
+        }
+        lock {
+            boundPayloads["CodeScanningAlertService.onCodeScanningAlertUpdatedAssignment"] = payload.toJson().clone();
         }
     }
 }
@@ -151,11 +185,17 @@ service PersonalAccessTokenRequestService on triggerTestListener {
         lock {
             triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCreated"] = true;
         }
+        lock {
+            boundPayloads["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCreated"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPersonalAccessTokenRequestApproved(PersonalAccessTokenRequestPayload payload) returns error? {
         lock {
             triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestApproved"] = true;
+        }
+        lock {
+            boundPayloads["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestApproved"] = payload.toJson().clone();
         }
     }
 
@@ -163,11 +203,17 @@ service PersonalAccessTokenRequestService on triggerTestListener {
         lock {
             triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestDenied"] = true;
         }
+        lock {
+            boundPayloads["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestDenied"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPersonalAccessTokenRequestCancelled(PersonalAccessTokenRequestPayload payload) returns error? {
         lock {
             triggerFired["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCancelled"] = true;
+        }
+        lock {
+            boundPayloads["PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCancelled"] = payload.toJson().clone();
         }
     }
 }
@@ -176,6 +222,9 @@ service InstallationTargetService on triggerTestListener {
     isolated remote function onInstallationTargetRenamed(InstallationTargetPayload payload) returns error? {
         lock {
             triggerFired["InstallationTargetService.onInstallationTargetRenamed"] = true;
+        }
+        lock {
+            boundPayloads["InstallationTargetService.onInstallationTargetRenamed"] = payload.toJson().clone();
         }
     }
 }
@@ -325,17 +374,26 @@ service PullRequestReviewCommentService on triggerTestListener {
         lock {
             triggerFired["PullRequestReviewCommentService.onPullRequestReviewCommentCreated"] = true;
         }
+        lock {
+            boundPayloads["PullRequestReviewCommentService.onPullRequestReviewCommentCreated"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestReviewCommentDeleted(PullRequestReviewCommentPayload payload) returns error? {
         lock {
             triggerFired["PullRequestReviewCommentService.onPullRequestReviewCommentDeleted"] = true;
         }
+        lock {
+            boundPayloads["PullRequestReviewCommentService.onPullRequestReviewCommentDeleted"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestReviewCommentEdited(PullRequestReviewCommentPayload payload) returns error? {
         lock {
             triggerFired["PullRequestReviewCommentService.onPullRequestReviewCommentEdited"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestReviewCommentService.onPullRequestReviewCommentEdited"] = payload.toJson().clone();
         }
     }
 }
@@ -344,6 +402,9 @@ service MetaService on triggerTestListener {
     isolated remote function onMetaDeleted(MetaPayload payload) returns error? {
         lock {
             triggerFired["MetaService.onMetaDeleted"] = true;
+        }
+        lock {
+            boundPayloads["MetaService.onMetaDeleted"] = payload.toJson().clone();
         }
     }
 }
@@ -360,6 +421,9 @@ service DeploymentStatusService on triggerTestListener {
     isolated remote function onDeploymentStatusCreated(DeploymentStatusPayload payload) returns error? {
         lock {
             triggerFired["DeploymentStatusService.onDeploymentStatusCreated"] = true;
+        }
+        lock {
+            boundPayloads["DeploymentStatusService.onDeploymentStatusCreated"] = payload.toJson().clone();
         }
     }
 }
@@ -395,17 +459,26 @@ service SecurityAdvisoryService on triggerTestListener {
         lock {
             triggerFired["SecurityAdvisoryService.onSecurityAdvisoryWithdrawn"] = true;
         }
+        lock {
+            boundPayloads["SecurityAdvisoryService.onSecurityAdvisoryWithdrawn"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onSecurityAdvisoryPublished(SecurityAdvisoryPayload payload) returns error? {
         lock {
             triggerFired["SecurityAdvisoryService.onSecurityAdvisoryPublished"] = true;
         }
+        lock {
+            boundPayloads["SecurityAdvisoryService.onSecurityAdvisoryPublished"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onSecurityAdvisoryUpdated(SecurityAdvisoryPayload payload) returns error? {
         lock {
             triggerFired["SecurityAdvisoryService.onSecurityAdvisoryUpdated"] = true;
+        }
+        lock {
+            boundPayloads["SecurityAdvisoryService.onSecurityAdvisoryUpdated"] = payload.toJson().clone();
         }
     }
 }
@@ -507,11 +580,17 @@ service MergeGroupService on triggerTestListener {
         lock {
             triggerFired["MergeGroupService.onMergeGroupDestroyed"] = true;
         }
+        lock {
+            boundPayloads["MergeGroupService.onMergeGroupDestroyed"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onMergeGroupChecksRequested(MergeGroupPayload payload) returns error? {
         lock {
             triggerFired["MergeGroupService.onMergeGroupChecksRequested"] = true;
+        }
+        lock {
+            boundPayloads["MergeGroupService.onMergeGroupChecksRequested"] = payload.toJson().clone();
         }
     }
 }
@@ -521,11 +600,17 @@ service MarketplacePurchaseService on triggerTestListener {
         lock {
             triggerFired["MarketplacePurchaseService.onMarketplacePurchasePurchased"] = true;
         }
+        lock {
+            boundPayloads["MarketplacePurchaseService.onMarketplacePurchasePurchased"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onMarketplacePurchaseCancelled(MarketplacePurchasePayload payload) returns error? {
         lock {
             triggerFired["MarketplacePurchaseService.onMarketplacePurchaseCancelled"] = true;
+        }
+        lock {
+            boundPayloads["MarketplacePurchaseService.onMarketplacePurchaseCancelled"] = payload.toJson().clone();
         }
     }
 
@@ -533,17 +618,26 @@ service MarketplacePurchaseService on triggerTestListener {
         lock {
             triggerFired["MarketplacePurchaseService.onMarketplacePurchasePendingChangeCancelled"] = true;
         }
+        lock {
+            boundPayloads["MarketplacePurchaseService.onMarketplacePurchasePendingChangeCancelled"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onMarketplacePurchasePendingChange(MarketplacePurchasePayload payload) returns error? {
         lock {
             triggerFired["MarketplacePurchaseService.onMarketplacePurchasePendingChange"] = true;
         }
+        lock {
+            boundPayloads["MarketplacePurchaseService.onMarketplacePurchasePendingChange"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onMarketplacePurchaseChanged(MarketplacePurchasePayload payload) returns error? {
         lock {
             triggerFired["MarketplacePurchaseService.onMarketplacePurchaseChanged"] = true;
+        }
+        lock {
+            boundPayloads["MarketplacePurchaseService.onMarketplacePurchaseChanged"] = payload.toJson().clone();
         }
     }
 }
@@ -553,11 +647,17 @@ service ProjectColumnService on triggerTestListener {
         lock {
             triggerFired["ProjectColumnService.onProjectColumnMoved"] = true;
         }
+        lock {
+            boundPayloads["ProjectColumnService.onProjectColumnMoved"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectColumnEdited(ProjectColumnPayload payload) returns error? {
         lock {
             triggerFired["ProjectColumnService.onProjectColumnEdited"] = true;
+        }
+        lock {
+            boundPayloads["ProjectColumnService.onProjectColumnEdited"] = payload.toJson().clone();
         }
     }
 
@@ -565,11 +665,17 @@ service ProjectColumnService on triggerTestListener {
         lock {
             triggerFired["ProjectColumnService.onProjectColumnDeleted"] = true;
         }
+        lock {
+            boundPayloads["ProjectColumnService.onProjectColumnDeleted"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectColumnCreated(ProjectColumnPayload payload) returns error? {
         lock {
             triggerFired["ProjectColumnService.onProjectColumnCreated"] = true;
+        }
+        lock {
+            boundPayloads["ProjectColumnService.onProjectColumnCreated"] = payload.toJson().clone();
         }
     }
 }
@@ -621,6 +727,9 @@ service DeleteService on triggerTestListener {
         lock {
             triggerFired["DeleteService.onDelete"] = true;
         }
+        lock {
+            boundPayloads["DeleteService.onDelete"] = payload.toJson().clone();
+        }
     }
 }
 
@@ -669,11 +778,17 @@ service WorkflowJobService on triggerTestListener {
         lock {
             triggerFired["WorkflowJobService.onWorkflowJobQueued"] = true;
         }
+        lock {
+            boundPayloads["WorkflowJobService.onWorkflowJobQueued"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onWorkflowJobWaiting(WorkflowJobPayload payload) returns error? {
         lock {
             triggerFired["WorkflowJobService.onWorkflowJobWaiting"] = true;
+        }
+        lock {
+            boundPayloads["WorkflowJobService.onWorkflowJobWaiting"] = payload.toJson().clone();
         }
     }
 
@@ -681,11 +796,17 @@ service WorkflowJobService on triggerTestListener {
         lock {
             triggerFired["WorkflowJobService.onWorkflowJobCompleted"] = true;
         }
+        lock {
+            boundPayloads["WorkflowJobService.onWorkflowJobCompleted"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onWorkflowJobInProgress(WorkflowJobPayload payload) returns error? {
         lock {
             triggerFired["WorkflowJobService.onWorkflowJobInProgress"] = true;
+        }
+        lock {
+            boundPayloads["WorkflowJobService.onWorkflowJobInProgress"] = payload.toJson().clone();
         }
     }
 }
@@ -703,11 +824,17 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestEnqueued"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestEnqueued"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestReviewRequestRemoved(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestReviewRequestRemoved"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestReviewRequestRemoved"] = payload.toJson().clone();
         }
     }
 
@@ -715,11 +842,17 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestOpened"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestOpened"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestReadyForReview(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestReadyForReview"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestReadyForReview"] = payload.toJson().clone();
         }
     }
 
@@ -727,11 +860,17 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestLabeled"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestLabeled"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestUnassigned(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestUnassigned"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestUnassigned"] = payload.toJson().clone();
         }
     }
 
@@ -739,11 +878,17 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestEdited"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestEdited"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestSynchronize(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestSynchronize"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestSynchronize"] = payload.toJson().clone();
         }
     }
 
@@ -751,11 +896,17 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestReviewRequested"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestReviewRequested"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestReopened(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestReopened"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestReopened"] = payload.toJson().clone();
         }
     }
 
@@ -763,11 +914,17 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestAutoMergeDisabled"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestAutoMergeDisabled"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestLocked(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestLocked"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestLocked"] = payload.toJson().clone();
         }
     }
 
@@ -775,11 +932,17 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestAutoMergeEnabled"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestAutoMergeEnabled"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestMilestoned(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestMilestoned"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestMilestoned"] = payload.toJson().clone();
         }
     }
 
@@ -787,11 +950,17 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestDequeued"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestDequeued"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestUnlabeled(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestUnlabeled"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestUnlabeled"] = payload.toJson().clone();
         }
     }
 
@@ -799,11 +968,17 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestClosed"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestClosed"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestUnlocked(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestUnlocked"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestUnlocked"] = payload.toJson().clone();
         }
     }
 
@@ -811,17 +986,26 @@ service PullRequestService on triggerTestListener {
         lock {
             triggerFired["PullRequestService.onPullRequestAssigned"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestAssigned"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestConvertedToDraft(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestConvertedToDraft"] = true;
         }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestConvertedToDraft"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestDemilestoned(PullRequestPayload payload) returns error? {
         lock {
             triggerFired["PullRequestService.onPullRequestDemilestoned"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestService.onPullRequestDemilestoned"] = payload.toJson().clone();
         }
     }
 }
@@ -831,17 +1015,26 @@ service ProjectsV2statusUpdateService on triggerTestListener {
         lock {
             triggerFired["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateEdited"] = true;
         }
+        lock {
+            boundPayloads["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateEdited"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectsV2StatusUpdateDeleted('ProjectsV2StatusUpdatePayload payload) returns error? {
         lock {
             triggerFired["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateDeleted"] = true;
         }
+        lock {
+            boundPayloads["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateDeleted"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectsV2StatusUpdateCreated('ProjectsV2StatusUpdatePayload payload) returns error? {
         lock {
             triggerFired["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateCreated"] = true;
+        }
+        lock {
+            boundPayloads["ProjectsV2statusUpdateService.onProjectsV2StatusUpdateCreated"] = payload.toJson().clone();
         }
     }
 }
@@ -858,6 +1051,9 @@ service DeploymentService on triggerTestListener {
     isolated remote function onDeploymentCreated(DeploymentPayload payload) returns error? {
         lock {
             triggerFired["DeploymentService.onDeploymentCreated"] = true;
+        }
+        lock {
+            boundPayloads["DeploymentService.onDeploymentCreated"] = payload.toJson().clone();
         }
     }
 }
@@ -993,17 +1189,26 @@ service WorkflowRunService on triggerTestListener {
         lock {
             triggerFired["WorkflowRunService.onWorkflowRunInProgress"] = true;
         }
+        lock {
+            boundPayloads["WorkflowRunService.onWorkflowRunInProgress"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onWorkflowRunCompleted(WorkflowRunPayload payload) returns error? {
         lock {
             triggerFired["WorkflowRunService.onWorkflowRunCompleted"] = true;
         }
+        lock {
+            boundPayloads["WorkflowRunService.onWorkflowRunCompleted"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onWorkflowRunRequested(WorkflowRunPayload payload) returns error? {
         lock {
             triggerFired["WorkflowRunService.onWorkflowRunRequested"] = true;
+        }
+        lock {
+            boundPayloads["WorkflowRunService.onWorkflowRunRequested"] = payload.toJson().clone();
         }
     }
 }
@@ -1027,11 +1232,17 @@ service StarService on triggerTestListener {
         lock {
             triggerFired["StarService.onStarCreated"] = true;
         }
+        lock {
+            boundPayloads["StarService.onStarCreated"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onStarDeleted(StarPayload payload) returns error? {
         lock {
             triggerFired["StarService.onStarDeleted"] = true;
+        }
+        lock {
+            boundPayloads["StarService.onStarDeleted"] = payload.toJson().clone();
         }
     }
 }
@@ -1041,11 +1252,17 @@ service RegistryPackageService on triggerTestListener {
         lock {
             triggerFired["RegistryPackageService.onRegistryPackageUpdated"] = true;
         }
+        lock {
+            boundPayloads["RegistryPackageService.onRegistryPackageUpdated"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onRegistryPackagePublished(RegistryPackagePayload payload) returns error? {
         lock {
             triggerFired["RegistryPackageService.onRegistryPackagePublished"] = true;
+        }
+        lock {
+            boundPayloads["RegistryPackageService.onRegistryPackagePublished"] = payload.toJson().clone();
         }
     }
 }
@@ -1055,17 +1272,26 @@ service RepositoryRulesetService on triggerTestListener {
         lock {
             triggerFired["RepositoryRulesetService.onRepositoryRulesetCreated"] = true;
         }
+        lock {
+            boundPayloads["RepositoryRulesetService.onRepositoryRulesetCreated"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onRepositoryRulesetEdited(RepositoryRulesetPayload payload) returns error? {
         lock {
             triggerFired["RepositoryRulesetService.onRepositoryRulesetEdited"] = true;
         }
+        lock {
+            boundPayloads["RepositoryRulesetService.onRepositoryRulesetEdited"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onRepositoryRulesetDeleted(RepositoryRulesetPayload payload) returns error? {
         lock {
             triggerFired["RepositoryRulesetService.onRepositoryRulesetDeleted"] = true;
+        }
+        lock {
+            boundPayloads["RepositoryRulesetService.onRepositoryRulesetDeleted"] = payload.toJson().clone();
         }
     }
 }
@@ -1075,11 +1301,17 @@ service OrgBlockService on triggerTestListener {
         lock {
             triggerFired["OrgBlockService.onOrgBlockBlocked"] = true;
         }
+        lock {
+            boundPayloads["OrgBlockService.onOrgBlockBlocked"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onOrgBlockUnblocked(OrgBlockPayload payload) returns error? {
         lock {
             triggerFired["OrgBlockService.onOrgBlockUnblocked"] = true;
+        }
+        lock {
+            boundPayloads["OrgBlockService.onOrgBlockUnblocked"] = payload.toJson().clone();
         }
     }
 }
@@ -1089,17 +1321,26 @@ service PullRequestReviewService on triggerTestListener {
         lock {
             triggerFired["PullRequestReviewService.onPullRequestReviewSubmitted"] = true;
         }
+        lock {
+            boundPayloads["PullRequestReviewService.onPullRequestReviewSubmitted"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestReviewEdited(PullRequestReviewPayload payload) returns error? {
         lock {
             triggerFired["PullRequestReviewService.onPullRequestReviewEdited"] = true;
         }
+        lock {
+            boundPayloads["PullRequestReviewService.onPullRequestReviewEdited"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestReviewDismissed(PullRequestReviewPayload payload) returns error? {
         lock {
             triggerFired["PullRequestReviewService.onPullRequestReviewDismissed"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestReviewService.onPullRequestReviewDismissed"] = payload.toJson().clone();
         }
     }
 }
@@ -1109,11 +1350,17 @@ service InstallationRepositoriesService on triggerTestListener {
         lock {
             triggerFired["InstallationRepositoriesService.onInstallationRepositoriesRemoved"] = true;
         }
+        lock {
+            boundPayloads["InstallationRepositoriesService.onInstallationRepositoriesRemoved"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onInstallationRepositoriesAdded(InstallationRepositoriesPayload payload) returns error? {
         lock {
             triggerFired["InstallationRepositoriesService.onInstallationRepositoriesAdded"] = true;
+        }
+        lock {
+            boundPayloads["InstallationRepositoriesService.onInstallationRepositoriesAdded"] = payload.toJson().clone();
         }
     }
 }
@@ -1233,11 +1480,17 @@ service CheckRunService on triggerTestListener {
         lock {
             triggerFired["CheckRunService.onCheckRunCreated"] = true;
         }
+        lock {
+            boundPayloads["CheckRunService.onCheckRunCreated"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onCheckRunCompleted(CheckRunPayload payload) returns error? {
         lock {
             triggerFired["CheckRunService.onCheckRunCompleted"] = true;
+        }
+        lock {
+            boundPayloads["CheckRunService.onCheckRunCompleted"] = payload.toJson().clone();
         }
     }
 
@@ -1245,11 +1498,17 @@ service CheckRunService on triggerTestListener {
         lock {
             triggerFired["CheckRunService.onCheckRunRequestedAction"] = true;
         }
+        lock {
+            boundPayloads["CheckRunService.onCheckRunRequestedAction"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onCheckRunRerequested(CheckRunPayload payload) returns error? {
         lock {
             triggerFired["CheckRunService.onCheckRunRerequested"] = true;
+        }
+        lock {
+            boundPayloads["CheckRunService.onCheckRunRerequested"] = payload.toJson().clone();
         }
     }
 }
@@ -1279,6 +1538,9 @@ service CustomPropertyValuesService on triggerTestListener {
         lock {
             triggerFired["CustomPropertyValuesService.onCustomPropertyValuesUpdated"] = true;
         }
+        lock {
+            boundPayloads["CustomPropertyValuesService.onCustomPropertyValuesUpdated"] = payload.toJson().clone();
+        }
     }
 }
 
@@ -1303,11 +1565,17 @@ service SponsorshipService on triggerTestListener {
         lock {
             triggerFired["SponsorshipService.onSponsorshipCancelled"] = true;
         }
+        lock {
+            boundPayloads["SponsorshipService.onSponsorshipCancelled"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onSponsorshipEdited(SponsorshipPayload payload) returns error? {
         lock {
             triggerFired["SponsorshipService.onSponsorshipEdited"] = true;
+        }
+        lock {
+            boundPayloads["SponsorshipService.onSponsorshipEdited"] = payload.toJson().clone();
         }
     }
 
@@ -1315,11 +1583,17 @@ service SponsorshipService on triggerTestListener {
         lock {
             triggerFired["SponsorshipService.onSponsorshipTierChanged"] = true;
         }
+        lock {
+            boundPayloads["SponsorshipService.onSponsorshipTierChanged"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onSponsorshipPendingCancellation(SponsorshipPayload payload) returns error? {
         lock {
             triggerFired["SponsorshipService.onSponsorshipPendingCancellation"] = true;
+        }
+        lock {
+            boundPayloads["SponsorshipService.onSponsorshipPendingCancellation"] = payload.toJson().clone();
         }
     }
 
@@ -1327,11 +1601,17 @@ service SponsorshipService on triggerTestListener {
         lock {
             triggerFired["SponsorshipService.onSponsorshipCreated"] = true;
         }
+        lock {
+            boundPayloads["SponsorshipService.onSponsorshipCreated"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onSponsorshipPendingTierChange(SponsorshipPayload payload) returns error? {
         lock {
             triggerFired["SponsorshipService.onSponsorshipPendingTierChange"] = true;
+        }
+        lock {
+            boundPayloads["SponsorshipService.onSponsorshipPendingTierChange"] = payload.toJson().clone();
         }
     }
 }
@@ -1341,11 +1621,17 @@ service PullRequestReviewThreadService on triggerTestListener {
         lock {
             triggerFired["PullRequestReviewThreadService.onPullRequestReviewThreadUnresolved"] = true;
         }
+        lock {
+            boundPayloads["PullRequestReviewThreadService.onPullRequestReviewThreadUnresolved"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onPullRequestReviewThreadResolved(PullRequestReviewThreadPayload payload) returns error? {
         lock {
             triggerFired["PullRequestReviewThreadService.onPullRequestReviewThreadResolved"] = true;
+        }
+        lock {
+            boundPayloads["PullRequestReviewThreadService.onPullRequestReviewThreadResolved"] = payload.toJson().clone();
         }
     }
 }
@@ -1355,6 +1641,9 @@ service RepositoryDispatchService on triggerTestListener {
         lock {
             triggerFired["RepositoryDispatchService.onRepositoryDispatch"] = true;
         }
+        lock {
+            boundPayloads["RepositoryDispatchService.onRepositoryDispatch"] = payload.toJson().clone();
+        }
     }
 }
 
@@ -1363,6 +1652,9 @@ service DeploymentProtectionRuleService on triggerTestListener {
         lock {
             triggerFired["DeploymentProtectionRuleService.onDeploymentProtectionRule"] = true;
         }
+        lock {
+            boundPayloads["DeploymentProtectionRuleService.onDeploymentProtectionRule"] = payload.toJson().clone();
+        }
     }
 }
 
@@ -1370,6 +1662,9 @@ service CreateService on triggerTestListener {
     isolated remote function onCreate(CreatePayload payload) returns error? {
         lock {
             triggerFired["CreateService.onCreate"] = true;
+        }
+        lock {
+            boundPayloads["CreateService.onCreate"] = payload.toJson().clone();
         }
     }
 }
@@ -1401,11 +1696,17 @@ service ProjectsV2Service on triggerTestListener {
         lock {
             triggerFired["ProjectsV2Service.onProjectsV2Created"] = true;
         }
+        lock {
+            boundPayloads["ProjectsV2Service.onProjectsV2Created"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectsV2Edited('ProjectsV2Payload payload) returns error? {
         lock {
             triggerFired["ProjectsV2Service.onProjectsV2Edited"] = true;
+        }
+        lock {
+            boundPayloads["ProjectsV2Service.onProjectsV2Edited"] = payload.toJson().clone();
         }
     }
 
@@ -1413,17 +1714,26 @@ service ProjectsV2Service on triggerTestListener {
         lock {
             triggerFired["ProjectsV2Service.onProjectsV2Closed"] = true;
         }
+        lock {
+            boundPayloads["ProjectsV2Service.onProjectsV2Closed"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectsV2Reopened('ProjectsV2Payload payload) returns error? {
         lock {
             triggerFired["ProjectsV2Service.onProjectsV2Reopened"] = true;
         }
+        lock {
+            boundPayloads["ProjectsV2Service.onProjectsV2Reopened"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectsV2Deleted('ProjectsV2Payload payload) returns error? {
         lock {
             triggerFired["ProjectsV2Service.onProjectsV2Deleted"] = true;
+        }
+        lock {
+            boundPayloads["ProjectsV2Service.onProjectsV2Deleted"] = payload.toJson().clone();
         }
     }
 }
@@ -1433,11 +1743,17 @@ service ProjectCardService on triggerTestListener {
         lock {
             triggerFired["ProjectCardService.onProjectCardEdited"] = true;
         }
+        lock {
+            boundPayloads["ProjectCardService.onProjectCardEdited"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectCardDeleted(ProjectCardPayload payload) returns error? {
         lock {
             triggerFired["ProjectCardService.onProjectCardDeleted"] = true;
+        }
+        lock {
+            boundPayloads["ProjectCardService.onProjectCardDeleted"] = payload.toJson().clone();
         }
     }
 
@@ -1445,17 +1761,26 @@ service ProjectCardService on triggerTestListener {
         lock {
             triggerFired["ProjectCardService.onProjectCardMoved"] = true;
         }
+        lock {
+            boundPayloads["ProjectCardService.onProjectCardMoved"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectCardConverted(ProjectCardPayload payload) returns error? {
         lock {
             triggerFired["ProjectCardService.onProjectCardConverted"] = true;
         }
+        lock {
+            boundPayloads["ProjectCardService.onProjectCardConverted"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectCardCreated(ProjectCardPayload payload) returns error? {
         lock {
             triggerFired["ProjectCardService.onProjectCardCreated"] = true;
+        }
+        lock {
+            boundPayloads["ProjectCardService.onProjectCardCreated"] = payload.toJson().clone();
         }
     }
 }
@@ -1465,11 +1790,17 @@ service SubIssuesService on triggerTestListener {
         lock {
             triggerFired["SubIssuesService.onSubIssuesSubIssueAdded"] = true;
         }
+        lock {
+            boundPayloads["SubIssuesService.onSubIssuesSubIssueAdded"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onSubIssuesParentIssueAdded(SubIssuesPayload payload) returns error? {
         lock {
             triggerFired["SubIssuesService.onSubIssuesParentIssueAdded"] = true;
+        }
+        lock {
+            boundPayloads["SubIssuesService.onSubIssuesParentIssueAdded"] = payload.toJson().clone();
         }
     }
 
@@ -1477,11 +1808,17 @@ service SubIssuesService on triggerTestListener {
         lock {
             triggerFired["SubIssuesService.onSubIssuesSubIssueRemoved"] = true;
         }
+        lock {
+            boundPayloads["SubIssuesService.onSubIssuesSubIssueRemoved"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onSubIssuesParentIssueRemoved(SubIssuesPayload payload) returns error? {
         lock {
             triggerFired["SubIssuesService.onSubIssuesParentIssueRemoved"] = true;
+        }
+        lock {
+            boundPayloads["SubIssuesService.onSubIssuesParentIssueRemoved"] = payload.toJson().clone();
         }
     }
 }
@@ -1490,6 +1827,9 @@ service PingService on triggerTestListener {
     isolated remote function onPing(PingPayload payload) returns error? {
         lock {
             triggerFired["PingService.onPing"] = true;
+        }
+        lock {
+            boundPayloads["PingService.onPing"] = payload.toJson().clone();
         }
     }
 }
@@ -1589,6 +1929,9 @@ service SecretScanningScanService on triggerTestListener {
         lock {
             triggerFired["SecretScanningScanService.onSecretScanningScan"] = true;
         }
+        lock {
+            boundPayloads["SecretScanningScanService.onSecretScanningScan"] = payload.toJson().clone();
+        }
     }
 }
 
@@ -1596,6 +1939,9 @@ service StatusService on triggerTestListener {
     isolated remote function onStatus(StatusPayload payload) returns error? {
         lock {
             triggerFired["StatusService.onStatus"] = true;
+        }
+        lock {
+            boundPayloads["StatusService.onStatus"] = payload.toJson().clone();
         }
     }
 }
@@ -1605,17 +1951,26 @@ service DeploymentReviewService on triggerTestListener {
         lock {
             triggerFired["DeploymentReviewService.onDeploymentReviewRequested"] = true;
         }
+        lock {
+            boundPayloads["DeploymentReviewService.onDeploymentReviewRequested"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onDeploymentReviewRejected(DeploymentReviewPayload payload) returns error? {
         lock {
             triggerFired["DeploymentReviewService.onDeploymentReviewRejected"] = true;
         }
+        lock {
+            boundPayloads["DeploymentReviewService.onDeploymentReviewRejected"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onDeploymentReviewApproved(DeploymentReviewPayload payload) returns error? {
         lock {
             triggerFired["DeploymentReviewService.onDeploymentReviewApproved"] = true;
+        }
+        lock {
+            boundPayloads["DeploymentReviewService.onDeploymentReviewApproved"] = payload.toJson().clone();
         }
     }
 }
@@ -1625,11 +1980,17 @@ service ProjectsV2itemService on triggerTestListener {
         lock {
             triggerFired["ProjectsV2itemService.onProjectsV2ItemEdited"] = true;
         }
+        lock {
+            boundPayloads["ProjectsV2itemService.onProjectsV2ItemEdited"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectsV2ItemCreated('ProjectsV2ItemPayload payload) returns error? {
         lock {
             triggerFired["ProjectsV2itemService.onProjectsV2ItemCreated"] = true;
+        }
+        lock {
+            boundPayloads["ProjectsV2itemService.onProjectsV2ItemCreated"] = payload.toJson().clone();
         }
     }
 
@@ -1637,11 +1998,17 @@ service ProjectsV2itemService on triggerTestListener {
         lock {
             triggerFired["ProjectsV2itemService.onProjectsV2ItemArchived"] = true;
         }
+        lock {
+            boundPayloads["ProjectsV2itemService.onProjectsV2ItemArchived"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectsV2ItemDeleted('ProjectsV2ItemPayload payload) returns error? {
         lock {
             triggerFired["ProjectsV2itemService.onProjectsV2ItemDeleted"] = true;
+        }
+        lock {
+            boundPayloads["ProjectsV2itemService.onProjectsV2ItemDeleted"] = payload.toJson().clone();
         }
     }
 
@@ -1649,17 +2016,26 @@ service ProjectsV2itemService on triggerTestListener {
         lock {
             triggerFired["ProjectsV2itemService.onProjectsV2ItemRestored"] = true;
         }
+        lock {
+            boundPayloads["ProjectsV2itemService.onProjectsV2ItemRestored"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectsV2ItemReordered('ProjectsV2ItemPayload payload) returns error? {
         lock {
             triggerFired["ProjectsV2itemService.onProjectsV2ItemReordered"] = true;
         }
+        lock {
+            boundPayloads["ProjectsV2itemService.onProjectsV2ItemReordered"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onProjectsV2ItemConverted('ProjectsV2ItemPayload payload) returns error? {
         lock {
             triggerFired["ProjectsV2itemService.onProjectsV2ItemConverted"] = true;
+        }
+        lock {
+            boundPayloads["ProjectsV2itemService.onProjectsV2ItemConverted"] = payload.toJson().clone();
         }
     }
 }
@@ -1695,11 +2071,17 @@ service IssueDependenciesService on triggerTestListener {
         lock {
             triggerFired["IssueDependenciesService.onIssueDependenciesBlockingRemoved"] = true;
         }
+        lock {
+            boundPayloads["IssueDependenciesService.onIssueDependenciesBlockingRemoved"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onIssueDependenciesBlockedByRemoved(IssueDependenciesPayload payload) returns error? {
         lock {
             triggerFired["IssueDependenciesService.onIssueDependenciesBlockedByRemoved"] = true;
+        }
+        lock {
+            boundPayloads["IssueDependenciesService.onIssueDependenciesBlockedByRemoved"] = payload.toJson().clone();
         }
     }
 
@@ -1707,11 +2089,17 @@ service IssueDependenciesService on triggerTestListener {
         lock {
             triggerFired["IssueDependenciesService.onIssueDependenciesBlockingAdded"] = true;
         }
+        lock {
+            boundPayloads["IssueDependenciesService.onIssueDependenciesBlockingAdded"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onIssueDependenciesBlockedByAdded(IssueDependenciesPayload payload) returns error? {
         lock {
             triggerFired["IssueDependenciesService.onIssueDependenciesBlockedByAdded"] = true;
+        }
+        lock {
+            boundPayloads["IssueDependenciesService.onIssueDependenciesBlockedByAdded"] = payload.toJson().clone();
         }
     }
 }
@@ -1721,11 +2109,17 @@ service RepositoryAdvisoryService on triggerTestListener {
         lock {
             triggerFired["RepositoryAdvisoryService.onRepositoryAdvisoryReported"] = true;
         }
+        lock {
+            boundPayloads["RepositoryAdvisoryService.onRepositoryAdvisoryReported"] = payload.toJson().clone();
+        }
     }
 
     isolated remote function onRepositoryAdvisoryPublished(RepositoryAdvisoryPayload payload) returns error? {
         lock {
             triggerFired["RepositoryAdvisoryService.onRepositoryAdvisoryPublished"] = true;
+        }
+        lock {
+            boundPayloads["RepositoryAdvisoryService.onRepositoryAdvisoryPublished"] = payload.toJson().clone();
         }
     }
 }
@@ -1795,11 +2189,20 @@ function waitForDispatch(string trackerKey) returns boolean {
     return false;
 }
 
+function boundPayloadOf(string trackerKey) returns map<json> {
+    lock {
+        json payload = boundPayloads[trackerKey] ?: {};
+        return payload is map<json> ? payload.clone() : {};
+    }
+}
+
 @test:Config {}
 function testCheckSuiteCompletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("check_suite", "check_suite_completed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CheckSuiteService.onCheckSuiteCompleted"), "CheckSuiteService.onCheckSuiteCompleted should have fired");
+    map<json> bound = boundPayloadOf("CheckSuiteService.onCheckSuiteCompleted");
+    test:assertFalse(bound.hasKey("check_suite"), "'check_suite' should have bound to its camelCase field on CheckSuitePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1807,6 +2210,8 @@ function testCheckSuiteRequestedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("check_suite", "check_suite_requested");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CheckSuiteService.onCheckSuiteRequested"), "CheckSuiteService.onCheckSuiteRequested should have fired");
+    map<json> bound = boundPayloadOf("CheckSuiteService.onCheckSuiteRequested");
+    test:assertFalse(bound.hasKey("check_suite"), "'check_suite' should have bound to its camelCase field on CheckSuitePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1814,6 +2219,8 @@ function testCheckSuiteRerequestedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("check_suite", "check_suite_rerequested");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CheckSuiteService.onCheckSuiteRerequested"), "CheckSuiteService.onCheckSuiteRerequested should have fired");
+    map<json> bound = boundPayloadOf("CheckSuiteService.onCheckSuiteRerequested");
+    test:assertFalse(bound.hasKey("check_suite"), "'check_suite' should have bound to its camelCase field on CheckSuitePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1870,6 +2277,9 @@ function testPushDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("push", "push");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PushService.onPush"), "PushService.onPush should have fired");
+    map<json> bound = boundPayloadOf("PushService.onPush");
+    test:assertFalse(bound.hasKey("base_ref"), "'base_ref' should have bound to its camelCase field on PushPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("head_commit"), "'head_commit' should have bound to its camelCase field on PushPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1877,6 +2287,8 @@ function testCodeScanningAlertAppearedInBranchDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("code_scanning_alert", "code_scanning_alert_appeared_in_branch");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CodeScanningAlertService.onCodeScanningAlertAppearedInBranch"), "CodeScanningAlertService.onCodeScanningAlertAppearedInBranch should have fired");
+    map<json> bound = boundPayloadOf("CodeScanningAlertService.onCodeScanningAlertAppearedInBranch");
+    test:assertFalse(bound.hasKey("commit_oid"), "'commit_oid' should have bound to its camelCase field on CodeScanningAlertPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1884,6 +2296,8 @@ function testCodeScanningAlertClosedByUserDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("code_scanning_alert", "code_scanning_alert_closed_by_user");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CodeScanningAlertService.onCodeScanningAlertClosedByUser"), "CodeScanningAlertService.onCodeScanningAlertClosedByUser should have fired");
+    map<json> bound = boundPayloadOf("CodeScanningAlertService.onCodeScanningAlertClosedByUser");
+    test:assertFalse(bound.hasKey("commit_oid"), "'commit_oid' should have bound to its camelCase field on CodeScanningAlertPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1891,6 +2305,8 @@ function testCodeScanningAlertCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("code_scanning_alert", "code_scanning_alert_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CodeScanningAlertService.onCodeScanningAlertCreated"), "CodeScanningAlertService.onCodeScanningAlertCreated should have fired");
+    map<json> bound = boundPayloadOf("CodeScanningAlertService.onCodeScanningAlertCreated");
+    test:assertFalse(bound.hasKey("commit_oid"), "'commit_oid' should have bound to its camelCase field on CodeScanningAlertPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1898,6 +2314,8 @@ function testCodeScanningAlertFixedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("code_scanning_alert", "code_scanning_alert_fixed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CodeScanningAlertService.onCodeScanningAlertFixed"), "CodeScanningAlertService.onCodeScanningAlertFixed should have fired");
+    map<json> bound = boundPayloadOf("CodeScanningAlertService.onCodeScanningAlertFixed");
+    test:assertFalse(bound.hasKey("commit_oid"), "'commit_oid' should have bound to its camelCase field on CodeScanningAlertPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1905,6 +2323,8 @@ function testCodeScanningAlertReopenedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("code_scanning_alert", "code_scanning_alert_reopened");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CodeScanningAlertService.onCodeScanningAlertReopened"), "CodeScanningAlertService.onCodeScanningAlertReopened should have fired");
+    map<json> bound = boundPayloadOf("CodeScanningAlertService.onCodeScanningAlertReopened");
+    test:assertFalse(bound.hasKey("commit_oid"), "'commit_oid' should have bound to its camelCase field on CodeScanningAlertPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1912,6 +2332,8 @@ function testCodeScanningAlertReopenedByUserDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("code_scanning_alert", "code_scanning_alert_reopened_by_user");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CodeScanningAlertService.onCodeScanningAlertReopenedByUser"), "CodeScanningAlertService.onCodeScanningAlertReopenedByUser should have fired");
+    map<json> bound = boundPayloadOf("CodeScanningAlertService.onCodeScanningAlertReopenedByUser");
+    test:assertFalse(bound.hasKey("commit_oid"), "'commit_oid' should have bound to its camelCase field on CodeScanningAlertPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1919,6 +2341,8 @@ function testCodeScanningAlertUpdatedAssignmentDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("code_scanning_alert", "code_scanning_alert_updated_assignment");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CodeScanningAlertService.onCodeScanningAlertUpdatedAssignment"), "CodeScanningAlertService.onCodeScanningAlertUpdatedAssignment should have fired");
+    map<json> bound = boundPayloadOf("CodeScanningAlertService.onCodeScanningAlertUpdatedAssignment");
+    test:assertFalse(bound.hasKey("commit_oid"), "'commit_oid' should have bound to its camelCase field on CodeScanningAlertPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1926,6 +2350,8 @@ function testPersonalAccessTokenRequestCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("personal_access_token_request", "personal_access_token_request_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCreated"), "PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCreated should have fired");
+    map<json> bound = boundPayloadOf("PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCreated");
+    test:assertFalse(bound.hasKey("personal_access_token_request"), "'personal_access_token_request' should have bound to its camelCase field on PersonalAccessTokenRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1933,6 +2359,8 @@ function testPersonalAccessTokenRequestApprovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("personal_access_token_request", "personal_access_token_request_approved");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PersonalAccessTokenRequestService.onPersonalAccessTokenRequestApproved"), "PersonalAccessTokenRequestService.onPersonalAccessTokenRequestApproved should have fired");
+    map<json> bound = boundPayloadOf("PersonalAccessTokenRequestService.onPersonalAccessTokenRequestApproved");
+    test:assertFalse(bound.hasKey("personal_access_token_request"), "'personal_access_token_request' should have bound to its camelCase field on PersonalAccessTokenRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1940,6 +2368,8 @@ function testPersonalAccessTokenRequestDeniedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("personal_access_token_request", "personal_access_token_request_denied");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PersonalAccessTokenRequestService.onPersonalAccessTokenRequestDenied"), "PersonalAccessTokenRequestService.onPersonalAccessTokenRequestDenied should have fired");
+    map<json> bound = boundPayloadOf("PersonalAccessTokenRequestService.onPersonalAccessTokenRequestDenied");
+    test:assertFalse(bound.hasKey("personal_access_token_request"), "'personal_access_token_request' should have bound to its camelCase field on PersonalAccessTokenRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1947,6 +2377,8 @@ function testPersonalAccessTokenRequestCancelledDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("personal_access_token_request", "personal_access_token_request_cancelled");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCancelled"), "PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCancelled should have fired");
+    map<json> bound = boundPayloadOf("PersonalAccessTokenRequestService.onPersonalAccessTokenRequestCancelled");
+    test:assertFalse(bound.hasKey("personal_access_token_request"), "'personal_access_token_request' should have bound to its camelCase field on PersonalAccessTokenRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -1954,6 +2386,8 @@ function testInstallationTargetRenamedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("installation_target", "installation_target_renamed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("InstallationTargetService.onInstallationTargetRenamed"), "InstallationTargetService.onInstallationTargetRenamed should have fired");
+    map<json> bound = boundPayloadOf("InstallationTargetService.onInstallationTargetRenamed");
+    test:assertFalse(bound.hasKey("target_type"), "'target_type' should have bound to its camelCase field on InstallationTargetPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2115,6 +2549,8 @@ function testPullRequestReviewCommentCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request_review_comment", "pull_request_review_comment_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestReviewCommentService.onPullRequestReviewCommentCreated"), "PullRequestReviewCommentService.onPullRequestReviewCommentCreated should have fired");
+    map<json> bound = boundPayloadOf("PullRequestReviewCommentService.onPullRequestReviewCommentCreated");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestReviewCommentPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2122,6 +2558,8 @@ function testPullRequestReviewCommentDeletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request_review_comment", "pull_request_review_comment_deleted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestReviewCommentService.onPullRequestReviewCommentDeleted"), "PullRequestReviewCommentService.onPullRequestReviewCommentDeleted should have fired");
+    map<json> bound = boundPayloadOf("PullRequestReviewCommentService.onPullRequestReviewCommentDeleted");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestReviewCommentPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2129,6 +2567,8 @@ function testPullRequestReviewCommentEditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request_review_comment", "pull_request_review_comment_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestReviewCommentService.onPullRequestReviewCommentEdited"), "PullRequestReviewCommentService.onPullRequestReviewCommentEdited should have fired");
+    map<json> bound = boundPayloadOf("PullRequestReviewCommentService.onPullRequestReviewCommentEdited");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestReviewCommentPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2136,6 +2576,8 @@ function testMetaDeletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("meta", "meta_deleted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("MetaService.onMetaDeleted"), "MetaService.onMetaDeleted should have fired");
+    map<json> bound = boundPayloadOf("MetaService.onMetaDeleted");
+    test:assertFalse(bound.hasKey("hook_id"), "'hook_id' should have bound to its camelCase field on MetaPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2150,6 +2592,10 @@ function testDeploymentStatusCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("deployment_status", "deployment_status_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("DeploymentStatusService.onDeploymentStatusCreated"), "DeploymentStatusService.onDeploymentStatusCreated should have fired");
+    map<json> bound = boundPayloadOf("DeploymentStatusService.onDeploymentStatusCreated");
+    test:assertFalse(bound.hasKey("deployment_status"), "'deployment_status' should have bound to its camelCase field on DeploymentStatusPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("check_run"), "'check_run' should have bound to its camelCase field on DeploymentStatusPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("workflow_run"), "'workflow_run' should have bound to its camelCase field on DeploymentStatusPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2185,6 +2631,8 @@ function testSecurityAdvisoryWithdrawnDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("security_advisory", "security_advisory_withdrawn");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SecurityAdvisoryService.onSecurityAdvisoryWithdrawn"), "SecurityAdvisoryService.onSecurityAdvisoryWithdrawn should have fired");
+    map<json> bound = boundPayloadOf("SecurityAdvisoryService.onSecurityAdvisoryWithdrawn");
+    test:assertFalse(bound.hasKey("security_advisory"), "'security_advisory' should have bound to its camelCase field on SecurityAdvisoryPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2192,6 +2640,8 @@ function testSecurityAdvisoryPublishedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("security_advisory", "security_advisory_published");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SecurityAdvisoryService.onSecurityAdvisoryPublished"), "SecurityAdvisoryService.onSecurityAdvisoryPublished should have fired");
+    map<json> bound = boundPayloadOf("SecurityAdvisoryService.onSecurityAdvisoryPublished");
+    test:assertFalse(bound.hasKey("security_advisory"), "'security_advisory' should have bound to its camelCase field on SecurityAdvisoryPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2199,6 +2649,8 @@ function testSecurityAdvisoryUpdatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("security_advisory", "security_advisory_updated");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SecurityAdvisoryService.onSecurityAdvisoryUpdated"), "SecurityAdvisoryService.onSecurityAdvisoryUpdated should have fired");
+    map<json> bound = boundPayloadOf("SecurityAdvisoryService.onSecurityAdvisoryUpdated");
+    test:assertFalse(bound.hasKey("security_advisory"), "'security_advisory' should have bound to its camelCase field on SecurityAdvisoryPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2311,6 +2763,8 @@ function testMergeGroupDestroyedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("merge_group", "merge_group_destroyed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("MergeGroupService.onMergeGroupDestroyed"), "MergeGroupService.onMergeGroupDestroyed should have fired");
+    map<json> bound = boundPayloadOf("MergeGroupService.onMergeGroupDestroyed");
+    test:assertFalse(bound.hasKey("merge_group"), "'merge_group' should have bound to its camelCase field on MergeGroupPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2318,6 +2772,8 @@ function testMergeGroupChecksRequestedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("merge_group", "merge_group_checks_requested");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("MergeGroupService.onMergeGroupChecksRequested"), "MergeGroupService.onMergeGroupChecksRequested should have fired");
+    map<json> bound = boundPayloadOf("MergeGroupService.onMergeGroupChecksRequested");
+    test:assertFalse(bound.hasKey("merge_group"), "'merge_group' should have bound to its camelCase field on MergeGroupPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2325,6 +2781,10 @@ function testMarketplacePurchasePurchasedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("marketplace_purchase", "marketplace_purchase_purchased");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("MarketplacePurchaseService.onMarketplacePurchasePurchased"), "MarketplacePurchaseService.onMarketplacePurchasePurchased should have fired");
+    map<json> bound = boundPayloadOf("MarketplacePurchaseService.onMarketplacePurchasePurchased");
+    test:assertFalse(bound.hasKey("marketplace_purchase"), "'marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("previous_marketplace_purchase"), "'previous_marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2332,6 +2792,10 @@ function testMarketplacePurchaseCancelledDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("marketplace_purchase", "marketplace_purchase_cancelled");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("MarketplacePurchaseService.onMarketplacePurchaseCancelled"), "MarketplacePurchaseService.onMarketplacePurchaseCancelled should have fired");
+    map<json> bound = boundPayloadOf("MarketplacePurchaseService.onMarketplacePurchaseCancelled");
+    test:assertFalse(bound.hasKey("marketplace_purchase"), "'marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("previous_marketplace_purchase"), "'previous_marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2339,6 +2803,10 @@ function testMarketplacePurchasePendingChangeCancelledDispatch() returns error? 
     http:Response response = check sendSignedTriggerWebhook("marketplace_purchase", "marketplace_purchase_pending_change_cancelled");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("MarketplacePurchaseService.onMarketplacePurchasePendingChangeCancelled"), "MarketplacePurchaseService.onMarketplacePurchasePendingChangeCancelled should have fired");
+    map<json> bound = boundPayloadOf("MarketplacePurchaseService.onMarketplacePurchasePendingChangeCancelled");
+    test:assertFalse(bound.hasKey("marketplace_purchase"), "'marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("previous_marketplace_purchase"), "'previous_marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2346,6 +2814,10 @@ function testMarketplacePurchasePendingChangeDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("marketplace_purchase", "marketplace_purchase_pending_change");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("MarketplacePurchaseService.onMarketplacePurchasePendingChange"), "MarketplacePurchaseService.onMarketplacePurchasePendingChange should have fired");
+    map<json> bound = boundPayloadOf("MarketplacePurchaseService.onMarketplacePurchasePendingChange");
+    test:assertFalse(bound.hasKey("marketplace_purchase"), "'marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("previous_marketplace_purchase"), "'previous_marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2353,6 +2825,10 @@ function testMarketplacePurchaseChangedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("marketplace_purchase", "marketplace_purchase_changed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("MarketplacePurchaseService.onMarketplacePurchaseChanged"), "MarketplacePurchaseService.onMarketplacePurchaseChanged should have fired");
+    map<json> bound = boundPayloadOf("MarketplacePurchaseService.onMarketplacePurchaseChanged");
+    test:assertFalse(bound.hasKey("marketplace_purchase"), "'marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("previous_marketplace_purchase"), "'previous_marketplace_purchase' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on MarketplacePurchasePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2360,6 +2836,8 @@ function testProjectColumnMovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("project_column", "project_column_moved");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectColumnService.onProjectColumnMoved"), "ProjectColumnService.onProjectColumnMoved should have fired");
+    map<json> bound = boundPayloadOf("ProjectColumnService.onProjectColumnMoved");
+    test:assertFalse(bound.hasKey("project_column"), "'project_column' should have bound to its camelCase field on ProjectColumnPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2367,6 +2845,8 @@ function testProjectColumnEditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("project_column", "project_column_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectColumnService.onProjectColumnEdited"), "ProjectColumnService.onProjectColumnEdited should have fired");
+    map<json> bound = boundPayloadOf("ProjectColumnService.onProjectColumnEdited");
+    test:assertFalse(bound.hasKey("project_column"), "'project_column' should have bound to its camelCase field on ProjectColumnPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2374,6 +2854,8 @@ function testProjectColumnDeletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("project_column", "project_column_deleted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectColumnService.onProjectColumnDeleted"), "ProjectColumnService.onProjectColumnDeleted should have fired");
+    map<json> bound = boundPayloadOf("ProjectColumnService.onProjectColumnDeleted");
+    test:assertFalse(bound.hasKey("project_column"), "'project_column' should have bound to its camelCase field on ProjectColumnPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2381,6 +2863,8 @@ function testProjectColumnCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("project_column", "project_column_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectColumnService.onProjectColumnCreated"), "ProjectColumnService.onProjectColumnCreated should have fired");
+    map<json> bound = boundPayloadOf("ProjectColumnService.onProjectColumnCreated");
+    test:assertFalse(bound.hasKey("project_column"), "'project_column' should have bound to its camelCase field on ProjectColumnPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2430,6 +2914,9 @@ function testDeleteDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("delete", "delete");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("DeleteService.onDelete"), "DeleteService.onDelete should have fired");
+    map<json> bound = boundPayloadOf("DeleteService.onDelete");
+    test:assertFalse(bound.hasKey("ref_type"), "'ref_type' should have bound to its camelCase field on DeletePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("pusher_type"), "'pusher_type' should have bound to its camelCase field on DeletePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2479,6 +2966,8 @@ function testWorkflowJobQueuedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("workflow_job", "workflow_job_queued");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("WorkflowJobService.onWorkflowJobQueued"), "WorkflowJobService.onWorkflowJobQueued should have fired");
+    map<json> bound = boundPayloadOf("WorkflowJobService.onWorkflowJobQueued");
+    test:assertFalse(bound.hasKey("workflow_job"), "'workflow_job' should have bound to its camelCase field on WorkflowJobPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2486,6 +2975,8 @@ function testWorkflowJobWaitingDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("workflow_job", "workflow_job_waiting");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("WorkflowJobService.onWorkflowJobWaiting"), "WorkflowJobService.onWorkflowJobWaiting should have fired");
+    map<json> bound = boundPayloadOf("WorkflowJobService.onWorkflowJobWaiting");
+    test:assertFalse(bound.hasKey("workflow_job"), "'workflow_job' should have bound to its camelCase field on WorkflowJobPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2493,6 +2984,8 @@ function testWorkflowJobCompletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("workflow_job", "workflow_job_completed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("WorkflowJobService.onWorkflowJobCompleted"), "WorkflowJobService.onWorkflowJobCompleted should have fired");
+    map<json> bound = boundPayloadOf("WorkflowJobService.onWorkflowJobCompleted");
+    test:assertFalse(bound.hasKey("workflow_job"), "'workflow_job' should have bound to its camelCase field on WorkflowJobPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2500,6 +2993,8 @@ function testWorkflowJobInProgressDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("workflow_job", "workflow_job_in_progress");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("WorkflowJobService.onWorkflowJobInProgress"), "WorkflowJobService.onWorkflowJobInProgress should have fired");
+    map<json> bound = boundPayloadOf("WorkflowJobService.onWorkflowJobInProgress");
+    test:assertFalse(bound.hasKey("workflow_job"), "'workflow_job' should have bound to its camelCase field on WorkflowJobPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2514,6 +3009,9 @@ function testPullRequestEnqueuedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_enqueued");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestEnqueued"), "PullRequestService.onPullRequestEnqueued should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestEnqueued");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2521,6 +3019,9 @@ function testPullRequestReviewRequestRemovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_review_request_removed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestReviewRequestRemoved"), "PullRequestService.onPullRequestReviewRequestRemoved should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestReviewRequestRemoved");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2528,6 +3029,9 @@ function testPullRequestOpenedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_opened");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestOpened"), "PullRequestService.onPullRequestOpened should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestOpened");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2535,6 +3039,9 @@ function testPullRequestReadyForReviewDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_ready_for_review");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestReadyForReview"), "PullRequestService.onPullRequestReadyForReview should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestReadyForReview");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2542,6 +3049,9 @@ function testPullRequestLabeledDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_labeled");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestLabeled"), "PullRequestService.onPullRequestLabeled should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestLabeled");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2549,6 +3059,9 @@ function testPullRequestUnassignedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_unassigned");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestUnassigned"), "PullRequestService.onPullRequestUnassigned should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestUnassigned");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2556,6 +3069,9 @@ function testPullRequestEditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestEdited"), "PullRequestService.onPullRequestEdited should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestEdited");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2563,6 +3079,9 @@ function testPullRequestSynchronizeDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_synchronize");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestSynchronize"), "PullRequestService.onPullRequestSynchronize should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestSynchronize");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2570,6 +3089,9 @@ function testPullRequestReviewRequestedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_review_requested");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestReviewRequested"), "PullRequestService.onPullRequestReviewRequested should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestReviewRequested");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2577,6 +3099,9 @@ function testPullRequestReopenedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_reopened");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestReopened"), "PullRequestService.onPullRequestReopened should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestReopened");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2584,6 +3109,9 @@ function testPullRequestAutoMergeDisabledDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_auto_merge_disabled");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestAutoMergeDisabled"), "PullRequestService.onPullRequestAutoMergeDisabled should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestAutoMergeDisabled");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2591,6 +3119,9 @@ function testPullRequestLockedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_locked");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestLocked"), "PullRequestService.onPullRequestLocked should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestLocked");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2598,6 +3129,9 @@ function testPullRequestAutoMergeEnabledDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_auto_merge_enabled");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestAutoMergeEnabled"), "PullRequestService.onPullRequestAutoMergeEnabled should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestAutoMergeEnabled");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2605,6 +3139,9 @@ function testPullRequestMilestonedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_milestoned");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestMilestoned"), "PullRequestService.onPullRequestMilestoned should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestMilestoned");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2612,6 +3149,9 @@ function testPullRequestDequeuedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_dequeued");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestDequeued"), "PullRequestService.onPullRequestDequeued should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestDequeued");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2619,6 +3159,9 @@ function testPullRequestUnlabeledDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_unlabeled");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestUnlabeled"), "PullRequestService.onPullRequestUnlabeled should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestUnlabeled");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2626,6 +3169,9 @@ function testPullRequestClosedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_closed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestClosed"), "PullRequestService.onPullRequestClosed should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestClosed");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2633,6 +3179,9 @@ function testPullRequestUnlockedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_unlocked");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestUnlocked"), "PullRequestService.onPullRequestUnlocked should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestUnlocked");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2640,6 +3189,9 @@ function testPullRequestAssignedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_assigned");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestAssigned"), "PullRequestService.onPullRequestAssigned should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestAssigned");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2647,6 +3199,9 @@ function testPullRequestConvertedToDraftDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_converted_to_draft");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestConvertedToDraft"), "PullRequestService.onPullRequestConvertedToDraft should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestConvertedToDraft");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2654,6 +3209,9 @@ function testPullRequestDemilestonedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request", "pull_request_demilestoned");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestService.onPullRequestDemilestoned"), "PullRequestService.onPullRequestDemilestoned should have fired");
+    map<json> bound = boundPayloadOf("PullRequestService.onPullRequestDemilestoned");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_reviewer"), "'requested_reviewer' should have bound to its camelCase field on PullRequestPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2661,6 +3219,8 @@ function testProjectsV2StatusUpdateEditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_status_update", "projects_v2_status_update_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2statusUpdateService.onProjectsV2StatusUpdateEdited"), "ProjectsV2statusUpdateService.onProjectsV2StatusUpdateEdited should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2statusUpdateService.onProjectsV2StatusUpdateEdited");
+    test:assertFalse(bound.hasKey("projects_v2_status_update"), "'projects_v2_status_update' should have bound to its camelCase field on 'ProjectsV2StatusUpdatePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2668,6 +3228,8 @@ function testProjectsV2StatusUpdateDeletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_status_update", "projects_v2_status_update_deleted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2statusUpdateService.onProjectsV2StatusUpdateDeleted"), "ProjectsV2statusUpdateService.onProjectsV2StatusUpdateDeleted should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2statusUpdateService.onProjectsV2StatusUpdateDeleted");
+    test:assertFalse(bound.hasKey("projects_v2_status_update"), "'projects_v2_status_update' should have bound to its camelCase field on 'ProjectsV2StatusUpdatePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2675,6 +3237,8 @@ function testProjectsV2StatusUpdateCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_status_update", "projects_v2_status_update_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2statusUpdateService.onProjectsV2StatusUpdateCreated"), "ProjectsV2statusUpdateService.onProjectsV2StatusUpdateCreated should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2statusUpdateService.onProjectsV2StatusUpdateCreated");
+    test:assertFalse(bound.hasKey("projects_v2_status_update"), "'projects_v2_status_update' should have bound to its camelCase field on 'ProjectsV2StatusUpdatePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2689,6 +3253,8 @@ function testDeploymentCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("deployment", "deployment_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("DeploymentService.onDeploymentCreated"), "DeploymentService.onDeploymentCreated should have fired");
+    map<json> bound = boundPayloadOf("DeploymentService.onDeploymentCreated");
+    test:assertFalse(bound.hasKey("workflow_run"), "'workflow_run' should have bound to its camelCase field on DeploymentPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2829,6 +3395,8 @@ function testWorkflowRunInProgressDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("workflow_run", "workflow_run_in_progress");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("WorkflowRunService.onWorkflowRunInProgress"), "WorkflowRunService.onWorkflowRunInProgress should have fired");
+    map<json> bound = boundPayloadOf("WorkflowRunService.onWorkflowRunInProgress");
+    test:assertFalse(bound.hasKey("workflow_run"), "'workflow_run' should have bound to its camelCase field on WorkflowRunPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2836,6 +3404,8 @@ function testWorkflowRunCompletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("workflow_run", "workflow_run_completed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("WorkflowRunService.onWorkflowRunCompleted"), "WorkflowRunService.onWorkflowRunCompleted should have fired");
+    map<json> bound = boundPayloadOf("WorkflowRunService.onWorkflowRunCompleted");
+    test:assertFalse(bound.hasKey("workflow_run"), "'workflow_run' should have bound to its camelCase field on WorkflowRunPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2843,6 +3413,8 @@ function testWorkflowRunRequestedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("workflow_run", "workflow_run_requested");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("WorkflowRunService.onWorkflowRunRequested"), "WorkflowRunService.onWorkflowRunRequested should have fired");
+    map<json> bound = boundPayloadOf("WorkflowRunService.onWorkflowRunRequested");
+    test:assertFalse(bound.hasKey("workflow_run"), "'workflow_run' should have bound to its camelCase field on WorkflowRunPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2864,6 +3436,8 @@ function testStarCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("star", "star_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("StarService.onStarCreated"), "StarService.onStarCreated should have fired");
+    map<json> bound = boundPayloadOf("StarService.onStarCreated");
+    test:assertFalse(bound.hasKey("starred_at"), "'starred_at' should have bound to its camelCase field on StarPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2871,6 +3445,8 @@ function testStarDeletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("star", "star_deleted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("StarService.onStarDeleted"), "StarService.onStarDeleted should have fired");
+    map<json> bound = boundPayloadOf("StarService.onStarDeleted");
+    test:assertFalse(bound.hasKey("starred_at"), "'starred_at' should have bound to its camelCase field on StarPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2878,6 +3454,8 @@ function testRegistryPackageUpdatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("registry_package", "registry_package_updated");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("RegistryPackageService.onRegistryPackageUpdated"), "RegistryPackageService.onRegistryPackageUpdated should have fired");
+    map<json> bound = boundPayloadOf("RegistryPackageService.onRegistryPackageUpdated");
+    test:assertFalse(bound.hasKey("registry_package"), "'registry_package' should have bound to its camelCase field on RegistryPackagePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2885,6 +3463,8 @@ function testRegistryPackagePublishedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("registry_package", "registry_package_published");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("RegistryPackageService.onRegistryPackagePublished"), "RegistryPackageService.onRegistryPackagePublished should have fired");
+    map<json> bound = boundPayloadOf("RegistryPackageService.onRegistryPackagePublished");
+    test:assertFalse(bound.hasKey("registry_package"), "'registry_package' should have bound to its camelCase field on RegistryPackagePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2892,6 +3472,8 @@ function testRepositoryRulesetCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("repository_ruleset", "repository_ruleset_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("RepositoryRulesetService.onRepositoryRulesetCreated"), "RepositoryRulesetService.onRepositoryRulesetCreated should have fired");
+    map<json> bound = boundPayloadOf("RepositoryRulesetService.onRepositoryRulesetCreated");
+    test:assertFalse(bound.hasKey("repository_ruleset"), "'repository_ruleset' should have bound to its camelCase field on RepositoryRulesetPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2899,6 +3481,8 @@ function testRepositoryRulesetEditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("repository_ruleset", "repository_ruleset_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("RepositoryRulesetService.onRepositoryRulesetEdited"), "RepositoryRulesetService.onRepositoryRulesetEdited should have fired");
+    map<json> bound = boundPayloadOf("RepositoryRulesetService.onRepositoryRulesetEdited");
+    test:assertFalse(bound.hasKey("repository_ruleset"), "'repository_ruleset' should have bound to its camelCase field on RepositoryRulesetPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2906,6 +3490,8 @@ function testRepositoryRulesetDeletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("repository_ruleset", "repository_ruleset_deleted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("RepositoryRulesetService.onRepositoryRulesetDeleted"), "RepositoryRulesetService.onRepositoryRulesetDeleted should have fired");
+    map<json> bound = boundPayloadOf("RepositoryRulesetService.onRepositoryRulesetDeleted");
+    test:assertFalse(bound.hasKey("repository_ruleset"), "'repository_ruleset' should have bound to its camelCase field on RepositoryRulesetPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2913,6 +3499,8 @@ function testOrgBlockBlockedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("org_block", "org_block_blocked");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("OrgBlockService.onOrgBlockBlocked"), "OrgBlockService.onOrgBlockBlocked should have fired");
+    map<json> bound = boundPayloadOf("OrgBlockService.onOrgBlockBlocked");
+    test:assertFalse(bound.hasKey("blocked_user"), "'blocked_user' should have bound to its camelCase field on OrgBlockPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2920,6 +3508,8 @@ function testOrgBlockUnblockedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("org_block", "org_block_unblocked");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("OrgBlockService.onOrgBlockUnblocked"), "OrgBlockService.onOrgBlockUnblocked should have fired");
+    map<json> bound = boundPayloadOf("OrgBlockService.onOrgBlockUnblocked");
+    test:assertFalse(bound.hasKey("blocked_user"), "'blocked_user' should have bound to its camelCase field on OrgBlockPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2927,6 +3517,8 @@ function testPullRequestReviewSubmittedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request_review", "pull_request_review_submitted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestReviewService.onPullRequestReviewSubmitted"), "PullRequestReviewService.onPullRequestReviewSubmitted should have fired");
+    map<json> bound = boundPayloadOf("PullRequestReviewService.onPullRequestReviewSubmitted");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestReviewPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2934,6 +3526,8 @@ function testPullRequestReviewEditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request_review", "pull_request_review_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestReviewService.onPullRequestReviewEdited"), "PullRequestReviewService.onPullRequestReviewEdited should have fired");
+    map<json> bound = boundPayloadOf("PullRequestReviewService.onPullRequestReviewEdited");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestReviewPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2941,6 +3535,8 @@ function testPullRequestReviewDismissedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request_review", "pull_request_review_dismissed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestReviewService.onPullRequestReviewDismissed"), "PullRequestReviewService.onPullRequestReviewDismissed should have fired");
+    map<json> bound = boundPayloadOf("PullRequestReviewService.onPullRequestReviewDismissed");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestReviewPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2948,6 +3544,10 @@ function testInstallationRepositoriesRemovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("installation_repositories", "installation_repositories_removed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("InstallationRepositoriesService.onInstallationRepositoriesRemoved"), "InstallationRepositoriesService.onInstallationRepositoriesRemoved should have fired");
+    map<json> bound = boundPayloadOf("InstallationRepositoriesService.onInstallationRepositoriesRemoved");
+    test:assertFalse(bound.hasKey("repositories_added"), "'repositories_added' should have bound to its camelCase field on InstallationRepositoriesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("repositories_removed"), "'repositories_removed' should have bound to its camelCase field on InstallationRepositoriesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("repository_selection"), "'repository_selection' should have bound to its camelCase field on InstallationRepositoriesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -2955,6 +3555,10 @@ function testInstallationRepositoriesAddedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("installation_repositories", "installation_repositories_added");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("InstallationRepositoriesService.onInstallationRepositoriesAdded"), "InstallationRepositoriesService.onInstallationRepositoriesAdded should have fired");
+    map<json> bound = boundPayloadOf("InstallationRepositoriesService.onInstallationRepositoriesAdded");
+    test:assertFalse(bound.hasKey("repositories_added"), "'repositories_added' should have bound to its camelCase field on InstallationRepositoriesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("repositories_removed"), "'repositories_removed' should have bound to its camelCase field on InstallationRepositoriesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("repository_selection"), "'repository_selection' should have bound to its camelCase field on InstallationRepositoriesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3088,6 +3692,9 @@ function testCheckRunCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("check_run", "check_run_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CheckRunService.onCheckRunCreated"), "CheckRunService.onCheckRunCreated should have fired");
+    map<json> bound = boundPayloadOf("CheckRunService.onCheckRunCreated");
+    test:assertFalse(bound.hasKey("check_run"), "'check_run' should have bound to its camelCase field on CheckRunPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_action"), "'requested_action' should have bound to its camelCase field on CheckRunPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3095,6 +3702,9 @@ function testCheckRunCompletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("check_run", "check_run_completed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CheckRunService.onCheckRunCompleted"), "CheckRunService.onCheckRunCompleted should have fired");
+    map<json> bound = boundPayloadOf("CheckRunService.onCheckRunCompleted");
+    test:assertFalse(bound.hasKey("check_run"), "'check_run' should have bound to its camelCase field on CheckRunPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_action"), "'requested_action' should have bound to its camelCase field on CheckRunPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3102,6 +3712,9 @@ function testCheckRunRequestedActionDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("check_run", "check_run_requested_action");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CheckRunService.onCheckRunRequestedAction"), "CheckRunService.onCheckRunRequestedAction should have fired");
+    map<json> bound = boundPayloadOf("CheckRunService.onCheckRunRequestedAction");
+    test:assertFalse(bound.hasKey("check_run"), "'check_run' should have bound to its camelCase field on CheckRunPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_action"), "'requested_action' should have bound to its camelCase field on CheckRunPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3109,6 +3722,9 @@ function testCheckRunRerequestedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("check_run", "check_run_rerequested");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CheckRunService.onCheckRunRerequested"), "CheckRunService.onCheckRunRerequested should have fired");
+    map<json> bound = boundPayloadOf("CheckRunService.onCheckRunRerequested");
+    test:assertFalse(bound.hasKey("check_run"), "'check_run' should have bound to its camelCase field on CheckRunPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("requested_action"), "'requested_action' should have bound to its camelCase field on CheckRunPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3137,6 +3753,9 @@ function testCustomPropertyValuesUpdatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("custom_property_values", "custom_property_values_updated");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CustomPropertyValuesService.onCustomPropertyValuesUpdated"), "CustomPropertyValuesService.onCustomPropertyValuesUpdated should have fired");
+    map<json> bound = boundPayloadOf("CustomPropertyValuesService.onCustomPropertyValuesUpdated");
+    test:assertFalse(bound.hasKey("new_property_values"), "'new_property_values' should have bound to its camelCase field on CustomPropertyValuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("old_property_values"), "'old_property_values' should have bound to its camelCase field on CustomPropertyValuesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3158,6 +3777,8 @@ function testSponsorshipCancelledDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sponsorship", "sponsorship_cancelled");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SponsorshipService.onSponsorshipCancelled"), "SponsorshipService.onSponsorshipCancelled should have fired");
+    map<json> bound = boundPayloadOf("SponsorshipService.onSponsorshipCancelled");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on SponsorshipPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3165,6 +3786,8 @@ function testSponsorshipEditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sponsorship", "sponsorship_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SponsorshipService.onSponsorshipEdited"), "SponsorshipService.onSponsorshipEdited should have fired");
+    map<json> bound = boundPayloadOf("SponsorshipService.onSponsorshipEdited");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on SponsorshipPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3172,6 +3795,8 @@ function testSponsorshipTierChangedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sponsorship", "sponsorship_tier_changed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SponsorshipService.onSponsorshipTierChanged"), "SponsorshipService.onSponsorshipTierChanged should have fired");
+    map<json> bound = boundPayloadOf("SponsorshipService.onSponsorshipTierChanged");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on SponsorshipPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3179,6 +3804,8 @@ function testSponsorshipPendingCancellationDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sponsorship", "sponsorship_pending_cancellation");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SponsorshipService.onSponsorshipPendingCancellation"), "SponsorshipService.onSponsorshipPendingCancellation should have fired");
+    map<json> bound = boundPayloadOf("SponsorshipService.onSponsorshipPendingCancellation");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on SponsorshipPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3186,6 +3813,8 @@ function testSponsorshipCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sponsorship", "sponsorship_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SponsorshipService.onSponsorshipCreated"), "SponsorshipService.onSponsorshipCreated should have fired");
+    map<json> bound = boundPayloadOf("SponsorshipService.onSponsorshipCreated");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on SponsorshipPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3193,6 +3822,8 @@ function testSponsorshipPendingTierChangeDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sponsorship", "sponsorship_pending_tier_change");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SponsorshipService.onSponsorshipPendingTierChange"), "SponsorshipService.onSponsorshipPendingTierChange should have fired");
+    map<json> bound = boundPayloadOf("SponsorshipService.onSponsorshipPendingTierChange");
+    test:assertFalse(bound.hasKey("effective_date"), "'effective_date' should have bound to its camelCase field on SponsorshipPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3200,6 +3831,9 @@ function testPullRequestReviewThreadUnresolvedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request_review_thread", "pull_request_review_thread_unresolved");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestReviewThreadService.onPullRequestReviewThreadUnresolved"), "PullRequestReviewThreadService.onPullRequestReviewThreadUnresolved should have fired");
+    map<json> bound = boundPayloadOf("PullRequestReviewThreadService.onPullRequestReviewThreadUnresolved");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestReviewThreadPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("updated_at"), "'updated_at' should have bound to its camelCase field on PullRequestReviewThreadPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3207,6 +3841,9 @@ function testPullRequestReviewThreadResolvedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("pull_request_review_thread", "pull_request_review_thread_resolved");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PullRequestReviewThreadService.onPullRequestReviewThreadResolved"), "PullRequestReviewThreadService.onPullRequestReviewThreadResolved should have fired");
+    map<json> bound = boundPayloadOf("PullRequestReviewThreadService.onPullRequestReviewThreadResolved");
+    test:assertFalse(bound.hasKey("pull_request"), "'pull_request' should have bound to its camelCase field on PullRequestReviewThreadPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("updated_at"), "'updated_at' should have bound to its camelCase field on PullRequestReviewThreadPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3214,6 +3851,8 @@ function testRepositoryDispatchDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("repository_dispatch", "repository_dispatch");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("RepositoryDispatchService.onRepositoryDispatch"), "RepositoryDispatchService.onRepositoryDispatch should have fired");
+    map<json> bound = boundPayloadOf("RepositoryDispatchService.onRepositoryDispatch");
+    test:assertFalse(bound.hasKey("client_payload"), "'client_payload' should have bound to its camelCase field on RepositoryDispatchPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3221,6 +3860,9 @@ function testDeploymentProtectionRuleDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("deployment_protection_rule", "deployment_protection_rule");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("DeploymentProtectionRuleService.onDeploymentProtectionRule"), "DeploymentProtectionRuleService.onDeploymentProtectionRule should have fired");
+    map<json> bound = boundPayloadOf("DeploymentProtectionRuleService.onDeploymentProtectionRule");
+    test:assertFalse(bound.hasKey("deployment_callback_url"), "'deployment_callback_url' should have bound to its camelCase field on DeploymentProtectionRulePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("pull_requests"), "'pull_requests' should have bound to its camelCase field on DeploymentProtectionRulePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3228,6 +3870,10 @@ function testCreateDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("create", "create");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("CreateService.onCreate"), "CreateService.onCreate should have fired");
+    map<json> bound = boundPayloadOf("CreateService.onCreate");
+    test:assertFalse(bound.hasKey("ref_type"), "'ref_type' should have bound to its camelCase field on CreatePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("master_branch"), "'master_branch' should have bound to its camelCase field on CreatePayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("pusher_type"), "'pusher_type' should have bound to its camelCase field on CreatePayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3256,6 +3902,8 @@ function testProjectsV2CreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2", "projects_v2_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2Service.onProjectsV2Created"), "ProjectsV2Service.onProjectsV2Created should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2Service.onProjectsV2Created");
+    test:assertFalse(bound.hasKey("projects_v2"), "'projects_v2' should have bound to its camelCase field on 'ProjectsV2Payload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3263,6 +3911,8 @@ function testProjectsV2EditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2", "projects_v2_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2Service.onProjectsV2Edited"), "ProjectsV2Service.onProjectsV2Edited should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2Service.onProjectsV2Edited");
+    test:assertFalse(bound.hasKey("projects_v2"), "'projects_v2' should have bound to its camelCase field on 'ProjectsV2Payload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3270,6 +3920,8 @@ function testProjectsV2ClosedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2", "projects_v2_closed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2Service.onProjectsV2Closed"), "ProjectsV2Service.onProjectsV2Closed should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2Service.onProjectsV2Closed");
+    test:assertFalse(bound.hasKey("projects_v2"), "'projects_v2' should have bound to its camelCase field on 'ProjectsV2Payload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3277,6 +3929,8 @@ function testProjectsV2ReopenedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2", "projects_v2_reopened");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2Service.onProjectsV2Reopened"), "ProjectsV2Service.onProjectsV2Reopened should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2Service.onProjectsV2Reopened");
+    test:assertFalse(bound.hasKey("projects_v2"), "'projects_v2' should have bound to its camelCase field on 'ProjectsV2Payload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3284,6 +3938,8 @@ function testProjectsV2DeletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2", "projects_v2_deleted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2Service.onProjectsV2Deleted"), "ProjectsV2Service.onProjectsV2Deleted should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2Service.onProjectsV2Deleted");
+    test:assertFalse(bound.hasKey("projects_v2"), "'projects_v2' should have bound to its camelCase field on 'ProjectsV2Payload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3291,6 +3947,8 @@ function testProjectCardEditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("project_card", "project_card_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectCardService.onProjectCardEdited"), "ProjectCardService.onProjectCardEdited should have fired");
+    map<json> bound = boundPayloadOf("ProjectCardService.onProjectCardEdited");
+    test:assertFalse(bound.hasKey("project_card"), "'project_card' should have bound to its camelCase field on ProjectCardPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3298,6 +3956,8 @@ function testProjectCardDeletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("project_card", "project_card_deleted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectCardService.onProjectCardDeleted"), "ProjectCardService.onProjectCardDeleted should have fired");
+    map<json> bound = boundPayloadOf("ProjectCardService.onProjectCardDeleted");
+    test:assertFalse(bound.hasKey("project_card"), "'project_card' should have bound to its camelCase field on ProjectCardPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3305,6 +3965,8 @@ function testProjectCardMovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("project_card", "project_card_moved");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectCardService.onProjectCardMoved"), "ProjectCardService.onProjectCardMoved should have fired");
+    map<json> bound = boundPayloadOf("ProjectCardService.onProjectCardMoved");
+    test:assertFalse(bound.hasKey("project_card"), "'project_card' should have bound to its camelCase field on ProjectCardPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3312,6 +3974,8 @@ function testProjectCardConvertedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("project_card", "project_card_converted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectCardService.onProjectCardConverted"), "ProjectCardService.onProjectCardConverted should have fired");
+    map<json> bound = boundPayloadOf("ProjectCardService.onProjectCardConverted");
+    test:assertFalse(bound.hasKey("project_card"), "'project_card' should have bound to its camelCase field on ProjectCardPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3319,6 +3983,8 @@ function testProjectCardCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("project_card", "project_card_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectCardService.onProjectCardCreated"), "ProjectCardService.onProjectCardCreated should have fired");
+    map<json> bound = boundPayloadOf("ProjectCardService.onProjectCardCreated");
+    test:assertFalse(bound.hasKey("project_card"), "'project_card' should have bound to its camelCase field on ProjectCardPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3326,6 +3992,12 @@ function testSubIssuesSubIssueAddedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sub_issues", "sub_issues_sub_issue_added");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SubIssuesService.onSubIssuesSubIssueAdded"), "SubIssuesService.onSubIssuesSubIssueAdded should have fired");
+    map<json> bound = boundPayloadOf("SubIssuesService.onSubIssuesSubIssueAdded");
+    test:assertFalse(bound.hasKey("parent_issue_id"), "'parent_issue_id' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("parent_issue"), "'parent_issue' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("parent_issue_repo"), "'parent_issue_repo' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("sub_issue_id"), "'sub_issue_id' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("sub_issue"), "'sub_issue' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3333,6 +4005,12 @@ function testSubIssuesParentIssueAddedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sub_issues", "sub_issues_parent_issue_added");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SubIssuesService.onSubIssuesParentIssueAdded"), "SubIssuesService.onSubIssuesParentIssueAdded should have fired");
+    map<json> bound = boundPayloadOf("SubIssuesService.onSubIssuesParentIssueAdded");
+    test:assertFalse(bound.hasKey("parent_issue_id"), "'parent_issue_id' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("parent_issue"), "'parent_issue' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("parent_issue_repo"), "'parent_issue_repo' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("sub_issue_id"), "'sub_issue_id' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("sub_issue"), "'sub_issue' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3340,6 +4018,12 @@ function testSubIssuesSubIssueRemovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sub_issues", "sub_issues_sub_issue_removed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SubIssuesService.onSubIssuesSubIssueRemoved"), "SubIssuesService.onSubIssuesSubIssueRemoved should have fired");
+    map<json> bound = boundPayloadOf("SubIssuesService.onSubIssuesSubIssueRemoved");
+    test:assertFalse(bound.hasKey("parent_issue_id"), "'parent_issue_id' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("parent_issue"), "'parent_issue' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("parent_issue_repo"), "'parent_issue_repo' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("sub_issue_id"), "'sub_issue_id' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("sub_issue"), "'sub_issue' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3347,6 +4031,12 @@ function testSubIssuesParentIssueRemovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("sub_issues", "sub_issues_parent_issue_removed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SubIssuesService.onSubIssuesParentIssueRemoved"), "SubIssuesService.onSubIssuesParentIssueRemoved should have fired");
+    map<json> bound = boundPayloadOf("SubIssuesService.onSubIssuesParentIssueRemoved");
+    test:assertFalse(bound.hasKey("parent_issue_id"), "'parent_issue_id' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("parent_issue"), "'parent_issue' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("parent_issue_repo"), "'parent_issue_repo' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("sub_issue_id"), "'sub_issue_id' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("sub_issue"), "'sub_issue' should have bound to its camelCase field on SubIssuesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3354,6 +4044,8 @@ function testPingDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("ping", "ping");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("PingService.onPing"), "PingService.onPing should have fired");
+    map<json> bound = boundPayloadOf("PingService.onPing");
+    test:assertFalse(bound.hasKey("hook_id"), "'hook_id' should have bound to its camelCase field on PingPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3459,6 +4151,12 @@ function testSecretScanningScanDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("secret_scanning_scan", "secret_scanning_scan");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("SecretScanningScanService.onSecretScanningScan"), "SecretScanningScanService.onSecretScanningScan should have fired");
+    map<json> bound = boundPayloadOf("SecretScanningScanService.onSecretScanningScan");
+    test:assertFalse(bound.hasKey("started_at"), "'started_at' should have bound to its camelCase field on SecretScanningScanPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("completed_at"), "'completed_at' should have bound to its camelCase field on SecretScanningScanPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("secret_types"), "'secret_types' should have bound to its camelCase field on SecretScanningScanPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("custom_pattern_name"), "'custom_pattern_name' should have bound to its camelCase field on SecretScanningScanPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("custom_pattern_scope"), "'custom_pattern_scope' should have bound to its camelCase field on SecretScanningScanPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3466,6 +4164,11 @@ function testStatusDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("status", "status");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("StatusService.onStatus"), "StatusService.onStatus should have fired");
+    map<json> bound = boundPayloadOf("StatusService.onStatus");
+    test:assertFalse(bound.hasKey("target_url"), "'target_url' should have bound to its camelCase field on StatusPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("avatar_url"), "'avatar_url' should have bound to its camelCase field on StatusPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("created_at"), "'created_at' should have bound to its camelCase field on StatusPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("updated_at"), "'updated_at' should have bound to its camelCase field on StatusPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3473,6 +4176,8 @@ function testDeploymentReviewRequestedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("deployment_review", "deployment_review_requested");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("DeploymentReviewService.onDeploymentReviewRequested"), "DeploymentReviewService.onDeploymentReviewRequested should have fired");
+    map<json> bound = boundPayloadOf("DeploymentReviewService.onDeploymentReviewRequested");
+    test:assertFalse(bound.hasKey("workflow_run"), "'workflow_run' should have bound to its camelCase field on DeploymentReviewPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3480,6 +4185,8 @@ function testDeploymentReviewRejectedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("deployment_review", "deployment_review_rejected");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("DeploymentReviewService.onDeploymentReviewRejected"), "DeploymentReviewService.onDeploymentReviewRejected should have fired");
+    map<json> bound = boundPayloadOf("DeploymentReviewService.onDeploymentReviewRejected");
+    test:assertFalse(bound.hasKey("workflow_run"), "'workflow_run' should have bound to its camelCase field on DeploymentReviewPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3487,6 +4194,8 @@ function testDeploymentReviewApprovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("deployment_review", "deployment_review_approved");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("DeploymentReviewService.onDeploymentReviewApproved"), "DeploymentReviewService.onDeploymentReviewApproved should have fired");
+    map<json> bound = boundPayloadOf("DeploymentReviewService.onDeploymentReviewApproved");
+    test:assertFalse(bound.hasKey("workflow_run"), "'workflow_run' should have bound to its camelCase field on DeploymentReviewPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3494,6 +4203,8 @@ function testProjectsV2ItemEditedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_item", "projects_v2_item_edited");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2itemService.onProjectsV2ItemEdited"), "ProjectsV2itemService.onProjectsV2ItemEdited should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2itemService.onProjectsV2ItemEdited");
+    test:assertFalse(bound.hasKey("projects_v2_item"), "'projects_v2_item' should have bound to its camelCase field on 'ProjectsV2ItemPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3501,6 +4212,8 @@ function testProjectsV2ItemCreatedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_item", "projects_v2_item_created");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2itemService.onProjectsV2ItemCreated"), "ProjectsV2itemService.onProjectsV2ItemCreated should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2itemService.onProjectsV2ItemCreated");
+    test:assertFalse(bound.hasKey("projects_v2_item"), "'projects_v2_item' should have bound to its camelCase field on 'ProjectsV2ItemPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3508,6 +4221,8 @@ function testProjectsV2ItemArchivedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_item", "projects_v2_item_archived");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2itemService.onProjectsV2ItemArchived"), "ProjectsV2itemService.onProjectsV2ItemArchived should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2itemService.onProjectsV2ItemArchived");
+    test:assertFalse(bound.hasKey("projects_v2_item"), "'projects_v2_item' should have bound to its camelCase field on 'ProjectsV2ItemPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3515,6 +4230,8 @@ function testProjectsV2ItemDeletedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_item", "projects_v2_item_deleted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2itemService.onProjectsV2ItemDeleted"), "ProjectsV2itemService.onProjectsV2ItemDeleted should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2itemService.onProjectsV2ItemDeleted");
+    test:assertFalse(bound.hasKey("projects_v2_item"), "'projects_v2_item' should have bound to its camelCase field on 'ProjectsV2ItemPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3522,6 +4239,8 @@ function testProjectsV2ItemRestoredDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_item", "projects_v2_item_restored");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2itemService.onProjectsV2ItemRestored"), "ProjectsV2itemService.onProjectsV2ItemRestored should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2itemService.onProjectsV2ItemRestored");
+    test:assertFalse(bound.hasKey("projects_v2_item"), "'projects_v2_item' should have bound to its camelCase field on 'ProjectsV2ItemPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3529,6 +4248,8 @@ function testProjectsV2ItemReorderedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_item", "projects_v2_item_reordered");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2itemService.onProjectsV2ItemReordered"), "ProjectsV2itemService.onProjectsV2ItemReordered should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2itemService.onProjectsV2ItemReordered");
+    test:assertFalse(bound.hasKey("projects_v2_item"), "'projects_v2_item' should have bound to its camelCase field on 'ProjectsV2ItemPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3536,6 +4257,8 @@ function testProjectsV2ItemConvertedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("projects_v2_item", "projects_v2_item_converted");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("ProjectsV2itemService.onProjectsV2ItemConverted"), "ProjectsV2itemService.onProjectsV2ItemConverted should have fired");
+    map<json> bound = boundPayloadOf("ProjectsV2itemService.onProjectsV2ItemConverted");
+    test:assertFalse(bound.hasKey("projects_v2_item"), "'projects_v2_item' should have bound to its camelCase field on 'ProjectsV2ItemPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3571,6 +4294,12 @@ function testIssueDependenciesBlockingRemovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("issue_dependencies", "issue_dependencies_blocking_removed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("IssueDependenciesService.onIssueDependenciesBlockingRemoved"), "IssueDependenciesService.onIssueDependenciesBlockingRemoved should have fired");
+    map<json> bound = boundPayloadOf("IssueDependenciesService.onIssueDependenciesBlockingRemoved");
+    test:assertFalse(bound.hasKey("blocked_issue_id"), "'blocked_issue_id' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocked_issue"), "'blocked_issue' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue_id"), "'blocking_issue_id' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue"), "'blocking_issue' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue_repo"), "'blocking_issue_repo' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3578,6 +4307,12 @@ function testIssueDependenciesBlockedByRemovedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("issue_dependencies", "issue_dependencies_blocked_by_removed");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("IssueDependenciesService.onIssueDependenciesBlockedByRemoved"), "IssueDependenciesService.onIssueDependenciesBlockedByRemoved should have fired");
+    map<json> bound = boundPayloadOf("IssueDependenciesService.onIssueDependenciesBlockedByRemoved");
+    test:assertFalse(bound.hasKey("blocked_issue_id"), "'blocked_issue_id' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocked_issue"), "'blocked_issue' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue_id"), "'blocking_issue_id' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue"), "'blocking_issue' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue_repo"), "'blocking_issue_repo' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3585,6 +4320,12 @@ function testIssueDependenciesBlockingAddedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("issue_dependencies", "issue_dependencies_blocking_added");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("IssueDependenciesService.onIssueDependenciesBlockingAdded"), "IssueDependenciesService.onIssueDependenciesBlockingAdded should have fired");
+    map<json> bound = boundPayloadOf("IssueDependenciesService.onIssueDependenciesBlockingAdded");
+    test:assertFalse(bound.hasKey("blocked_issue_id"), "'blocked_issue_id' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocked_issue"), "'blocked_issue' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue_id"), "'blocking_issue_id' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue"), "'blocking_issue' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue_repo"), "'blocking_issue_repo' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3592,6 +4333,12 @@ function testIssueDependenciesBlockedByAddedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("issue_dependencies", "issue_dependencies_blocked_by_added");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("IssueDependenciesService.onIssueDependenciesBlockedByAdded"), "IssueDependenciesService.onIssueDependenciesBlockedByAdded should have fired");
+    map<json> bound = boundPayloadOf("IssueDependenciesService.onIssueDependenciesBlockedByAdded");
+    test:assertFalse(bound.hasKey("blocked_issue_id"), "'blocked_issue_id' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocked_issue"), "'blocked_issue' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue_id"), "'blocking_issue_id' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue"), "'blocking_issue' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
+    test:assertFalse(bound.hasKey("blocking_issue_repo"), "'blocking_issue_repo' should have bound to its camelCase field on IssueDependenciesPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3599,6 +4346,8 @@ function testRepositoryAdvisoryReportedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("repository_advisory", "repository_advisory_reported");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("RepositoryAdvisoryService.onRepositoryAdvisoryReported"), "RepositoryAdvisoryService.onRepositoryAdvisoryReported should have fired");
+    map<json> bound = boundPayloadOf("RepositoryAdvisoryService.onRepositoryAdvisoryReported");
+    test:assertFalse(bound.hasKey("repository_advisory"), "'repository_advisory' should have bound to its camelCase field on RepositoryAdvisoryPayload, not stayed a raw key");
 }
 
 @test:Config {}
@@ -3606,6 +4355,8 @@ function testRepositoryAdvisoryPublishedDispatch() returns error? {
     http:Response response = check sendSignedTriggerWebhook("repository_advisory", "repository_advisory_published");
     test:assertEquals(response.statusCode, http:STATUS_OK);
     test:assertTrue(waitForDispatch("RepositoryAdvisoryService.onRepositoryAdvisoryPublished"), "RepositoryAdvisoryService.onRepositoryAdvisoryPublished should have fired");
+    map<json> bound = boundPayloadOf("RepositoryAdvisoryService.onRepositoryAdvisoryPublished");
+    test:assertFalse(bound.hasKey("repository_advisory"), "'repository_advisory' should have bound to its camelCase field on RepositoryAdvisoryPayload, not stayed a raw key");
 }
 
 @test:Config {}
