@@ -13,9 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Generated doc comments are wrapped to the 120-character line budget](https://github.com/ballerina-platform/ballerina-library/issues/9217) instead of being emitted as a single long line.
 
 ### Fixed
-- Corrected spec inaccuracies that the stricter payload binding surfaced. `App`, `MarketplacePurchase`, `WorkflowRun` and the inline `invitation` object declared fields as required that GitHub omits entirely on events where the object is not applicable - it sends `{}` instead. `ProjectsV2ItemPayload` required `changes`, which GitHub only sends on `edited` and `reordered` actions, not on `created`.
-- `Repository.created_at` and `Repository.pushed_at` are now typed as a string-or-integer union. GitHub sends them as ISO 8601 strings on most events but as Unix timestamps on push events; the spec declared them as strings only.
-- Completed four sponsorship fixtures whose `changes.tier.from` was an empty object, and two issue-comment fixtures that carried an empty `changes` object GitHub does not send for `pinned`/`unpinned`. Added the `state` and `body` fields GitHub always sends but the pinned/unpinned fixtures omitted.
+- `ProjectsV2ItemPayload` no longer requires `changes`, which GitHub only sends on `edited`/`reordered` actions, not `created`. Verified against real payloads in [octokit/webhooks](https://github.com/octokit/webhooks).
+- `Repository.created_at` and `Repository.pushed_at` are now typed as a string-or-integer union. GitHub sends them as ISO 8601 strings on most events but as Unix timestamps on `push` events specifically; verified against a real octokit `push` payload.
+- Fixed thirteen test fixtures carrying synthetic placeholder data that the stricter payload binding surfaced as real dispatch failures: nine had empty-object (`{}`) stand-ins for `App`, `WorkflowRun`, `invitation`, or `previous_marketplace_purchase` fields that GitHub never actually sends empty (verified against octokit/webhooks - each is either fully populated or the key is omitted), four sponsorship fixtures had an empty `changes.tier.from`, and two issue-comment fixtures carried an empty `changes` object plus missing `state`/`body` fields. `App`, `MarketplacePurchase`, `WorkflowRun`, and `invitation`'s required-field declarations in the spec were correct throughout - the fixtures were wrong, not the spec.
 
 ## [0.1.0] - 2026-09-22
 ### Added

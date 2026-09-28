@@ -26,14 +26,14 @@ public type ListenerConfig record {
 # A GitHub App
 public type App record {
     # Unique identifier of the GitHub app.
-    int id?;
+    int id;
     # The GraphQL node ID.
     @jsondata:Name {value: "node_id"}
-    string nodeId?;
+    string nodeId;
     # A GitHub user
     User owner?;
     # The name of the GitHub app.
-    string name?;
+    string name;
     # The description of the GitHub App.
     string? description?;
     # The URL of the GitHub App's external website.
@@ -187,13 +187,13 @@ public type Changes record {
 # The GitHub Marketplace purchase
 public type MarketplacePurchase record {
     # The GitHub account (user or organization) that made the Marketplace purchase.
-    Account account?;
+    Account account;
     # The billing cycle of the plan, e.g. monthly or yearly.
     @jsondata:Name {value: "billing_cycle"}
-    string billingCycle?;
+    string billingCycle;
     # The number of units purchased on the plan.
     @jsondata:Name {value: "unit_count"}
-    int unitCount?;
+    int unitCount;
     # Whether the account is currently on a free trial.
     @jsondata:Name {value: "on_free_trial"}
     boolean onFreeTrial?;
@@ -204,7 +204,7 @@ public type MarketplacePurchase record {
     @jsondata:Name {value: "next_billing_date"}
     string? nextBillingDate?;
     # The Marketplace plan associated with the purchase.
-    Plan plan?;
+    Plan plan;
 };
 
 # The GitHub account (user or organization) that made the Marketplace purchase.
@@ -650,16 +650,16 @@ public type Membership record {
 # Present when action is member_invited
 public type Invitation record {
     # The unique identifier of the resource.
-    int id?;
+    int id;
     # The username of the invited user, if known.
     string? login?;
     # The email address of the invited user, if known.
     string? email?;
     # The role assigned to the invited user, e.g. admin, direct_member, or billing_manager.
-    string role?;
+    string role;
     # The date and time the resource was created, in ISO 8601 format.
     @jsondata:Name {value: "created_at"}
-    string createdAt?;
+    string createdAt;
     # The date and time the invitation failed, in ISO 8601 format, if applicable.
     @jsondata:Name {value: "failed_at"}
     string? failedAt?;
@@ -667,16 +667,16 @@ public type Invitation record {
     @jsondata:Name {value: "failed_reason"}
     string? failedReason?;
     # A GitHub user
-    User inviter?;
+    User inviter;
     # The number of teams the invitation grants membership to.
     @jsondata:Name {value: "team_count"}
-    int teamCount?;
+    int teamCount;
     # The GraphQL node ID.
     @jsondata:Name {value: "node_id"}
-    string nodeId?;
+    string nodeId;
     # The API URL listing the teams included in this invitation.
     @jsondata:Name {value: "invitation_teams_url"}
-    string invitationTeamsUrl?;
+    string invitationTeamsUrl;
     # The source through which the invitation was created, e.g. member or scim.
     @jsondata:Name {value: "invitation_source"}
     string? invitationSource?;
@@ -5213,9 +5213,9 @@ public type RepositoriesItem record {
 # A GitHub Actions workflow run
 public type WorkflowRun record {
     # The ID of the workflow run.
-    int id?;
+    int id;
     # The name of the workflow run.
-    string name?;
+    string name;
     # The GraphQL node ID.
     @jsondata:Name {value: "node_id"}
     string nodeId?;
@@ -5237,7 +5237,7 @@ public type WorkflowRun record {
     # The event that triggered the workflow run, e.g. push, pull_request.
     string event?;
     # The status of the workflow run, e.g. queued, in_progress, completed.
-    string status?;
+    string status;
     # The result of the completed workflow run, e.g. success, failure, cancelled.
     string? conclusion?;
     # The ID of the parent workflow.
@@ -6959,4 +6959,4 @@ public type MembershipPayload record {
 };
 
 # The union of every possible webhook payload type this listener can receive.
-public type GenericDataType ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|Tier|DependabotAlertPayload|RuleActor|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|RuleWorkflowFileReference|RuleDismissalRestriction|IssueComment|RulePatternParameters|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|RuleCodeScanningTool|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|PullRequestMinimal|Discussion|User|PullRequestReview|Category|DeletePayload|MetaPayload|DeploymentPayload|RuleStatusCheckConfiguration|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|RuleReviewer|RuleRequiredReviewerConfiguration|Commit|CheckRun|MembershipPayload|App|MarketplacePurchase|Workflow|Package|Organization|SecurityVulnerability|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|WorkflowRun|CommonPayload|DeploymentProtectionRulePayload;
+public type GenericDataType App|ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload|MarketplacePurchase|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload|WorkflowJobPayload|OrgBlockPayload|Tier|DependabotAlertPayload|RuleActor|CustomPropertyValuesPayload|SecretScanningAlertPayload|PullRequestReviewThreadPayload|RuleWorkflowFileReference|RuleDismissalRestriction|IssueComment|RulePatternParameters|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload|RuleCodeScanningTool|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|BranchProtectionRulePayload|PullRequestReviewCommentPayload|'ProjectsV2ItemPayload|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|ProjectPayload|InstallationTargetPayload|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload|RepositoryRulesetPayload|SecurityAndAnalysisPayload|DeployKeyPayload|IssueDependenciesPayload|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|IssuesPayload|CodeScanningAlertPayload|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|WorkflowRun|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|PullRequestMinimal|Discussion|User|PullRequestReview|Category|DeletePayload|MetaPayload|DeploymentPayload|RuleStatusCheckConfiguration|LabelPayload|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload|CommitCommentPayload|RuleReviewer|RuleRequiredReviewerConfiguration|Commit|CheckRun|MembershipPayload|Workflow|Package|Organization|SecurityVulnerability|Installation|PullRequestRef|PingPayload|Enterprise|CommitAuthor|Milestone|CommonPayload|DeploymentProtectionRulePayload;

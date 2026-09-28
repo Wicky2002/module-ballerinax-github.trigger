@@ -5951,6 +5951,10 @@ components:
     WorkflowRun:
       type: object
       description: A GitHub Actions workflow run
+      required:
+        - id
+        - name
+        - status
       properties:
         id:
           type: integer
@@ -6143,6 +6147,11 @@ components:
     MarketplacePurchase:
       type: object
       description: The GitHub Marketplace purchase
+      required:
+        - account
+        - billing_cycle
+        - unit_count
+        - plan
       properties:
         account:
           description: "The GitHub account (user or organization) that made the Marketplace purchase."
@@ -6516,6 +6525,10 @@ components:
     App:
       type: object
       description: A GitHub App
+      required:
+        - id
+        - node_id
+        - name
       properties:
         id:
           type: integer
@@ -8557,6 +8570,14 @@ components:
           type: object
           nullable: true
           description: Present when action is member_invited
+          required:
+            - id
+            - role
+            - created_at
+            - inviter
+            - team_count
+            - node_id
+            - invitation_teams_url
           properties:
             id:
               description: "The unique identifier of the resource."
