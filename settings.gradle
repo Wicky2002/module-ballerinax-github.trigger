@@ -32,6 +32,8 @@ rootProject.name = 'module-ballerinax-github.trigger'
 include ':github.trigger-ballerina'
 
 project(':github.trigger-ballerina').projectDir = file("ballerina")
+include ':github.trigger-compiler-plugin'
+project(':github.trigger-compiler-plugin').projectDir = file("compiler-plugin")
 
 develocity {
     buildScan {
