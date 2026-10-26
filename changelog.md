@@ -7,12 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## [0.2.0] - 2026-09-28
+### Added
+- [Services on the trigger listener are listed by `bal build --export-endpoints`](https://github.com/ballerina-platform/ballerina-library/issues/9312), through a compiler plugin packaged with the trigger. Ballerina versions without `--export-endpoints` build as before.
+
 ### Changed
 - [Generated record fields are now camelCase, carrying the original JSON key via `@jsondata:Name`](https://github.com/ballerina-platform/ballerina-library/issues/9218). This renames public fields - code reading them by their previous snake_case names needs updating.
 - [Webhook payloads now bind to the concrete event type instead of the `GenericDataType` union](https://github.com/ballerina-platform/ballerina-library/issues/9218). Binding into a union resolved to the first structurally matching member, so the value handed to a handler was typed by declaration order rather than by which event arrived. The type is read from the handler's own parameter at dispatch time, so no event-to-type table is generated. Binding now happens after the delivery is acknowledged, so a payload that does not fit its handler is logged as `DISPATCH_FAILED` instead of failing the request. An event identifier that no service handles is acknowledged and logged as a `NO_HANDLER_FOR_EVENT` warning instead of returning an error. Requires `asyncapi.native.handler` 0.6.0.
 - [Generated doc comments are wrapped to the 120-character line budget](https://github.com/ballerina-platform/ballerina-library/issues/9217) instead of being emitted as a single long line.
 
 ### Fixed
+- The package now includes its `metadata/` folder (trigger metadata and icons). The `Ballerina.toml` template the build writes from was missing `include = ["metadata/**"]`, so builds dropped it.
 - `ProjectsV2ItemPayload` no longer requires `changes`, which GitHub only sends on `edited`/`reordered` actions, not `created`. Verified against real payloads in [octokit/webhooks](https://github.com/octokit/webhooks).
 - `Repository.created_at` and `Repository.pushed_at` are now typed as a string-or-integer union. GitHub sends them as ISO 8601 strings on most events but as Unix timestamps on `push` events specifically; verified against a real octokit `push` payload.
 - Fixed thirteen test fixtures carrying synthetic placeholder data that the stricter payload binding surfaced as real dispatch failures: nine had empty-object (`{}`) stand-ins for `App`, `WorkflowRun`, `invitation`, or `previous_marketplace_purchase` fields that GitHub never actually sends empty (verified against octokit/webhooks - each is either fully populated or the key is omitted), four sponsorship fixtures had an empty `changes.tier.from`, and two issue-comment fixtures carried an empty `changes` object plus missing `state`/`body` fields. `App`, `MarketplacePurchase`, `WorkflowRun`, and `invitation`'s required-field declarations in the spec were correct throughout - the fixtures were wrong, not the spec.
