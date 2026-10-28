@@ -14,6 +14,15 @@ The GitHub Trigger module allows you to listen to the following events occurring
 This module receives GitHub's webhook events directly - it does not call GitHub's own REST/GraphQL
 API on your behalf.
 
+### Key features
+
+- Receives 265 GitHub webhook events across 75 service types, from pushes and pull requests to workflow runs
+- Verifies every delivery with the webhook secret (HMAC-SHA256, `X-Hub-Signature-256`)
+- Typed payload records for each event, with camelCase fields mapped to GitHub's JSON keys
+- Acknowledges each delivery before running your handler, so a slow or failing handler doesn't cause retries
+- Services can be attached on their own path, so several triggers and HTTP services can share one port
+- Trigger services are listed by `bal build --export-endpoints` (Ballerina 2201.13.6 or later)
+
 ## Setup guide
 
 Before using this trigger in your Ballerina application, you need a GitHub account with access to

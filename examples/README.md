@@ -2,13 +2,13 @@
 
 The `ballerinax/github.trigger` connector provides practical examples illustrating usage in various scenarios.
 
-[//]: # (TODO: Add examples)
-1. 
-2. 
+1. [Push event logger](https://github.com/ballerina-platform/module-ballerinax-github.trigger/tree/main/examples/push-event-logger) - Log each push with its commits.
+2. [Pull request automation](https://github.com/ballerina-platform/module-ballerinax-github.trigger/tree/main/examples/pr-automation) - React to pull requests being opened, merged or closed.
+3. [CI status notifier](https://github.com/ballerina-platform/module-ballerinax-github.trigger/tree/main/examples/ci-status-notifier) - Report the outcome of GitHub Actions workflow runs.
 
 ## Prerequisites
 
-[//]: # (TODO: Add prerequisites)
+Expose the running example with a public URL and register it as a webhook on your repository with a secret, as described in the [Setup guide](https://github.com/ballerina-platform/module-ballerinax-github.trigger/blob/main/ballerina/README.md#setup-guide).
 
 ## Running an example
 
