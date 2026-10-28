@@ -12,7 +12,7 @@ The `ballerinax/github.trigger` connector provides practical examples illustrati
 
 ## Running an example
 
-Execute the following commands to build an example from the source:
+Execute the following commands from an example's directory (for example `cd ci-status-notifier`) to build it from the source:
 
 * To build an example:
 
