@@ -109,8 +109,7 @@ listener github:Listener webhookListener = new (userInput, 8090);
 ```
 
 `webhookSecret` should always be set to the same secret configured on the webhook's GitHub page -
-this is what the trigger uses to verify incoming payloads actually came from GitHub. Omitting it
-disables that verification, so it isn't shown here as a normal setup option.
+this is what the trigger uses to verify incoming payloads actually came from GitHub. Without it, the listener rejects every request with `401 Unauthorized`.
 
 If you don't provide a port it will use the default port, which is 8090 - `webhookSecret` should
 still always be set.

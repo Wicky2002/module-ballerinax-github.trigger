@@ -1,7 +1,7 @@
 # Ballerina Github.trigger connector
 
 [![Build](https://github.com/ballerina-platform/module-ballerinax-github.trigger/actions/workflows/ci.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-github.trigger/actions/workflows/ci.yml)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-github.trigger.svg)](https://github.com/ballerina-platform/module-ballerinax-github.trigger/commits/master)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-github.trigger.svg)](https://github.com/ballerina-platform/module-ballerinax-github.trigger/commits/main)
 [![GitHub Issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-library/module/github.trigger.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-library/labels/module%2Fgithub.trigger)
 
 ## Overview
@@ -114,8 +114,7 @@ listener github:Listener webhookListener = new (userInput, 8090);
 ```
 
 `webhookSecret` should always be set to the same secret configured on the webhook's GitHub page -
-this is what the trigger uses to verify incoming payloads actually came from GitHub. Omitting it
-disables that verification, so it isn't shown here as a normal setup option.
+this is what the trigger uses to verify incoming payloads actually came from GitHub. Without it, the listener rejects every request with `401 Unauthorized`.
 
 If you don't provide a port it will use the default port, which is 8090 - `webhookSecret` should
 still always be set.
