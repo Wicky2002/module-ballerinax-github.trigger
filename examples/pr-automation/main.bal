@@ -13,17 +13,17 @@ listener github:Listener webhookListener = new (config, 8090);
 service github:PullRequestService on webhookListener {
 
     remote function onPullRequestOpened(github:PullRequestPayload payload) returns error? {
-        log:printInfo("New PR opened", number = payload.number, title = payload.pull_request.title,
-                author = payload.pull_request.user?.login ?: "unknown",
-                url = payload.pull_request.html_url ?: "");
+        log:printInfo("New PR opened", number = payload.number, title = payload.pullRequest.title,
+                author = payload.pullRequest.user?.login ?: "unknown",
+                url = payload.pullRequest?.htmlUrl ?: "");
     }
 
     remote function onPullRequestClosed(github:PullRequestPayload payload) returns error? {
-        if payload.pull_request?.merged == true {
-            log:printInfo("PR merged", number = payload.number, title = payload.pull_request.title);
+        if payload.pullRequest?.merged == true {
+            log:printInfo("PR merged", number = payload.number, title = payload.pullRequest.title);
         } else {
             log:printInfo("PR closed without merging", number = payload.number,
-                    title = payload.pull_request.title);
+                    title = payload.pullRequest.title);
         }
     }
 

@@ -39,7 +39,7 @@
   },
   "changes" : {
     "tier" : {
-      "from" : { }
+      "from" : { "node_id": "sample-node_id", "created_at": "sample-created_at", "description": "sample-description", "monthly_price_in_cents": 1, "monthly_price_in_dollars": 1, "name": "sample-name", "is_one_time": false, "is_custom_amount": false }
     },
     "privacy_level" : {
       "from" : "sample-from"

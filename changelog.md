@@ -1,0 +1,28 @@
+# Changelog
+This file contains all the notable changes done to the Ballerina GitHub trigger through the releases.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.0.0]
+### Added
+- [Services on the trigger listener are listed by `bal build --export-endpoints`](https://github.com/ballerina-platform/ballerina-library/issues/9312), through a compiler plugin packaged with the trigger. Endpoint export needs Ballerina 2201.13.6 or later; on earlier versions the plugin only warns and the build continues.
+
+### Changed
+- The listener a trigger creates from a port accepts request bodies up to 25 MB, GitHub's webhook payload limit, instead of 10 MB ([asyncapi-tools#243](https://github.com/ballerina-platform/asyncapi-tools/pull/243)).
+- The trigger's compiler plugin jar is written to `ballerina/lib/` by the `asyncapi` tool and committed with the package, so the repository no longer carries the plugin's source or its build steps ([asyncapi-tools#243](https://github.com/ballerina-platform/asyncapi-tools/pull/243), [asyncapi-tools#260](https://github.com/ballerina-platform/asyncapi-tools/pull/260)).
+- [Generated record fields are now camelCase, carrying the original JSON key via `@jsondata:Name`](https://github.com/ballerina-platform/ballerina-library/issues/9218). This renames public fields - code reading them by their previous snake_case names needs updating.
+- [Webhook payloads now bind to the concrete event type instead of the `GenericDataType` union](https://github.com/ballerina-platform/ballerina-library/issues/9218). Binding into a union resolved to the first structurally matching member, so the value handed to a handler was typed by declaration order rather than by which event arrived. The type is read from the handler's own parameter at dispatch time, so no event-to-type table is generated. Binding now happens after the delivery is acknowledged, so a payload that does not fit its handler is logged as `DISPATCH_FAILED` instead of failing the request. An event identifier the spec doesn't declare is acknowledged and logged as a `NO_HANDLER_FOR_EVENT` warning instead of returning an error. A declared event whose service type isn't attached is acknowledged and logged as `SERVICE_NOT_ATTACHED` at debug level. Requires `asyncapi.native.handler` 0.6.0.
+- [Generated doc comments are wrapped to the 120-character line budget](https://github.com/ballerina-platform/ballerina-library/issues/9217) instead of being emitted as a single long line.
+
+### Fixed
+- The package now includes its `metadata/` folder (trigger metadata and icons). The `Ballerina.toml` template the build writes from was missing `include = ["metadata/**"]`, so builds dropped it.
+- `ProjectsV2ItemPayload` no longer requires `changes`, which GitHub only sends on `edited`/`reordered` actions, not `created`. Verified against real payloads in [octokit/webhooks](https://github.com/octokit/webhooks).
+- `Repository.created_at` and `Repository.pushed_at` are now typed as a string-or-integer union. GitHub sends them as ISO 8601 strings on most events but as Unix timestamps on `push` events specifically; verified against a real octokit `push` payload.
+- Fixed thirteen test fixtures carrying synthetic placeholder data that the stricter payload binding surfaced as real dispatch failures: nine had empty-object (`{}`) stand-ins for `App`, `WorkflowRun`, `invitation`, or `previous_marketplace_purchase` fields that GitHub never actually sends empty (verified against octokit/webhooks - each is either fully populated or the key is omitted), four sponsorship fixtures had an empty `changes.tier.from`, and two issue-comment fixtures carried an empty `changes` object plus missing `state`/`body` fields. `App`, `MarketplacePurchase`, `WorkflowRun`, and `invitation`'s required-field declarations in the spec were correct throughout - the fixtures were wrong, not the spec.
+
+## [0.1.0] - 2026-09-22
+### Added
+- Initial release of the GitHub trigger as its own package, migrated out of the `asyncapi-triggers` monorepo (265 events), with HMAC-SHA256 signature verification.

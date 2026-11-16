@@ -11,19 +11,19 @@ listener github:Listener webhookListener = new (config, 8090);
 service github:WorkflowRunService on webhookListener {
 
     remote function onWorkflowRunRequested(github:WorkflowRunPayload payload) returns error? {
-        log:printInfo("Workflow requested", workflow = payload.workflow_run.name);
+        log:printInfo("Workflow requested", workflow = payload.workflowRun.name);
     }
 
     remote function onWorkflowRunInProgress(github:WorkflowRunPayload payload) returns error? {
-        log:printInfo("Workflow in progress", workflow = payload.workflow_run.name);
+        log:printInfo("Workflow in progress", workflow = payload.workflowRun.name);
     }
 
     remote function onWorkflowRunCompleted(github:WorkflowRunPayload payload) returns error? {
-        string conclusion = payload.workflow_run?.conclusion ?: "unknown";
+        string conclusion = payload.workflowRun?.conclusion ?: "unknown";
         if conclusion == "success" {
-            log:printInfo("Workflow completed successfully", workflow = payload.workflow_run.name);
+            log:printInfo("Workflow completed successfully", workflow = payload.workflowRun.name);
         } else {
-            log:printWarn("Workflow completed", workflow = payload.workflow_run.name, conclusion = conclusion);
+            log:printWarn("Workflow completed", workflow = payload.workflowRun.name, conclusion = conclusion);
         }
     }
 }
